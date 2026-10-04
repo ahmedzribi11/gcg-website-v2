@@ -30,8 +30,25 @@
     "residences"
   ],
   "images": [
-    "../../assets/projects/palm-village/01.jpg",
-    "../../assets/projects/palm-village/02.jpg",
-    "../../assets/projects/palm-village/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/palm-village/01.jpg",
+      "alt": "Palm Village, villa de plain-pied avec jardin et piscine",
+      "alt_en": "Palm Village, single-storey villa with garden and pool",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/palm-village/02.jpg",
+      "alt": "Palm Village, bâtiment R+1 à bardage blanc avec escaliers extérieurs",
+      "alt_en": "Palm Village, two-storey white-clad building with external staircases",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/palm-village/03.jpg",
+      "alt": "Palm Village, bâtiment à bardage clair et escalier extérieur",
+      "alt_en": "Palm Village, building with light-coloured cladding and an external staircase",
+      "kind": "photo"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

@@ -48,9 +48,7 @@ export default function HeroIsland({ sectionId }: { sectionId: string }) {
         })
       : null
 
-    const io = section
-      ? new IntersectionObserver(([e]) => setActive(e.isIntersecting), { rootMargin: '100px' })
-      : null
+    const io = section ? new IntersectionObserver(([e]) => setActive(e.isIntersecting), { rootMargin: '100px' }) : null
     if (section) io!.observe(section)
 
     const onPointer = (e: PointerEvent) => {

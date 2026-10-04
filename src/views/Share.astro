@@ -3,9 +3,9 @@ import Base from '../layouts/Base.astro'
 import PageHeader from '../components/PageHeader.astro'
 import ProjectImage from '../components/ProjectImage.astro'
 import Icon from '../components/Icon.astro'
-import { projectPath, route, useT, type Lang } from '../i18n'
+import { qrPath, projectPath, route, useT, type Lang } from '../i18n'
 import { getProjects, pad } from '../lib/projects'
-import { media, socials } from '../lib/settings'
+import { documentLabel, documents, socials } from '../lib/settings'
 
 interface Props {
   lang: Lang
@@ -21,9 +21,10 @@ const home = route('home', lang)
   <PageHeader label={t('share.label')} title={t('share.title')} accent={fr ? 'un scan.' : 'one scan.'} lead={t('share.lead')} />
 
   <section class="wrap grid gap-6 pb-20 md:grid-cols-12">
+    <p data-qr-warning hidden role="note" class="border border-gold/60 p-4 text-[15px] text-gold md:col-span-12">{t('share.tempWarning')}</p>
     <!-- QR du site -->
     <article class="flex flex-col gap-8 border border-line bg-ink-2 p-6 md:col-span-7 md:flex-row md:p-10" data-reveal>
-      <div id="qr-site" class="mx-auto w-full max-w-[280px] shrink-0 self-start rounded-xl bg-white p-3 md:mx-0" data-qr={home}></div>
+      <div id="qr-site" class="mx-auto w-full max-w-[280px] shrink-0 self-start rounded-xl bg-white p-3 md:mx-0" data-qr={qrPath(lang, 'panneau')}></div>
       <div class="flex flex-col justify-between gap-8">
         <div>
           <p class="meta text-gold">{t('share.site')}</p>
@@ -50,22 +51,22 @@ const home = route('home', lang)
       </div>
       <div class="mx-auto flex aspect-[210/297] w-40 flex-col items-center justify-between bg-brand-2 p-4 shadow-2xl ring-1 ring-gold/30 transition-transform duration-700 group-hover:-rotate-2 group-hover:scale-105" aria-hidden="true">
         <img src="/brand/gcg-logo-gold.png" alt="" width="720" height="218" class="h-5 w-auto" />
-        <span class="block w-20 rounded bg-white p-1" data-qr={home}></span>
+        <span class="block w-20 rounded bg-white p-1" data-qr={qrPath(lang, 'panneau')}></span>
         <span class="text-center text-[8px] uppercase tracking-[0.2em] text-gold">{t('poster.scan')}</span>
       </div>
       <span class="meta inline-flex items-center gap-2 text-bone">{t('share.posterOpen')} <Icon name="arrow" /></span>
     </a>
 
     {
-      media.portfolioPdf && (
-        <a href={media.portfolioPdf} download class="group flex items-center justify-between gap-6 border border-line p-6 transition-colors hover:border-gold md:col-span-12 md:px-10" data-reveal>
+      documents.map((d) => (
+        <a href={d.href} download={d.downloadName} class="group flex items-center justify-between gap-6 border border-line p-6 transition-colors hover:border-gold md:col-span-12 md:px-10" data-reveal>
           <span>
-            <span class="meta block text-gold">{t('share.pdf')}</span>
-            <span class="mt-2 block text-[15px] text-bone/70">{t('share.pdfHelp')}</span>
+            <span class="meta block text-gold">{lang === 'fr' ? d.title : d.title_en}</span>
+            <span class="mt-2 block text-[15px] text-bone/70">{documentLabel(d, lang)}</span>
           </span>
           <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold/50 text-gold transition-colors group-hover:bg-gold group-hover:text-brand"><Icon name="download" size={18} /></span>
         </a>
-      )
+      ))
     }
 
     <!-- Réseaux sociaux -->
@@ -76,11 +77,11 @@ const home = route('home', lang)
           <ul class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {socials.map((s) => (
               <li class="flex flex-col items-center gap-3 border border-line p-4">
-                <span id={`qr-${s.key}`} class="block w-full max-w-[160px] rounded-lg bg-white p-2" data-qr={s.url} />
+                <span id={`qr-${s.key}`} class="block w-full max-w-[160px] rounded-lg bg-white p-2" data-qr={`/qr/${s.key}`} />
                 <a href={s.url} target="_blank" rel="noopener" class="flex items-center gap-2 text-[15px] hover:text-gold">
                   <Icon name={s.key} size={16} /> {s.name}
                 </a>
-                <button type="button" class="meta text-mist hover:text-gold" data-qr-download={`qr-${s.key}`} data-format="png" data-qr-name={`gcg-${s.key}-qr`}>{t('share.downloadPng')}</button>
+                <button type="button" class="meta inline-flex min-h-6 items-center text-mist hover:text-gold" data-qr-download={`qr-${s.key}`} data-format="png" data-qr-name={`gcg-${s.key}-qr`}>{t('share.downloadPng')}</button>
               </li>
             ))}
           </ul>
@@ -101,19 +102,19 @@ const home = route('home', lang)
       {
         projects.map((p) => (
           <li class="flex gap-4 border border-line p-3" data-reveal>
-            <span id={`qr-p-${p.slug}`} class="block w-24 shrink-0 rounded bg-white p-1" data-qr={projectPath(p.slug, lang)} />
+            <span id={`qr-p-${p.slug}`} class="block w-24 shrink-0 rounded bg-white p-1" data-qr={qrPath(lang, 'panneau', p.slug)} />
             <div class="flex min-w-0 flex-1 flex-col justify-between gap-2">
               <div class="flex items-start gap-3">
-                <ProjectImage src={p.images[0]} alt="" sizes="2.5rem" class="block h-10 w-10 shrink-0 overflow-hidden rounded" />
+                <ProjectImage image={p.images[0]} alt="" sizes="2.5rem" class="block h-10 w-10 shrink-0 overflow-hidden rounded" />
                 <a href={projectPath(p.slug, lang)} class="min-w-0 text-[14px] leading-snug hover:text-gold">
                   <span class="meta block text-mist">N° {pad(p.number)}</span>
                   {p.name}
                 </a>
               </div>
               <div class="flex flex-wrap gap-x-4 gap-y-1">
-                <button type="button" class="meta text-mist hover:text-gold" data-qr-download={`qr-p-${p.slug}`} data-format="png" data-qr-name={`gcg-${p.slug}-qr`}>PNG</button>
-                <button type="button" class="meta text-mist hover:text-gold" data-qr-download={`qr-p-${p.slug}`} data-qr-name={`gcg-${p.slug}-qr`}>SVG</button>
-                <a href={`${route('poster', lang)}?p=${p.slug}`} class="meta text-mist hover:text-gold">{t('project.poster')}</a>
+                <button type="button" class="meta inline-flex min-h-6 items-center text-mist hover:text-gold" data-qr-download={`qr-p-${p.slug}`} data-format="png" data-qr-name={`gcg-${p.slug}-qr`}>PNG</button>
+                <button type="button" class="meta inline-flex min-h-6 items-center text-mist hover:text-gold" data-qr-download={`qr-p-${p.slug}`} data-qr-name={`gcg-${p.slug}-qr`}>SVG</button>
+                <a href={`${route('poster', lang)}?p=${p.slug}`} class="meta inline-flex min-h-6 items-center text-mist hover:text-gold">{t('project.poster')}</a>
               </div>
             </div>
           </li>
@@ -121,8 +122,7 @@ const home = route('home', lang)
       }
     </ul>
   </section>
-</Base>
-
 <script>
   import '../scripts/qr'
 </script>
+</Base>

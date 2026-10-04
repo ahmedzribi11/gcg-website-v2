@@ -30,11 +30,11 @@ const studies = projects.filter((p) => p.status === 'etudes').length
       <header class="flex flex-wrap items-end justify-between gap-6 border-b-2 border-brand pb-6">
         <div>
           <img src="/brand/gcg-logo-green.png" alt="GCG — General Constructor Group CI" width="720" height="219" class="h-14 w-auto" />
-          <p class="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-brand/70">{fr ? 'Construction & ingénierie — depuis 2016 — Côte d’Ivoire' : 'Construction & engineering — since 2016 — Côte d’Ivoire'}</p>
+          <p class="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-brand/80">{fr ? 'Construction & ingénierie — depuis 2016 — Côte d’Ivoire' : 'Construction & engineering — since 2016 — Côte d’Ivoire'}</p>
         </div>
         <div class="text-right">
           <h1 class="text-3xl font-normal tracking-[-0.02em] text-brand md:text-4xl">{t('refs.title')}</h1>
-          <p class="mt-1 font-mono text-[11px] uppercase tracking-[0.16em] text-brand/70">{t('refs.edition')} : {edition}</p>
+          <p class="mt-1 font-mono text-[11px] uppercase tracking-[0.16em] text-brand/80">{t('refs.edition')} : {edition}</p>
         </div>
       </header>
 
@@ -51,11 +51,11 @@ const studies = projects.filter((p) => p.status === 'etudes').length
           <section class="mt-10">
             <h2 class="flex items-baseline justify-between border-b border-brand/30 pb-2 text-lg font-medium text-brand">
               {SECTOR_LABELS[g.s][lang]}
-              <span class="font-mono text-[11px] font-normal text-brand/60">{g.list.length}</span>
+              <span class="font-mono text-[11px] font-normal text-brand/75">{g.list.length}</span>
             </h2>
-            <table class="mt-2 w-full border-collapse text-left text-[12px] leading-snug">
+            <div class="overflow-x-auto" tabindex="0" role="region" aria-label={SECTOR_LABELS[g.s][lang]}><table class="mt-2 w-full border-collapse text-left text-[12px] leading-snug">
               <thead>
-                <tr class="font-mono text-[10px] uppercase tracking-[0.1em] text-brand/60">
+                <tr class="font-mono text-[10px] uppercase tracking-[0.1em] text-brand/75">
                   <th class="w-10 py-2 pr-2 font-normal">{t('refs.col.n')}</th>
                   <th class="py-2 pr-3 font-normal">{t('refs.col.project')}</th>
                   <th class="py-2 pr-3 font-normal">{t('refs.col.location')}</th>
@@ -69,7 +69,7 @@ const studies = projects.filter((p) => p.status === 'etudes').length
               <tbody>
                 {g.list.map((p) => (
                   <tr class="border-t border-[#dfe5df] align-top">
-                    <td class="py-2.5 pr-2 font-mono text-brand/60">{pad(p.number)}</td>
+                    <td class="py-2.5 pr-2 font-mono text-brand/75">{pad(p.number)}</td>
                     <td class="py-2.5 pr-3 font-medium text-brand">{p.name}</td>
                     <td class="py-2.5 pr-3">{p.location}</td>
                     <td class="whitespace-nowrap py-2.5 pr-3">{p.period}</td>
@@ -80,20 +80,18 @@ const studies = projects.filter((p) => p.status === 'etudes').length
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table></div>
           </section>
         ))
       }
 
-      <footer class="mt-10 flex flex-wrap justify-between gap-4 border-t-2 border-brand pt-4 font-mono text-[10px] uppercase tracking-[0.12em] text-brand/70">
+      <footer class="mt-10 flex flex-wrap justify-between gap-4 border-t-2 border-brand pt-4 font-mono text-[10px] uppercase tracking-[0.12em] text-brand/80">
         <span>General Constructor Group CI</span>
         <span>{[contact.phone, contact.email].filter(Boolean).join(' · ')}</span>
         <span data-qr-text={route('home', lang)}></span>
       </footer>
     </article>
   </div>
-</Base>
-
 <script>
   import '../scripts/qr'
 </script>
@@ -109,3 +107,4 @@ const studies = projects.filter((p) => p.status === 'etudes').length
     .refs-doc h2 { break-after: avoid; }
   }
 </style>
+</Base>

@@ -1,0 +1,246 @@
+﻿ID;Criterion;Priority;Phase;Status;Evidence or what is missing
+PERF-01;Lab LCP;Must;V0;PASS;Lighthouse mobile, median of 5 runs, FR and EN, 5 templates: LCP 1.5–2.0 s (budget 2.5 s).
+PERF-02;Layout stability;Must;V0;PASS;"CLS 0.000 on every template (median of 5); space reserved for images and QR codes; metric-matched fallback fonts."
+PERF-03;Responsiveness;Must;V0;PASS;Lab TBT 0–8 ms. Field INP to read in Search Console after launch.
+PERF-04;Field Core Web Vitals;Should;Post-launch;READY;Post-launch: Search Console CWV after 28 days, or a monthly P3 log while traffic is low.
+PERF-05;Page weight budget;Must;V0;PASS;"390 px, DPR 2: home 410 KB at load / 619 KB scrolled; projects list 481 KB; project page 281 / 474 KB."
+PERF-06;JavaScript budget;Must;V0;PASS;"5–9 KB compressed JS per page (was 367 KB); all text, links and images present with JS off."
+PERF-07;Image delivery;Must;V0;PASS;"WebP + JPEG fallback, 15 widths, explicit width/height; Lighthouse image audits score 1 on all templates."
+PERF-08;LCP image priority;Must;V0;PASS;"Hero image eager with fetchpriority=""high"" on project and service pages; text LCP on home and list; everything below the fold lazy."
+PERF-09;Fonts;Must;V0;PASS;"2 families, 2 WOFF2 files, 44 KB total, self-hosted, font-display swap, metric fallbacks; subsets include all French glyphs and U+202F."
+PERF-10;Video facade;Must;V0;PASS;Video facade built: nothing from YouTube/Vimeo loads before a click. No video URL yet.
+PERF-11;Caching;Must;Launch;READY;"Immutable 1-year cache on /_astro/ assets, HTML revalidated: configured in vercel.json and _headers; curl check on the production domain."
+PERF-12;Edge delivery and TTFB;Must;Launch;READY;Static files on a CDN. Median TTFB from Côte d’Ivoire must be measured on the live domain (Cloudflare has an Abidjan PoP).
+PERF-13;Compression;Must;Launch;READY;"Brotli/gzip is automatic on Vercel and Cloudflare; confirm with curl on the production domain."
+PERF-14;Third-party origins;Should;Launch;PASS;0 third-party origins before interaction (Umami would add 1 if enabled).
+PERF-15;3G resilience;Should;Launch;PASS;Simulated 3G: headline and CTA visible in 0.5–1.2 s. The form posts as a plain HTML form without JS (303 to the thanks/error page).
+PERF-16;Map without embed;Must;V0;PASS;"The presence map is a static SVG built at build time; no map provider requested."
+PERF-17;Download sizes;Must;Launch;PASS;Build refuses PDFs over 10 MB and the size is shown next to each link. No PDF published yet (the 84.8 MB portfolio is not published).
+PERF-18;Real-device check;Should;Launch;TEAM;Screen recording of home → projects → project → contact on a low-end phone (P3), by GCG or the team.
+SEC-01;HTTPS only;Must;Launch;ACCOUNTS;"HTTPS is automatic on both hosts; SSL Labs and http→https checks need the production domain."
+SEC-02;HSTS;Must;Launch;READY;"Strict-Transport-Security max-age=31536000 is configured; add includeSubDomains once every subdomain is HTTPS."
+SEC-03;Security headers;Must;Launch;READY;"nosniff, Referrer-Policy, Permissions-Policy, X-Frame-Options DENY and frame-ancestors none are configured; run the HTTP Observatory on the domain."
+SEC-04;Content Security Policy;Should;Launch;PASS;Enforced hash-based CSP: default-src self, object-src none, base-uri self, form-action self, no unsafe-eval, no unsafe-inline in script-src. 0 CSP violations on all templates. /admin has its own policy with SRI.
+SEC-05;Form abuse protection;Must;Launch;PASS;"Server validation, honeypot, 3 s minimum fill time, 5 per IP per 10 min, CR/LF stripped from header values. Note: the rate limit is per server instance; add a host firewall rule if spam appears."
+SEC-06;No file upload on public forms;Must;V0;PASS;"No file field; multipart POSTs get 415."
+SEC-07;Submissions not exposed;Must;Launch;ACCOUNTS;"Submissions are only emailed through Resend (nothing stored or exposed); the Resend account must be GCG-owned (IAM-01)."
+SEC-08;Admin hardening;Must;Launch;READY;"Login goes through GitHub OAuth (rate limiting and MFA are GitHub’s); 8 h inactivity logout; named GitHub accounts only, to be set up."
+SEC-09;Dependency hygiene;Must;Launch;PASS;"Lockfile committed; npm audit: 0 vulnerabilities; Dependabot monthly; audit step in CI."
+SEC-10;Secrets;Must;V0;PASS;"No secrets in the repo or bundle (pattern scan clean); gitleaks runs in CI on the full history; secrets live in host env vars."
+SEC-11;Third-party register;Should;Launch;PASS;"Third-party register in docs/tiers-et-confidentialite.md; Decap CMS is pinned with SRI."
+SEC-12;Email authentication;Must;Launch;ACCOUNTS;SPF/DKIM/DMARC need the domain and the Resend/mail setup.
+SEC-13;Non-sending hostnames locked;Should;Launch;ACCOUNTS;"v=spf1 -all and sp=reject on non-sending hostnames; DNS task."
+SEC-14;Domain and certificate locks;Should;Launch;ACCOUNTS;"Transfer lock and CAA record; registrar and DNS task."
+SEC-15;DNSSEC;Nice;Post-launch;ACCOUNTS;DNSSEC if the registrar and DNS host support it (Nice).
+SEC-16;security.txt;Nice;Launch;GCG;/.well-known/security.txt is generated automatically as soon as a contact email is entered (none supplied yet).
+SEC-17;No information leakage;Should;Launch;PASS;"No source maps in the build; branded 404; no framework version banner; generic error responses."
+SEC-18;Staging protected;Must;V0;ACCOUNTS;"Previews get noindex automatically; preview authentication must be turned on (Vercel Standard Protection or Cloudflare Access)."
+SEC-19;Upload safety;Must;Launch;PASS;Build rejects any upload that is not a real JPG/PNG/WebP/AVIF/HEIC image or PDF (checked by file signature, not by extension), SVG refused, 20 MB cap. Tested with a renamed HTML file, an SVG with a script and a fake PDF.
+SEC-20;Alerting;Should;Launch;ACCOUNTS;"Registrar, DNS, hosting and GitHub alerts to both team members; set up with the accounts."
+IAM-01;Account register;Must;V0;ACCOUNTS;"Register template written (docs/comptes.md); to be filled in GCG’s vault as accounts are created."
+IAM-02;Client ownership;Must;V0;ACCOUNTS;"Rule documented; accounts not created yet. Today the repo and Vercel projects sit under a personal account and must be transferred."
+IAM-03;Least privilege and redundancy;Must;Launch;ACCOUNTS;"Editors only see projects and settings in /admin; ≥ 2 admins per critical account at creation."
+IAM-04;MFA;Must;V0;ACCOUNTS;MFA on every account at creation (rule and priority order documented).
+IAM-05;Root email protected;Must;V0;GCG;Review of GCG’s existing mailbox security, on a call with GCG.
+IAM-06;Recovery procedure;Must;Launch;ACCOUNTS;Backup codes in GCG’s vault plus one dry run with a backup code.
+IAM-07;Offboarding;Must;Launch;TEAM;"Offboarding procedure written (exploitation.md §8); tabletop walk-through still to run."
+IAM-08;Access review;Should;Post-launch;TEAM;"Quarterly review log ready in comptes.md; post-launch."
+IAM-09;Credential storage;Must;V0;ACCOUNTS;A GCG-owned password manager vault is needed.
+IAM-10;Team device baseline;Should;V0;TEAM;5-item self-check by both developers (disk encryption, updates, screen lock, no credentials in files).
+MODEL-01;Written schema;Should;V0;PASS;docs/modele-de-contenu.md plus the schema itself (src/content.config.ts) cover every type.
+MODEL-02;Project fields;Must;V0;PARTIAL;"All required fields enforced except: status and surface are optional because GCG has not confirmed them for 21 and 3 projects; surface is text (""6 hectares"") not a number; one ASCII slug is shared by FR and EN."
+MODEL-03;References, not free text;Must;V0;PASS;"Sector, city, services and building types are closed lists with labels defined once; renaming a label updates every page, filter and structured data. No client field (no clients are published)."
+MODEL-04;Unique slugs;Must;V0;PASS;"Slugs are ASCII from the title (CMS slug settings + build check); the CMS suffixes duplicates."
+MODEL-05;Stable URLs;Must;Launch;PASS;"Build fails if a published URL disappears without a 301 (published-slugs registry); /projets/* → /realisations/* is a single 301."
+MODEL-06;Draft and published states;Must;V0;PASS;"Drafts live on CMS branches and never reach main; an EN version marked ""à traduire"" is not built; projects without client permission are hidden when GCG_LAUNCH=1."
+MODEL-07;Safe deletion;Must;Launch;PASS;"Editors cannot delete projects, sectors or services; removing a project requires a 301 to the list (build-enforced); deleting an image still in use fails the build, so the live site keeps the last good version."
+MODEL-08;Media as entities;Should;V0;PARTIAL;"Alt FR/EN, kind and focal point are stored with each image; credit and rights status live in docs/registre-des-droits.csv rather than in the CMS. Acceptable at this size; revisit if the library grows."
+MODEL-09;Linked translations;Must;V0;PASS;"FR and EN are two locales of one entry; untranslated entries are listed by the build and grouped under ""Version anglaise"" in the CMS."
+MODEL-10;SEO fields with fallbacks;Must;V0;PASS;Optional SEO title/description per locale, falling back to name, summary and cover image.
+MODEL-11;Schema evolution;Should;Launch;PASS;"Rule documented (new fields optional or defaulted; migrations for new required fields)."
+MODEL-12;Portability;Must;Launch;PASS;"All content is JSON + images in Git; a fresh clone + build was tested."
+MODEL-13;Validation blocks broken states;Must;V0;PASS;Build fails with French messages naming the field for missing fields, duplicate numbers/slugs, missing alt text, images under 500 px, broken image paths and invalid uploads (fixtures tested).
+MODEL-14;Featured ordering;Should;V0;PASS;"featured + featuredOrder drive the home page; list order follows the project number."
+MODEL-15;Programme type;Should;Launch;N/A;Option C (real-estate section) not chosen.
+MODEL-16;News only with commitment;Should;V0;PASS;No News section (no publishing commitment from GCG).
+MODEL-17;Document type;Should;Launch;PASS;"Document type: title FR/EN, language, file, version date; size computed at build."
+CMS-01;Add a project unaided;Must;Launch;TEAM;Observed test after the training session: GCG’s editor adds a complete project in ≤ 15 min.
+CMS-02;French interface;Must;Launch;PASS;"French UI; every field has a French label and a hint with an example (screenshots in the editor guide)."
+CMS-03;Preview;Must;Launch;ACCOUNTS;Draft preview = the host’s preview deployment of the draft branch. Needs preview_context set to the host’s status name and preview access for editors (Vercel protection bypass or Cloudflare Access).
+CMS-04;Image pipeline;Must;Launch;PASS;"JPG/PNG/WebP/HEIC up to 20 MB; HEIC converted to JPG at build; 15 responsive sizes; focal point field; GPS removed. Tested with a 12 MP HEIC carrying GPS data."
+CMS-05;Clear validation;Must;Launch;PASS;Required fields (including the cover photo) are blocked in the editor with French messages naming the field. A missing EN summary only blocks once EN is marked validated, by design (CMS-10).
+CMS-06;History and rollback;Must;Launch;READY;"Every publish is a Git commit/PR; restore by reverting it on GitHub (runbook §2). Drill on staging still to do."
+CMS-07;Publish without the team;Must;Launch;READY;"Publish triggers a build of 2–5 minutes with no developer step; time it on production."
+CMS-08;Guardrails;Should;Launch;PASS;"The CMS only exposes projects and settings; navigation, design, legal pages, sectors and services are code. Residual risk: editors are GitHub collaborators, so they could edit files directly on GitHub."
+CMS-09;Mobile upload;Should;Launch;READY;"Editor works at phone width (screenshot in the guide); confirm on a mid-range Android phone."
+CMS-10;Translation flow;Should;Launch;PASS;"New entries default to ""à traduire"" and their EN page is not built until reviewed."
+SEO-01;Titles and descriptions;Must;V0;PASS;"Unique title and description on every page (audit script); project titles shortened to ≈ 60 characters."
+SEO-02;Sitemap;Must;Launch;READY;"Sitemap generated on every build and audited to match indexable pages exactly; referenced in robots.txt. Submission to Search Console at launch."
+SEO-03;robots.txt;Must;Launch;PASS;"robots.txt allows everything public, disallows /admin and /api, lists the sitemap; previews are noindex."
+SEO-04;Canonical host and URLs;Must;Launch;ACCOUNTS;"Self-canonical absolute URLs and one no-trailing-slash convention (permanent 308) are in place; apex/www redirect needs the domain."
+SEO-05;hreflang;Must;Launch;PASS;Reciprocal fr/en hreflang with self-reference and x-default → FR, checked on every page by the audit script.
+SEO-06;Organization structured data;Must;Launch;GCG;"Organization data built from known facts only; legalName (RCCM), address, telephone and email are missing until GCG supplies them."
+SEO-07;LocalBusiness structured data;Should;Launch;GCG;"LocalBusiness (GeneralContractor) is emitted automatically once an address is entered; must match the Google Business Profile."
+SEO-08;Breadcrumbs;Should;Launch;PASS;BreadcrumbList on project and service pages, matching the visible breadcrumb.
+SEO-09;Facts as text;Must;V0;PASS;All facts, services, places and contact details are HTML text.
+SEO-10;Crawler access decision;Should;Launch;PASS;"Decision written (AI crawlers allowed); no nosnippet."
+SEO-11;Search Console;Must;Launch;ACCOUNTS;"Search Console domain property under a GCG account; day-14 indexing check."
+SEO-12;Google Business Profile;Should;Post-launch;GCG;Google Business Profile: GCG must meet the eligibility rule (in-person contact during stated hours) and supply the address.
+SEO-13;Crawlable internal links;Must;V0;PASS;"Every project is 2 clicks from home through plain links; projects link to their services, sector and status (filtered list)."
+SEO-14;Filter URLs controlled;Should;Launch;PASS;"Filters are URL parameters on one page whose canonical is the unfiltered list; no indexable filter combinations."
+SEO-15;Branded search;Should;Post-launch;READY;Post-launch: branded query position in Search Console within 8 weeks.
+SEO-16;Correct status codes;Must;Launch;PARTIAL;"Real 404 status with a branded page; moved projects get a 301. Removed projects 301 to the list (MODEL-07’s alternative) instead of 410, which static hosting cannot return without a function."
+SEO-17;Truthful service area;Should;Launch;PASS;"Service pages state the real service area from the projects; no per-city doorway pages."
+SEO-18;Bing Webmaster Tools;Should;Launch;ACCOUNTS;Bing Webmaster Tools under a GCG account (can import from Search Console).
+I18N-01;Language in the URL;Must;V0;PASS;FR at the root, EN under /en/, distinct URLs everywhere.
+I18N-02;No automatic redirection;Must;V0;PASS;No redirect on Accept-Language or IP.
+I18N-03;Switch keeps context;Must;V0;PASS;"The switch goes to the exact counterpart, or to the projects list with a notice when the EN page is not published; audited on every page."
+I18N-04;Switch UI;Should;V0;PASS;"FR/EN switch visible in the mobile header without opening the menu; lang attribute and full name (""English"") for assistive tech."
+I18N-05;Translated URLs and metadata;Must;Launch;PASS;"Translated slugs, titles, descriptions, OG tags, alt text and structured data; audit finds 0 French words on EN pages apart from proper nouns."
+I18N-06;No fallback strings;Must;Launch;PASS;"UI strings, form errors, success/error pages and download labels exist in both languages; the shared 404 page is bilingual. GCG’s notification email is in French by design."
+I18N-07;Locale formats;Must;Launch;PASS;"FR ""12 500 m²"" with narrow no-break spaces, EN ""12,500 m²""; FR/EN date formats; colon/semicolon spacing per language."
+I18N-08;Phone and WhatsApp formats;Must;V0;GCG;"+225 display, E.164 tel: links and wa.me digits are generated automatically; no number supplied yet."
+I18N-09;Time zone stated;Should;Launch;PASS;"""(GMT, heure d’Abidjan)"" is appended to hours automatically (hours not supplied yet)."
+I18N-10;Character handling in forms;Must;Launch;READY;"UTF-8 end to end; accented names, apostrophes and +33/+226 numbers accepted in handler tests. Read the received email once Resend is set up."
+I18N-11;Content parity;Should;Launch;PASS;EN covers every project, service and contact path (all 34 EN versions validated).
+EDIT-01;No placeholders;Must;V0;PASS;"0 lorem/TODO/TBD/xxx/example.com in visible text (audit script on all 188 pages). The only ""placeholder"" hits are HTML placeholder attributes on form fields."
+EDIT-02;French without errors;Must;Launch;TEAM;French checker (e.g. Antidote) pass plus a full read and sign-off by GCG’s named reviewer.
+EDIT-03;Professional English;Must;Launch;TEAM;"British English throughout; a fluent professional reader still has to review it."
+EDIT-04;French typography;Must;Launch;PASS;"No-break spaces, typographic apostrophes, m², accented capitals and number spacing applied automatically to all 56 French pages; scan: 0 violations."
+EDIT-05;Approved glossary;Must;V0;GCG;"FR/EN glossary written and applied (docs/charte-redactionnelle.md); GCG must approve it."
+EDIT-06;Names exact;Must;Launch;GCG;"Brand and place names corrected (Mövenpick, Riviera, Grand-Bassam…); the exact legal name from the RCCM is still needed."
+EDIT-07;Facts verified;Must;Launch;GCG;"Every published fact is in docs/fiche-de-faits.csv; GCG has not validated it yet."
+EDIT-08;No translation artefacts;Must;Launch;PASS;"False-friend scan of EN pages: no ""Realisations"", ""big works"", ""master of work"", ""Secondary works""; ""reception"" appears only as ""reception desk"". Fluent-reader pass still recommended (EDIT-03)."
+EDIT-09;Microcopy reviewed;Must;Launch;TEAM;UI strings are grouped in src/i18n/index.ts for one review pass by the editor.
+EDIT-10;Style sheet;Should;V0;PASS;Style sheet: docs/charte-redactionnelle.md (case, numbers, dates, units, names, tone).
+A11Y-01;Automated scan;Must;V0;PASS;axe-core: 0 serious/critical violations on 23 templates × 2 viewports, FR and EN, in CI.
+A11Y-02;Text alternatives (1.1.1);Must;Launch;PASS;"Every content image has a written FR and EN description; decorative images have empty alt; audit checks alt on every image."
+A11Y-03;Structure (1.3.1, 1.3.2, 2.4.2, 2.4.6);Must;V0;PASS;One h1 per page (audited), landmarks, lists as lists, unique titles, Nu HTML checker 0 errors.
+A11Y-04;Contrast and colour (1.4.1, 1.4.3, 1.4.11);Must;V0;PASS;"All token pairs ≥ 4.5:1 (table in docs/composants.md); selected filters change fill and aria-pressed, not just colour; header overlays darkened so text over photos stays ≥ 4.5:1."
+A11Y-05;Resize and reflow (1.3.4, 1.4.4, 1.4.10, 1.4.12);Must;V0;PASS;"No horizontal scroll at 320 px (16 pages × 9 widths); WCAG text-spacing override: no clipped text or overflow (10 pages × 2 widths); both orientations."
+A11Y-06;Keyboard and focus (2.1.1, 2.1.2, 2.4.1, 2.4.3, 2.4.7, 2.4.11);Must;V0;PASS;Skip link, logical order, visible gold focus ring, menu closes with Escape and returns focus, scroll padding keeps focused items clear of the sticky header. Manual keyboard pass is part of A11Y-16.
+A11Y-07;Pointer and touch (2.5.1, 2.5.2, 2.5.3, 2.5.7, 2.5.8);Must;V0;PASS;"Targets 44–52 px; gallery has previous/next buttons as well as swipe; accessible names contain visible labels."
+A11Y-08;Forms (1.3.5, 3.3.1, 3.3.2, 3.3.3, 3.3.7, 3.3.8, 4.1.3);Must;V0;PASS;Visible labels, autocomplete, text errors with an error summary, success message receives focus, no CAPTCHA.
+A11Y-09;Video (1.2.1, 1.2.2, 1.2.3, 1.2.5, 1.4.2);Must;Launch;GCG;"Facade built; the video must come with FR and EN captions (stated in the CMS hint). No video supplied yet."
+A11Y-10;Motion (2.2.2, 2.3.1);Must;V0;PASS;"Hero animation stops after about 4 s; no carousel; nothing flashes."
+A11Y-11;Language (3.1.1, 3.1.2);Must;V0;PASS;lang on every page and on other-language passages (switch label, English half of the 404).
+A11Y-12;Consistency and predictability (3.2.1, 3.2.2, 3.2.3, 3.2.4, 3.2.6);Must;V0;PASS;"Same header, footer and mobile bar on every page; no context change on focus or input."
+A11Y-13;Custom components (1.4.13, 4.1.2);Must;V0;PASS;Menu exposes aria-expanded, filters aria-pressed, lightbox is a modal dialog (focus contained, Escape closes and returns focus).
+A11Y-14;No images of text (1.4.5);Must;V0;GCG;4 portfolio images contain baked-in text (beach-bar-assinie/03, immeuble-attoban/03, immeuble-seven-1/01, salle-de-sport-progym/02): originals without text needed.
+A11Y-15;Wayfinding (2.4.4, 2.4.5);Must;V0;PASS;"Descriptive link text; navigation plus breadcrumbs."
+A11Y-16;Manual assistive-tech pass;Must;Launch;TEAM;Recorded session with NVDA and VoiceOver or TalkBack (home, filters, gallery, form).
+A11Y-17;Accessible downloads;Should;Launch;PASS;"No PDF published; the reference list exists as an HTML page."
+UX-01;Tokens;Should;V0;PASS;"One token set in global.css (@theme); raw colours moved into tokens; 2 documented exceptions (theme-color meta, QR export colours)."
+UX-02;Typography;Must;V0;PASS;Body 16 px, line height 1.55, 6 type sizes, 2 typefaces, readable line lengths on desktop.
+UX-03;Spacing scale;Should;V0;PASS;"Spacing from Tailwind’s 4 px scale; consistent section padding."
+UX-04;Brand palette from the logo;Should;V0;PASS;Palette from the GCG logo (green and gold), contrast table in docs/composants.md. A vector logo from GCG is still welcome.
+UX-05;Responsive range;Must;V0;PASS;No overflow or overlap at 320, 360, 390, 414, 768, 1024, 1280, 1440 and 1920 px.
+UX-06;Component inventory with states;Should;V0;PASS;docs/composants.md: every listed component with default, hover, focus, active and disabled states.
+UX-07;Loading, empty, error and success states;Must;V0;PASS;"Images reserve space on a neutral background; empty filter result shows a message and reset; failed send keeps the data and offers WhatsApp/phone; success states the next step."
+UX-08;Motion;Must;V0;PASS;Transitions ≤ 300 ms, no scroll-jacking or parallax, reduced motion honoured.
+UX-09;Navigation;Must;V0;PASS;5 top-level items, current page marked, menu one tap away, contact action always visible on mobile.
+UX-10;Gallery behaviour;Should;V0;PASS;"Viewer with buttons, swipe, counter and captions; Escape and the Android back button close it (history entry)."
+UX-11;Filters;Must;V0;PASS;Sector, status, city and type filters combine, show a count, persist in the URL and can be reset.
+UX-12;In-app and data-saving browsers;Should;Launch;TEAM;"Device/browser matrix incl. WhatsApp and Facebook in-app browsers; content already readable with JS off."
+UX-13;Consistency gate for new sections;Should;Post-launch;READY;"Rule written in docs/composants.md; applies to sections added after launch."
+CONV-01;First screen;Must;V0;READY;At 360 × 640 the first screen says General Constructor Group, construction and engineering, Côte d’Ivoire, since 2016, with one primary CTA. The 5-second test with 3 outsiders is still to run.
+CONV-02;Home hierarchy;Must;V0;PASS;Home: value proposition → flagship projects → services → building types → proof (scale, presence) → audiences → method → contact.
+CONV-03;Full scope visible;Must;V0;PASS;"Each métier has a page with what the client gets and linked projects; ""architecture only"" is 2 clicks from home (Expertises → Architecture)."
+CONV-04;Contact paths everywhere;Must;V0;GCG;"Phone, WhatsApp (pre-filled with the page name, FR/EN), email and form appear automatically once GCG supplies the numbers and address; today only the form and the contact page exist."
+CONV-05;Short form;Must;Launch;ACCOUNTS;6 fields, only name + one contact method required, notice next to the button: done. Delivery in ≤ 2 min, not in spam, needs Resend + domain authentication (SEC-12).
+CONV-06;Lead ownership and response time;Should;Launch;GCG;"GCG must name a lead owner and deputy; no response time is shown until GCG commits in writing."
+CONV-07;Project page;Must;V0;GCG;Facts box, narrative, related projects and CTA on every project page. 8 projects have fewer than 3 photos and 21 have no confirmed status: GCG to supply.
+CONV-08;Trust signals are verifiable;Must;Launch;GCG;"Years active, project count and organisation are shown; RCCM number and physical address missing. No logos, testimonials or stock photos."
+CONV-09;Honest status and renders;Must;V0;GCG;"Renderings are labelled ""Perspective""/""Rendering""; statuses are labelled where known, but 21 projects have no confirmed status."
+CONV-10;Downloads are tender-ready;Must;Launch;PASS;"Download labels show language, format, size and date; files are served as GCG-CI_[Document]_[FR/EN]_[YYYY-MM].pdf. No PDF yet."
+CONV-11;QR code on GCG's own domain;Must;Launch;READY;Permanent /qr/… URLs on the site’s own domain with UTM tags, ECC M, 4-module quiet zone, SVG + PNG. Needs the final domain, then a printed-proof scan on 3 phones.
+CONV-12;Tender PDF;Must;Launch;N/A;Option C (tender PDF) not chosen.
+CONV-13;Flagship project pages;Should;Launch;N/A;Option C (extended flagship pages) not chosen.
+CONV-14;Real-estate section never looks empty;Should;Launch;N/A;Option C (real-estate section) not chosen.
+CONV-15;Presentation video;Should;Launch;GCG;"Facade, poster and caption requirement ready; GCG to supply a ≤ 2 min video with FR and EN captions."
+CONV-16;Diaspora path;Should;Launch;GCG;"WhatsApp, email, time zone and international numbers work; GCG to say whether it follows projects for remote clients so a sentence can be added."
+MEDIA-01;Rights register;Must;Launch;GCG;"Register covers 100% of the 99 published images (docs/registre-des-droits.csv); author, licence and credit columns await GCG."
+MEDIA-02;Ownership or licence;Must;Launch;GCG;Written proof of ownership or licence for each image and rendering.
+MEDIA-03;End-client permission;Must;Launch;GCG;"Permission field exists and GCG_LAUNCH=1 hides every project still ""en attente"". All 34 are pending, so the site would show no projects at launch until GCG collects permissions."
+MEDIA-04;Architects' authorization;Must;Launch;COUNSEL;Architect authorisation per project, or counsel’s opinion (LQ-07).
+MEDIA-05;Logos and brand names;Must;Launch;PASS;"No client or partner logos; brand names used factually. One photo shows a third-party gym brand (salle-de-sport-progym/02), flagged in the register (LQ-10)."
+MEDIA-06;Credits and precise role;Must;Launch;GCG;"Missions copied from GCG’s portfolio; to confirm in the fact sheet, plus any architect/partner credits."
+MEDIA-07;Metadata stripped;Must;Launch;PASS;"Images re-encoded at build with all metadata (GPS, camera, author) removed; HEIC conversion drops it too. PDF properties to set when PDFs are added."
+MEDIA-08;People and personal data in images;Must;Launch;GCG;vrd-cite-baobab 01 and 02 show identifiable workers: GCG to get consent or ask for blurring. The organisation section names no individuals.
+MEDIA-09;Confidential material excluded;Must;Launch;GCG;GCG sign-off on the publishable media list.
+MEDIA-10;Takedown procedure;Should;Launch;PASS;Procedure in the legal notice (ack 2 business days, removal within 72 h) and in docs/tiers-et-confidentialite.md with a log.
+MEDIA-11;Source resolution;Should;V0;GCG;"Hero sources are 640–1,471 px wide (extracted from the PDF); originals ≥ 2,400 px needed. The build warns on each."
+MEDIA-12;Original archive;Should;Launch;GCG;GCG-owned archive folder for original photos, logo vectors and videos.
+LEGAL-01;Mentions légales;Must;Launch;GCG;"FR/EN legal notice page built; legal name, form, capital, RCCM, tax number, head office and publication director are blank until GCG supplies them; final list from counsel (LQ-05)."
+LEGAL-02;Privacy policy;Must;Launch;COUNSEL;"FR/EN privacy policy written (controller, purposes, processors incl. outside CI, retention, rights, ARTCI complaint); identity fields from GCG; counsel review."
+LEGAL-03;Notice at collection;Must;Launch;PASS;"Short notice with link to the policy next to the send button, both languages; no pre-ticked boxes, no marketing opt-in."
+LEGAL-04;Data minimization;Must;V0;PASS;"Only name, contact method, project type, place and message; no ID or sensitive fields; analytics cookieless and off by default."
+LEGAL-05;Retention applied;Must;Launch;COUNSEL;"Nothing stored by the site; a purge rule in GCG’s inbox is needed once counsel confirms the period (LQ-06, proposal 24 months)."
+LEGAL-06;ARTCI position decided;Must;Launch;COUNSEL;ARTCI declaration / transfer authorisation decision (LQ-01, LQ-02, LQ-13).
+LEGAL-07;Processor terms on file;Should;Launch;ACCOUNTS;"Store the DPAs of the host, Resend and Umami once accounts exist; locations already recorded."
+LEGAL-08;Cookies only with justification;Must;Launch;PASS;"Inventory per template: no cookies or storage on public pages; video loads only after a click; no banner needed (counsel to confirm, LQ-04)."
+LEGAL-09;Rights requests handled;Should;Launch;GCG;"Procedure and log written; needs a monitored GCG address."
+LEGAL-10;Claims are provable;Should;Launch;GCG;"No superlatives, certifications or awards claimed; ""since 2016"" and figures to be backed by the fact sheet."
+LEGAL-11;Counsel review before launch;Must;Launch;COUNSEL;Ivorian counsel review of LEGAL-01/02/05/06 and MEDIA-04, plus GCG’s written answers to LQ-01…13.
+LEGAL-12;Real-estate offers reviewed;Must;Post-launch;N/A;Option C (properties for sale) not chosen.
+LEGAL-13;Document reuse terms;Nice;Launch;GCG;"Footer reads ""© year General Constructor Group CI"" and switches to the RCCM legal name once supplied; reuse notice to put on PDF covers when PDFs exist."
+ANA-01;Privacy-respecting analytics;Should;Launch;ACCOUNTS;Umami integration ready (no cookies, no IP stored, ~2 KB script, EU hosting) and off until PUBLIC_UMAMI_WEBSITE_ID is set.
+ANA-02;Conversion events;Should;Launch;PASS;Events: WhatsApp, phone, email, successful form submission, document download, language switch, QR landing.
+ANA-03;Campaign tagging convention;Should;Launch;PASS;Convention documented and built into the /qr/ URLs (utm_source=qr, utm_medium per support, utm_campaign per project).
+ANA-04;Lead source question;Nice;Launch;N/A;Not needed: a 7th field would break CONV-05’s 6-field limit (Must). QR landings and UTM tags already measure the panneau/QR source.
+ANA-05;Monthly report;Should;Post-launch;N/A;Only if Premium maintenance is contracted.
+HOST-01;Domain decision and registration;Must;V0;GCG;Domain decision (.ci vs .com) and registration in GCG’s name: not done. Blocks the QR codes, email, Search Console and launch.
+HOST-02;Registrant and renewal;Must;Launch;ACCOUNTS;Registrant = GCG legal entity (RCCM name), auto-renew with GCG’s payment method, expiry alerts.
+HOST-03;DNS hosting;Should;Launch;ACCOUNTS;"DNS provider with MFA and change alerts (Cloudflare DNS fits); TTL plan written in the runbook."
+HOST-04;Hosting fit;Must;Launch;FAIL;"The 3 Vercel projects run on a personal Hobby plan, which forbids commercial use. Move to Vercel Pro or to Cloudflare Pages (free, commercial use allowed, Abidjan PoP); the repo is ready for both."
+HOST-05;Uptime monitoring;Must;Launch;ACCOUNTS;Uptime monitor (5-min HTTPS + keyword check, 2 regions, cert/domain expiry) alerting both developers.
+HOST-06;Backups;Must;Launch;ACCOUNTS;"GitHub holds the full history (code, content, original images). Still needed: a GCG-owned mirror repo, updated after each release; daily automation to decide with GCG."
+HOST-07;Restore tested;Must;Launch;PARTIAL;Fresh clone + npm ci + build succeeded in 2 minutes (logged). Deploying to the backup host and checking 5 pages + the form is still to do.
+HOST-08;Disaster recovery runbook;Should;Launch;PARTIAL;"Alternate-host runbook written (exploitation.md §6, Cloudflare Pages); test with HOST-07."
+HOST-09;Form delivery check;Should;Post-launch;READY;"Weekly test-submission log in docs/maintenance.md; starts after launch."
+HOST-10;Professional mailboxes;Must;Launch;N/A;Option C (professional mailboxes) not chosen.
+HOST-11;No parking page;Should;V0;ACCOUNTS;Point the new domain at the site (or a holding page) as soon as it is registered.
+ENG-01;Repository;Must;V0;PARTIAL;"README gets a developer from clone to running site in minutes; content is separate from code. Still to do: protect main on GitHub and transfer the repo to a GCG organisation."
+ENG-02;Lint and format;Should;V0;PASS;ESLint (JS/TS/Astro) and Prettier run in CI, 0 errors. Astro templates are excluded from Prettier (whitespace-sensitive) and validated by the Nu checker instead.
+ENG-03;Type and schema checking;Should;V0;PASS;astro check (types + content schema) in CI: 0 errors, 0 warnings.
+ENG-04;CI checks on every change;Must;Launch;PASS;CI on every PR: audit, lint/format, types, content checks + build, SEO/link audit, Nu HTML, axe, console, overflow, Lighthouse budgets, gitleaks. Becomes merge-blocking once main is protected (ENG-01).
+ENG-05;Visual regression;Nice;Post-launch;PASS;Simpler alternative adopted: manual screenshot checklist at 360/1280 px before releases (exploitation.md §9). (Nice, post-launch.)
+ENG-06;Deployment pipeline;Must;Launch;READY;"Production deploys only from main via the host’s Git integration; instant rollback documented (≤ 5 min); drill to run."
+ENG-07;Environments;Should;V0;ACCOUNTS;"Production + per-change previews exist and config is env-based; staging/preview protection to turn on (SEC-18)."
+ENG-08;Reproducible builds;Must;V0;PASS;Lockfile committed, Node pinned (.nvmrc, engines), clean-clone build tested.
+ENG-09;Clean console;Must;Launch;PARTIAL;Chrome: 0 console errors and 0 failed requests on 23 templates (CI). Safari not testable here: check on a Mac or iPhone.
+ENG-10;Peer review;Should;V0;TEAM;From now on, every merge to main reviewed by the other developer (needs branch protection).
+ENG-11;Change log;Should;Post-launch;PASS;CHANGELOG.md with dated entries per production release.
+LAUNCH-01;Gate passed (T−1);Must;Launch;READY;Gate: every applicable Must item PASS or N/A. Today blocked by the GCG, accounts, counsel and team items in this report.
+LAUNCH-02;DNS TTL lowered (T−2);Must;Launch;READY;Lower TTLs to 300 s 48 h before the switch (runbook §4).
+LAUNCH-03;Content approval (T−1);Must;Launch;READY;"GCG’s written approval of the final FR/EN content and media; then content freeze."
+LAUNCH-04;Production configuration (T−1);Must;Launch;READY;"Production env vars (SITE_URL, GCG_LAUNCH=1, Resend, OAuth, analytics); noindex is automatic on previews only. Checklist in runbook §5."
+LAUNCH-05;Rollback plan (T−1);Must;Launch;READY;"Backup + rollback steps (≤ 15 min) are written; name who does what on the day."
+LAUNCH-06;Launch timing;Should;Launch;READY;Weekday morning GMT, not Friday, both developers free 4 h, Zouhair informed.
+LAUNCH-07;T+0 smoke test;Must;Launch;READY;T+0 smoke test: HTTPS apex/www, redirects, certificate, headers, load from an Ivorian mobile network.
+LAUNCH-08;T+0 contact test;Must;Launch;READY;"T+0 contact test: FR and EN form submissions reach GCG’s inbox; WhatsApp and phone links tapped on a phone."
+LAUNCH-09;T+0 indexing;Must;Launch;READY;"Sitemap submitted; URL Inspection of FR and EN home."
+LAUNCH-10;T+1 review;Must;Launch;READY;T+1: uptime, 404 log, analytics events, Lighthouse on production, console.
+LAUNCH-11;QR proof before printing;Must;Launch;READY;Printed-proof QR scan with 3 phones before any print order.
+LAUNCH-12;T+14 follow-up;Should;Post-launch;READY;T+14: indexing, branded query, GBP status, DMARC reports.
+HAND-01;Handover pack (FR);Must;Launch;PARTIAL;French handover pack delivered in docs/ (account register, architecture, runbooks, editor guide with screenshots, style sheet, rights register, fact sheet, component inventory, maintenance, signature). Missing: short how-to videos (record during the HAND-03 training) and QR files (from /partager once the domain is live).
+HAND-02;Access confirmed by GCG;Must;Launch;ACCOUNTS;GCG logs in with its own credentials + MFA to every account, on a call.
+HAND-03;Training session;Must;Launch;TEAM;"Recorded training session; editor passes CMS-01."
+HAND-04;Maintenance scope written;Must;Launch;GCG;"Definitions, out-of-scope list and logs written (docs/maintenance.md); plan name, price and included modifications must be copied word for word from the price sheet, which is not in the repo."
+HAND-05;Update cadence;Must;Post-launch;READY;"Dependabot monthly + 72 h rule; update log started in docs/maintenance.md."
+HAND-06;Incident response;Must;Launch;TEAM;"S1–S3 levels, targets, channels and the French post-incident note are written (exploitation.md §7); one tabletop S1 exercise still to run."
+HAND-07;Update request intake;Should;Launch;PASS;Request template and channel in the editor guide §10 (2 business days).
+HAND-08;Clean exit;Must;Launch;PASS;"Clean-exit rule in docs/comptes.md (team access removed within 7 days; site keeps running on GCG’s accounts)."
+HAND-09;Annual review;Should;Post-launch;READY;Annual review checklist in docs/maintenance.md.
+PRO-01;Favicon set;Must;Launch;PASS;favicon.svg, favicon.ico, 180 px apple-touch-icon, 192/512 px and maskable manifest icons.
+PRO-02;Link previews;Must;Launch;READY;"og:title/description/image (1200 × 630, 43–92 KB) and og:locale per language on every page; WhatsApp preview check on the live domain."
+PRO-03;Branded error page;Must;Launch;PASS;Bilingual branded 404 with links to home and projects in both languages, real 404 status.
+PRO-04;Print styles;Should;Launch;PASS;A4 print styles: logo, facts, photos and page URL, no navigation or buttons (checked on project, contact and references pages).
+PRO-05;Email signatures;Should;Launch;PASS;"FR/EN signature template with a 6 KB logo (docs/signature-email.html); GCG fills in names and numbers."
+PRO-06;Correct mobile keyboards;Should;V0;PASS;"type=""tel"" with inputmode and type=""email"", with autocomplete."
+PRO-07;Image consistency;Should;V0;PARTIAL;"Consistent 4:3 cards and gallery crops; several sources are low-resolution PDF extracts (see MEDIA-11)."
+PRO-08;Theme colour;Nice;Launch;PASS;theme-color and manifest use the brand green.
+GOV-01;One validated fact sheet;Must;V0;GCG;"Fact sheet exists (docs/fiche-de-faits.csv, 34 projects); needs GCG’s written validation."
+GOV-02;Written decisions;Must;Launch;GCG;Consolidated feedback list, launch approval email from Zouhair, written quotes for extras.
+GOV-03;Day-0 dependencies tracked;Should;V0;TEAM;"Dependency log (logo vector, photos/permissions, domain, RCCM) with dates; list in this report."
+GOV-04;Named content contact at GCG;Must;V0;GCG;Name the GCG content contact and a deputy in writing.

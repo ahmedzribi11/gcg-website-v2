@@ -1,9 +1,10 @@
 ---
 import Base from '../layouts/Base.astro'
 import Icon from '../components/Icon.astro'
-import { route, useT, type Lang, type UIKey } from '../i18n'
+import { qrPath, route, useT, type Lang, type UIKey } from '../i18n'
 import { getProjects } from '../lib/projects'
 import { contact, hasContact, socials, whatsappLink } from '../lib/settings'
+import { contactFormEnabled } from '../lib/env'
 
 interface Props {
   lang: Lang
@@ -19,7 +20,7 @@ const hours = fr ? contact.hours : contact.hours_en || contact.hours
 const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transparent px-0 py-3 text-lg font-light text-bone placeholder:text-bone/30 focus:border-gold focus:outline-none focus:ring-0'
 ---
 
-<Base lang={lang} alt={route('contact', fr ? 'en' : 'fr')} title={t('contact.label')} description={t('contact.lead')}>
+<Base lang={lang} alt={route('contact', fr ? 'en' : 'fr')} title={fr ? 'Contact' : 'Contact us'} description={t('contact.lead')}>
   <section class="relative overflow-hidden pb-24 pt-32 md:pb-36 md:pt-48">
     <div class="absolute inset-0" aria-hidden="true">
       <div class="css-fog opacity-60"><span></span><span></span><span></span></div>
@@ -87,7 +88,7 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
         }
 
         <a href={route('share', lang)} class="mt-12 flex max-w-sm items-center gap-5 rounded-2xl border border-line p-3 pr-6 transition-colors hover:border-gold/60" data-reveal>
-          <span class="block w-20 shrink-0 rounded-lg bg-white p-1" data-qr="/" aria-hidden="true"></span>
+          <span class="block w-20 shrink-0 rounded-lg bg-white p-1" data-qr={qrPath(lang, 'carte')} aria-hidden="true"></span>
           <span>
             <span class="meta block text-gold">{t('contact.share')}</span>
             <span class="mt-1 block text-[13px] text-bone/60" data-qr-text="/"></span>
@@ -95,7 +96,7 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
         </a>
       </div>
 
-      <form id="brief" class="md:col-span-6 md:col-start-7" novalidate data-wa={contact.whatsappNumber} data-email={contact.email} data-reveal>
+      <form id="brief" action="/api/contact" method="post" class="md:col-span-6 md:col-start-7" novalidate data-wa={contact.whatsappNumber} data-email={contact.email} data-enabled={contactFormEnabled ? '' : undefined} data-reveal>
         <div class="grid gap-x-8 gap-y-8 border border-line bg-ink/70 p-6 backdrop-blur-xl md:grid-cols-2 md:p-10">
           <label class="block md:col-span-2">
             <span class="meta text-mist">{t('contact.form.name')} *</span>
@@ -130,25 +131,37 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
             <textarea name="message" rows="4" class={`${field} resize-y`}></textarea>
           </label>
           <input type="hidden" name="ref" />
+          <input type="hidden" name="lang" value={lang} />
+          <input type="hidden" name="t" value="" />
+          <div class="sr-only" aria-hidden="true">
+            <label>{t('contact.form.honeypot')} <input name="website" tabindex="-1" autocomplete="off" /></label>
+          </div>
           <p data-ref-chip hidden class="md:col-span-2 text-[14px] text-bone/70"></p>
 
           <div class="flex flex-col gap-3 sm:flex-row md:col-span-2">
             {
+              contactFormEnabled && (
+                <button type="submit" value="send" class="btn btn-gold flex-1" data-send>
+                  <span data-send-label>{t('contact.form.send')}</span> <Icon name="arrow" />
+                </button>
+              )
+            }
+            {
               contact.whatsappNumber && (
-                <button type="submit" value="whatsapp" class="btn btn-gold flex-1">
+                <button type="submit" value="whatsapp" class:list={['btn flex-1', contactFormEnabled ? 'btn-line' : 'btn-gold']}>
                   <Icon name="whatsapp" size={18} /> {t('contact.form.sendWhatsapp')}
                 </button>
               )
             }
             {
               contact.email && (
-                <button type="submit" value="email" class:list={['btn flex-1', contact.whatsappNumber ? 'btn-line' : 'btn-gold']}>
+                <button type="submit" value="email" class:list={['btn flex-1', contact.whatsappNumber || contactFormEnabled ? 'btn-line' : 'btn-gold']}>
                   <Icon name="mail" size={16} /> {t('contact.form.sendEmail')}
                 </button>
               )
             }
             {
-              !contact.whatsappNumber && !contact.email && (
+              !contactFormEnabled && !contact.whatsappNumber && !contact.email && (
                 <button type="submit" value="none" class="btn btn-gold flex-1 opacity-60" aria-describedby="brief-pending">
                   {t('cta.project')} <Icon name="arrow" />
                 </button>
@@ -156,8 +169,19 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
             }
           </div>
           <p id="brief-pending" data-pending hidden class="md:col-span-2 border-l border-gold/60 pl-4 text-[14px] text-bone/70">{t('contact.form.pending')}</p>
+          <div data-fail hidden role="alert" class="md:col-span-2 border-l border-[#ff9b8a] pl-4 text-[14px] text-bone/80">
+            <p class="font-medium text-bone">{t('contact.form.failTitle')}</p>
+            <p class="mt-1" data-fail-text>{t('contact.form.failText')}</p>
+          </div>
+          <p class="md:col-span-2 text-[13px] text-bone/50">
+            {t('contact.form.notice')} <a href={route('privacy', lang)} class="link-line text-bone/70 hover:text-bone">{t('contact.form.noticeLink')}</a>
+          </p>
         </div>
       </form>
+      <div data-success hidden role="status" tabindex="-1" class="md:col-span-6 md:col-start-7 border border-gold/60 bg-ink/80 p-6 md:p-10">
+        <p class="display text-3xl">{t('contact.form.okTitle')}</p>
+        <p class="mt-4 text-[15px] text-bone/70">{t('contact.form.okText')}</p>
+      </div>
     </div>
   </section>
 
@@ -174,12 +198,13 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
       message: t('contact.form.message'),
       ref: fr ? 'Projet de référence' : 'Reference project',
       subject: fr ? 'Demande de projet — site GCG' : 'Project enquiry — GCG website',
+      sending: t('contact.form.sending'),
+      rate: t('contact.form.rate'),
     },
   })} />
-</Base>
-
 <script>
   import '../scripts/qr'
+  import { track } from '../scripts/analytics'
 
   const form = document.getElementById('brief') as HTMLFormElement
   const data = JSON.parse(document.getElementById('brief-data')!.textContent!) as {
@@ -201,9 +226,47 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
     chip.textContent = `${L.ref} : ${data.projects[ref]}`
   }
 
+  // Délai minimal de saisie (anti-robots), vérifié par le serveur
+  ;(form.elements.namedItem('t') as HTMLInputElement).value = String(Date.now())
+
+  async function send() {
+    const btn = form.querySelector<HTMLButtonElement>('[data-send]')
+    const label = form.querySelector<HTMLElement>('[data-send-label]')
+    const fail = form.querySelector<HTMLElement>('[data-fail]')!
+    const failText = form.querySelector<HTMLElement>('[data-fail-text]')!
+    const before = label?.textContent
+    fail.hidden = true
+    if (btn) btn.disabled = true
+    if (label) label.textContent = L.sending
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      })
+      const body = (await res.json().catch(() => ({}))) as { ok?: boolean; code?: string }
+      if (!res.ok || !body.ok) throw new Error(body.code || String(res.status))
+      track('form')
+      form.hidden = true
+      const ok = document.querySelector<HTMLElement>('[data-success]')!
+      ok.hidden = false
+      ok.focus()
+    } catch (err) {
+      if ((err as Error).message === 'rate') failText.textContent = L.rate
+      fail.hidden = false
+    } finally {
+      if (btn) btn.disabled = false
+      if (label && before) label.textContent = before
+    }
+  }
+
   form.addEventListener('submit', (e) => {
     e.preventDefault()
     const via = (e.submitter as HTMLButtonElement | null)?.value
+    if (via === 'send') {
+      if (form.reportValidity()) send()
+      return
+    }
     if (via === 'none') {
       form.querySelector<HTMLElement>('[data-pending]')!.hidden = false
       return
@@ -229,9 +292,11 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
     ].filter(Boolean)
     const text = lines.join('\n')
     if (via === 'whatsapp' && form.dataset.wa) {
+      track('whatsapp', { from: 'form' })
       window.open(`https://wa.me/${form.dataset.wa}?text=${encodeURIComponent(text)}`, '_blank', 'noopener')
     } else if (form.dataset.email) {
       location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(L.subject)}&body=${encodeURIComponent(text)}`
     }
   })
 </script>
+</Base>

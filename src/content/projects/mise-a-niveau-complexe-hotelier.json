@@ -25,8 +25,25 @@
     "hotels"
   ],
   "images": [
-    "../../assets/projects/mise-a-niveau-complexe-hotelier/01.jpg",
-    "../../assets/projects/mise-a-niveau-complexe-hotelier/02.jpg",
-    "../../assets/projects/mise-a-niveau-complexe-hotelier/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/mise-a-niveau-complexe-hotelier/01.jpg",
+      "alt": "Mise à niveau d’un complexe hôtelier, cuves d’eau raccordées à un groupe de pompage",
+      "alt_en": "Hotel complex upgrade, water tanks connected to a booster pump set",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/mise-a-niveau-complexe-hotelier/02.jpg",
+      "alt": "Mise à niveau d’un complexe hôtelier, extincteur près de la hotte d’une cuisine professionnelle",
+      "alt_en": "Hotel complex upgrade, extinguisher beside the hood in a commercial kitchen",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/mise-a-niveau-complexe-hotelier/03.jpg",
+      "alt": "Mise à niveau d’un complexe hôtelier, technicien raccordant un groupe de pompage",
+      "alt_en": "Hotel complex upgrade, technician connecting a pump set",
+      "kind": "photo"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

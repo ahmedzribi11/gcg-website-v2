@@ -29,9 +29,31 @@
     "villas"
   ],
   "images": [
-    "../../assets/projects/villa-palmerais/01.jpg",
-    "../../assets/projects/villa-palmerais/02.jpg",
-    "../../assets/projects/villa-palmerais/03.jpg",
-    "../../assets/projects/villa-palmerais/04.jpg"
-  ]
+    {
+      "src": "../../assets/projects/villa-palmerais/01.jpg",
+      "alt": "Villa Palmerais, escalier intérieur à garde-corps vitré",
+      "alt_en": "Villa Palmerais, interior staircase with glass balustrade",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/villa-palmerais/02.jpg",
+      "alt": "Villa Palmerais, cuisine équipée encore sous films de protection",
+      "alt_en": "Villa Palmerais, fitted kitchen with protective film still in place",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/villa-palmerais/03.jpg",
+      "alt": "Villa Palmerais, salle de bains avec vasque et carrelage effet marbre",
+      "alt_en": "Villa Palmerais, bathroom with basin and marble-effect tiles",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/villa-palmerais/04.jpg",
+      "alt": "Villa Palmerais, dégagement avec rangements intégrés noirs",
+      "alt_en": "Villa Palmerais, hallway with built-in black storage units",
+      "kind": "photo"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

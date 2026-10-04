@@ -27,8 +27,25 @@
     "immeubles"
   ],
   "images": [
-    "../../assets/projects/immeuble-seven-2/01.jpg",
-    "../../assets/projects/immeuble-seven-2/02.jpg",
-    "../../assets/projects/immeuble-seven-2/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/immeuble-seven-2/01.jpg",
+      "alt": "Immeuble Seven 2, façades en cours de finition avec échafaudage",
+      "alt_en": "Seven 2 building, façades at finishing stage with scaffolding",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/immeuble-seven-2/02.jpg",
+      "alt": "Immeuble Seven 2, façade principale sous échafaudage, vue en contre-plongée",
+      "alt_en": "Seven 2 building, main façade under scaffolding, low-angle view",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/immeuble-seven-2/03.jpg",
+      "alt": "Immeuble Seven 2, cuisine équipée d’un appartement",
+      "alt_en": "Seven 2 building, fitted kitchen in an apartment",
+      "kind": "photo"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

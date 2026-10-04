@@ -1,83 +1,86 @@
 # GCG — General Constructor Group CI
 
-Site commercial de General Constructor Group (construction & ingénierie, Côte d’Ivoire, depuis 2016) :
-patrimoine de projets, expertises, organisation, contact, outils de partage par QR code et documents
-pour les appels d’offres. Bilingue français / anglais.
+Site commercial de General Constructor Group (construction et ingénierie, Côte d’Ivoire, depuis 2016) :
+projets, expertises, organisation, contact, outils de partage par QR code et documents pour les appels
+d’offres. Bilingue français / anglais.
 
-Astro (site statique multi-pages) · React Three Fiber (hero 3D) · GSAP + ScrollTrigger · Lenis ·
-Tailwind CSS v4 · Decap CMS (espace de gestion)
+Astro (site statique multipage) · React Three Fiber (ouverture 3D de l’accueil) · GSAP + Lenis (animations,
+défilement) · Tailwind CSS v4 · Decap CMS (espace de gestion) · fonctions serveur pour le formulaire et la
+connexion à l’espace de gestion.
 
-Prérequis : **Node.js 20.19+ ou 22.12+** (voir `.nvmrc`) et npm.
+> **Site séparé.** Ce dépôt reprend à l’identique l’apparence et le comportement du site en ligne (dépôt
+> `My-web`, qui n’est pas modifié), avec en plus la sécurité, le référencement, l’accessibilité, les pages
+> légales, l’envoi du formulaire par e-mail et l’espace de gestion amélioré.
+
+Prérequis : **Node.js 22** (voir `.nvmrc` ; 20.19+ accepté) et npm.
 
 ```bash
-git clone https://github.com/ahmedzribi11/My-web.git
-cd My-web
-npm install
-npm run dev       # développement → http://localhost:4321
-npm run build     # build de production (dist/)
-npm run preview   # prévisualiser le build → http://localhost:4321
-npm run check     # vérification des types
+git clone https://github.com/ahmedzribi11/gcg-website-v2.git
+cd gcg-website-v2
+npm ci
+npm run dev          # développement → http://localhost:4321
+npm run build        # contrôle du contenu puis build de production (dist/)
+npm run preview      # prévisualiser le build → http://localhost:4321
+npm run check        # vérification des types et du schéma
+npm run audit:site   # SEO, liens, langues, titres sur dist/ (après le build)
 ```
+
+**Documentation de remise (en français) : [`docs/`](docs/README.md)** — architecture, procédures
+(déploiement, retour arrière, restauration, DNS, lancement, incidents), registre des comptes, guide de
+l’éditeur, charte rédactionnelle, registres des faits et des droits. Modifications : [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Pages
 
 | Français | English | Contenu |
 | --- | --- | --- |
-| `/` | `/en` | Accueil : hero 3D, expertises, typologies, projets phares, envergure, présence, publics |
+| `/` | `/en` | Accueil : expertises, typologies, projets phares, envergure, présence, publics |
 | `/expertises`, `/expertises/<métier>` | `/en/services`, `/en/services/<service>` | Les 8 métiers, chacun avec ses projets |
-| `/realisations`, `/realisations/<projet>` | `/en/projects`, `/en/projects/<project>` | Les projets, filtres (secteur, statut, ville, typologie), carte, une page par projet |
+| `/realisations`, `/realisations/<projet>` | `/en/projects`, `/en/projects/<project>` | Projets, filtres (secteur, statut, ville, typologie), carte, une page par projet |
 | `/a-propos` | `/en/about` | Histoire, chronologie, organisation, moyens matériels, présence |
 | `/investir` | `/en/invest` | Investisseurs, hôtellerie, diaspora, entreprises |
-| `/contact` | `/en/contact` | Formulaire de demande (envoi WhatsApp ou email), coordonnées |
-| `/partager` | `/en/share` | QR codes (site, réseaux, chaque projet), téléchargement SVG/PNG |
-| `/partager/affiche` | `/en/share/poster` | Affiche A4 de chantier avec QR code, imprimable |
-| `/references` | `/en/references` | Liste de références imprimable (PDF) pour les appels d’offres |
+| `/contact` (+ `/merci`, `/erreur`) | `/en/contact` (+ `/thanks`, `/error`) | Formulaire (e-mail à GCG), WhatsApp, coordonnées |
+| `/partager`, `/partager/affiche` | `/en/share`, `/en/share/poster` | QR codes (SVG/PNG), affiche A4 de chantier |
+| `/references` | `/en/references` | Liste de références imprimable pour les appels d’offres |
+| `/mentions-legales`, `/confidentialite` | `/en/legal-notice`, `/en/privacy` | Pages légales |
+| `/qr/...` | | Adresses permanentes des QR codes imprimés (redirection + marquage de campagne) |
 | `/admin` | | Espace de gestion |
 
 Les anciennes adresses `/projets/<projet>` redirigent vers `/realisations/<projet>`.
 
 ## Contenu : la règle d’or
 
-Le portfolio **« Portfolio GCG_CI.pdf » est la seule source**. Rien n’est inventé : un champ vide
-n’est pas affiché (pas de faux chiffres, clients, certifications ni coordonnées).
+Le portfolio **« Portfolio GCG_CI.pdf »** et les informations transmises par GCG sont les seules sources.
+Rien n’est inventé : un champ vide n’est pas affiché (pas de faux chiffres, clients, certifications ni
+coordonnées). Les faits publiés sont listés dans `docs/fiche-de-faits.csv` pour validation par GCG.
 
 | Contenu | Fichier |
 | --- | --- |
 | Projets (un fichier par projet) | `src/content/projects/<projet>.json` |
-| Photos des projets | `src/assets/projects/<projet>/` (optimisées automatiquement en WebP) |
-| Coordonnées, réseaux sociaux, vidéo, portfolio PDF | `src/data/settings.json` |
-| Expertises | `src/data/services.ts` |
-| Organisation, moyens matériels | `src/data/organisation.ts` |
-| Publics (page Investir) | `src/data/audiences.ts` |
+| Photos des projets | `src/assets/projects/<projet>/` (optimisées au build) |
+| Coordonnées, réseaux, vidéo, documents PDF | `src/data/settings.json`, `public/documents/` |
+| Identité légale (RCCM, forme, capital, directeur de la publication) | `src/data/legal.json` |
+| Expertises, organisation, publics | `src/data/services.ts`, `organisation.ts`, `audiences.ts` |
 | Textes de l’interface FR/EN | `src/i18n/index.ts` |
 | Villes (carte et filtres) | `src/data/geo.ts` + `CITIES` dans `src/content.config.ts` |
 
-Le schéma des projets est dans `src/content.config.ts` ; le build échoue avec un message clair si un
-fichier est incomplet.
+Le schéma est dans `src/content.config.ts`, complété par `scripts/check-content.mjs` (images, adresses
+publiées, documents). **Un contenu incomplet bloque le build** avec un message en français : le site en
+ligne n’est jamais remplacé par une version cassée. Détail des champs : `docs/modele-de-contenu.md`.
 
 ## Espace de gestion (/admin)
 
-Decap CMS édite les mêmes fichiers JSON et les enregistre dans GitHub. Chaque enregistrement
-déclenche un nouveau déploiement Vercel : le site est à jour en 1 à 2 minutes.
-
-- **Réalisations** : ajouter ou modifier un projet, ses photos (la première sert de couverture),
-  le mettre en avant sur l’accueil. La suppression est désactivée, car certains projets illustrent
-  des pages.
-- **Paramètres** : téléphone, WhatsApp, email, adresse, horaires, Instagram, Facebook, LinkedIn,
-  TikTok, YouTube, vidéo de présentation, portfolio PDF. Chaque champ renseigné apparaît
-  automatiquement sur le site : boutons WhatsApp, QR codes des réseaux, vidéo, téléchargement du PDF.
+Decap CMS édite les mêmes fichiers JSON et les enregistre dans GitHub (brouillon → révision → publication).
+Chaque publication redéploie le site en 2 à 5 minutes. Guide : `docs/guide-editeur.md`.
 
 ### Activer la connexion en production (une seule fois)
 
-1. GitHub → *Settings → Developer settings → OAuth Apps → New OAuth App* :
+1. GitHub (organisation de GCG) → *Settings → Developer settings → OAuth Apps → New OAuth App* :
    - Homepage URL : `https://<domaine>`
    - Authorization callback URL : `https://<domaine>/api/callback`
-2. Vercel → projet → *Settings → Environment Variables* : `GITHUB_OAUTH_ID` (Client ID) et
-   `GITHUB_OAUTH_SECRET` (Client secret), puis redéployer.
-3. Chaque éditeur a besoin d’un compte GitHub ajouté comme collaborateur du dépôt.
-4. Ouvrir `https://<domaine>/admin` → *Se connecter*.
-
-Utiliser l’espace de gestion depuis le domaine déclaré dans l’OAuth App.
+2. Hébergeur → variables d’environnement `GITHUB_OAUTH_ID` et `GITHUB_OAUTH_SECRET`, puis redéployer.
+3. Chaque éditeur a un compte GitHub (avec double authentification) ajouté comme collaborateur du dépôt.
+4. Facultatif : `preview_context` dans `public/admin/config.yml` (nom exact du statut de déploiement de
+   l’hébergeur) pour afficher le lien d’aperçu des brouillons.
 
 ### Éditer en local, sans GitHub
 
@@ -86,49 +89,63 @@ npm run cms   # terminal 1 : serveur local Decap (port 8081)
 npm run dev   # terminal 2
 ```
 
-Ouvrir http://localhost:4321/admin → *Se connecter* : les fichiers sont modifiés directement sur le
-disque. Il reste à les committer.
+Ouvrir http://localhost:4321/admin → *Se connecter* : les fichiers sont modifiés directement sur le disque.
 
-## Déploiement (Vercel)
+## Hébergement
 
-Les réglages sont dans `vercel.json` : framework Astro, `npm run build`, dossier `dist`,
-redirections et en-têtes de cache. Les fonctions `api/auth.js` et `api/callback.js` servent à la
-connexion de l’espace de gestion.
+Le même dépôt se déploie sur **Vercel** (`vercel.json`, fonctions `api/`) ou **Cloudflare Pages**
+(`public/_headers`, `public/_redirects`, fonctions `functions/api/`). La logique serveur commune est dans
+`server/`.
 
-1. vercel.com → *Add New… → Project* → importer `My-web`, branche de production `main`.
-2. Variables d’environnement :
-   - `GITHUB_OAUTH_ID`, `GITHUB_OAUTH_SECRET` : espace de gestion (voir plus haut).
-   - `SITE_URL` (facultatif) : domaine définitif, par exemple `https://www.gcg-ci.com`.
-     Sans lui, Vercel fournit l’URL de production. Il sert aux balises canonical, au sitemap et
-     au `robots.txt`.
-3. *Domains* : ajouter le nom de domaine de GCG.
+> **Usage commercial** : l’offre gratuite Vercel *Hobby* est réservée à un usage non commercial. Pour le
+> site de GCG : **Vercel Pro**, ou **Cloudflare Pages** (offre gratuite, usage commercial autorisé).
+> Procédure : `docs/exploitation.md`, section 6.
 
-Chaque push sur `main` redéploie automatiquement.
+Build : `npm run build`, dossier `dist`, Node 22. Variables d’environnement :
+
+| Variable | Rôle |
+| --- | --- |
+| `SITE_URL` | Domaine définitif (canoniques, sitemap, QR codes) |
+| `RESEND_API_KEY`, `CONTACT_TO`, `CONTACT_FROM` | Envoi du formulaire de contact par e-mail |
+| `GITHUB_OAUTH_ID`, `GITHUB_OAUTH_SECRET` | Connexion à l’espace de gestion |
+| `GCG_LAUNCH=1` | Masque les projets sans autorisation de publication du client |
+| `PUBLIC_UMAMI_WEBSITE_ID`, `PUBLIC_UMAMI_SRC` | Mesure d’audience sans cookie (facultatif) |
+| `PRODUCTION_BRANCH` | Cloudflare Pages : branche de production (défaut `main`) |
+
+Les déploiements d’aperçu sont marqués `noindex` automatiquement. Chaque push sur `main` redéploie.
+
+## Qualité
+
+À chaque pull request, `.github/workflows/qualite.yml` vérifie : dépendances (`npm audit`), types et
+schéma, build, SEO et liens (`scripts/audit-dist.mjs`), HTML (Nu Html Checker), accessibilité axe,
+console et débordements dans Chromium (`scripts/browser-checks.mjs`), budgets Lighthouse
+(`lighthouserc.json`) et secrets (gitleaks). Dependabot propose les mises à jour chaque mois.
+
+Autres scripts : `npm run content:register` (enregistre les adresses des nouveaux projets),
+`node scripts/export-registers.mjs` (régénère les registres CSV de `docs/`), `npm run fonts`
+(sous-ensembles des polices, Python + fontTools).
 
 ## Structure
 
 ```
-api/                 connexion GitHub de l’espace de gestion (fonctions Vercel)
+api/                 fonctions Vercel (formulaire, connexion /admin)
+functions/api/       mêmes fonctions pour Cloudflare Pages
+server/              logique serveur commune (contact.js, oauth.js)
+integrations/        typographie française appliquée au build
 public/admin/        configuration de l’espace de gestion (config.yml)
-public/brand/        logos GCG (blanc, or, vert)
+public/brand/        logos GCG
+scripts/             contrôle du contenu, audits, registres, polices
 src/assets/projects/ photos des projets
 src/components/      en-tête, pied de page, cartes projet, carte de présence, sections de l’accueil
 src/content/         projets (JSON)
-src/data/            paramètres, expertises, organisation, publics, géographie
+src/data/            paramètres, identité légale, expertises, organisation, publics, géographie
+src/fonts/           polices auto-hébergées (sous-ensembles)
 src/i18n/            routes et textes FR/EN
 src/layouts/         gabarit HTML (SEO, Open Graph, hreflang, données structurées)
-src/lib/             accès aux projets et aux paramètres
+src/lib/             accès aux projets, paramètres, SEO, environnement
 src/pages/           routes FR et EN
-src/scenes/          scènes WebGL du hero (structure, particules, brouillard)
-src/scripts/         animations, défilement, QR codes, aperçus
-src/styles/          design system (couleurs GCG, typographie, animations)
+src/scripts/         navigation, animation d’ouverture, QR codes, aperçus, mesure d’audience
+src/styles/          jetons de design, composants, impression
 src/views/           pages partagées entre FR et EN
+docs/                dossier de remise (FR)
 ```
-
-## Expérience et performance
-
-- Pages statiques pré-rendues : HTML immédiat, bon référencement, une adresse par page et par projet.
-- Hero 3D : la structure se forme dans le brouillard. Chargé après le contenu, avec 3 niveaux de
-  qualité selon l’appareil ; repli statique sans WebGL ou avec `prefers-reduced-motion`.
-- Images en WebP responsive (480/960/1600 px) avec repli JPEG ; polices auto-hébergées.
-- Transitions entre pages (View Transitions), carte → page projet animée.

@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro'
-import { route, useT, type Lang } from '../i18n'
+import { qrPath, route, useT, type Lang } from '../i18n'
 import { contact, whatsappLink } from '../lib/settings'
 
 interface Props {
@@ -43,7 +43,7 @@ const wa = whatsappLink(t('contact.form.intro'))
     </div>
 
     <a href={route('share', lang)} class="group mt-20 flex items-center gap-5 rounded-2xl border border-line bg-ink/40 p-3 pr-6 text-left backdrop-blur transition-colors hover:border-gold/60" data-reveal>
-      <span class="block w-16 rounded-lg bg-white p-1" data-qr="/" aria-hidden="true"></span>
+      <span class="block w-16 rounded-lg bg-white p-1" data-qr={qrPath(lang)} aria-hidden="true"></span>
       <span>
         <span class="meta block text-gold">{t('contact.share')}</span>
         <span class="mt-1 block text-[13px] text-bone/60" data-qr-text="/"></span>

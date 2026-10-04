@@ -11,17 +11,15 @@ function withBuildCut(material: THREE.MeshStandardMaterial, uniforms: { uCut: { 
   material.onBeforeCompile = (shader) => {
     shader.uniforms.uCut = uniforms.uCut
     shader.uniforms.uOpacity = uniforms.uOpacity
-    shader.vertexShader = shader.vertexShader
-      .replace('#include <common>', '#include <common>\nvarying vec3 vBuildPos;')
-      .replace(
-        '#include <project_vertex>',
-        `#include <project_vertex>
+    shader.vertexShader = shader.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vBuildPos;').replace(
+      '#include <project_vertex>',
+      `#include <project_vertex>
         vec4 bp = vec4(transformed, 1.0);
         #ifdef USE_INSTANCING
           bp = instanceMatrix * bp;
         #endif
         vBuildPos = (modelMatrix * bp).xyz;`,
-      )
+    )
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', '#include <common>\nuniform float uCut;\nuniform float uOpacity;\nvarying vec3 vBuildPos;')
       .replace('#include <clipping_planes_fragment>', '#include <clipping_planes_fragment>\nif (vBuildPos.y > uCut) discard;')

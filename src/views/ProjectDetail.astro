@@ -5,9 +5,10 @@ import ProjectImage from '../components/ProjectImage.astro'
 import ProjectCard from '../components/ProjectCard.astro'
 import Icon from '../components/Icon.astro'
 import { getService } from '../data/services'
-import { projectPath, route, SECTOR_LABELS, servicePath, STATUS_LABELS, useT, type Lang } from '../i18n'
+import { colon, qrPath, projectPath, route, SECTOR_LABELS, servicePath, STATUS_LABELS, useT, type Lang } from '../i18n'
 import { pad, type Project } from '../lib/projects'
 import { whatsappLink } from '../lib/settings'
+import { breadcrumbLd } from '../lib/seo'
 
 interface Props {
   lang: Lang
@@ -24,15 +25,15 @@ const related = all
   .filter((x) => x.slug !== p.slug && (x.sector === p.sector || x.types.some((ty) => p.types.includes(ty))))
   .sort((a, b) => Number(b.sector === p.sector) - Number(a.sector === p.sector) || Math.abs(a.number - p.number) - Math.abs(b.number - p.number))
   .slice(0, 3)
-const og = await getImage({ src: p.images[0], width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 80 })
-const sheet: [string, string | undefined][] = [
+const og = await getImage({ src: p.images[0].src, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 80 })
+const sheet: [string, string | undefined, string?][] = [
   [t('project.location'), p.location],
   [t('project.period'), p.period],
   [t('project.surface'), p.surface],
   [t('project.terrain'), p.terrain],
   [t('project.covered'), p.coveredSurface],
-  [t('project.sector'), SECTOR_LABELS[p.sector][lang]],
-  [t('project.status'), p.status ? STATUS_LABELS[p.status][lang] : undefined],
+  [t('project.sector'), SECTOR_LABELS[p.sector][lang], `secteur=${p.sector}`],
+  [t('project.status'), p.status ? STATUS_LABELS[p.status][lang] : undefined, p.status ? `statut=${p.status}` : undefined],
 ]
 const path = projectPath(p.slug, lang)
 /** Mise en page de la galerie : une grande image, deux petites, puis des rangées pleines. */
@@ -46,27 +47,32 @@ function galleryClass(i: number, n: number) {
 const shareText = `${p.name} — GCG`
 const wa = whatsappLink(`${t('contact.form.intro')} (${p.name})`)
 const desc = `${p.composition} ${p.location}, ${p.period}.`
-const crumbs = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'GCG', item: route('home', lang) },
-    { '@type': 'ListItem', position: 2, name: t('projects.label'), item: route('projects', lang) },
-    { '@type': 'ListItem', position: 3, name: p.name, item: path },
+// Titre d’onglet unique par langue, ≈ 60 caractères au plus
+const titleLong = `${p.name} · ${lang === 'fr' ? 'projet GCG, Côte d’Ivoire' : 'GCG project, Côte d’Ivoire'}`
+const docTitle = titleLong.length <= 60 ? titleLong : `${p.name} · GCG`
+const crumbs = breadcrumbLd(
+  [
+    { name: t('nav.home'), path: route('home', lang) },
+    { name: t('projects.label'), path: route('projects', lang) },
+    { name: p.name, path },
   ],
-}
+  Astro.site,
+)
+
 ---
 
-<Base lang={lang} alt={projectPath(p.slug, other)} title={p.name} description={desc} image={og.src} header="overlay" jsonLd={[crumbs]}>
+<Base lang={lang} alt={projectPath(p.slug, other)} title={p.name} docTitle={docTitle} description={desc} image={og.src} header="overlay" jsonLd={[crumbs]}>
   <article>
     <header class="relative flex h-[86svh] min-h-[560px] items-end overflow-hidden bg-ink-3">
-      <ProjectImage src={p.images[0]} alt={`${p.name} — ${p.location}`} sizes="100vw" priority class="absolute inset-0 block h-full w-full" vt={`p-${p.slug}`} />
-      <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/35 to-ink/40"></div>
+      <ProjectImage image={p.images[0]} sizes="100vw" priority class="absolute inset-0 block h-full w-full" vt={`p-${p.slug}`} />
+      <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-ink/50"></div>
       <div class="wrap relative pb-12 md:pb-16">
         <nav class="meta flex flex-wrap items-center gap-2 text-bone/70" aria-label={lang === 'fr' ? 'Fil d’Ariane' : 'Breadcrumb'} data-reveal>
+          <a href={route('home', lang)} class="hover:text-gold">{t('nav.home')}</a>
+          <span aria-hidden="true">/</span>
           <a href={route('projects', lang)} class="hover:text-gold">{t('projects.label')}</a>
           <span aria-hidden="true">/</span>
-          <span class="text-gold">N° {pad(p.number)}</span>
+          <span class="text-gold" aria-current="page">{p.name}</span>
         </nav>
         <h1 class="display mt-6 max-w-[16ch] text-balance text-[clamp(2.8rem,8vw,8.8rem)]" data-split>{p.name}</h1>
         <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3" data-reveal style="--d:.3s">
@@ -147,10 +153,10 @@ const crumbs = {
             {
               sheet
                 .filter(([, v]) => v)
-                .map(([k, v]) => (
+                .map(([k, v, q]) => (
                   <>
                     <dt class="meta border-b border-r border-line px-5 py-3.5 text-mist">{k}</dt>
-                    <dd class="border-b border-line px-5 py-3.5 text-[15px]">{v}</dd>
+                    <dd class="border-b border-line px-5 py-3.5 text-[15px]">{q ? <a href={`${route('projects', lang)}?${q}`} class="link-line hover:text-gold">{v}</a> : v}</dd>
                   </>
                 ))
             }
@@ -164,7 +170,7 @@ const crumbs = {
         <div class="mt-6 border border-line p-5" data-reveal style="--d:.1s">
           <p class="meta text-gold">{t('project.share')}</p>
           <div class="mt-4 flex gap-4">
-            <span id="project-qr" class="block w-24 shrink-0 rounded bg-white p-1" data-qr={path}></span>
+            <span id="project-qr" class="block w-24 shrink-0 rounded bg-white p-1" data-qr={qrPath(lang, 'panneau', p.slug)}></span>
             <div class="flex flex-col gap-2">
               <button type="button" class="chip !h-9 !text-[12px]" data-share={path} data-title={shareText} data-copied={t('project.copied')}>
                 <Icon name="share" size={14} /> <span data-copy-label>{t('cta.share')}</span>
@@ -190,10 +196,11 @@ const crumbs = {
                 class:list={['group relative overflow-hidden bg-ink-3', galleryClass(i, p.images.length)]}
                 data-lightbox={i}
                 data-cursor="view"
-                aria-label={`${t('project.photo')} ${i + 1} ${t('project.of')} ${p.images.length}`}
+                aria-label={`${t('project.enlarge')}${colon(lang)}${img.alt}`}
+                aria-haspopup="dialog"
                 data-reveal="clip"
               >
-                <ProjectImage src={img} alt={`${p.name} — ${t('project.photo')} ${i + 1}`} sizes={i === 0 ? '(min-width: 768px) 66vw, 100vw' : '(min-width: 768px) 33vw, 100vw'} class="block aspect-[4/3] h-full w-full" imgClass="h-full w-full object-cover transition-transform duration-[1.4s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" />
+                <ProjectImage image={img} sizes={i === 0 ? '(min-width: 768px) 66vw, 100vw' : '(min-width: 768px) 33vw, 100vw'} class="block aspect-[4/3] h-full w-full" imgClass="h-full w-full object-cover transition-transform duration-[1.4s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" />
               </button>
             ))}
           </div>
@@ -206,11 +213,11 @@ const crumbs = {
         {
           p.images.map((img, i) => (
             <figure data-slide={i} hidden class="flex h-full w-full items-center justify-center p-4 md:p-16">
-              <ProjectImage src={img} alt={`${p.name} — ${t('project.photo')} ${i + 1}`} sizes="100vw" class="block max-h-full" imgClass="max-h-[82svh] w-auto max-w-full object-contain" />
+              <ProjectImage image={img} sizes="100vw" class="block max-h-full" imgClass="max-h-[82svh] w-auto max-w-full object-contain" />
             </figure>
           ))
         }
-        <p class="meta absolute left-5 top-5 text-bone/70"><span data-lb-index>1</span> / {p.images.length}</p>
+        <p class="meta absolute left-5 top-5 text-bone/70" aria-live="polite"><span data-lb-index>1</span> / {p.images.length}</p>
         <button type="button" class="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full border border-line hover:border-gold" data-lb-close aria-label={t('project.close')}><Icon name="close" size={18} /></button>
         <button type="button" class="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/60 hover:border-gold" data-lb-prev aria-label={t('project.prev')}><Icon name="arrow-left" size={18} /></button>
         <button type="button" class="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/60 hover:border-gold" data-lb-next aria-label={t('project.next')}><Icon name="arrow" size={18} /></button>
@@ -220,7 +227,7 @@ const crumbs = {
     <section class="theme-paper py-20 md:py-28">
       <div class="wrap flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
         <div>
-          <p class="label text-brand/60" data-reveal>{t('project.similar')}</p>
+          <p class="label text-brand/75" data-reveal>{t('project.similar')}</p>
           <h2 class="display mt-6 max-w-[18ch] text-[clamp(2.2rem,5vw,5rem)]" data-split>{t('project.similarText')}</h2>
         </div>
         <div class="flex flex-wrap gap-3" data-reveal>
@@ -252,8 +259,6 @@ const crumbs = {
       </a>
     </nav>
   </article>
-</Base>
-
 <script>
   import '../scripts/qr'
   import { lockScroll } from '../scripts/site'
@@ -268,14 +273,30 @@ const crumbs = {
       slides.forEach((s, k) => (s.hidden = k !== i))
       label.textContent = String(i + 1)
     }
+    let opener: HTMLElement | null = null
+    let viaHistory = false
     document.querySelectorAll<HTMLElement>('[data-lightbox]').forEach((b) =>
       b.addEventListener('click', () => {
+        opener = b
         show(Number(b.dataset.lightbox))
         dlg.showModal()
         lockScroll(true)
+        // Le bouton « retour » du téléphone ferme la visionneuse au lieu de quitter la page
+        history.pushState({ lightbox: true }, '')
       }),
     )
-    dlg.addEventListener('close', () => lockScroll(false))
+    dlg.addEventListener('close', () => {
+      lockScroll(false)
+      opener?.focus()
+      if (!viaHistory && history.state?.lightbox) history.back()
+      viaHistory = false
+    })
+    addEventListener('popstate', () => {
+      if (dlg.open) {
+        viaHistory = true
+        dlg.close()
+      }
+    })
     dlg.querySelector('[data-lb-close]')!.addEventListener('click', () => dlg.close())
     dlg.querySelector('[data-lb-prev]')!.addEventListener('click', () => show(i - 1))
     dlg.querySelector('[data-lb-next]')!.addEventListener('click', () => show(i + 1))
@@ -299,3 +320,4 @@ const crumbs = {
   .lightbox[open] { display: block; }
   .lightbox::backdrop { backdrop-filter: blur(6px); }
 </style>
+</Base>

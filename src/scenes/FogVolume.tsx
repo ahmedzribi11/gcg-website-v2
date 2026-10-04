@@ -16,21 +16,23 @@ export default function FogVolume({ layers, center = [0, 4, 0], spread = 12, rea
 
   const materials = useMemo(
     () =>
-      Array.from({ length: layers }, (_, i) =>
-        new THREE.ShaderMaterial({
-          vertexShader: fogVertex,
-          fragmentShader: fogFragment,
-          transparent: true,
-          depthWrite: false,
-          uniforms: {
-            uTime: { value: i * 13.7 },
-            uDensity: { value: 0 },
-            uSeed: { value: i * 3.17 },
-            uScroll: { value: 0 },
-            uPointer: { value: new THREE.Vector2(0.5, 0.5) },
-            uColor: { value: new THREE.Color(i % 2 ? '#d6d6c2' : '#aeb7a2') },
-          },
-        }),
+      Array.from(
+        { length: layers },
+        (_, i) =>
+          new THREE.ShaderMaterial({
+            vertexShader: fogVertex,
+            fragmentShader: fogFragment,
+            transparent: true,
+            depthWrite: false,
+            uniforms: {
+              uTime: { value: i * 13.7 },
+              uDensity: { value: 0 },
+              uSeed: { value: i * 3.17 },
+              uScroll: { value: 0 },
+              uPointer: { value: new THREE.Vector2(0.5, 0.5) },
+              uColor: { value: new THREE.Color(i % 2 ? '#d6d6c2' : '#aeb7a2') },
+            },
+          }),
       ),
     [layers],
   )

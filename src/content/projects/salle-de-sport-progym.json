@@ -24,8 +24,25 @@
     "loisirs"
   ],
   "images": [
-    "../../assets/projects/salle-de-sport-progym/01.jpg",
-    "../../assets/projects/salle-de-sport-progym/02.jpg",
-    "../../assets/projects/salle-de-sport-progym/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/salle-de-sport-progym/01.jpg",
+      "alt": "Salle de sport Progym, bar à protéines face au plateau de musculation",
+      "alt_en": "Progym fitness centre, protein bar facing the weights area",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/salle-de-sport-progym/02.jpg",
+      "alt": "Salle de sport Progym, piste en gazon synthétique entre poids et appareils cardio",
+      "alt_en": "Progym fitness centre, artificial-turf track between weights and cardio machines",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/salle-de-sport-progym/03.jpg",
+      "alt": "Salle de sport Progym, terrasse extérieure équipée de vélos de spinning",
+      "alt_en": "Progym fitness centre, outdoor terrace with spin bikes",
+      "kind": "photo"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

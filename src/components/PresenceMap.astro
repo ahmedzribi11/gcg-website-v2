@@ -64,7 +64,7 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
 ---
 
 <figure class="presence-map relative" data-tone={tone} data-reveal="fade">
-  <svg viewBox={`0 0 ${W} ${H}`} class="h-auto w-full" role="img" aria-labelledby="map-title map-desc">
+  <svg viewBox={`0 0 ${W} ${H}`} class="h-auto w-full" role="group" aria-labelledby="map-title map-desc">
     <title id="map-title">{t('presence.title')}</title>
     <desc id="map-desc">{(Object.keys(counts) as CityId[]).map((c) => `${cities[c].name} : ${counts[c]}`).join(', ')}</desc>
     <defs>
@@ -127,7 +127,7 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
           ))}
         </svg>
         </span>
-        <p class:list={['meta pb-2 text-right', tone === 'paper' ? 'text-brand/55' : 'text-mist']}>{lang === 'fr' ? 'Afrique de l’Ouest' : 'West Africa'}</p>
+        <p class:list={['meta pb-2 text-right', tone === 'paper' ? 'text-brand' : 'text-mist']}>{lang === 'fr' ? 'Afrique de l’Ouest' : 'West Africa'}</p>
       </figcaption>
     )
   }

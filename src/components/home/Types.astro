@@ -47,7 +47,7 @@ const count = (type: string) => projects.filter((p) => p.types.includes(type as 
     {
       TYPES.map((type) => (
         <div data-preview-for={type} class="preview-item absolute left-0 top-0 h-[16rem] w-[22rem] -translate-x-1/2 -translate-y-[110%] overflow-hidden">
-          <ProjectImage src={img(type)} alt="" sizes="22rem" class="block h-full w-full" />
+          <ProjectImage image={img(type)} alt="" sizes="22rem" class="block h-full w-full" />
         </div>
       ))
     }

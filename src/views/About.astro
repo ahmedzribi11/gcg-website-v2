@@ -36,9 +36,9 @@ const video = videoEmbed(media.videoUrl)
         <p class="mt-6 max-w-xl text-[15px] leading-relaxed text-brand/70" data-reveal>{t('about.team')}</p>
       </div>
       <div class="grid grid-cols-2 gap-3 md:col-span-6" aria-hidden="true">
-        <div class="col-span-2 overflow-hidden" data-reveal="clip"><div data-parallax="5"><ProjectImage src={by('residence-privee-beverly-hills').images[0]} alt="" sizes="(min-width: 768px) 45vw, 100vw" class="block aspect-[16/10]" /></div></div>
-        <div class="overflow-hidden" data-reveal="clip" style="--d:.15s"><ProjectImage src={by('green-city').images[2]} alt="" sizes="(min-width: 768px) 22vw, 50vw" class="block aspect-square" /></div>
-        <div class="overflow-hidden" data-reveal="clip" style="--d:.3s"><ProjectImage src={by('hotel-calao-korhogo').images[0]} alt="" sizes="(min-width: 768px) 22vw, 50vw" class="block aspect-square" /></div>
+        <div class="col-span-2 overflow-hidden" data-reveal="clip"><div data-parallax="5"><ProjectImage image={by('residence-privee-beverly-hills').images[0]} alt="" sizes="(min-width: 768px) 45vw, 100vw" class="block aspect-[16/10]" /></div></div>
+        <div class="overflow-hidden" data-reveal="clip" style="--d:.15s"><ProjectImage image={by('green-city').images[2]} alt="" sizes="(min-width: 768px) 22vw, 50vw" class="block aspect-square" /></div>
+        <div class="overflow-hidden" data-reveal="clip" style="--d:.3s"><ProjectImage image={by('hotel-calao-korhogo').images[0]} alt="" sizes="(min-width: 768px) 22vw, 50vw" class="block aspect-square" /></div>
       </div>
     </div>
   </section>
@@ -84,7 +84,7 @@ const video = videoEmbed(media.videoUrl)
                       {list.map((p) => (
                         <li>
                           <a href={projectPath(p.slug, lang)} class="group flex items-center gap-3 rounded-full border border-line py-1.5 pl-1.5 pr-4 transition-colors hover:border-gold" data-cursor="view">
-                            <ProjectImage src={p.images[0]} alt="" sizes="2.5rem" class="block h-9 w-9 overflow-hidden rounded-full" />
+                            <ProjectImage image={p.images[0]} alt="" sizes="2.5rem" class="block h-9 w-9 overflow-hidden rounded-full" />
                             <span class="text-[14px] text-bone/85 group-hover:text-bone">{p.name}</span>
                             <span class="meta text-mist">{pad(p.number)}</span>
                           </a>
@@ -211,7 +211,7 @@ const video = videoEmbed(media.videoUrl)
   <section class="theme-paper py-24 md:py-40" aria-labelledby="where-title">
     <div class="wrap grid gap-16 md:grid-cols-12 md:items-center">
       <div class="md:col-span-5">
-        <p class="label text-brand/60" data-reveal>{t('presence.label')}</p>
+        <p class="label text-brand/75" data-reveal>{t('presence.label')}</p>
         <h2 id="where-title" class="display mt-8 text-[clamp(2.4rem,5.6vw,6rem)]" data-split>
           {fr ? 'De Korhogo' : 'From Korhogo'} <em class="serif">{fr ? 'à Assinie.' : 'to Assinie.'}</em>
         </h2>

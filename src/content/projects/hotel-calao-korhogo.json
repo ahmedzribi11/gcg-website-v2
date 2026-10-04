@@ -1,7 +1,5 @@
 {
   "number": 3,
-  "featured": true,
-  "featuredOrder": 3,
   "name": "Hôtel Calao Korhogo",
   "name_en": "Hôtel Calao, Korhogo",
   "sector": "hotellerie",
@@ -17,7 +15,7 @@
     "Réalisation et aménagement"
   ],
   "missions_en": [
-    "Studies",
+    "Design and engineering studies",
     "Construction and fit-out"
   ],
   "services": [
@@ -30,8 +28,27 @@
     "hotels"
   ],
   "images": [
-    "../../assets/projects/hotel-calao-korhogo/01.jpg",
-    "../../assets/projects/hotel-calao-korhogo/02.jpg",
-    "../../assets/projects/hotel-calao-korhogo/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/hotel-calao-korhogo/01.jpg",
+      "alt": "Hôtel Calao Korhogo, hall d’accueil en double hauteur avec comptoir de réception",
+      "alt_en": "Hôtel Calao, Korhogo: double-height lobby with the reception desk",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/hotel-calao-korhogo/02.jpg",
+      "alt": "Hôtel Calao Korhogo, salon du hall avec fauteuils, réception et ascenseur",
+      "alt_en": "Hôtel Calao, Korhogo: lobby lounge with armchairs, reception desk and lift",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/hotel-calao-korhogo/03.jpg",
+      "alt": "Hôtel Calao Korhogo, piscine et cour intérieure éclairées de nuit",
+      "alt_en": "Hôtel Calao, Korhogo: pool and courtyard lit up at night",
+      "kind": "photo"
+    }
+  ],
+  "featured": true,
+  "featuredOrder": 3,
+  "permission": "en-attente",
+  "en_status": "valide"
 }

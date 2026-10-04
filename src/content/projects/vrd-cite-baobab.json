@@ -27,7 +27,19 @@
     "infrastructures"
   ],
   "images": [
-    "../../assets/projects/vrd-cite-baobab/01.jpg",
-    "../../assets/projects/vrd-cite-baobab/02.jpg"
-  ]
+    {
+      "src": "../../assets/projects/vrd-cite-baobab/01.jpg",
+      "alt": "VRD cité Baobab, finisseur posant l’enrobé avec l’équipe de chantier",
+      "alt_en": "Cité Baobab roads and utilities, paver laying asphalt with the site crew",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/vrd-cite-baobab/02.jpg",
+      "alt": "VRD cité Baobab, ouvriers réglant l’enrobé d’une voie résidentielle",
+      "alt_en": "Cité Baobab roads and utilities, workers finishing asphalt on a residential road",
+      "kind": "photo"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

@@ -23,7 +23,19 @@
     "immeubles"
   ],
   "images": [
-    "../../assets/projects/immeuble-belle-feuille/01.jpg",
-    "../../assets/projects/immeuble-belle-feuille/02.jpg"
-  ]
+    {
+      "src": "../../assets/projects/immeuble-belle-feuille/01.jpg",
+      "alt": "Immeuble Belle Feuille, façade sur rue éclairée au crépuscule",
+      "alt_en": "Belle Feuille building, street façade lit up at dusk",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/immeuble-belle-feuille/02.jpg",
+      "alt": "Immeuble Belle Feuille, piscine en cœur d’îlot et balcons vitrés",
+      "alt_en": "Belle Feuille building, courtyard pool and glazed balconies",
+      "kind": "render"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

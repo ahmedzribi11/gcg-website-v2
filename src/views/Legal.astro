@@ -1,0 +1,74 @@
+---
+import Base from '../layouts/Base.astro'
+import PageHeader from '../components/PageHeader.astro'
+import legal from '../data/legal.json'
+import { route, useT, type Lang } from '../i18n'
+import { contact } from '../lib/settings'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const t = useT(lang)
+const fr = lang === 'fr'
+const name = legal.legalName || legal.tradeName
+const publisher: [string, string][] = (
+  [
+    [fr ? 'Raison sociale' : 'Company name', name],
+    [fr ? 'Nom commercial' : 'Trading name', legal.legalName ? legal.tradeName : ''],
+    [fr ? 'Forme juridique' : 'Legal form', legal.legalForm],
+    [fr ? 'Capital social' : 'Share capital', legal.capital],
+    ['RCCM', legal.rccm],
+    [fr ? 'Compte contribuable' : 'Taxpayer number', legal.taxNumber],
+    [fr ? 'Siège social' : 'Registered office', legal.address || contact.address],
+    [fr ? 'Téléphone' : 'Phone', contact.phone],
+    ['E-mail', contact.email],
+    [fr ? 'Directeur de la publication' : 'Publication director', legal.publicationDirector],
+  ] as [string, string][]
+).filter(([, v]) => v)
+const reach = contact.email ? contact.email : fr ? 'le formulaire de la page Contact' : 'the form on the Contact page'
+---
+
+<Base lang={lang} alt={route('legal', fr ? 'en' : 'fr')} title={t('legal.title')} description={fr ? 'Éditeur, hébergeur et conditions d’utilisation du site de General Constructor Group CI.' : 'Publisher, host and terms of use of the General Constructor Group CI website.'}>
+  <PageHeader label={t('legal.title')} title={t('legal.title')} />
+  <article class="wrap max-w-3xl pb-28 text-[15px] md:text-base text-bone/85 [&_h2]:mt-14 [&_h2]:text-2xl [&_h2]:font-light [&_h2]:text-bone [&_p]:mt-4">
+    <h2>{fr ? 'Éditeur du site' : 'Publisher'}</h2>
+    <dl class="mt-6 grid grid-cols-1 border-t border-line sm:grid-cols-[14rem_1fr]">
+      {
+        publisher.map(([k, v]) => (
+          <>
+            <dt class="meta border-line pt-4 text-mist sm:border-b sm:pb-4">{k}</dt>
+            <dd class="border-b border-line pb-4 pt-1 sm:pt-4">{v}</dd>
+          </>
+        ))
+      }
+    </dl>
+
+    <h2>{fr ? 'Hébergement' : 'Hosting'}</h2>
+    <p>{legal.host.name}, {legal.host.address}. <a href={legal.host.website} class="link-line text-gold" rel="noopener">{legal.host.website.replace('https://', '')}</a></p>
+
+    <h2>{fr ? 'Propriété intellectuelle' : 'Intellectual property'}</h2>
+    {
+      fr ? (
+        <p>Les textes, photographies, perspectives, plans, logos et documents publiés sur ce site appartiennent à {name} ou à leurs ayants droit. Toute reproduction ou réutilisation, totale ou partielle, sans autorisation écrite préalable est interdite. Les noms de projets, d’hôtels et de marques sont cités uniquement pour identifier les réalisations.</p>
+      ) : (
+        <p>The texts, photographs, renderings, drawings, logos and documents on this website belong to {name} or their respective rights holders. Any full or partial reproduction or reuse without prior written permission is prohibited. Project, hotel and brand names are mentioned only to identify the work.</p>
+      )
+    }
+
+    <h2>{fr ? 'Signaler un contenu' : 'Reporting content'}</h2>
+    {
+      fr ? (
+        <p>Toute personne qui estime qu’un contenu du site porte atteinte à ses droits (image, propriété intellectuelle, données personnelles) peut le signaler via {reach}. La demande reçoit un accusé de réception sous deux jours ouvrés et le contenu concerné est retiré sous 72 heures pendant son examen.</p>
+      ) : (
+        <p>Anyone who considers that content on this website infringes their rights (image, intellectual property, personal data) can report it via {reach}. The request is acknowledged within two business days and the content concerned is taken down within 72 hours while it is reviewed.</p>
+      )
+    }
+
+    <h2>{fr ? 'Données personnelles et cookies' : 'Personal data and cookies'}</h2>
+    <p>
+      {fr ? 'Le site ne dépose aucun cookie. Le traitement des données transmises par le formulaire de contact est décrit dans la ' : 'This website sets no cookies. The handling of data sent through the contact form is described in the '}
+      <a href={route('privacy', lang)} class="link-line text-gold">{t('privacy.title').toLowerCase()}</a>.
+    </p>
+  </article>
+</Base>

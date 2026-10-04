@@ -1,6 +1,7 @@
 ---
 import { getImage } from 'astro:assets'
 import Base from '../layouts/Base.astro'
+import { breadcrumbLd } from '../lib/seo'
 import ProjectImage from '../components/ProjectImage.astro'
 import ProjectCard from '../components/ProjectCard.astro'
 import FinalCta from '../components/FinalCta.astro'
@@ -19,19 +20,21 @@ const other = lang === 'fr' ? 'en' : 'fr'
 const projects = await getProjects(lang)
 const related = projects.filter((p) => p.services.includes(s.id))
 const cover = coverImage(projects, s.cover)
-const og = await getImage({ src: cover, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 80 })
+const og = await getImage({ src: cover.src, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 80 })
 const others = services.filter((x) => x.id !== s.id)
 ---
 
-<Base lang={lang} alt={servicePath(s.slug[other], other)} title={s.title[lang]} description={s.intro[lang]} image={og.src} header="overlay">
+<Base lang={lang} alt={servicePath(s.slug[other], other)} title={s.title[lang]} docTitle={`${s.title[lang]} · ${lang === 'fr' ? 'expertise GCG, Côte d’Ivoire' : 'GCG service, Côte d’Ivoire'}`} description={s.intro[lang]} image={og.src} header="overlay" jsonLd={[breadcrumbLd([{ name: t('nav.home'), path: route('home', lang) }, { name: t('services.label'), path: route('services', lang) }, { name: s.title[lang], path: servicePath(s.slug[lang], lang) }], Astro.site)]}>
   <header class="relative flex min-h-[78svh] items-end overflow-hidden bg-ink-3">
-    <ProjectImage src={cover} alt="" sizes="100vw" priority class="absolute inset-0 block h-full w-full" />
-    <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/30"></div>
+    <ProjectImage image={cover} alt="" sizes="100vw" priority class="absolute inset-0 block h-full w-full" />
+    <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/45"></div>
     <div class="wrap relative pb-12 pt-32 md:pb-16">
       <nav class="meta flex items-center gap-2 text-bone/70" aria-label={lang === 'fr' ? 'Fil d’Ariane' : 'Breadcrumb'} data-reveal>
+        <a href={route('home', lang)} class="hover:text-gold">{t('nav.home')}</a>
+        <span aria-hidden="true">/</span>
         <a href={route('services', lang)} class="hover:text-gold">{t('services.label')}</a>
         <span aria-hidden="true">/</span>
-        <span class="text-gold">{s.title[lang]}</span>
+        <span class="text-gold" aria-current="page">{s.title[lang]}</span>
       </nav>
       <h1 class="display mt-6 text-[clamp(3rem,9vw,9.5rem)]" data-split>
         {s.id === 'cle-en-main' ? <em class="serif text-gold">{s.title[lang]}</em> : s.title[lang]}
@@ -79,7 +82,7 @@ const others = services.filter((x) => x.id !== s.id)
 
   <section class="theme-paper py-20 md:py-28" aria-labelledby="others-title">
     <div class="wrap">
-      <h2 id="others-title" class="label text-brand/60">{t('services.others')}</h2>
+      <h2 id="others-title" class="label text-brand/75">{t('services.others')}</h2>
       <ul class="mt-8 grid border-t border-brand/15 sm:grid-cols-2 lg:grid-cols-4">
         {
           others.map((o) => (

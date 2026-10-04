@@ -33,7 +33,19 @@
     "hotels"
   ],
   "images": [
-    "../../assets/projects/royal-palm/01.jpg",
-    "../../assets/projects/royal-palm/02.jpg"
-  ]
+    {
+      "src": "../../assets/projects/royal-palm/01.jpg",
+      "alt": "Royal Palm, villa R+1 et sa piscine",
+      "alt_en": "Royal Palm, two-storey villa and its pool",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/royal-palm/02.jpg",
+      "alt": "Royal Palm, vue aérienne de deux villas avec piscines",
+      "alt_en": "Royal Palm, aerial view of two villas with pools",
+      "kind": "photo"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

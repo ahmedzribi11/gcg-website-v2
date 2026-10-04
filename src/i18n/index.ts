@@ -3,7 +3,8 @@ export const LANGS: Lang[] = ['fr', 'en']
 
 /* ─── Routes ──────────────────────────────────────────────────────────── */
 
-export type RouteKey = 'home' | 'services' | 'projects' | 'about' | 'invest' | 'contact' | 'share' | 'poster' | 'references'
+export type RouteKey =
+  'home' | 'services' | 'projects' | 'about' | 'invest' | 'contact' | 'thanks' | 'formError' | 'share' | 'poster' | 'references' | 'legal' | 'privacy'
 
 const ROUTES: Record<RouteKey, Record<Lang, string>> = {
   home: { fr: '/', en: '/en' },
@@ -12,14 +13,26 @@ const ROUTES: Record<RouteKey, Record<Lang, string>> = {
   about: { fr: '/a-propos', en: '/en/about' },
   invest: { fr: '/investir', en: '/en/invest' },
   contact: { fr: '/contact', en: '/en/contact' },
+  thanks: { fr: '/contact/merci', en: '/en/contact/thanks' },
+  formError: { fr: '/contact/erreur', en: '/en/contact/error' },
   share: { fr: '/partager', en: '/en/share' },
   poster: { fr: '/partager/affiche', en: '/en/share/poster' },
   references: { fr: '/references', en: '/en/references' },
+  legal: { fr: '/mentions-legales', en: '/en/legal-notice' },
+  privacy: { fr: '/confidentialite', en: '/en/privacy' },
 }
 
 export const route = (key: RouteKey, lang: Lang) => ROUTES[key][lang]
 export const projectPath = (slug: string, lang: Lang) => `${ROUTES.projects[lang]}/${slug}`
 export const servicePath = (slug: string, lang: Lang) => `${ROUTES.services[lang]}/${slug}`
+
+/** Adresse permanente encodée dans un QR code imprimé (voir src/pages/qr). */
+export type QrMedium = 'qr' | 'panneau' | 'carte' | 'brochure'
+export const qrPath = (lang: Lang, medium: QrMedium = 'qr', slug?: string) => {
+  const base = lang === 'en' ? '/qr/en' : '/qr'
+  if (slug) return `${base}/p/${slug}`
+  return medium === 'qr' ? base : `${base}/${medium}`
+}
 
 /* ─── Libellés de données ─────────────────────────────────────────────── */
 
@@ -108,7 +121,8 @@ const UI = {
 
     'services.label': 'Expertises',
     'services.title': 'Tout ce qu’un projet exige, sous un même toit.',
-    'services.lead': 'Un client peut venir pour une étude, un plan d’architecte ou un chantier complet : GCG intervient à chaque étape, ou sur l’ensemble du projet.',
+    'services.lead':
+      'Un client peut venir pour une étude, un plan d’architecte ou un chantier complet : GCG intervient à chaque étape, ou sur l’ensemble du projet.',
     'services.projects': 'projets',
     'services.project': 'projet',
     'services.includes': 'Ce que nous faisons',
@@ -118,7 +132,8 @@ const UI = {
 
     'types.label': 'Tout type de projet',
     'types.title': 'Vous voulez un hôtel ? Nous construisons un hôtel.',
-    'types.lead': 'Villas, résidences, immeubles, hôtels, restaurants, usines, écoles, routes : le portfolio de GCG couvre presque tout ce qui se construit.',
+    'types.lead':
+      'Villas, résidences, immeubles, hôtels, bars de plage, spas, usines, écoles, voiries : le portfolio de GCG couvre presque tout ce qui se construit.',
 
     'featured.label': 'Réalisations phares',
     'featured.title': 'Des projets qui parlent pour nous.',
@@ -184,6 +199,12 @@ const UI = {
     'project.similarText': 'Parlez-nous de votre projet : nous l’étudions avec vous.',
     'project.related': 'Projets similaires',
     'project.prev': 'Projet précédent',
+    'project.render': 'Perspective',
+    'project.plan': 'Plan',
+    'project.enlarge': 'Agrandir',
+    'project.prevPhoto': 'Image précédente',
+    'project.nextPhoto': 'Image suivante',
+    'project.missingEn': 'Cette page n’existe pas encore dans cette langue ; voici la page la plus proche.',
     'project.next': 'Projet suivant',
     'project.close': 'Fermer',
 
@@ -217,7 +238,7 @@ const UI = {
 
     'contact.label': 'Contact',
     'contact.title': 'Parlons de votre projet.',
-    'contact.lead': 'Quelques informations suffisent pour démarrer. Nous revenons vers vous rapidement.',
+    'contact.lead': 'Quelques informations suffisent pour démarrer : l’équipe de GCG vous recontacte.',
     'contact.form.name': 'Nom et prénom',
     'contact.form.phone': 'Téléphone / WhatsApp',
     'contact.form.email': 'E-mail',
@@ -229,6 +250,23 @@ const UI = {
     'contact.form.sendEmail': 'Envoyer par e-mail',
     'contact.form.required': 'Champ obligatoire',
     'contact.form.intro': 'Bonjour GCG, je souhaite vous parler d’un projet.',
+    'contact.form.send': 'Envoyer la demande',
+    'contact.form.sending': 'Envoi en cours…',
+    'contact.form.contactHint': 'Indiquez au moins un téléphone ou un e-mail.',
+    'contact.form.notice': 'Vos informations servent uniquement à répondre à votre demande et sont transmises à l’équipe commerciale de GCG.',
+    'contact.form.noticeLink': 'Politique de confidentialité',
+    'contact.form.errorsTitle': 'Le formulaire contient des erreurs :',
+    'contact.form.err.name': 'Indiquez votre nom.',
+    'contact.form.err.contact': 'Indiquez un téléphone ou une adresse e-mail pour que GCG puisse vous répondre.',
+    'contact.form.err.phone': 'Numéro invalide : indiquez-le avec l’indicatif, par exemple +225 07 00 00 00 00.',
+    'contact.form.err.email': 'Adresse e-mail invalide, par exemple nom@exemple.com.',
+    'contact.form.okTitle': 'Merci, votre demande est bien partie.',
+    'contact.form.okText': 'L’équipe de GCG vous recontacte par téléphone ou par e-mail. Vous pouvez aussi lui écrire directement :',
+    'contact.form.failTitle': 'La demande n’a pas pu être envoyée.',
+    'contact.form.failText': 'Vos informations sont conservées dans le formulaire. Réessayez dans un instant ou contactez GCG directement :',
+    'contact.form.rate': 'Trop de demandes envoyées depuis cette connexion. Réessayez dans quelques minutes ou contactez GCG directement :',
+    'contact.form.honeypot': 'Ne pas remplir ce champ',
+    'contact.form.optional': 'facultatif',
     'contact.form.pending': 'Les coordonnées de GCG seront publiées très prochainement sur cette page.',
     'contact.direct': 'Nous joindre',
     'contact.phone': 'Téléphone',
@@ -241,8 +279,7 @@ const UI = {
 
     'share.label': 'Partager',
     'share.title': 'GCG en un scan.',
-    'share.lead':
-      'Un QR code pour chaque support : panneaux de chantier, cartes de visite, brochures, réseaux sociaux. Scannez, imprimez, partagez.',
+    'share.lead': 'Un QR code pour chaque support : panneaux de chantier, cartes de visite, brochures, réseaux sociaux. Scannez, imprimez, partagez.',
     'share.site': 'Site GCG',
     'share.siteHelp': 'Mène à la page d’accueil.',
     'share.download': 'Télécharger (SVG)',
@@ -256,6 +293,8 @@ const UI = {
     'share.socialPending': 'Les QR codes Instagram et Facebook apparaîtront ici dès que les adresses des pages seront renseignées.',
     'share.copy': 'Copier le lien',
     'share.native': 'Partager…',
+    'share.tempWarning':
+      'Ne pas imprimer pour l’instant : le site est encore sur une adresse provisoire. Les QR codes seront définitifs une fois le site publié sur le domaine de GCG.',
     'share.pdf': 'Portfolio (PDF)',
     'share.pdfHelp': 'Le portfolio complet de GCG, à télécharger ou à joindre à un dossier.',
 
@@ -284,6 +323,8 @@ const UI = {
     'footer.since': 'Construction & ingénierie — depuis 2016',
     'footer.country': 'Côte d’Ivoire',
     'footer.links': 'Liens utiles',
+    'legal.title': 'Mentions légales',
+    'privacy.title': 'Politique de confidentialité',
 
     'profile.particulier': 'Particulier',
     'profile.diaspora': 'Particulier de la diaspora',
@@ -367,7 +408,8 @@ const UI = {
 
     'types.label': 'Every kind of project',
     'types.title': 'You want a hotel? We build a hotel.',
-    'types.lead': 'Villas, residences, buildings, hotels, restaurants, factories, schools, roads: GCG’s portfolio covers almost everything that gets built.',
+    'types.lead':
+      'Villas, residences, buildings, hotels, beach bars, spas, factories, schools, roads: GCG’s portfolio covers almost everything that gets built.',
 
     'featured.label': 'Flagship projects',
     'featured.title': 'Projects that speak for us.',
@@ -433,6 +475,12 @@ const UI = {
     'project.similarText': 'Tell us about your project: we will study it with you.',
     'project.related': 'Similar projects',
     'project.prev': 'Previous project',
+    'project.render': 'Rendering',
+    'project.plan': 'Drawing',
+    'project.enlarge': 'Enlarge',
+    'project.prevPhoto': 'Previous image',
+    'project.nextPhoto': 'Next image',
+    'project.missingEn': 'This page is not yet available in this language; here is the closest page.',
     'project.next': 'Next project',
     'project.close': 'Close',
 
@@ -466,7 +514,7 @@ const UI = {
 
     'contact.label': 'Contact',
     'contact.title': 'Let’s talk about your project.',
-    'contact.lead': 'A few details are enough to get started. We will get back to you quickly.',
+    'contact.lead': 'A few details are enough to get started: GCG’s team will get back to you.',
     'contact.form.name': 'Full name',
     'contact.form.phone': 'Phone / WhatsApp',
     'contact.form.email': 'Email',
@@ -478,6 +526,23 @@ const UI = {
     'contact.form.sendEmail': 'Send by email',
     'contact.form.required': 'Required field',
     'contact.form.intro': 'Hello GCG, I would like to discuss a project.',
+    'contact.form.send': 'Send my enquiry',
+    'contact.form.sending': 'Sending…',
+    'contact.form.contactHint': 'Give at least a phone number or an email address.',
+    'contact.form.notice': 'Your details are used only to answer your enquiry and are passed on to GCG’s sales team.',
+    'contact.form.noticeLink': 'Privacy policy',
+    'contact.form.errorsTitle': 'Please correct the following:',
+    'contact.form.err.name': 'Please enter your name.',
+    'contact.form.err.contact': 'Please give a phone number or an email address so GCG can reply.',
+    'contact.form.err.phone': 'Invalid number: include the country code, for example +225 07 00 00 00 00.',
+    'contact.form.err.email': 'Invalid email address, for example name@example.com.',
+    'contact.form.okTitle': 'Thank you, your enquiry has been sent.',
+    'contact.form.okText': 'GCG’s team will get back to you by phone or email. You can also contact them directly:',
+    'contact.form.failTitle': 'Your enquiry could not be sent.',
+    'contact.form.failText': 'Your details are still in the form. Try again in a moment or contact GCG directly:',
+    'contact.form.rate': 'Too many enquiries were sent from this connection. Try again in a few minutes or contact GCG directly:',
+    'contact.form.honeypot': 'Leave this field empty',
+    'contact.form.optional': 'optional',
     'contact.form.pending': 'GCG’s contact details will be published on this page very soon.',
     'contact.direct': 'Reach us',
     'contact.phone': 'Phone',
@@ -504,6 +569,7 @@ const UI = {
     'share.socialPending': 'Instagram and Facebook QR codes will appear here as soon as the page addresses are added.',
     'share.copy': 'Copy link',
     'share.native': 'Share…',
+    'share.tempWarning': 'Do not print yet: the site is still on a temporary address. QR codes become permanent once the site is live on GCG’s own domain.',
     'share.pdf': 'Portfolio (PDF)',
     'share.pdfHelp': 'The full GCG portfolio, to download or attach to a submission.',
 
@@ -532,6 +598,8 @@ const UI = {
     'footer.since': 'Construction & engineering — since 2016',
     'footer.country': 'Côte d’Ivoire',
     'footer.links': 'Useful links',
+    'legal.title': 'Legal notice',
+    'privacy.title': 'Privacy policy',
 
     'profile.particulier': 'Private owner',
     'profile.diaspora': 'Member of the diaspora',
@@ -549,7 +617,7 @@ const UI = {
     'ptype.equipement': 'School / facility',
     'ptype.vrd': 'Infrastructure / roads',
     'ptype.renovation': 'Renovation / upgrade',
-    'ptype.etude': 'Study / architecture only',
+    'ptype.etude': 'Design studies / architecture only',
     'ptype.autre': 'Other',
 
     '404.title': 'Page not found',
@@ -561,5 +629,14 @@ export type UIKey = keyof (typeof UI)['fr']
 
 export const useT = (lang: Lang) => (key: UIKey) => UI[lang][key] ?? UI.fr[key]
 
+const UNIT = /(\d)[ \u00a0\u202f]?(m²|m2|ha|km|m|FCFA|%)(?![\p{L}\d])/gu
+
+/** Format des nombres français : « 12 500 m² » (espace fine insécable entre milliers, insécable avant l’unité). */
+export const frNumber = (s: string) =>
+  s.replace(/(\d)[\s\u00a0\u202f](?=\d{3}(?!\d))/g, '$1\u202f').replace(UNIT, (_, d, u) => `${d}\u00a0${u === 'm2' ? 'm²' : u}`)
+
+/** Deux-points selon la langue : « Édition : » en français, “Edition: ” en anglais (EDIT-04, I18N-07). */
+export const colon = (lang: Lang) => (lang === 'fr' ? ' : ' : ': ')
+
 /** Format des nombres anglais : « 2 500 m² » → « 2,500 m² ». */
-export const enNumber = (s: string) => s.replace(/(\d)[\s  ](?=\d{3}\b)/g, '$1,')
+export const enNumber = (s: string) => s.replace(/(\d)[\s\u00a0\u202f](?=\d{3}(?!\d))/g, '$1,').replace(UNIT, (_, d, u) => `${d}\u00a0${u === 'm2' ? 'm²' : u}`)

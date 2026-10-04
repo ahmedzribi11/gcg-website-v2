@@ -17,7 +17,7 @@
     "Réalisation de la piscine"
   ],
   "missions_en": [
-    "Studies",
+    "Design and engineering studies",
     "Construction",
     "Fit-out",
     "Swimming pool"
@@ -32,8 +32,25 @@
     "villas"
   ],
   "images": [
-    "../../assets/projects/villa-de-luxe-assouinde/01.jpg",
-    "../../assets/projects/villa-de-luxe-assouinde/02.jpg",
-    "../../assets/projects/villa-de-luxe-assouinde/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/villa-de-luxe-assouinde/01.jpg",
+      "alt": "Villa de luxe Assouindé, villa de plain-pied avec terrasse et piscine",
+      "alt_en": "Assouindé luxury villa, single-storey villa with terrace and pool",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/villa-de-luxe-assouinde/02.jpg",
+      "alt": "Villa de luxe Assouindé, séjour et salle à manger ouverts sur le jardin",
+      "alt_en": "Assouindé luxury villa, living and dining area opening onto the garden",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/villa-de-luxe-assouinde/03.jpg",
+      "alt": "Villa de luxe Assouindé, allée en pas japonais entre les ailes de la villa",
+      "alt_en": "Assouindé luxury villa, stepping-stone path between the wings of the villa",
+      "kind": "render"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

@@ -23,6 +23,13 @@
     "immeubles"
   ],
   "images": [
-    "../../assets/projects/immeuble-seven-1/01.jpg"
-  ]
+    {
+      "src": "../../assets/projects/immeuble-seven-1/01.jpg",
+      "alt": "Immeuble Seven 1, façade avec balcons vitrés et toiture végétalisée",
+      "alt_en": "Seven 1 building, façade with glazed balconies and a planted roof",
+      "kind": "render"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

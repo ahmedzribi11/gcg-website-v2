@@ -1,7 +1,5 @@
 {
   "number": 1,
-  "featured": true,
-  "featuredOrder": 1,
   "name": "Green City",
   "sector": "residentiel",
   "city": "grand-bassam",
@@ -31,7 +29,7 @@
     "Aménagements extérieurs et infrastructures"
   ],
   "missions_en": [
-    "Studies, design and construction",
+    "Engineering studies, design and construction",
     "Structural and finishing works",
     "Landscaping and infrastructure"
   ],
@@ -48,9 +46,33 @@
     "infrastructures"
   ],
   "images": [
-    "../../assets/projects/green-city/01.jpg",
-    "../../assets/projects/green-city/02.jpg",
-    "../../assets/projects/green-city/03.jpg",
-    "../../assets/projects/green-city/04.jpg"
-  ]
+    {
+      "src": "../../assets/projects/green-city/01.jpg",
+      "alt": "Green City, villa R+1 avec piscine au crépuscule",
+      "alt_en": "Green City, two-storey villa with a swimming pool at dusk",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/green-city/02.jpg",
+      "alt": "Green City, façade sur rue d’une villa avec carport fermé",
+      "alt_en": "Green City, street front of a villa with an enclosed carport",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/green-city/03.jpg",
+      "alt": "Green City, villa en construction, gros œuvre en béton achevé",
+      "alt_en": "Green City, villa under construction with the concrete shell complete",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/green-city/04.jpg",
+      "alt": "Green City, villa au stade du gros œuvre sur le chantier",
+      "alt_en": "Green City, villa at shell stage on site",
+      "kind": "photo"
+    }
+  ],
+  "featured": true,
+  "featuredOrder": 1,
+  "permission": "en-attente",
+  "en_status": "valide"
 }

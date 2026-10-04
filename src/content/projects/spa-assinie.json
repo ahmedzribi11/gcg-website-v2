@@ -1,7 +1,5 @@
 {
   "number": 5,
-  "featured": true,
-  "featuredOrder": 7,
   "name": "Spa Assinie",
   "sector": "hotellerie",
   "city": "assinie",
@@ -28,8 +26,27 @@
     "loisirs"
   ],
   "images": [
-    "../../assets/projects/spa-assinie/01.jpg",
-    "../../assets/projects/spa-assinie/02.jpg",
-    "../../assets/projects/spa-assinie/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/spa-assinie/01.jpg",
+      "alt": "Spa Assinie, salon d’accueil avec canapés en velours orange",
+      "alt_en": "Spa Assinie, reception lounge with orange velvet sofas",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/spa-assinie/02.jpg",
+      "alt": "Spa Assinie, piscine face au plan d’eau avec vélos aquatiques",
+      "alt_en": "Spa Assinie, pool overlooking the water with aqua bikes",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/spa-assinie/03.jpg",
+      "alt": "Spa Assinie, couloir avec banquette et éclairage indirect",
+      "alt_en": "Spa Assinie, corridor with built-in bench and indirect lighting",
+      "kind": "photo"
+    }
+  ],
+  "featured": true,
+  "featuredOrder": 7,
+  "permission": "en-attente",
+  "en_status": "valide"
 }

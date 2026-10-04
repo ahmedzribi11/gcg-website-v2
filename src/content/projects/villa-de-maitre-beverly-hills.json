@@ -29,8 +29,25 @@
     "villas"
   ],
   "images": [
-    "../../assets/projects/villa-de-maitre-beverly-hills/01.jpg",
-    "../../assets/projects/villa-de-maitre-beverly-hills/02.jpg",
-    "../../assets/projects/villa-de-maitre-beverly-hills/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/villa-de-maitre-beverly-hills/01.jpg",
+      "alt": "Villa de maître Beverly Hills, villa R+1 au coucher du soleil",
+      "alt_en": "Beverly Hills villa, two-storey villa at sunset",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/villa-de-maitre-beverly-hills/02.jpg",
+      "alt": "Villa de maître Beverly Hills, façade d’entrée avec bardage bois",
+      "alt_en": "Beverly Hills villa, entrance façade with timber cladding",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/villa-de-maitre-beverly-hills/03.jpg",
+      "alt": "Villa de maître Beverly Hills, villa en construction, structure en béton",
+      "alt_en": "Beverly Hills villa, villa under construction, concrete structure",
+      "kind": "photo"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

@@ -1,0 +1,30 @@
+---
+/** Pages d’arrivée du formulaire envoyé sans JavaScript : merci / erreur (PERF-15, UX-07). */
+import Base from '../layouts/Base.astro'
+import Icon from '../components/Icon.astro'
+import { route, useT, type Lang } from '../i18n'
+import { contact, pageWhatsApp } from '../lib/settings'
+
+interface Props {
+  lang: Lang
+  kind: 'thanks' | 'formError'
+}
+const { lang, kind } = Astro.props
+const t = useT(lang)
+const ok = kind === 'thanks'
+const wa = pageWhatsApp(lang, t('contact.label'))
+---
+
+<Base lang={lang} alt={route(kind, lang === 'fr' ? 'en' : 'fr')} title={ok ? t('contact.form.okTitle') : t('contact.form.failTitle')} noindex>
+  <section class="wrap max-w-3xl pb-28 pt-36 md:pt-48">
+    <p class="label text-gold">{t('contact.label')}</p>
+    <h1 class="display mt-8 text-[clamp(2.8rem,8vw,6rem)]">{ok ? t('contact.form.okTitle') : t('contact.form.failTitle')}</h1>
+    <p class="mt-8 text-lg text-bone/85">{ok ? t('contact.form.okText') : lang === 'fr' ? 'Vérifiez que votre nom et un téléphone ou un e-mail sont renseignés, puis réessayez, ou contactez GCG directement :' : 'Check that your name and a phone number or email are filled in and try again, or contact GCG directly:'}</p>
+    <div class="mt-10 flex flex-wrap gap-3">
+      {wa && <a href={wa} target="_blank" rel="noopener" class="btn btn-gold"><Icon name="whatsapp" size={16} /> WhatsApp</a>}
+      {contact.phone && <a href={contact.phoneHref} class="btn btn-line"><Icon name="phone" size={16} /> {contact.phone}</a>}
+      {contact.email && <a href={`mailto:${contact.email}`} class="btn btn-line"><Icon name="mail" size={16} /> {contact.email}</a>}
+      <a href={ok ? route('projects', lang) : `${route('contact', lang)}#formulaire`} class="btn btn-line">{ok ? t('cta.allProjects') : t('cta.project')} <Icon name="arrow" /></a>
+    </div>
+  </section>
+</Base>

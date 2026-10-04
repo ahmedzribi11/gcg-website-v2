@@ -14,7 +14,7 @@
     "Études, réalisation et aménagement"
   ],
   "missions_en": [
-    "Studies, construction and fit-out"
+    "Engineering studies, construction and fit-out"
   ],
   "services": [
     "etudes",
@@ -26,7 +26,19 @@
     "hotels"
   ],
   "images": [
-    "../../assets/projects/suite-hoteliere-assouinde/01.jpg",
-    "../../assets/projects/suite-hoteliere-assouinde/02.jpg"
-  ]
+    {
+      "src": "../../assets/projects/suite-hoteliere-assouinde/01.jpg",
+      "alt": "Suite hôtelière Assouindé, terrasse avec bain à remous face à l’eau au coucher du soleil",
+      "alt_en": "Assouindé hotel suites, terrace with hot tub facing the water at sunset",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/suite-hoteliere-assouinde/02.jpg",
+      "alt": "Suite hôtelière Assouindé, bâtiment de plain-pied et terrasses privatives",
+      "alt_en": "Assouindé hotel suites, single-storey block with private terraces",
+      "kind": "render"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

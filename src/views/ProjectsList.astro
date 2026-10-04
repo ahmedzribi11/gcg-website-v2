@@ -49,8 +49,8 @@ const studies = n((p) => p.status === 'etudes')
       <button type="button" class="meta hidden text-mist hover:text-gold md:inline" data-reset>{t('projects.filter.reset')}</button>
       <p class="meta shrink-0 text-bone/70" aria-live="polite"><span data-results class="text-gold">{projects.length}</span> <span data-count-label>{t('projects.count.many')}</span></p>
       <div class="flex shrink-0 rounded-full border border-line p-1" role="group" aria-label={lang === 'fr' ? 'Affichage' : 'View'}>
-        <button type="button" class="flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="true" data-view="grid"><Icon name="grid" size={14} /><span class="hidden sm:inline">{t('projects.view.grid')}</span></button>
-        <button type="button" class="flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="false" data-view="map"><Icon name="map" size={14} /><span class="hidden sm:inline">{t('projects.view.map')}</span></button>
+        <button type="button" class="flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="true" data-view="grid" aria-label={t('projects.view.grid')}><Icon name="grid" size={14} /><span class="hidden sm:inline">{t('projects.view.grid')}</span></button>
+        <button type="button" class="flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="false" data-view="map" aria-label={t('projects.view.map')}><Icon name="map" size={14} /><span class="hidden sm:inline">{t('projects.view.map')}</span></button>
       </div>
     </div>
     <div class="wrap hidden pb-4" data-groups-mobile></div>
@@ -98,6 +98,7 @@ const studies = n((p) => p.status === 'etudes')
   </template>
 
   <section class="wrap py-12 md:py-16" aria-label={t('projects.label')}>
+    <h2 class="sr-only">{lang === 'fr' ? 'Liste des projets' : 'Project list'}</h2>
     <div data-panel="grid" class="grid gap-x-6 gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
       {projects.map((p, i) => <ProjectCard project={p} lang={lang} index={i} />)}
     </div>
@@ -111,8 +112,6 @@ const studies = n((p) => p.status === 'etudes')
   </section>
 
   <FinalCta lang={lang} />
-</Base>
-
 <script>
   const KEYS = ['secteur', 'statut', 'ville', 'type'] as const
   type Key = (typeof KEYS)[number]
@@ -217,3 +216,4 @@ const studies = n((p) => p.status === 'etudes')
   .dd.is-active > summary { border-color: var(--color-gold); }
   .dd > summary::-webkit-details-marker { display: none; }
 </style>
+</Base>

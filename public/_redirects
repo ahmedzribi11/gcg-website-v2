@@ -1,1 +1,2 @@
+# Redirections pour Cloudflare Pages ou Netlify (Vercel utilise vercel.json).
 /projets/*   /realisations/:splat   301

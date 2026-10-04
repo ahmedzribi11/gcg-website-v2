@@ -32,8 +32,25 @@
     "loisirs"
   ],
   "images": [
-    "../../assets/projects/beach-bar-assinie/01.jpg",
-    "../../assets/projects/beach-bar-assinie/02.jpg",
-    "../../assets/projects/beach-bar-assinie/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/beach-bar-assinie/01.jpg",
+      "alt": "Beach Bar Assinie, piscine face au restaurant-bar ouvert, façade ornée de disques en vannerie",
+      "alt_en": "Beach Bar Assinie, pool in front of the open-sided restaurant and bar, façade with woven discs",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/beach-bar-assinie/02.jpg",
+      "alt": "Beach Bar Assinie, terrasse avec mange-debout et mur décoré de vanneries",
+      "alt_en": "Beach Bar Assinie, terrace with high bar stools and a wall decorated with woven baskets",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/beach-bar-assinie/03.jpg",
+      "alt": "Beach Bar Assinie, restaurant éclairé de nuit sous l’étage vitré",
+      "alt_en": "Beach Bar Assinie, restaurant lit up at night beneath the glazed upper floor",
+      "kind": "photo"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

@@ -5,3 +5,4 @@ dist
 *.tsbuildinfo
 .astro
 .vercel
+.lighthouseci

@@ -1,9 +1,19 @@
 ---
 /**
  * Espace de gestion (Decap CMS) : modifie les fichiers du dépôt GitHub
- * (src/content/projects, src/data/settings.json) ; chaque enregistrement redéploie le site.
+ * (src/content/projects, src/data/settings.json) ; chaque publication redéploie le site.
  * Configuration : public/admin/config.yml.
+ *
+ * Politique de sécurité propre à cette page : Decap est chargé depuis unpkg (version figée,
+ * empreinte SRI sur le fichier principal) et a besoin de styles et scripts dynamiques.
  */
+const DECAP = 'https://unpkg.com/decap-cms@3.16.3/dist/'
+Astro.csp?.insertScriptResource(DECAP)
+Astro.csp?.insertScriptResource("'unsafe-inline'")
+Astro.csp?.insertScriptResource("'unsafe-eval'")
+Astro.csp?.insertStyleResource("'unsafe-inline'")
+Astro.csp?.insertDirective('connect-src https://api.github.com http://localhost:8081')
+Astro.csp?.insertDirective('img-src https://avatars.githubusercontent.com https://raw.githubusercontent.com')
 ---
 
 <!doctype html>
@@ -12,22 +22,52 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Espace de gestion — GCG</title>
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <title>Espace de gestion · GCG Côte d’Ivoire</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
     <script is:inline>
       window.CMS_MANUAL_INIT = true
+      // Déconnexion après 8 heures d’inactivité (SEC-08)
+      ;(function () {
+        const USER = 'decap-cms-user'
+        const LAST = 'gcg-admin-last-activity'
+        const MAX = 8 * 3600 * 1000
+        const expired = function () {
+          return Date.now() - (Number(localStorage.getItem(LAST)) || Date.now()) > MAX
+        }
+        try {
+          if (expired()) localStorage.removeItem(USER)
+          const touch = function () {
+            localStorage.setItem(LAST, String(Date.now()))
+          }
+          touch()
+          addEventListener('click', touch, { passive: true })
+          addEventListener('keydown', touch, { passive: true })
+          setInterval(function () {
+            if (expired() && localStorage.getItem(USER)) {
+              localStorage.removeItem(USER)
+              location.reload()
+            }
+          }, 60000)
+        } catch {
+          // stockage local indisponible (navigation privée) : pas de déconnexion automatique
+        }
+      })()
     </script>
   </head>
   <body>
-    <script is:inline src="https://unpkg.com/decap-cms@^3.6.0/dist/decap-cms.js"></script>
+    <script
+      is:inline
+      src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"
+      integrity="sha384-A/Gdn928CNLufmnGWGs9RM4Q9o8bSNLeJERqBFrBjwzL7FRpoLT3MPF8Tl0+Wd2p"
+      crossorigin="anonymous"></script>
     <script is:inline>
       // La connexion GitHub passe par les fonctions /api/auth et /api/callback du même domaine.
       CMS.init({
         config: {
           backend: {
             name: 'github',
-            repo: 'ahmedzribi11/My-web',
+            repo: 'ahmedzribi11/gcg-website-v2',
             branch: 'main',
             base_url: location.origin,
             auth_endpoint: 'api/auth',

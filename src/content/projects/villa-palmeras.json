@@ -1,7 +1,5 @@
 {
   "number": 2,
-  "featured": true,
-  "featuredOrder": 2,
   "name": "Villa Palmeras",
   "sector": "residentiel",
   "city": "grand-bassam",
@@ -18,7 +16,7 @@
     "Aménagements intérieurs et extérieurs"
   ],
   "missions_en": [
-    "Studies and construction",
+    "Engineering studies and construction",
     "Structural and finishing works",
     "Interior and exterior fit-out"
   ],
@@ -32,8 +30,27 @@
     "residences"
   ],
   "images": [
-    "../../assets/projects/villa-palmeras/01.jpg",
-    "../../assets/projects/villa-palmeras/02.jpg",
-    "../../assets/projects/villa-palmeras/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/villa-palmeras/01.jpg",
+      "alt": "Villa Palmeras, villa R+1 avec jardin et piscine au crépuscule",
+      "alt_en": "Villa Palmeras, two-storey villa with garden and pool at dusk",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/villa-palmeras/02.jpg",
+      "alt": "Villa Palmeras, rue bordée de villas R+1",
+      "alt_en": "Villa Palmeras, street lined with two-storey villas",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/villa-palmeras/03.jpg",
+      "alt": "Villa Palmeras, vue aérienne d’une avenue avec mail planté",
+      "alt_en": "Villa Palmeras, aerial view of an avenue with a landscaped central strip",
+      "kind": "render"
+    }
+  ],
+  "featured": true,
+  "featuredOrder": 2,
+  "permission": "en-attente",
+  "en_status": "valide"
 }

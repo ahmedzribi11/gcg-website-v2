@@ -14,7 +14,7 @@
     "Études et conception architecturale"
   ],
   "missions_en": [
-    "Studies and architectural design"
+    "Engineering studies and architectural design"
   ],
   "services": [
     "etudes",
@@ -24,8 +24,25 @@
     "equipements"
   ],
   "images": [
-    "../../assets/projects/ecole-green-city/01.jpg",
-    "../../assets/projects/ecole-green-city/02.jpg",
-    "../../assets/projects/ecole-green-city/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/ecole-green-city/01.jpg",
+      "alt": "École Green City, façade du bâtiment R+2 côté rue et parking",
+      "alt_en": "Green City school, three-storey building seen from the street and car park",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/ecole-green-city/02.jpg",
+      "alt": "École Green City, vue aérienne avec piscine et terrains de padel",
+      "alt_en": "Green City school, aerial view with the swimming pool and padel courts",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/ecole-green-city/03.jpg",
+      "alt": "École Green City, entrée principale avec l’enseigne École française",
+      "alt_en": "Green City school, main entrance with the École Française sign",
+      "kind": "render"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

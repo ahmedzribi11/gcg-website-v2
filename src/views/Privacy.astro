@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro'
+import PageHeader from '../components/PageHeader.astro'
+import legal from '../data/legal.json'
+import { route, useT, type Lang } from '../i18n'
+import { contact } from '../lib/settings'
+import { umamiId } from '../lib/env'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const t = useT(lang)
+const fr = lang === 'fr'
+const name = legal.legalName || legal.tradeName
+const reach = contact.email ? contact.email : fr ? 'le formulaire de la page Contact' : 'the form on the Contact page'
+const updated = new Intl.DateTimeFormat(fr ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(legal.privacyUpdated))
+---
+
+<Base lang={lang} alt={route('privacy', fr ? 'en' : 'fr')} title={t('privacy.title')} description={fr ? 'Comment General Constructor Group CI traite les données transmises par le site.' : 'How General Constructor Group CI handles data sent through this website.'}>
+  <PageHeader label={t('privacy.title')} title={t('privacy.title')} />
+  <article class="wrap max-w-3xl pb-28 text-[15px] md:text-base text-bone/85 [&_h2]:mt-14 [&_h2]:text-2xl [&_h2]:font-light [&_h2]:text-bone [&_li]:mt-2 [&_p]:mt-4 [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:pl-5">
+    {
+      fr ? (
+        <>
+          <h2>Responsable du traitement</h2>
+          <p>{name}{legal.address ? `, ${legal.address}` : ''}. Contact : {reach}.</p>
+
+          <h2>Données collectées et finalité</h2>
+          <p>Le formulaire de contact recueille votre nom, votre téléphone ou WhatsApp, votre e-mail (facultatif), le type et la localisation de votre projet et votre message. Ces informations servent uniquement à répondre à votre demande et à préparer une éventuelle proposition. Aucun champ n’est obligatoire hormis votre nom et un moyen de vous recontacter.</p>
+          <p>Si vous choisissez d’écrire sur WhatsApp, votre message est envoyé directement depuis votre application WhatsApp ; ce site ne le conserve pas.</p>
+
+          <h2>Destinataires</h2>
+          <ul>
+            <li>L’équipe commerciale de {name}.</li>
+            <li>Les prestataires techniques du site, qui agissent pour le compte de GCG : l’hébergeur ({legal.host.name}, États-Unis) et le service d’envoi des e-mails du formulaire (Resend, États-Unis). Vos données peuvent donc être traitées hors de Côte d’Ivoire.</li>
+          </ul>
+
+          <h2>Durée de conservation</h2>
+          <p>Les demandes sans suite contractuelle sont supprimées au plus tard 24 mois après le dernier échange.</p>
+
+          <h2>Vos droits</h2>
+          <p>Conformément à la loi n° 2013-450 du 19 juin 2013 relative à la protection des données à caractère personnel, vous pouvez demander l’accès à vos données, leur rectification, leur suppression ou vous opposer à leur traitement en écrivant à {reach}. Vous pouvez également adresser une réclamation à l’Autorité de régulation des télécommunications/TIC de Côte d’Ivoire (ARTCI).</p>
+
+          <h2>Cookies et mesure d’audience</h2>
+          <p>Le site ne dépose aucun cookie et ne contient aucun traceur publicitaire.{umamiId ? ' La fréquentation est mesurée sans cookie et sans adresse IP enregistrée (Umami), uniquement de façon agrégée.' : ''} La vidéo de présentation, si elle est affichée, n’est chargée qu’après un clic de votre part.</p>
+
+          <p class="meta mt-14 text-mist">Mise à jour : {updated}</p>
+        </>
+      ) : (
+        <>
+          <h2>Data controller</h2>
+          <p>{name}{legal.address ? `, ${legal.address}` : ''}. Contact: {reach}.</p>
+
+          <h2>Data collected and purpose</h2>
+          <p>The contact form collects your name, your phone or WhatsApp number, your email (optional), the type and location of your project and your message. This information is used only to answer your enquiry and to prepare a possible proposal. Only your name and one way to reach you are required.</p>
+          <p>If you choose to write on WhatsApp, your message is sent directly from your WhatsApp app; this website does not store it.</p>
+
+          <h2>Recipients</h2>
+          <ul>
+            <li>The sales team of {name}.</li>
+            <li>The website’s technical providers, acting on GCG’s behalf: the host ({legal.host.name}, United States) and the service that sends the form emails (Resend, United States). Your data may therefore be processed outside Côte d’Ivoire.</li>
+          </ul>
+
+          <h2>Retention</h2>
+          <p>Enquiries that do not lead to a contract are deleted no later than 24 months after the last exchange.</p>
+
+          <h2>Your rights</h2>
+          <p>Under Ivorian law no. 2013-450 of 19 June 2013 on the protection of personal data, you may request access to, correction or deletion of your data, or object to its processing, by writing to {reach}. You may also lodge a complaint with the Ivorian telecommunications/ICT regulator (ARTCI).</p>
+
+          <h2>Cookies and analytics</h2>
+          <p>This website sets no cookies and contains no advertising trackers.{umamiId ? ' Visits are measured without cookies or stored IP addresses (Umami), in aggregate only.' : ''} The presentation video, when shown, only loads after you click it.</p>
+
+          <p class="meta mt-14 text-mist">Last updated: {updated}</p>
+        </>
+      )
+    }
+  </article>
+</Base>

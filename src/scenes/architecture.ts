@@ -36,7 +36,12 @@ function boxCorners(b: BoxSpec): THREE.Vector3[] {
   const s = Math.sin(b.rotY)
   const out: THREE.Vector3[] = []
   for (const dy of [-0.5, 0.5])
-    for (const [dx, dz] of [[-0.5, -0.5], [0.5, -0.5], [0.5, 0.5], [-0.5, 0.5]] as const) {
+    for (const [dx, dz] of [
+      [-0.5, -0.5],
+      [0.5, -0.5],
+      [0.5, 0.5],
+      [-0.5, 0.5],
+    ] as const) {
       const lx = dx * sx
       const lz = dz * sz
       out.push(new THREE.Vector3(b.pos.x + lx * c + lz * s, b.pos.y + dy * sy, b.pos.z - lx * s + lz * c))
@@ -47,9 +52,18 @@ function boxCorners(b: BoxSpec): THREE.Vector3[] {
 function pushBoxEdges(target: number[], b: BoxSpec) {
   const k = boxCorners(b)
   const pairs = [
-    [0, 1], [1, 2], [2, 3], [3, 0],
-    [4, 5], [5, 6], [6, 7], [7, 4],
-    [0, 4], [1, 5], [2, 6], [3, 7],
+    [0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 0],
+    [4, 5],
+    [5, 6],
+    [6, 7],
+    [7, 4],
+    [0, 4],
+    [1, 5],
+    [2, 6],
+    [3, 7],
   ]
   for (const [a, z] of pairs) target.push(k[a].x, k[a].y, k[a].z, k[z].x, k[z].y, k[z].z)
 }

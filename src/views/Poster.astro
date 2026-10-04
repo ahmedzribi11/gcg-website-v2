@@ -2,7 +2,7 @@
 import { getImage } from 'astro:assets'
 import Base from '../layouts/Base.astro'
 import Icon from '../components/Icon.astro'
-import { projectPath, route, useT, type Lang } from '../i18n'
+import { qrPath, route, useT, type Lang } from '../i18n'
 import { getProjects } from '../lib/projects'
 
 interface Props {
@@ -15,12 +15,12 @@ const projects = await getProjects(lang)
 const data = Object.fromEntries(
   await Promise.all(
     projects.map(async (p) => {
-      const img = await getImage({ src: p.images[0], width: 1400, format: 'jpg', quality: 82 })
-      return [p.slug, { name: p.name, place: `${p.location} · ${p.period}`, img: img.src, path: projectPath(p.slug, lang) }] as const
+      const img = await getImage({ src: p.images[0].src, width: 1400, format: 'jpg', quality: 82 })
+      return [p.slug, { name: p.name, place: `${p.location} · ${p.period}`, img: img.src, path: qrPath(lang, 'panneau', p.slug) }] as const
     }),
   ),
 )
-const general = await getImage({ src: projects.find((p) => p.slug === 'villa-palmeras')!.images[0], width: 1400, format: 'jpg', quality: 82 })
+const general = await getImage({ src: projects.find((p) => p.slug === 'villa-palmeras')!.images[0].src, width: 1400, format: 'jpg', quality: 82 })
 ---
 
 <Base lang={lang} alt={route('poster', fr ? 'en' : 'fr')} title={t('share.poster')} noindex bare>
@@ -59,16 +59,14 @@ const general = await getImage({ src: projects.find((p) => p.slug === 'villa-pal
           <p class="mt-[6mm] font-mono text-[3mm] tracking-[0.12em] text-bone/80" id="poster-url" data-qr-text={route('home', lang)}></p>
         </div>
         <div class="w-[62mm] rounded-[3mm] bg-white p-[3mm]">
-          <div id="poster-qr" data-qr={route('home', lang)}></div>
+          <div id="poster-qr" data-qr={qrPath(lang, 'panneau')}></div>
         </div>
       </div>
       <div class="h-[3mm] bg-gold"></div>
     </article>
   </div>
 
-  <script id="poster-data" type="application/json" set:html={JSON.stringify({ projects: data, home: route('home', lang), general: general.src })} />
-</Base>
-
+  <script id="poster-data" type="application/json" set:html={JSON.stringify({ projects: data, home: qrPath(lang, 'panneau'), general: general.src })} />
 <script>
   import { renderQrs } from '../scripts/qr'
 
@@ -123,3 +121,4 @@ const general = await getImage({ src: projects.find((p) => p.slug === 'villa-pal
     .poster * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 </style>
+</Base>

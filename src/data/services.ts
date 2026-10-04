@@ -23,7 +23,7 @@ export const services: Service[] = [
     id: 'etudes',
     cover: ['hotel-du-golf', 0],
     slug: { fr: 'etudes-et-faisabilite', en: 'studies-and-feasibility' },
-    title: { fr: 'Études & faisabilité', en: 'Studies & feasibility' },
+    title: { fr: 'Études & faisabilité', en: 'Feasibility & design studies' },
     short: {
       fr: 'Savoir si un projet est faisable, et comment, avant d’engager les études détaillées.',
       en: 'Find out whether a project is feasible, and how, before committing to detailed design.',
@@ -66,11 +66,23 @@ export const services: Service[] = [
     },
     intro: {
       fr: 'Le pôle Études & contrôle qualité de GCG dimensionne les ouvrages, du béton armé à la structure métallique, et coordonne les études fluides et électricité. Le contrôle qualité accompagne le chantier jusqu’à la réception.',
-      en: 'GCG’s Studies & Quality Control division sizes each structure, from reinforced concrete to steel frames, and coordinates plumbing and electrical engineering. Quality control follows the site all the way to handover.',
+      en: 'GCG’s engineering studies and quality control division sizes each structure, from reinforced concrete to steel frames, and coordinates plumbing and electrical engineering. Quality control follows the site all the way to handover.',
     },
     includes: {
-      fr: ['Études de structure (béton et structure métallique)', 'Études fluides et électricité', 'Études techniques', 'Modélisation BIM', 'Contrôle qualité (QA/QC)'],
-      en: ['Structural engineering (concrete and steel)', 'Plumbing and electrical engineering', 'Technical studies', 'BIM modelling', 'Quality control (QA/QC)'],
+      fr: [
+        'Études de structure (béton et structure métallique)',
+        'Études fluides et électricité',
+        'Études techniques',
+        'Modélisation BIM',
+        'Contrôle qualité (QA/QC)',
+      ],
+      en: [
+        'Structural engineering (concrete and steel)',
+        'Plumbing and electrical engineering',
+        'Technical studies',
+        'BIM modelling',
+        'Quality control (QA/QC)',
+      ],
     },
   },
   {
@@ -168,11 +180,11 @@ export const services: Service[] = [
     },
     intro: {
       fr: 'Hôtel, villa, immeuble, salle polyvalente : GCG prend en charge l’ensemble du projet. Études, conception, construction et aménagement sont menés par la même équipe, jusqu’à la remise d’un ouvrage prêt à l’usage.',
-      en: 'Hotel, villa, building or events hall: GCG takes charge of the whole project. Studies, design, construction and fit-out are carried out by the same team, through to the handover of a building ready for use.',
+      en: 'Hotel, villa, building or events hall: GCG takes charge of the whole project. Engineering studies, design, construction and fit-out are carried out by the same team, through to the handover of a building ready for use.',
     },
     includes: {
       fr: ['Études et conception', 'Construction', 'Aménagement et équipement', 'Remise des clés'],
-      en: ['Studies and design', 'Construction', 'Fit-out and equipment', 'Handover of the keys'],
+      en: ['Engineering studies and design', 'Construction', 'Fit-out and equipment', 'Handover of the keys'],
     },
   },
 ]

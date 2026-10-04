@@ -16,7 +16,7 @@
     "Aménagements architecturaux et décoratifs"
   ],
   "missions_en": [
-    "Studies and construction",
+    "Engineering studies and construction",
     "Structural and finishing works",
     "Architectural and decorative fit-out"
   ],
@@ -29,8 +29,25 @@
     "equipements"
   ],
   "images": [
-    "../../assets/projects/temple-indien/01.jpg",
-    "../../assets/projects/temple-indien/02.jpg",
-    "../../assets/projects/temple-indien/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/temple-indien/01.jpg",
+      "alt": "Temple indien, façade principale éclairée de nuit",
+      "alt_en": "Indian temple, main façade lit up at night",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/temple-indien/02.jpg",
+      "alt": "Temple indien, vue de jour avec claustras et pelouse",
+      "alt_en": "Indian temple, daytime view with screen panels and lawn",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/temple-indien/03.jpg",
+      "alt": "Temple indien, façade de nuit avec claustras éclairés",
+      "alt_en": "Indian temple, night view with illuminated screen panels",
+      "kind": "render"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

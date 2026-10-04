@@ -10,7 +10,7 @@ export function qrUrl(target: string) {
 }
 
 export function qrSvg(url: string, dark = '#052e14', light = '#ffffff') {
-  return renderSVG(url, { ecc: 'M', border: 2, pixelSize: 10, blackColor: dark, whiteColor: light })
+  return renderSVG(url, { ecc: 'M', border: 4, pixelSize: 10, blackColor: dark, whiteColor: light })
 }
 
 export function renderQrs(root: ParentNode = document) {
@@ -31,11 +31,18 @@ export function renderQrs(root: ParentNode = document) {
     el.querySelectorAll<HTMLElement>('[data-qr-label]').forEach((l) => (l.textContent = url))
   })
   root.querySelectorAll<HTMLElement>('[data-qr-text]').forEach((el) => {
-    el.textContent = qrUrl(el.dataset.qrText!).replace(/^https?:\/\//, '').replace(/\/$/, '')
+    el.textContent = qrUrl(el.dataset.qrText!)
+      .replace(/^https?:\/\//, '')
+      .replace(/\/$/, '')
   })
 }
 
 renderQrs()
+
+/** Adresse provisoire (Vercel, Cloudflare, local) : les QR codes ne doivent pas être imprimés. */
+if (/(\.vercel\.app|\.pages\.dev|localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+  document.querySelectorAll<HTMLElement>('[data-qr-warning]').forEach((el) => el.removeAttribute('hidden'))
+}
 
 /* Téléchargement SVG / PNG */
 document.addEventListener('click', async (e) => {

@@ -57,7 +57,7 @@ const count = (id: string) => projects.filter((p) => p.services.includes(id as n
     {
       services.map((s) => (
         <div data-preview-for={s.id} class="preview-item absolute left-0 top-0 h-[17rem] w-[13rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden">
-          <ProjectImage src={img(s.id)} alt="" sizes="13rem" class="block h-full w-full" />
+          <ProjectImage image={img(s.id)} alt="" sizes="13rem" class="block h-full w-full" />
         </div>
       ))
     }

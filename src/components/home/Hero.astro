@@ -53,7 +53,8 @@ const wa = whatsappLink(t('contact.form.intro'))
     <div class="mt-12 flex items-end justify-between gap-6 border-t border-line pt-5" data-reveal style="--d:1s">
       <p class="flex items-baseline gap-3 text-[15px] text-bone/60">
         <span class="meta text-mist">{t('hero.we')}</span>
-        <span class="word-rotator relative inline-block h-[1.4em] overflow-hidden align-bottom text-bone" aria-label={words.join(', ')}>
+        <span class="sr-only">{words.join(', ')}</span>
+        <span class="word-rotator relative inline-block h-[1.4em] overflow-hidden align-bottom text-bone" aria-hidden="true">
           {words.map((w, i) => <span class="block h-[1.4em]" style={`--n:${i}`} aria-hidden="true">{w}</span>)}
           <span class="block h-[1.4em]" aria-hidden="true">{words[0]}</span>
         </span>

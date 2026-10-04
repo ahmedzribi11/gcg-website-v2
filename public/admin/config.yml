@@ -1,12 +1,15 @@
 # Espace de gestion GCG (Decap CMS) — https://decapcms.org/docs/
 # Les listes de choix (secteurs, statuts, villes, expertises, typologies) doivent rester
-# identiques à celles de src/content.config.ts.
+# identiques à celles de src/content.config.ts. Le build refuse tout contenu incomplet
+# (scripts/check-content.mjs et schéma src/content.config.ts).
 
 backend:
   name: github
-  repo: ahmedzribi11/My-web
+  repo: ahmedzribi11/gcg-website-v2
   branch: main
   auth_endpoint: api/auth
+  # Aperçu réel avant publication : nom exact du statut de déploiement (ex. « Vercel – gcg-website-v2 »)
+  # preview_context: 'Vercel – gcg-website-v2'
   commit_messages:
     create: 'Projet ajouté : {{slug}}'
     update: 'Mise à jour : {{slug}}'
@@ -14,7 +17,11 @@ backend:
     uploadMedia: 'Image ajoutée : {{path}}'
     deleteMedia: 'Image supprimée : {{path}}'
 
-# En local : « npm run cms » puis http://localhost:4321/admin/
+# Brouillon → En cours de révision → Prêt : chaque modification est un brouillon tant qu’elle n’est pas publiée
+publish_mode: editorial_workflow
+show_preview_links: true
+
+# En local : « npm run cms » puis http://localhost:4321/admin
 local_backend: true
 
 locale: fr
@@ -30,8 +37,8 @@ collections:
     label: Réalisations
     label_singular: projet
     description: >-
-      Les 34 projets du portfolio et les suivants. Ne renseigner que des informations confirmées par GCG :
-      un champ laissé vide n’est pas affiché sur le site. Chaque enregistrement met le site à jour en quelques minutes.
+      Ne renseigner que des informations confirmées par GCG : un champ laissé vide n’est pas affiché.
+      Une publication met le site à jour en quelques minutes ; un projet incomplet est refusé avec un message.
     folder: src/content/projects
     extension: json
     format: json
@@ -47,18 +54,21 @@ collections:
     view_groups:
       - { label: Secteur, field: sector }
       - { label: Statut, field: status }
-    # Images enregistrées à côté des autres images du projet (optimisées automatiquement au déploiement)
+      - { label: Autorisation, field: permission }
+      - { label: 'Version anglaise', field: en_status }
+    # Images enregistrées dans le dossier du projet, optimisées automatiquement au déploiement
     media_folder: /src/assets/projects/{{slug}}
     public_folder: ../../assets/projects/{{slug}}
     editor:
       preview: false
     fields:
-      - { label: 'N° d’ordre', name: number, widget: number, value_type: int, min: 1, hint: 'Ordre d’affichage (01, 02…). Les nouveaux projets prennent le numéro suivant.' }
-      - { label: 'Nom du projet', name: name, widget: string }
-      - { label: 'Nom en anglais', name: name_en, widget: string, required: false, hint: 'Seulement si le nom change en anglais.' }
+      - { label: 'N° d’ordre', name: number, widget: number, value_type: int, min: 1, hint: 'Ordre d’affichage. Ex. : 35 pour le projet suivant le n° 34.' }
+      - { label: 'Nom du projet', name: name, widget: string, hint: 'Ex. : Villa Palmeras' }
+      - { label: 'Nom en anglais', name: name_en, widget: string, required: false, hint: 'Seulement si le nom change en anglais. Ex. : Cashew processing plant' }
       - label: Secteur
         name: sector
         widget: select
+        hint: 'Ex. : Hôtellerie & tourisme pour un hôtel ou un spa'
         options:
           - { label: 'Résidentiel & bureaux', value: residentiel }
           - { label: 'Hôtellerie & tourisme', value: hotellerie }
@@ -89,23 +99,23 @@ collections:
           - { label: 'San-Pédro', value: san-pedro }
           - { label: 'Abengourou', value: abengourou }
       - { label: 'Lieu (texte affiché)', name: location, widget: string, hint: 'Ex. : Abidjan, Riviera Golf' }
-      - { label: 'Lieu en anglais', name: location_en, widget: string, required: false }
-      - { label: Période, name: period, widget: string, hint: 'Ex. : 2024 – 2025' }
-      - { label: 'Période en anglais', name: period_en, widget: string, required: false }
+      - { label: 'Lieu en anglais', name: location_en, widget: string, required: false, hint: 'Seulement s’il diffère. Ex. : Abidjan, Riviera Golf' }
+      - { label: Période, name: period, widget: string, hint: 'Année de livraison ou période. Ex. : 2024 – 2025' }
+      - { label: 'Période en anglais', name: period_en, widget: string, required: false, hint: 'Ex. : 2024 – 2025' }
       - label: Statut
         name: status
         widget: select
         required: false
-        hint: 'Laisser vide si le statut n’est pas confirmé.'
+        hint: 'Laisser vide si le statut n’est pas confirmé par GCG.'
         options:
           - { label: 'En cours d’exécution', value: execution }
           - { label: 'En cours d’études', value: etudes }
           - { label: 'Réceptionné', value: receptionne }
       - { label: 'Surface', name: surface, widget: string, required: false, hint: 'Ex. : 2 500 m²' }
-      - { label: 'Terrain', name: terrain, widget: string, required: false }
-      - { label: 'Surface couverte', name: coveredSurface, widget: string, required: false }
-      - { label: 'Programme (français)', name: composition, widget: text }
-      - { label: 'Programme (anglais)', name: composition_en, widget: text }
+      - { label: 'Terrain', name: terrain, widget: string, required: false, hint: 'Ex. : 6 ha' }
+      - { label: 'Surface couverte', name: coveredSurface, widget: string, required: false, hint: 'Ex. : 12 000 m²' }
+      - { label: 'Résumé (français)', name: composition, widget: text, pattern: ['^[\s\S]{1,300}$', '300 caractères maximum'], hint: 'Une à deux phrases, 300 caractères maximum. Ex. : Construction d’une cité de 45 villas haut standing.' }
+      - { label: 'Résumé (anglais)', name: composition_en, widget: text, required: false, pattern: ['^[\s\S]{0,300}$', '300 caractères maximum'], hint: 'Requis si la version anglaise est « validée ». Ex. : A gated community of 45 high-end villas.' }
       - label: Typologies
         label_singular: typologie
         name: typologies
@@ -113,18 +123,18 @@ collections:
         required: false
         summary: '{{fields.name}} — {{fields.surface}}'
         fields:
-          - { label: Nom, name: name, widget: string }
-          - { label: Surface, name: surface, widget: string }
-      - { label: 'Typologie (texte libre)', name: typology, widget: string, required: false }
+          - { label: Nom, name: name, widget: string, hint: 'Ex. : Villa Minan' }
+          - { label: Surface, name: surface, widget: string, hint: 'Ex. : 204 m²' }
+      - { label: 'Typologie (texte libre)', name: typology, widget: string, required: false, hint: 'Ex. : Villas R+1 de 4 et 5 pièces' }
       - { label: 'Typologie en anglais', name: typology_en, widget: string, required: false }
-      - { label: 'Missions GCG (français)', label_singular: mission, name: missions, widget: list, min: 1, field: { label: Mission, name: mission, widget: string } }
-      - { label: 'Missions GCG (anglais)', label_singular: 'mission (anglais)', name: missions_en, widget: list, min: 1, field: { label: Mission, name: mission, widget: string } }
+      - { label: 'Missions GCG (français)', label_singular: mission, name: missions, widget: list, min: 1, field: { label: Mission, name: mission, widget: string, hint: 'Ex. : Gros œuvre et second œuvre' } }
+      - { label: 'Missions GCG (anglais)', label_singular: 'mission (anglais)', name: missions_en, widget: list, required: false, field: { label: Mission, name: mission, widget: string, hint: 'Ex. : Structural and finishing works' } }
       - label: Expertises mobilisées
         name: services
         widget: select
         multiple: true
         required: false
-        hint: 'Le projet apparaît sur la page de chaque expertise cochée.'
+        hint: 'Le projet apparaît sur la page de chaque expertise cochée. Ex. : Construction, Aménagement'
         options:
           - { label: 'Études & faisabilité', value: etudes }
           - { label: 'Architecture & conception', value: architecture }
@@ -139,6 +149,7 @@ collections:
         widget: select
         multiple: true
         required: false
+        hint: 'Ex. : Villas, Résidences'
         options:
           - { label: 'Villas', value: villas }
           - { label: 'Résidences', value: residences }
@@ -153,14 +164,49 @@ collections:
         name: images
         widget: list
         min: 1
-        hint: 'La première photo sert de couverture. Glisser pour réordonner. Format JPG ou PNG, 2 000 px de large suffisent.'
-        field: { label: Photo, name: image, widget: image, choose_url: false }
-      - { label: 'Mettre en avant sur l’accueil', name: featured, widget: boolean, default: false, required: false }
-      - { label: 'Ordre sur l’accueil', name: featuredOrder, widget: number, value_type: int, required: false }
+        summary: '{{fields.alt}}'
+        hint: 'La première image sert de couverture ; glisser pour réordonner. Photo d’origine (JPG, PNG ou HEIC d’iPhone, 20 Mo maximum), 2 400 px de large idéalement : le site la convertit et l’optimise automatiquement.'
+        fields:
+          - { label: Image, name: src, widget: image, choose_url: false }
+          - { label: 'Description (français)', name: alt, widget: string, hint: 'Ce que montre l’image, pour les malvoyants et Google. Ex. : Villa Palmeras, façade principale et piscine' }
+          - { label: 'Description (anglais)', name: alt_en, widget: string, hint: 'Ex. : Villa Palmeras, main façade and pool' }
+          - label: Nature
+            name: kind
+            widget: select
+            default: photo
+            hint: 'Une perspective 3D est signalée « Perspective » sur le site.'
+            options:
+              - { label: 'Photo réelle', value: photo }
+              - { label: 'Perspective 3D (rendu)', value: render }
+              - { label: 'Plan ou dessin', value: plan }
+          - { label: 'Point focal', name: focus, widget: string, required: false, pattern: ['^\d{1,3}% \d{1,3}%$', 'Format : 50% 30%'], hint: 'Facultatif : partie à garder visible au recadrage. Ex. : 50% 30% (centre, haut)' }
+      - label: Autorisation de publication
+        name: permission
+        widget: select
+        default: en-attente
+        hint: 'Accord du client final pour montrer ce projet (un e-mail suffit). « En attente » : projet masqué lors du lancement.'
+        options:
+          - { label: 'En attente (non publié au lancement)', value: en-attente }
+          - { label: 'Autorisation du client obtenue', value: obtenue }
+          - { label: 'Autorisation non requise', value: non-requise }
+      - label: Version anglaise
+        name: en_status
+        widget: select
+        default: a-traduire
+        hint: 'Un nouveau projet reste « à traduire » : il n’apparaît en anglais qu’après relecture.'
+        options:
+          - { label: 'Version anglaise relue et validée', value: valide }
+          - { label: 'À traduire (non publiée en anglais)', value: a-traduire }
+      - { label: 'Mettre en avant sur l’accueil', name: featured, widget: boolean, default: false, required: false, hint: 'Projets phares : hôtels, grands ensembles.' }
+      - { label: 'Ordre sur l’accueil', name: featuredOrder, widget: number, value_type: int, required: false, hint: 'Ex. : 1 pour le premier' }
+      - { label: 'Titre Google (français)', name: seo_title, widget: string, required: false, hint: 'Facultatif, 60 caractères maximum. Par défaut : le nom du projet.' }
+      - { label: 'Titre Google (anglais)', name: seo_title_en, widget: string, required: false }
+      - { label: 'Description Google (français)', name: seo_description, widget: text, required: false, hint: 'Facultatif, 160 caractères maximum. Par défaut : le résumé.' }
+      - { label: 'Description Google (anglais)', name: seo_description_en, widget: text, required: false }
 
   - name: settings
     label: Paramètres
-    description: 'Coordonnées, réseaux sociaux et médias. Un champ vide est masqué sur le site.'
+    description: 'Coordonnées, réseaux sociaux, vidéo et documents. Un champ vide est masqué sur le site.'
     editor:
       preview: false
     delete: false
@@ -175,21 +221,21 @@ collections:
             widget: object
             collapsed: false
             fields:
-              - { label: Téléphone, name: phone, widget: string, required: false, hint: 'Format international, ex. +225 07 00 00 00 00' }
-              - { label: WhatsApp, name: whatsapp, widget: string, required: false, hint: 'Numéro WhatsApp au format international. Active les boutons WhatsApp du site.' }
-              - { label: Email, name: email, widget: string, required: false }
-              - { label: Adresse, name: address, widget: string, required: false }
-              - { label: 'Lien Google Maps', name: mapsUrl, widget: string, required: false }
-              - { label: Horaires, name: hours, widget: string, required: false, hint: 'Ex. : Lun – Ven, 8 h – 17 h' }
-              - { label: 'Horaires en anglais', name: hours_en, widget: string, required: false }
+              - { label: Téléphone, name: phone, widget: string, required: false, pattern: ['^(\+?[\d ]{8,20})?$', 'Numéro au format international, ex. +225 07 00 00 00 00'], hint: 'Ex. : +225 07 00 00 00 00' }
+              - { label: WhatsApp, name: whatsapp, widget: string, required: false, pattern: ['^(\+?[\d ]{8,20})?$', 'Numéro au format international, ex. +225 07 00 00 00 00'], hint: 'Active les boutons WhatsApp du site. Ex. : +225 07 00 00 00 00' }
+              - { label: Email, name: email, widget: string, required: false, pattern: ['^([^@\s]+@[^@\s]+\.[^@\s]+)?$', 'Adresse e-mail invalide'], hint: 'Ex. : contact@gcg-ci.com' }
+              - { label: Adresse, name: address, widget: string, required: false, hint: 'Ex. : Abidjan, Cocody Riviera 3, rue …' }
+              - { label: 'Lien Google Maps', name: mapsUrl, widget: string, required: false, hint: 'Lien « Partager » de Google Maps. Ex. : https://maps.app.goo.gl/…' }
+              - { label: Horaires, name: hours, widget: string, required: false, hint: 'Le fuseau (GMT, heure d’Abidjan) est ajouté automatiquement. Ex. : Lun – Ven, 8 h – 17 h' }
+              - { label: 'Horaires en anglais', name: hours_en, widget: string, required: false, hint: 'Ex. : Mon – Fri, 8 am – 5 pm' }
           - label: Réseaux sociaux
             name: social
             widget: object
             collapsed: false
-            hint: 'Adresse complète de chaque page (https://…). Les QR codes de la page Partager sont générés automatiquement.'
+            hint: 'Adresse complète de chaque page. Les QR codes de la page Partager sont générés automatiquement.'
             fields:
-              - { label: Instagram, name: instagram, widget: string, required: false }
-              - { label: Facebook, name: facebook, widget: string, required: false }
+              - { label: Instagram, name: instagram, widget: string, required: false, hint: 'Ex. : https://www.instagram.com/gcg.ci' }
+              - { label: Facebook, name: facebook, widget: string, required: false, hint: 'Ex. : https://www.facebook.com/gcg.ci' }
               - { label: LinkedIn, name: linkedin, widget: string, required: false }
               - { label: TikTok, name: tiktok, widget: string, required: false }
               - { label: YouTube, name: youtube, widget: string, required: false }
@@ -198,5 +244,17 @@ collections:
             widget: object
             collapsed: false
             fields:
-              - { label: 'Vidéo de présentation', name: videoUrl, widget: string, required: false, hint: 'Lien YouTube ou Vimeo. Affichée sur la page À propos.' }
-              - { label: 'Portfolio PDF', name: portfolioPdf, widget: file, required: false, media_folder: /public/documents, public_folder: /documents, choose_url: false, hint: 'Proposé en téléchargement (pied de page et page Partager).' }
+              - { label: 'Vidéo de présentation', name: videoUrl, widget: string, required: false, hint: 'Lien YouTube ou Vimeo, sous-titrée en français et en anglais. Affichée sur la page À propos. Ex. : https://youtu.be/…' }
+          - label: Documents à télécharger
+            label_singular: document
+            name: documents
+            widget: list
+            required: false
+            summary: '{{fields.title}} ({{fields.lang}}, {{fields.date}})'
+            hint: 'PDF de 10 Mo maximum (portfolio, présentation pour appels d’offres). La taille est affichée automatiquement.'
+            fields:
+              - { label: Titre, name: title, widget: string, hint: 'Ex. : Portfolio GCG' }
+              - { label: 'Titre en anglais', name: title_en, widget: string, hint: 'Ex. : GCG portfolio' }
+              - { label: Langue du document, name: lang, widget: select, options: [{ label: Français, value: fr }, { label: Anglais, value: en }] }
+              - { label: 'Version (AAAA-MM)', name: date, widget: string, pattern: ['^\d{4}-\d{2}$', 'Format : 2026-10'], hint: 'Ex. : 2026-10' }
+              - { label: Fichier PDF, name: file, widget: file, media_folder: /public/documents, public_folder: /documents, choose_url: false }

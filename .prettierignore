@@ -1,0 +1,14 @@
+# Mise en forme vérifiée en CI (ENG-02) sur le code JavaScript/TypeScript et les styles.
+# Exclus : sorties de build, contenus écrits par l’espace de gestion (JSON), documentation (tableaux alignés à la main)
+# et gabarits Astro (espaces significatifs dans le texte affiché ; validés par le Nu Html Checker).
+dist/
+.astro/
+node_modules/
+.lighthouseci/
+package-lock.json
+src/content/
+src/data/*.json
+public/
+docs/
+*.md
+*.astro

@@ -52,7 +52,7 @@ const onScroll = () => {
     header.toggleAttribute('data-hidden', !menuOpen && y > 400 && y > lastY + 2)
     if (y < lastY - 2) header.removeAttribute('data-hidden')
   }
-  bar?.toggleAttribute('data-visible', y > innerHeight * 0.6)
+  bar?.setAttribute('data-visible', '') // barre mobile toujours visible
   lastY = y
 }
 addEventListener('scroll', onScroll, { passive: true })

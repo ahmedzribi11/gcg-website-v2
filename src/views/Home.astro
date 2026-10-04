@@ -22,7 +22,7 @@ const projects = await getProjects(lang)
 const featured = await getFeatured(lang)
 ---
 
-<Base lang={lang} alt={route('home', lang === 'fr' ? 'en' : 'fr')} header="overlay">
+<Base lang={lang} alt={route('home', lang === 'fr' ? 'en' : 'fr')} header="overlay" organization docTitle={lang === 'fr' ? 'GCG · Construction & ingénierie en Côte d’Ivoire' : 'GCG · Construction & engineering in Côte d’Ivoire'}>
   <Hero lang={lang} />
   <Marquee lang={lang} />
   <Intro lang={lang} projects={projects} />

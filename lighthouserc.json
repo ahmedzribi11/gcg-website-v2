@@ -1,0 +1,84 @@
+{
+  "ci": {
+    "collect": {
+      "startServerCommand": "npx astro preview --host 127.0.0.1 --port 4321",
+      "startServerReadyPattern": "4321",
+      "url": [
+        "http://127.0.0.1:4321/",
+        "http://127.0.0.1:4321/realisations",
+        "http://127.0.0.1:4321/realisations/green-city",
+        "http://127.0.0.1:4321/expertises/construction",
+        "http://127.0.0.1:4321/contact",
+        "http://127.0.0.1:4321/en",
+        "http://127.0.0.1:4321/en/projects/villa-palmeras"
+      ],
+      "numberOfRuns": 3,
+      "settings": {
+        "onlyCategories": ["performance", "accessibility", "seo", "best-practices"]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "largest-contentful-paint": [
+          "warn",
+          {
+            "maxNumericValue": 2500,
+            "aggregationMethod": "median"
+          }
+        ],
+        "cumulative-layout-shift": [
+          "error",
+          {
+            "maxNumericValue": 0.1,
+            "aggregationMethod": "median"
+          }
+        ],
+        "total-blocking-time": [
+          "warn",
+          {
+            "maxNumericValue": 200,
+            "aggregationMethod": "median"
+          }
+        ],
+        "resource-summary:script:size": [
+          "error",
+          {
+            "maxNumericValue": 460800
+          }
+        ],
+        "resource-summary:font:size": [
+          "error",
+          {
+            "maxNumericValue": 153600
+          }
+        ],
+        "resource-summary:third-party:count": [
+          "error",
+          {
+            "maxNumericValue": 3
+          }
+        ],
+        "categories:accessibility": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ],
+        "categories:seo": [
+          "warn",
+          {
+            "minScore": 0.95
+          }
+        ],
+        "uses-responsive-images": ["warn", {}],
+        "modern-image-formats": ["error", {}],
+        "offscreen-images": ["warn", {}]
+      },
+      "_note": "Cette version garde l’ouverture 3D (three.js) : budget JavaScript de 450 Ko, temps de chargement en avertissement."
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": ".lighthouseci"
+    }
+  }
+}

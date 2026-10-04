@@ -1,7 +1,8 @@
 ---
 import Icon from './Icon.astro'
 import { route, useT, type Lang } from '../i18n'
-import { contact, media, socials, whatsappLink } from '../lib/settings'
+import { contact, documents, socials, whatsappLink } from '../lib/settings'
+import legal from '../data/legal.json'
 
 interface Props {
   lang: Lang
@@ -19,8 +20,8 @@ const nav = [
 const useful = [
   { href: route('references', lang), label: t('refs.title') },
   { href: route('share', lang), label: t('contact.share') },
-  ...(media.portfolioPdf ? [{ href: media.portfolioPdf, label: t('share.pdf') }] : []),
 ]
+const owner = legal.legalName || legal.tradeName
 const wa = whatsappLink(t('contact.form.intro'))
 ---
 
@@ -56,6 +57,7 @@ const wa = whatsappLink(t('contact.form.intro'))
         <p class="meta text-mist">{t('footer.links')}</p>
         <ul class="mt-5 space-y-3">
           {useful.map((n) => <li><a href={n.href} class="link-line text-[15px] text-bone/75 hover:text-bone">{n.label}</a></li>)}
+          {documents.map((d) => <li><a href={d.href} download={d.downloadName} class="link-line text-[15px] text-bone/75 hover:text-bone">{lang === 'fr' ? d.title : d.title_en}</a></li>)}
         </ul>
       </div>
 
@@ -72,9 +74,9 @@ const wa = whatsappLink(t('contact.form.intro'))
     </div>
 
     <div class="mt-20 flex flex-col justify-between gap-3 border-t border-line pt-6 md:flex-row">
-      <p class="meta text-mist">© {year} General Constructor Group CI · {t('footer.rights')}</p>
+      <p class="meta text-mist">© {year} {owner} · {t('footer.rights')} · <a href={route('legal', lang)} class="hover:text-bone">{t('legal.title')}</a> · <a href={route('privacy', lang)} class="hover:text-bone">{t('privacy.title')}</a></p>
       <p class="meta text-mist">{t('footer.since')} · {t('footer.country')}</p>
     </div>
   </div>
-  <p aria-hidden="true" class="display pointer-events-none absolute -bottom-[0.18em] left-1/2 -translate-x-1/2 select-none whitespace-nowrap text-[26vw] font-medium leading-none text-bone/[0.025]">GCG CI</p>
+  <p aria-hidden="true" class="watermark display pointer-events-none absolute -bottom-[0.18em] left-1/2 -translate-x-1/2 select-none whitespace-nowrap text-[26vw] font-medium leading-none text-bone/[0.025]" data-text="GCG CI"></p>
 </footer>

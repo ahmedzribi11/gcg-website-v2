@@ -30,7 +30,7 @@ const count = (id: string) => projects.filter((p) => p.services.includes(id as n
           <article id={s.slug[lang]} class="grid gap-8 border-t border-line py-14 md:grid-cols-12 md:gap-12 md:py-20">
             <a href={servicePath(s.slug[lang], lang)} class:list={['group relative block overflow-hidden md:col-span-5', flip && 'md:order-2 md:col-start-8']} data-reveal="clip" data-cursor="view" aria-label={s.title[lang]}>
               <div data-parallax="6">
-                <ProjectImage src={coverImage(projects, s.cover)} alt="" sizes="(min-width: 768px) 40vw, 100vw" class="block aspect-[4/3] md:aspect-[5/4]" imgClass="h-full w-full object-cover transition-transform duration-[1.6s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" />
+                <ProjectImage image={coverImage(projects, s.cover)} alt="" sizes="(min-width: 768px) 40vw, 100vw" class="block aspect-[4/3] md:aspect-[5/4]" imgClass="h-full w-full object-cover transition-transform duration-[1.6s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" />
               </div>
             </a>
             <div class:list={['flex flex-col justify-between md:col-span-6', flip ? 'md:order-1 md:col-start-1' : 'md:col-start-7']}>

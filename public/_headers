@@ -1,0 +1,18 @@
+# En-têtes HTTP pour Cloudflare Pages ou Netlify (Vercel utilise vercel.json).
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+  X-Frame-Options: DENY
+  Content-Security-Policy: frame-ancestors 'none'; object-src 'none'; base-uri 'self'
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/admin*
+  X-Robots-Tag: noindex
+/api/*
+  X-Robots-Tag: noindex
+/qr*
+  X-Robots-Tag: noindex

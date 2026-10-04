@@ -30,9 +30,31 @@
     "residences"
   ],
   "images": [
-    "../../assets/projects/residence-assinie-mafia/01.jpg",
-    "../../assets/projects/residence-assinie-mafia/02.jpg",
-    "../../assets/projects/residence-assinie-mafia/03.jpg",
-    "../../assets/projects/residence-assinie-mafia/04.jpg"
-  ]
+    {
+      "src": "../../assets/projects/residence-assinie-mafia/01.jpg",
+      "alt": "Résidence Assinie Mafia, villas urbaines alignées sur rue",
+      "alt_en": "Assinie Mafia residence, row of urban villas along the street",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/residence-assinie-mafia/02.jpg",
+      "alt": "Résidence Assinie Mafia, villa d’angle avec carport",
+      "alt_en": "Assinie Mafia residence, corner villa with carport",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/residence-assinie-mafia/03.jpg",
+      "alt": "Résidence Assinie Mafia, villa lagunaire avec piscine et ponton",
+      "alt_en": "Assinie Mafia residence, lagoon villa with pool and jetty",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/residence-assinie-mafia/04.jpg",
+      "alt": "Résidence Assinie Mafia, villa urbaine à l’angle d’une rue",
+      "alt_en": "Assinie Mafia residence, urban villa on a street corner",
+      "kind": "render"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

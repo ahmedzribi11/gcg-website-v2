@@ -22,7 +22,19 @@
     "hotels"
   ],
   "images": [
-    "../../assets/projects/complexe-familial-vacances/01.jpg",
-    "../../assets/projects/complexe-familial-vacances/02.jpg"
-  ]
+    {
+      "src": "../../assets/projects/complexe-familial-vacances/01.jpg",
+      "alt": "Complexe familial de vacances, piscine et transats devant le restaurant sous pergola",
+      "alt_en": "Family holiday resort, pool and sun loungers below the restaurant pavilion",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/complexe-familial-vacances/02.jpg",
+      "alt": "Complexe familial de vacances, allée paysagère avec fontaine menant à la plage",
+      "alt_en": "Family holiday resort, landscaped walkway with a fountain leading to the beach",
+      "kind": "render"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

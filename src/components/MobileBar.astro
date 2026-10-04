@@ -11,7 +11,7 @@ const t = useT(lang)
 const wa = whatsappLink(t('contact.form.intro'))
 ---
 
-<div id="mobile-bar" class="no-print fixed inset-x-3 bottom-3 z-40 translate-y-[150%] transition-transform duration-700 ease-[var(--ease-out-expo)] data-[visible]:translate-y-0 md:hidden" style="padding-bottom: env(safe-area-inset-bottom)">
+<nav id="mobile-bar" aria-label={lang === 'fr' ? 'Actions rapides' : 'Quick actions'} class="no-print fixed inset-x-3 bottom-3 z-40 translate-y-[150%] transition-transform duration-700 ease-[var(--ease-out-expo)] data-[visible]:translate-y-0 md:hidden" style="padding-bottom: env(safe-area-inset-bottom)">
   <div class="flex gap-2 rounded-full border border-line bg-ink/85 p-1.5 shadow-2xl backdrop-blur-xl">
     <a href={route('projects', lang)} class="flex h-12 flex-1 items-center justify-center gap-2 rounded-full text-[13px] tracking-wide text-bone">
       <Icon name="grid" size={16} /> {t('nav.projects')}
@@ -28,4 +28,4 @@ const wa = whatsappLink(t('contact.form.intro'))
       {wa ? 'WhatsApp' : t('nav.cta')}
     </a>
   </div>
-</div>
+</nav>

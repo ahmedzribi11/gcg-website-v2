@@ -25,8 +25,25 @@
     "immeubles"
   ],
   "images": [
-    "../../assets/projects/immeuble-marikati/01.jpg",
-    "../../assets/projects/immeuble-marikati/02.jpg",
-    "../../assets/projects/immeuble-marikati/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/immeuble-marikati/01.jpg",
+      "alt": "Immeuble Marikati, façade vitrée éclairée au crépuscule",
+      "alt_en": "Marikati building, glazed façade lit up at dusk",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/immeuble-marikati/02.jpg",
+      "alt": "Immeuble Marikati, façade avec balcons et parking au rez-de-chaussée",
+      "alt_en": "Marikati building, façade with balconies and ground-floor parking",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/immeuble-marikati/03.jpg",
+      "alt": "Immeuble Marikati, séjour et salle à manger d’un appartement",
+      "alt_en": "Marikati building, apartment living and dining area",
+      "kind": "render"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

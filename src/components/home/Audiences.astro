@@ -28,7 +28,7 @@ const by = (slug: string) => projects.find((p) => p.slug === slug)!
             data-reveal
             style={`--d:${i * 0.08}s`}
           >
-            <ProjectImage src={by(a.image).images[0]} alt="" sizes="(min-width: 768px) 50vw, 100vw" class="absolute inset-0 block h-full w-full" imgClass="h-full w-full object-cover opacity-55 transition-[transform,opacity] duration-[1.6s] ease-[var(--ease-out-expo)] group-hover:scale-105 group-hover:opacity-40" />
+            <ProjectImage image={by(a.image).images[0]} alt="" sizes="(min-width: 768px) 50vw, 100vw" class="absolute inset-0 block h-full w-full" imgClass="h-full w-full object-cover opacity-55 transition-[transform,opacity] duration-[1.6s] ease-[var(--ease-out-expo)] group-hover:scale-105 group-hover:opacity-40" />
             <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/10" />
             <div class="relative mt-auto flex w-full flex-col p-6 md:p-8">
               <span class="meta text-gold">0{i + 1}</span>

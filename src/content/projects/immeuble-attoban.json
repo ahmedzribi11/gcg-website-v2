@@ -25,9 +25,31 @@
     "immeubles"
   ],
   "images": [
-    "../../assets/projects/immeuble-attoban/01.jpg",
-    "../../assets/projects/immeuble-attoban/02.jpg",
-    "../../assets/projects/immeuble-attoban/03.jpg",
-    "../../assets/projects/immeuble-attoban/04.jpg"
-  ]
+    {
+      "src": "../../assets/projects/immeuble-attoban/01.jpg",
+      "alt": "Immeuble Attoban, vue des trois bâtiments au crépuscule",
+      "alt_en": "Attoban complex, the three buildings at dusk",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/immeuble-attoban/02.jpg",
+      "alt": "Immeuble Attoban, façades des bâtiments depuis le jardin",
+      "alt_en": "Attoban complex, building façades seen from the garden",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/immeuble-attoban/03.jpg",
+      "alt": "Immeuble Attoban, vue aérienne des trois bâtiments et de la piscine",
+      "alt_en": "Attoban complex, aerial view of the three buildings and the pool",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/immeuble-attoban/04.jpg",
+      "alt": "Immeuble Attoban, plan d’étage courant des appartements",
+      "alt_en": "Attoban complex, typical floor plan of the apartments",
+      "kind": "plan"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

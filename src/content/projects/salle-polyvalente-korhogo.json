@@ -15,7 +15,7 @@
     "Aménagement"
   ],
   "missions_en": [
-    "Studies",
+    "Design and engineering studies",
     "Construction",
     "Fit-out"
   ],
@@ -30,8 +30,25 @@
     "loisirs"
   ],
   "images": [
-    "../../assets/projects/salle-polyvalente-korhogo/01.jpg",
-    "../../assets/projects/salle-polyvalente-korhogo/02.jpg",
-    "../../assets/projects/salle-polyvalente-korhogo/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/salle-polyvalente-korhogo/01.jpg",
+      "alt": "Salle polyvalente, entrée et auvent à oculus au crépuscule",
+      "alt_en": "Multipurpose hall, entrance and canopy with a circular opening at dusk",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/salle-polyvalente-korhogo/02.jpg",
+      "alt": "Salle polyvalente, entrée principale avec escalier et rampe d’accès",
+      "alt_en": "Multipurpose hall, main entrance with steps and access ramp",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/salle-polyvalente-korhogo/03.jpg",
+      "alt": "Salle polyvalente, terrasse avec comptoir de bar et mobilier",
+      "alt_en": "Multipurpose hall, terrace with bar counter and seating",
+      "kind": "photo"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

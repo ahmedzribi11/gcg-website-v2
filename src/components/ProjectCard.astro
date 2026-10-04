@@ -33,8 +33,7 @@ const href = projectPath(p.slug, lang)
 >
   <div class:list={['relative overflow-hidden', size === 'lg' ? 'aspect-[4/5] md:aspect-[5/4]' : 'aspect-[4/3]', theme === 'paper' ? 'bg-paper-2' : 'bg-ink-3']}>
     <ProjectImage
-      src={p.images[0]}
-      alt={`${p.name} — ${p.location}`}
+      image={p.images[0]}
       sizes={sizes}
       imgClass="h-full w-full object-cover transition-transform duration-[1.6s] ease-[var(--ease-out-expo)] group-hover:scale-[1.05]"
       class="block h-full w-full"
@@ -47,7 +46,7 @@ const href = projectPath(p.slug, lang)
   <div class="mt-4 flex items-start justify-between gap-4">
     <div class="min-w-0">
       <h3 class:list={['text-balance text-xl font-light tracking-[-0.02em] transition-colors duration-500 md:text-2xl', theme === 'paper' ? 'group-hover:text-brand-2' : 'group-hover:text-gold']}>{p.name}</h3>
-      <p class:list={['mt-1 text-[13px]', theme === 'paper' ? 'text-brand/60' : 'text-bone/55']}>{p.location} · {p.period}</p>
+      <p class:list={['mt-1 text-[13px]', theme === 'paper' ? 'text-brand/75' : 'text-bone/55']}>{p.location} · {p.period}</p>
     </div>
     <p class:list={['meta mt-1.5 hidden shrink-0 text-right', !compact && 'sm:block', theme === 'paper' ? 'text-brand/45' : 'text-mist']}>{SECTOR_LABELS[p.sector][lang]}</p>
   </div>

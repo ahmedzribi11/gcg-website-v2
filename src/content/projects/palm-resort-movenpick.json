@@ -1,7 +1,5 @@
 {
   "number": 25,
-  "featured": true,
-  "featuredOrder": 9,
   "name": "Palm Resort phase 2 : Mövenpick",
   "name_en": "Palm Resort phase 2: Mövenpick",
   "sector": "hotellerie",
@@ -27,9 +25,33 @@
     "villas"
   ],
   "images": [
-    "../../assets/projects/palm-resort-movenpick/01.jpg",
-    "../../assets/projects/palm-resort-movenpick/02.jpg",
-    "../../assets/projects/palm-resort-movenpick/03.jpg",
-    "../../assets/projects/palm-resort-movenpick/04.jpg"
-  ]
+    {
+      "src": "../../assets/projects/palm-resort-movenpick/01.jpg",
+      "alt": "Palm Resort phase 2 : Mövenpick, villas le long d’une allée au crépuscule",
+      "alt_en": "Palm Resort phase 2: Mövenpick, villas along an access road at dusk",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/palm-resort-movenpick/02.jpg",
+      "alt": "Palm Resort phase 2 : Mövenpick, ponton menant aux bungalows au bord de l’eau",
+      "alt_en": "Palm Resort phase 2: Mövenpick, boardwalk leading to waterfront bungalows",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/palm-resort-movenpick/03.jpg",
+      "alt": "Palm Resort phase 2 : Mövenpick, vue aérienne du plan d’ensemble",
+      "alt_en": "Palm Resort phase 2: Mövenpick, aerial view of the site layout",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/palm-resort-movenpick/04.jpg",
+      "alt": "Palm Resort phase 2 : Mövenpick, vue aérienne des bungalows et de la piscine",
+      "alt_en": "Palm Resort phase 2: Mövenpick, aerial view of the bungalows and pool",
+      "kind": "render"
+    }
+  ],
+  "featured": true,
+  "featuredOrder": 9,
+  "permission": "en-attente",
+  "en_status": "valide"
 }

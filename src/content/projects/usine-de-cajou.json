@@ -25,8 +25,25 @@
     "industrie"
   ],
   "images": [
-    "../../assets/projects/usine-de-cajou/01.jpg",
-    "../../assets/projects/usine-de-cajou/02.jpg",
-    "../../assets/projects/usine-de-cajou/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/usine-de-cajou/01.jpg",
+      "alt": "Usine de cajou, vue aérienne des entrepôts et de l’aire de conteneurs",
+      "alt_en": "Cashew plant, aerial view of the warehouses and container yard",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/usine-de-cajou/02.jpg",
+      "alt": "Usine de cajou, façade de l’entrepôt et aire de chargement",
+      "alt_en": "Cashew plant, warehouse front and loading area",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/usine-de-cajou/03.jpg",
+      "alt": "Usine de cajou, voie d’accès et camions devant les bâtiments",
+      "alt_en": "Cashew plant, access road and lorries in front of the buildings",
+      "kind": "render"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

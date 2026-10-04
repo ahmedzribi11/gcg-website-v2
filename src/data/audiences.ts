@@ -34,8 +34,8 @@ export const audiences: Audience[] = [
     id: 'hotellerie',
     title: { fr: 'Hôtellerie & tourisme', en: 'Hospitality & tourism' },
     text: {
-      fr: 'Hôtels, resorts, villas touristiques, restaurants et spas : de l’étude d’un nouveau complexe à la rénovation d’un établissement existant.',
-      en: 'Hotels, resorts, holiday villas, restaurants and spas: from the study of a new resort to the renovation of an existing hotel.',
+      fr: 'Hôtels, resorts, villas touristiques, bars de plage et spas : de l’étude d’un nouveau complexe à la mise à niveau d’un établissement existant.',
+      en: 'Hotels, resorts, holiday villas, beach bars and spas: from the study of a new resort to the upgrade of an existing hotel.',
     },
     points: {
       fr: ['Hôtels clé en main', 'Rénovation et modernisation', 'Mise en conformité technique et incendie'],

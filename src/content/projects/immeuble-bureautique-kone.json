@@ -27,9 +27,31 @@
     "immeubles"
   ],
   "images": [
-    "../../assets/projects/immeuble-bureautique-kone/01.jpg",
-    "../../assets/projects/immeuble-bureautique-kone/02.jpg",
-    "../../assets/projects/immeuble-bureautique-kone/03.jpg",
-    "../../assets/projects/immeuble-bureautique-kone/04.jpg"
-  ]
+    {
+      "src": "../../assets/projects/immeuble-bureautique-kone/01.jpg",
+      "alt": "Immeuble bureautique Koné, façade achevée avec baie vitrée centrale",
+      "alt_en": "Koné office building, completed façade with a central glazed bay",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/immeuble-bureautique-kone/02.jpg",
+      "alt": "Immeuble bureautique Koné, élévation de la façade principale",
+      "alt_en": "Koné office building, main façade elevation",
+      "kind": "plan"
+    },
+    {
+      "src": "../../assets/projects/immeuble-bureautique-kone/03.jpg",
+      "alt": "Immeuble bureautique Koné, toupie à béton sur le chantier",
+      "alt_en": "Koné office building, concrete mixer truck on site",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/immeuble-bureautique-kone/04.jpg",
+      "alt": "Immeuble bureautique Koné, plan de structure avec trame des poteaux",
+      "alt_en": "Koné office building, structural plan showing the column grid",
+      "kind": "plan"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

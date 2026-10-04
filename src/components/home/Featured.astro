@@ -26,7 +26,7 @@ const t = useT(lang)
             <a href={projectPath(p.slug, lang)} class="group grid h-full gap-6 md:grid-cols-12 md:gap-10" data-cursor="view">
               <div data-slide-frame class="relative aspect-[4/3] overflow-hidden bg-ink-3 md:col-span-8 md:aspect-auto md:h-full">
                 <div data-slide-media class="absolute -inset-x-[6%] inset-y-0">
-                  <ProjectImage src={p.images[0]} alt={`${p.name} — ${p.location}`} sizes="(min-width: 768px) 55vw, 100vw" class="block h-full w-full" imgClass="h-full w-full object-cover transition-transform duration-[1.8s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" vt={`p-${p.slug}`} />
+                  <ProjectImage image={p.images[0]} sizes="(min-width: 768px) 55vw, 100vw" class="block h-full w-full" imgClass="h-full w-full object-cover transition-transform duration-[1.8s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" vt={`p-${p.slug}`} />
                 </div>
                 {p.status && <span class="pill absolute left-4 top-4" data-status={p.status}>{STATUS_SHORT[p.status][lang]}</span>}
               </div>
@@ -52,9 +52,10 @@ const t = useT(lang)
                     </div>
                   )}
                   <div class="flex items-end">
-                    <span class="meta inline-flex items-center gap-2 text-bone">
+                    <dt class="sr-only">{t('projects.label')}</dt>
+                    <dd class="meta inline-flex items-center gap-2 text-bone">
                       {t('cta.discover')} <Icon name="arrow" />
-                    </span>
+                    </dd>
                   </div>
                 </dl>
               </div>

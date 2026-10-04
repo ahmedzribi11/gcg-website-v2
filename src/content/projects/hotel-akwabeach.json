@@ -1,7 +1,5 @@
 {
   "number": 6,
-  "featured": true,
-  "featuredOrder": 6,
   "name": "Hôtel Akwabeach",
   "sector": "hotellerie",
   "city": "assouinde",
@@ -29,8 +27,27 @@
     "hotels"
   ],
   "images": [
-    "../../assets/projects/hotel-akwabeach/01.jpg",
-    "../../assets/projects/hotel-akwabeach/02.jpg",
-    "../../assets/projects/hotel-akwabeach/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/hotel-akwabeach/01.jpg",
+      "alt": "Hôtel Akwabeach, terrasse du restaurant surplombant la piscine",
+      "alt_en": "Hôtel Akwabeach, restaurant terrace overlooking the pool",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/hotel-akwabeach/02.jpg",
+      "alt": "Hôtel Akwabeach, bar-restaurant ouvert sur la plage sous le toit-terrasse",
+      "alt_en": "Hôtel Akwabeach, open-sided beach bar and restaurant beneath the roof terrace",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/hotel-akwabeach/03.jpg",
+      "alt": "Hôtel Akwabeach, bar circulaire sur le toit-terrasse au coucher du soleil",
+      "alt_en": "Hôtel Akwabeach, circular rooftop bar at sunset",
+      "kind": "render"
+    }
+  ],
+  "featured": true,
+  "featuredOrder": 6,
+  "permission": "en-attente",
+  "en_status": "valide"
 }

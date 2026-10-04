@@ -21,9 +21,31 @@
     "hotels"
   ],
   "images": [
-    "../../assets/projects/hotel-du-golf/01.jpg",
-    "../../assets/projects/hotel-du-golf/02.jpg",
-    "../../assets/projects/hotel-du-golf/03.jpg",
-    "../../assets/projects/hotel-du-golf/04.jpg"
-  ]
+    {
+      "src": "../../assets/projects/hotel-du-golf/01.jpg",
+      "alt": "Hôtel du Golf Abidjan, bâtiment principal incurvé, plage et piscine au coucher du soleil",
+      "alt_en": "Hôtel du Golf, Abidjan: curved main building, beach and pool at sunset",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/hotel-du-golf/02.jpg",
+      "alt": "Hôtel du Golf Abidjan, façade vitrée et plage aménagée au bord de l’eau",
+      "alt_en": "Hôtel du Golf, Abidjan: glazed façade and landscaped beach at the water’s edge",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/hotel-du-golf/03.jpg",
+      "alt": "Hôtel du Golf Abidjan, vue aérienne du complexe au bord de l’eau",
+      "alt_en": "Hôtel du Golf, Abidjan: aerial view of the complex at the water’s edge",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/hotel-du-golf/04.jpg",
+      "alt": "Hôtel du Golf Abidjan, salle de restaurant vitrée ouverte sur la terrasse",
+      "alt_en": "Hôtel du Golf, Abidjan: glazed restaurant opening onto the terrace",
+      "kind": "render"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

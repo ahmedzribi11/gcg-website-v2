@@ -18,7 +18,7 @@ const order = (Object.keys(counts) as CityId[]).sort((a, b) => counts[b] - count
 <section class="theme-paper relative overflow-hidden py-24 md:py-40" aria-labelledby="presence-title">
   <div class="wrap grid gap-16 md:grid-cols-12 md:items-center">
     <div class="md:col-span-5">
-      <p class="label text-brand/60" data-reveal>{t('presence.label')}</p>
+      <p class="label text-brand/75" data-reveal>{t('presence.label')}</p>
       <h2 id="presence-title" class="display mt-8 text-[clamp(2.6rem,6vw,6.4rem)]" data-split>
         {lang === 'fr' ? 'De Korhogo' : 'From Korhogo'} <em class="serif">{lang === 'fr' ? 'à Assinie.' : 'to Assinie.'}</em>
       </h2>
@@ -29,7 +29,7 @@ const order = (Object.keys(counts) as CityId[]).sort((a, b) => counts[b] - count
             <li class="border-b border-brand/15" data-reveal style={`--d:${i * 0.05}s`}>
               <a href={`${route('projects', lang)}?ville=${c}`} class="group flex items-baseline justify-between py-3.5">
                 <span class="text-lg font-light transition-transform duration-500 group-hover:translate-x-1.5">{cities[c].name}</span>
-                <span class="meta text-brand/55">{String(counts[c]).padStart(2, '0')} {counts[c] > 1 ? t('projects.count.many') : t('projects.count.one')}</span>
+                <span class="meta text-brand/75">{String(counts[c]).padStart(2, '0')} {counts[c] > 1 ? t('projects.count.many') : t('projects.count.one')}</span>
               </a>
             </li>
           ))

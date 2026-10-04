@@ -32,8 +32,25 @@
     "immeubles"
   ],
   "images": [
-    "../../assets/projects/residence-abatta/01.jpg",
-    "../../assets/projects/residence-abatta/02.jpg",
-    "../../assets/projects/residence-abatta/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/residence-abatta/01.jpg",
+      "alt": "Résidence Abatta, villas urbaines côté rue au crépuscule",
+      "alt_en": "Abatta residence, urban villas seen from the street at dusk",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/residence-abatta/02.jpg",
+      "alt": "Résidence Abatta, vue aérienne des villas et de l’immeuble",
+      "alt_en": "Abatta residence, aerial view of the villas and the apartment building",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/residence-abatta/03.jpg",
+      "alt": "Résidence Abatta, plan de masse des lots et de la voie de desserte",
+      "alt_en": "Abatta residence, site plan of the plots and access road",
+      "kind": "plan"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

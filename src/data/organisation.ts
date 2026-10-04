@@ -12,16 +12,30 @@ export const keyFigures: { value: number; suffix?: string; label: L<string> }[] 
 ]
 
 export const poles: { name: L<string>; team: string; role: L<string> }[] = [
-  { name: { fr: 'Construction', en: 'Construction' }, team: '12+', role: { fr: 'Direction technique, chefs de projet, équipes chantier', en: 'Technical management, project managers, site teams' } },
-  { name: { fr: 'Études & contrôle qualité', en: 'Studies & quality control' }, team: '6+', role: { fr: 'Ingénierie, structure, contrôle qualité', en: 'Engineering, structure, quality control' } },
+  {
+    name: { fr: 'Construction', en: 'Construction' },
+    team: '12+',
+    role: { fr: 'Direction technique, chefs de projet, équipes chantier', en: 'Technical management, project managers, site teams' },
+  },
+  {
+    name: { fr: 'Études & contrôle qualité', en: 'Engineering studies & quality control' },
+    team: '6+',
+    role: { fr: 'Ingénierie, structure, contrôle qualité', en: 'Engineering, structure, quality control' },
+  },
   { name: { fr: 'Finances', en: 'Finance' }, team: '4+', role: { fr: 'Direction financière et comptabilité', en: 'Financial management and accounting' } },
   { name: { fr: 'Logistique', en: 'Logistics' }, team: '4+', role: { fr: 'Matériel, approvisionnement, coordination', en: 'Equipment, supply, coordination' } },
 ]
 
 export const competences: { name: L<string>; items: L<string[]> }[] = [
-  { name: { fr: 'Construction', en: 'Construction' }, items: { fr: ['Gros œuvre', 'Second œuvre', 'Finitions'], en: ['Structural works', 'Secondary works', 'Finishing'] } },
-  { name: { fr: 'Études', en: 'Studies' }, items: { fr: ['Architecture', 'Structure', 'BIM'], en: ['Architecture', 'Structure', 'BIM'] } },
-  { name: { fr: 'Contrôle qualité', en: 'Quality control' }, items: { fr: ['QA/QC', 'Suivi chantier', 'Réception'], en: ['QA/QC', 'Site supervision', 'Handover'] } },
+  {
+    name: { fr: 'Construction', en: 'Construction' },
+    items: { fr: ['Gros œuvre', 'Second œuvre', 'Finitions'], en: ['Structural works', 'Finishing works', 'Finishes'] },
+  },
+  { name: { fr: 'Études', en: 'Engineering studies' }, items: { fr: ['Architecture', 'Structure', 'BIM'], en: ['Architecture', 'Structure', 'BIM'] } },
+  {
+    name: { fr: 'Contrôle qualité', en: 'Quality control' },
+    items: { fr: ['QA/QC', 'Suivi chantier', 'Réception'], en: ['QA/QC', 'Site supervision', 'Handover'] },
+  },
   { name: { fr: 'Gestion', en: 'Management' }, items: { fr: ['Planning', 'Reporting', 'Coordination'], en: ['Planning', 'Reporting', 'Coordination'] } },
 ]
 

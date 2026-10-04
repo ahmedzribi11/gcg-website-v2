@@ -8,10 +8,16 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/check-content.mjs && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "cms": "npx --yes decap-server"
+    "cms": "npx --yes decap-server",
+    "content:check": "node scripts/check-content.mjs",
+    "content:register": "node scripts/check-content.mjs --update",
+    "audit:site": "node scripts/audit-dist.mjs",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@astrojs/react": "^7.0.0",
@@ -30,6 +36,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@eslint/js": "^10.0.1",
     "@tailwindcss/vite": "^4.3.3",
     "@types/d3-geo": "^3.1.1",
     "@types/react": "^19.3.0",
@@ -38,9 +45,15 @@
     "@types/topojson-client": "^3.1.5",
     "@types/topojson-specification": "^1.0.5",
     "d3-geo": "^3.1.1",
+    "eslint": "^10.12.0",
+    "eslint-plugin-astro": "^3.2.1",
+    "globals": "^17.13.0",
+    "heic-convert": "^2.1.0",
+    "prettier": "^3.9.9",
     "tailwindcss": "^4.3.3",
     "topojson-client": "^3.1.0",
     "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.0",
     "world-atlas": "^2.0.2"
   }
 }

@@ -1,7 +1,5 @@
 {
   "number": 7,
-  "featured": true,
-  "featuredOrder": 8,
   "name": "Usine pharmaceutique SAIF Ivoire",
   "name_en": "SAIF Ivoire pharmaceutical plant",
   "sector": "industrie",
@@ -26,8 +24,27 @@
     "industrie"
   ],
   "images": [
-    "../../assets/projects/saif-ivoire/01.jpg",
-    "../../assets/projects/saif-ivoire/02.jpg",
-    "../../assets/projects/saif-ivoire/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/saif-ivoire/01.jpg",
+      "alt": "Usine pharmaceutique SAIF Ivoire, ossature métallique et passerelle en caillebotis",
+      "alt_en": "SAIF Ivoire pharmaceutical plant, steel frame and grating walkway",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/saif-ivoire/02.jpg",
+      "alt": "Usine pharmaceutique SAIF Ivoire, fermes de charpente métallique en cours de montage",
+      "alt_en": "SAIF Ivoire pharmaceutical plant, steel roof trusses during erection",
+      "kind": "photo"
+    },
+    {
+      "src": "../../assets/projects/saif-ivoire/03.jpg",
+      "alt": "Usine pharmaceutique SAIF Ivoire, vue du chantier et des structures métalliques",
+      "alt_en": "SAIF Ivoire pharmaceutical plant, site view with the steel frames going up",
+      "kind": "photo"
+    }
+  ],
+  "featured": true,
+  "featuredOrder": 8,
+  "permission": "en-attente",
+  "en_status": "valide"
 }

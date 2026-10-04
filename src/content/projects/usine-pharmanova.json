@@ -25,6 +25,13 @@
     "industrie"
   ],
   "images": [
-    "../../assets/projects/usine-pharmanova/01.jpg"
-  ]
+    {
+      "src": "../../assets/projects/usine-pharmanova/01.jpg",
+      "alt": "Usine pharmaceutique Pharmanova, bâtiment achevé vu depuis la route",
+      "alt_en": "Pharmanova pharmaceutical plant, completed building seen from the road",
+      "kind": "photo"
+    }
+  ],
+  "permission": "en-attente",
+  "en_status": "valide"
 }

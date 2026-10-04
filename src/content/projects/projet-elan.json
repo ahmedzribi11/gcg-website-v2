@@ -1,7 +1,5 @@
 {
   "number": 4,
-  "featured": true,
-  "featuredOrder": 5,
   "name": "Projet Élan",
   "name_en": "Projet Élan",
   "sector": "residentiel",
@@ -30,8 +28,27 @@
     "immeubles"
   ],
   "images": [
-    "../../assets/projects/projet-elan/01.jpg",
-    "../../assets/projects/projet-elan/02.jpg",
-    "../../assets/projects/projet-elan/03.jpg"
-  ]
+    {
+      "src": "../../assets/projects/projet-elan/01.jpg",
+      "alt": "Projet Élan, esplanade piétonne au pied des tours",
+      "alt_en": "Projet Élan, pedestrian plaza at the foot of the towers",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/projet-elan/02.jpg",
+      "alt": "Projet Élan, piste cyclable sous pergolas dans le parc",
+      "alt_en": "Projet Élan, cycle path under pergolas through the park",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/projet-elan/03.jpg",
+      "alt": "Projet Élan, séjour d’un appartement avec une famille",
+      "alt_en": "Projet Élan, apartment living room with a family",
+      "kind": "render"
+    }
+  ],
+  "featured": true,
+  "featuredOrder": 5,
+  "permission": "en-attente",
+  "en_status": "valide"
 }

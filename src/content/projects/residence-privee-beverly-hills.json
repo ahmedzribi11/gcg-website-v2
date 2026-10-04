@@ -1,7 +1,5 @@
 {
   "number": 24,
-  "featured": true,
-  "featuredOrder": 4,
   "name": "Résidence privée de luxe Beverly Hills",
   "name_en": "Beverly Hills private luxury residence",
   "sector": "residentiel",
@@ -18,7 +16,7 @@
     "Aménagements intérieurs et extérieurs"
   ],
   "missions_en": [
-    "Studies, design and construction",
+    "Engineering studies, design and construction",
     "Structural and finishing works",
     "Interior and exterior fit-out"
   ],
@@ -34,7 +32,21 @@
     "residences"
   ],
   "images": [
-    "../../assets/projects/residence-privee-beverly-hills/01.jpg",
-    "../../assets/projects/residence-privee-beverly-hills/02.jpg"
-  ]
+    {
+      "src": "../../assets/projects/residence-privee-beverly-hills/01.jpg",
+      "alt": "Résidence privée de luxe Beverly Hills, façade de villa éclairée et mur d’eau",
+      "alt_en": "Beverly Hills private luxury residence, illuminated villa façade and water wall",
+      "kind": "render"
+    },
+    {
+      "src": "../../assets/projects/residence-privee-beverly-hills/02.jpg",
+      "alt": "Résidence privée de luxe Beverly Hills, villa avec cascade au crépuscule",
+      "alt_en": "Beverly Hills private luxury residence, villa with a water feature at dusk",
+      "kind": "render"
+    }
+  ],
+  "featured": true,
+  "featuredOrder": 4,
+  "permission": "en-attente",
+  "en_status": "valide"
 }

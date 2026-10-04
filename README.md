@@ -7,11 +7,14 @@ d’offres. Bilingue français / anglais.
 Astro (site statique multipage) · Tailwind CSS v4 · JavaScript léger sans framework (5 à 9 Ko par page) ·
 Decap CMS (espace de gestion) · fonctions serveur pour le formulaire et la connexion à l’espace de gestion.
 
+> **Copie de test.** Ce dépôt contient la nouvelle version du site, publiée comme un site séparé pour la
+> regarder sans risque. Le site en ligne actuel reste dans le dépôt `My-web`, qui n’est pas modifié.
+
 Prérequis : **Node.js 22** (voir `.nvmrc` ; 20.19+ accepté) et npm.
 
 ```bash
-git clone https://github.com/ahmedzribi11/My-web.git
-cd My-web
+git clone https://github.com/ahmedzribi11/gcg-website-v2.git
+cd gcg-website-v2
 npm ci
 npm run dev          # développement → http://localhost:4321
 npm run build        # contrôle du contenu puis build de production (dist/)

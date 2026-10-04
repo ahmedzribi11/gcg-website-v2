@@ -5,11 +5,11 @@
 
 backend:
   name: github
-  repo: ahmedzribi11/My-web
+  repo: ahmedzribi11/gcg-website-v2
   branch: main
   auth_endpoint: api/auth
-  # Aperçu réel avant publication : nom exact du statut de déploiement (ex. « Vercel – my-web »)
-  # preview_context: 'Vercel – my-web'
+  # Aperçu réel avant publication : nom exact du statut de déploiement (ex. « Vercel – gcg-website-v2 »)
+  # preview_context: 'Vercel – gcg-website-v2'
   commit_messages:
     create: 'Projet ajouté : {{slug}}'
     update: 'Mise à jour : {{slug}}'

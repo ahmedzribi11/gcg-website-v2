@@ -183,16 +183,16 @@
     background: #f3ecc6;
   }
   .btn-line {
-    border: 1px solid rgba(242, 239, 230, 0.32);
+    border: 1px solid color-mix(in srgb, var(--color-bone) 32%, transparent);
     color: var(--color-bone);
   }
   .btn-line:hover {
     border-color: var(--color-bone);
-    background: rgba(242, 239, 230, 0.06);
+    background: color-mix(in srgb, var(--color-bone) 6%, transparent);
   }
   .btn-dark {
     background: var(--color-brand);
-    color: var(--color-bone);
+    color: #f2efe6;
   }
   .btn-dark:hover {
     background: var(--color-brand-2);
@@ -229,12 +229,12 @@
     border-radius: 999px;
     border: 1px solid var(--color-line);
     font-size: 0.8125rem;
-    color: rgba(242, 239, 230, 0.75);
+    color: color-mix(in srgb, var(--color-bone) 75%, transparent);
     white-space: nowrap;
     transition: all 0.4s var(--ease-out-expo);
   }
   .chip:hover {
-    border-color: rgba(242, 239, 230, 0.4);
+    border-color: color-mix(in srgb, var(--color-bone) 40%, transparent);
     color: var(--color-bone);
   }
   .chip[aria-pressed='true'] {
@@ -623,4 +623,68 @@ body:has(#site-header:not([data-hidden])) [data-filters] {
 /* Filigrane décoratif du pied de page : texte en pseudo-élément (ignoré par les lecteurs d’écran) */
 .watermark::before {
   content: attr(data-text);
+}
+
+/* ─── Mode clair (choisi par le visiteur ; le mode sombre reste celui par défaut) ───
+   Les couleurs du site sont des variables : le mode clair les inverse. L’ouverture 3D, les grandes photos,
+   l’en-tête, le pied de page et les sections vertes restent sombres (.force-dark). */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --color-ink: #f4f0e6;
+  --color-ink-2: #ece6d8;
+  --color-ink-3: #e3dccb;
+  --color-bone: #0e1f15;
+  --color-mist: #56615a;
+  --color-line: rgba(5, 46, 20, 0.16);
+  --color-gold: #6b5d1e;
+  --color-paper: #e9e2d1;
+  --color-paper-2: #ded6c2;
+}
+:root[data-theme='light'] :is(.force-dark, #hero, #site-header, #mobile-bar, body > footer, .pill, .theme-brand, .bg-brand) {
+  color-scheme: dark;
+  --color-ink: #070c09;
+  --color-ink-2: #0c1410;
+  --color-ink-3: #121d17;
+  --color-bone: #f2efe6;
+  --color-mist: #9aa098;
+  --color-line: rgba(242, 239, 230, 0.12);
+  --color-gold: #e8de9f;
+  --color-paper: #f6f3eb;
+  --color-paper-2: #ece7da;
+  color: var(--color-bone);
+}
+:root[data-theme='light'] .theme-brand {
+  color: var(--color-bone);
+}
+/* Bouton principal en mode clair : vert GCG, texte clair (l’or foncé n’est pas assez contrasté) */
+:root[data-theme='light'] .btn-gold {
+  background: var(--color-brand);
+  color: #f6f3eb;
+}
+:root[data-theme='light'] .btn-gold:hover {
+  background: var(--color-brand-2);
+}
+:root[data-theme='light'] :is(.force-dark, #hero, #site-header, #mobile-bar, body > footer, .pill, .theme-brand, .bg-brand) .btn-gold {
+  background: var(--color-gold);
+  color: var(--color-brand);
+}
+html {
+  transition: background-color 0.4s ease;
+}
+[data-icon-moon],
+:root[data-theme='light'] [data-icon-sun] {
+  display: none;
+}
+:root[data-theme='light'] [data-icon-moon] {
+  display: block;
+}
+/* Mode clair : les textes très transparents du design sombre seraient trop pâles sur fond clair */
+:root[data-theme='light'] :is(.text-bone\/30, .text-bone\/40, .text-bone\/50, .text-bone\/55, .text-bone\/60, .text-bone\/65, .text-bone\/70) {
+  color: color-mix(in srgb, var(--color-bone) 76%, transparent);
+}
+:root[data-theme='light'] :is(.text-brand\/45, .text-brand\/65, .text-brand\/70) {
+  color: color-mix(in srgb, var(--color-brand) 82%, transparent);
+}
+:root[data-theme='light'] .pill {
+  background: rgba(7, 12, 9, 0.86);
 }

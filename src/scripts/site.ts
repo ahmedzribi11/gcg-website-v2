@@ -217,3 +217,25 @@ document.fonts?.ready.then(() => ScrollTrigger.refresh())
 addEventListener('load', () => ScrollTrigger.refresh())
 
 export { gsap, ScrollTrigger }
+
+/* ─── Mode clair / sombre ─────────────────────────────────────────────── */
+const themeBtn = document.getElementById('theme-toggle')
+const applyThemeUi = () => {
+  const light = document.documentElement.dataset.theme === 'light'
+  const fr = document.documentElement.lang === 'fr'
+  themeBtn?.setAttribute('aria-pressed', String(light))
+  themeBtn?.setAttribute('aria-label', light ? (fr ? 'Mode sombre' : 'Dark mode') : fr ? 'Mode clair' : 'Light mode')
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', light ? '#f4f0e6' : '#070c09')
+}
+themeBtn?.addEventListener('click', () => {
+  const light = document.documentElement.dataset.theme !== 'light'
+  if (light) document.documentElement.dataset.theme = 'light'
+  else delete document.documentElement.dataset.theme
+  try {
+    localStorage.setItem('gcg-theme', light ? 'light' : 'dark')
+  } catch {
+    /* stockage indisponible : le choix vaut pour cette page */
+  }
+  applyThemeUi()
+})
+applyThemeUi()

@@ -43,9 +43,12 @@ const browser = await chromium.launch()
 for (const [mode, viewport] of [
   ['mobile', { width: 320, height: 720 }],
   ['desktop', { width: 1440, height: 900 }],
+  ['clair', { width: 1440, height: 900 }],
 ]) {
   // Animations coupées (état final des apparitions GSAP) pour mesurer les contrastes réels
   const ctx = await browser.newContext({ viewport, bypassCSP: true, isMobile: mode === 'mobile', hasTouch: mode === 'mobile', reducedMotion: 'reduce' })
+  // Mode clair : choix enregistré par le bouton soleil/lune
+  if (mode === 'clair') await ctx.addInitScript(() => localStorage.setItem('gcg-theme', 'light'))
   const page = await ctx.newPage()
   for (const path of PAGES) {
     const errs = []
@@ -82,4 +85,6 @@ if (problems.length) {
   for (const p of problems) console.error(`  ✗ ${p}`)
   process.exit(1)
 }
-console.log(`Contrôles navigateur réussis : ${PAGES.length} pages × 2 formats, 0 erreur console, 0 violation axe grave, 0 débordement.`)
+console.log(
+  `Contrôles navigateur réussis : ${PAGES.length} pages × 3 (mobile, ordinateur, mode clair), 0 erreur console, 0 violation axe grave, 0 débordement.`,
+)

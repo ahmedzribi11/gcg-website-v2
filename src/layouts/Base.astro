@@ -51,6 +51,14 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script is:inline>
+      // Mode clair choisi par le visiteur, appliqué avant l’affichage (pas de flash)
+      try {
+        if (localStorage.getItem('gcg-theme') === 'light') document.documentElement.dataset.theme = 'light'
+      } catch {
+        // stockage indisponible : mode sombre par défaut
+      }
+    </script>
     <title>{fullTitle}</title>
     <meta name="description" content={desc} />
     {robots && <meta name="robots" content={robots} />}

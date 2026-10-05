@@ -53,12 +53,13 @@ const IH = 170
 const insetProj = geoMercator().fitExtent([[6, 6], [IW - 6, IH - 6]], waColl)
 const insetPath = geoPath(insetProj)
 
-const stroke = tone === 'paper' ? 'rgba(5,46,20,.55)' : 'rgba(232,222,159,.55)'
+const stroke = tone === 'paper' ? 'rgba(5,46,20,.55)' : 'color-mix(in srgb, var(--color-gold) 55%, transparent)'
 const fillCi = tone === 'paper' ? 'rgba(5,46,20,.08)' : 'rgba(5,46,20,.55)'
-const fillN = tone === 'paper' ? 'rgba(5,46,20,.03)' : 'rgba(242,239,230,.025)'
-const strokeN = tone === 'paper' ? 'rgba(5,46,20,.15)' : 'rgba(242,239,230,.12)'
-const ink = tone === 'paper' ? '#052e14' : '#f2efe6'
-const gold = tone === 'paper' ? '#8a7a2e' : '#e8de9f'
+// Version sombre : couleurs du thème (variables), lisibles en mode clair comme en mode sombre
+const fillN = tone === 'paper' ? 'rgba(5,46,20,.03)' : 'color-mix(in srgb, var(--color-bone) 3%, transparent)'
+const strokeN = tone === 'paper' ? 'rgba(5,46,20,.15)' : 'color-mix(in srgb, var(--color-bone) 14%, transparent)'
+const ink = tone === 'paper' ? '#052e14' : 'var(--color-bone)'
+const gold = tone === 'paper' ? '#8a7a2e' : 'var(--color-gold)'
 const href = (c: string) => `${route('projects', lang)}?ville=${c}`
 const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
 ---
@@ -70,13 +71,13 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
     <defs>
       <clipPath id="map-clip"><rect x="0" y="0" width={W} height={H} /></clipPath>
       <pattern id="map-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-        <path d="M40 0H0V40" fill="none" stroke={strokeN} stroke-width="0.5" />
+        <path style={`stroke:${strokeN}`} d="M40 0H0V40" fill="none" stroke-width="0.5" />
       </pattern>
     </defs>
     <rect width={W} height={H} fill="url(#map-grid)" opacity="0.6" />
     <g clip-path="url(#map-clip)">
-      {neighbours.map((f) => <path d={pathStr(f)} fill={fillN} stroke={strokeN} stroke-width="1" />)}
-      <path d={pathStr(ci)} fill={fillCi} stroke={stroke} stroke-width="1.4" class="map-ci" />
+      {neighbours.map((f) => <path style={`fill:${fillN};stroke:${strokeN}`} d={pathStr(f)} stroke-width="1" />)}
+      <path style={`stroke:${stroke}`} d={pathStr(ci)} fill={fillCi} stroke-width="1.4" class="map-ci" />
     </g>
 
     {/* Villes de l’intérieur : étiquette directe */}
@@ -89,10 +90,10 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
         const anchor = left ? 'end' : 'start'
         return (
           <a href={link ? href(c) : undefined} data-city-pin={c} class="map-pin">
-            <circle cx={x} cy={y} r={10 + n * 2.5} fill={gold} opacity="0.16" class="map-halo" />
-            <circle cx={x} cy={y} r="5" fill={gold} />
-            <text x={tx} y={y - 4} fill={ink} font-size="22" font-weight="300" text-anchor={anchor}>{cities[c].name}</text>
-            <text x={tx} y={y + 20} fill={gold} font-size="13" text-anchor={anchor} font-family="Geist Mono Variable, monospace" letter-spacing="2">{n} {n > 1 ? t('projects.count.many').toUpperCase() : t('projects.count.one').toUpperCase()}</text>
+            <circle style={`fill:${gold}`} cx={x} cy={y} r={10 + n * 2.5} opacity="0.16" class="map-halo" />
+            <circle style={`fill:${gold}`} cx={x} cy={y} r="5" />
+            <text style={`fill:${ink}`} x={tx} y={y - 4} font-size="22" font-weight="300" text-anchor={anchor}>{cities[c].name}</text>
+            <text style={`fill:${gold}`} x={tx} y={y + 20} font-size="13" text-anchor={anchor} font-family="Geist Mono Variable, monospace" letter-spacing="2">{n} {n > 1 ? t('projects.count.many').toUpperCase() : t('projects.count.one').toUpperCase()}</text>
           </a>
         )
       })
@@ -106,16 +107,16 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
         const { lx, ly } = labelAt(i)
         return (
           <a href={link ? href(c) : undefined} data-city-pin={c} class="map-pin">
-            <polyline points={`${x},${y} ${x},${y + 26} ${lx},${ly - 58} ${lx},${ly - 40}`} fill="none" stroke={stroke} stroke-width="0.8" stroke-dasharray="2 4" />
-            <circle cx={x} cy={y} r={7 + n * 1.6} fill={gold} opacity="0.16" class="map-halo" />
-            <circle cx={x} cy={y} r="4" fill={gold} />
-            <text x={lx} y={ly} fill={ink} font-size="20" font-weight="300" text-anchor="middle">{cities[c].name}</text>
-            <text x={lx} y={ly + 26} fill={gold} font-size="13" text-anchor="middle" font-family="Geist Mono Variable, monospace" letter-spacing="2">{String(n).padStart(2, '0')}</text>
+            <polyline style={`stroke:${stroke}`} points={`${x},${y} ${x},${y + 26} ${lx},${ly - 58} ${lx},${ly - 40}`} fill="none" stroke-width="0.8" stroke-dasharray="2 4" />
+            <circle style={`fill:${gold}`} cx={x} cy={y} r={7 + n * 1.6} opacity="0.16" class="map-halo" />
+            <circle style={`fill:${gold}`} cx={x} cy={y} r="4" />
+            <text style={`fill:${ink}`} x={lx} y={ly} font-size="20" font-weight="300" text-anchor="middle">{cities[c].name}</text>
+            <text style={`fill:${gold}`} x={lx} y={ly + 26} font-size="13" text-anchor="middle" font-family="Geist Mono Variable, monospace" letter-spacing="2">{String(n).padStart(2, '0')}</text>
           </a>
         )
       })
     }
-    <text x={W - 60} y={H - 22} fill={ink} opacity="0.35" font-size="11" text-anchor="end" font-family="Geist Mono Variable, monospace" letter-spacing="3">CÔTE D’IVOIRE · OCÉAN ATLANTIQUE</text>
+    <text style={`fill:${ink}`} x={W - 60} y={H - 22} opacity="0.35" font-size="11" text-anchor="end" font-family="Geist Mono Variable, monospace" letter-spacing="3">CÔTE D’IVOIRE · OCÉAN ATLANTIQUE</text>
   </svg>
 
   {
@@ -123,7 +124,7 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
       <figcaption class="ml-auto mt-2 flex w-full items-end justify-end gap-4"><span class="w-36 md:w-44">
         <svg viewBox={`0 0 ${IW} ${IH}`} class="h-auto w-full" aria-hidden="true">
           {waFeatures.map((f) => (
-            <path d={insetPath(f) ?? ''} fill={String(f.id) === '384' ? gold : fillN} fill-opacity={String(f.id) === '384' ? 0.85 : 1} stroke={strokeN} stroke-width="0.6" />
+            <path style={`fill:${String(f.id) === '384' ? gold : fillN};stroke:${strokeN}`} d={insetPath(f) ?? ''} fill-opacity={String(f.id) === '384' ? 0.85 : 1} stroke-width="0.6" />
           ))}
         </svg>
         </span>

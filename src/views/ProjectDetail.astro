@@ -63,7 +63,7 @@ const crumbs = breadcrumbLd(
 
 <Base lang={lang} alt={projectPath(p.slug, other)} title={p.name} docTitle={docTitle} description={desc} image={og.src} header="overlay" jsonLd={[crumbs]}>
   <article>
-    <header class="relative flex h-[86svh] min-h-[560px] items-end overflow-hidden bg-ink-3">
+    <header class="relative flex h-[86svh] min-h-[560px] items-end overflow-hidden bg-ink-3 force-dark">
       <ProjectImage image={p.images[0]} sizes="100vw" priority class="absolute inset-0 block h-full w-full" vt={`p-${p.slug}`} />
       <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-ink/50"></div>
       <div class="wrap relative pb-12 md:pb-16">

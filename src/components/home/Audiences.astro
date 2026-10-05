@@ -24,7 +24,7 @@ const by = (slug: string) => projects.find((p) => p.slug === slug)!
         audiences.map((a, i) => (
           <a
             href={`${route('invest', lang)}#${a.id}`}
-            class="audience group relative flex min-h-[420px] flex-1 overflow-hidden bg-ink-3 md:min-h-0"
+            class="audience force-dark group relative flex min-h-[420px] flex-1 overflow-hidden bg-ink-3 md:min-h-0"
             data-reveal
             style={`--d:${i * 0.08}s`}
           >

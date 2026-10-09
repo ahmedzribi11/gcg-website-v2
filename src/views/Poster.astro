@@ -37,6 +37,7 @@ const general = cover ? await getImage({ src: cover.images[0].src, width: 1400, 
       </select>
     </label>
     <button type="button" class="btn btn-gold !min-h-10" data-print><Icon name="print" /> {t('poster.print')}</button>
+    <p data-qr-warning hidden role="note" class="w-full border border-gold/60 px-3 py-2 text-[13px] text-gold">{t('share.tempWarning')}</p>
   </div>
 
   <div class="poster-stage flex justify-center px-4 py-10">

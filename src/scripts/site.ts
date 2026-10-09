@@ -42,7 +42,6 @@ document.addEventListener('click', (e) => {
 
 /* ─── En-tête, barre mobile ───────────────────────────────────────────── */
 const header = document.getElementById('site-header')
-const bar = document.getElementById('mobile-bar')
 let lastY = scrollY
 const onScroll = () => {
   const y = scrollY
@@ -52,11 +51,20 @@ const onScroll = () => {
     header.toggleAttribute('data-hidden', !menuOpen && y > 400 && y > lastY + 2)
     if (y < lastY - 2) header.removeAttribute('data-hidden')
   }
-  bar?.setAttribute('data-visible', '') // barre mobile toujours visible
   lastY = y
 }
 addEventListener('scroll', onScroll, { passive: true })
 onScroll()
+
+/*
+ * Barre mobile : affichée une fois sortis de l’écran les boutons de l’ouverture (accueil, data-bar-after)
+ * ou l’en-tête de la page, pour ne pas couvrir le premier écran (MOB-03).
+ */
+const bar = document.getElementById('mobile-bar')
+const barAfter = document.querySelector('[data-bar-after]') ?? document.querySelector('main :is(header, section)')
+if (bar && barAfter) {
+  new IntersectionObserver(([e]) => bar.toggleAttribute('data-visible', !e.isIntersecting && e.boundingClientRect.top < 0)).observe(barAfter)
+} else bar?.setAttribute('data-visible', '')
 
 /* ─── Menu mobile ─────────────────────────────────────────────────────── */
 const toggle = document.getElementById('menu-toggle')

@@ -63,7 +63,7 @@ const title3 = split(t('hero.title3'))
 
       <div class="flex flex-col gap-7 md:col-span-4 md:pb-3">
         <p class="max-w-md text-[15px] leading-relaxed text-bone/75 md:text-base" data-intro="rise" style="--d:.7s">{t('hero.lead')}</p>
-        <div class="flex flex-wrap gap-3" data-intro style="--d:.85s">
+        <div class="flex flex-wrap gap-3" data-intro data-bar-after style="--d:.85s">
           <a href={route('projects', lang)} class="btn btn-gold" data-magnetic>
             {t('cta.projects')} <Icon name="arrow" />
           </a>

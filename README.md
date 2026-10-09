@@ -12,7 +12,9 @@ connexion à l’espace de gestion.
 > `My-web`, qui n’est pas modifié), avec en plus la sécurité, le référencement, l’accessibilité, les pages
 > légales, l’envoi du formulaire par e-mail et l’espace de gestion amélioré.
 
-Prérequis : **Node.js 22** (voir `.nvmrc` ; 20.19+ accepté) et npm.
+Prérequis : **Node.js 22.23.3** (voir `.nvmrc` ; 22.22.3+ ou 24.16+ accepté, comme les outils d’analyse) et npm.
+Les outils de contrôle (Playwright, axe-core, Nu Html Checker) sont des dépendances de développement à
+version exacte, installées par `npm ci`.
 
 ```bash
 git clone https://github.com/ahmedzribi11/gcg-website-v2.git
@@ -101,7 +103,7 @@ Le même dépôt se déploie sur **Vercel** (`vercel.json`, fonctions `api/`) ou
 > site de GCG : **Vercel Pro**, ou **Cloudflare Pages** (offre gratuite, usage commercial autorisé).
 > Procédure : `docs/exploitation.md`, section 6.
 
-Build : `npm run build`, dossier `dist`, Node 22. Variables d’environnement :
+Build : `npm run build`, dossier `dist`, Node 22 (`.nvmrc`). Variables d’environnement :
 
 | Variable | Rôle |
 | --- | --- |

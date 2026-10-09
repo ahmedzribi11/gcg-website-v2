@@ -40,21 +40,20 @@ jobs:
       - name: 'SEO, liens, langues, h1, textes de remplissage (SEO-01/05, I18N-03/05, EDIT-01)'
         run: node scripts/audit-dist.mjs
 
+      # Outils de contrôle aux versions exactes de package.json (OPS-10), installés par npm ci
       - name: 'Validation HTML (Nu Html Checker)'
         run: |
-          npm i --no-save vnu-jar@24
           java -jar node_modules/vnu-jar/build/dist/vnu.jar --errors-only --filterpattern '.*(view-transition-name|transition-delay|safe-area-inset|element in .body. must be the first child).*' \
             $(find dist -name '*.html' -not -path 'dist/qr/*' -not -name 'qr.html')
 
       - name: 'Navigateur : console, accessibilité axe, débordements (ENG-09, A11Y-01, UX-05)'
         run: |
-          npm i --no-save playwright@1 axe-core@4
           npx playwright install --with-deps chromium
           (npx astro preview --host 127.0.0.1 --port 4321 &) && sleep 4
           node scripts/browser-checks.mjs
 
       - name: 'Lighthouse : budgets de performance et d’accessibilité (PERF-01/02/03/05/06/09)'
-        run: npx --yes @lhci/cli@0.14 autorun
+        run: npx --yes @lhci/cli@0.14.0 autorun
 
   lancement:
     # Build du mode lancement (GCG_LAUNCH=1, CODE-02 / OPS-02) : seuls les projets autorisés sont publiés,

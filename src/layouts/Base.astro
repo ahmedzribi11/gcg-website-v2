@@ -100,7 +100,10 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
       document.documentElement.classList.replace('no-js', 'js')
     </script>
     {ld.length > 0 && <script type="application/ld+json" set:html={JSON.stringify(ld.length === 1 ? ld[0] : ld)} />}
-    {umamiId && !isPreview && <script is:inline defer src={umamiSrc} data-website-id={umamiId} data-do-not-track="true" />}
+    {
+      /* Mesure limitée au domaine public (OPS-09) : les copies du site (*.vercel.app, autres projets) ne sont pas comptées */
+      umamiId && !isPreview && <script is:inline defer src={umamiSrc} data-website-id={umamiId} data-domains={site?.hostname} data-do-not-track="true" />
+    }
   </head>
   <body class:list={['grain min-h-svh', { 'is-bare': bare }]} data-lang={lang}>
     {

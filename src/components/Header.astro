@@ -88,9 +88,11 @@ const wa = whatsappLink(t('contact.form.intro'))
 <!--
 Hors de l’en-tête : son flou d’arrière-plan (backdrop-filter) et sa translation feraient de l’en-tête le
 bloc conteneur du menu fixe, limité à 64 px de haut pendant ~0,7 s (page visible à travers).
+Contenu défilant sous l’en-tête : en paysage, à 200 % ou en grand texte, tous les liens restent atteignables (BRW-02).
 -->
 <div id="mobile-menu" class="invisible fixed inset-0 z-[49] bg-ink opacity-0 transition-[opacity,visibility] duration-300 lg:hidden" aria-hidden="true">
-  <div class="wrap flex h-full flex-col justify-between pb-8 pt-24">
+  <div class="absolute inset-x-0 bottom-0 top-16 overflow-y-auto overscroll-contain md:top-20">
+  <div class="wrap flex min-h-full flex-col justify-between gap-8 pb-8 pt-8">
     <ul class="flex flex-col">
       {
         nav.map((item, i) => (
@@ -138,6 +140,7 @@ bloc conteneur du menu fixe, limité à 64 px de haut pendant ~0,7 s (page visib
       </button>
     </div>
   </div>
+  </div>
 </div>
 
 <style>
@@ -146,5 +149,6 @@ bloc conteneur du menu fixe, limité à 64 px de haut pendant ~0,7 s (page visib
   #site-header[data-menu] .menu-bar:first-child { transform: translateY(4px) rotate(45deg); }
   #site-header[data-menu] .menu-bar:last-child { transform: translateY(-4px) rotate(-45deg); }
   .menu-link { transform: translateY(100%); transition: transform 0.9s var(--ease-out-expo); }
+  @media (max-height: 500px) { .menu-link span:first-child { font-size: 1.75rem; } }
   #site-header[data-menu] + #mobile-menu .menu-link { transform: none; transition-delay: calc(0.08s + var(--i) * 0.06s); }
 </style>

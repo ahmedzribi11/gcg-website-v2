@@ -2,7 +2,7 @@
 import ProjectImage from '../ProjectImage.astro'
 import Icon from '../Icon.astro'
 import { route, useT, type Lang } from '../../i18n'
-import type { Project } from '../../lib/projects'
+import { coverImage, type Project } from '../../lib/projects'
 
 interface Props {
   lang: Lang
@@ -10,9 +10,8 @@ interface Props {
 }
 const { lang, projects } = Astro.props
 const t = useT(lang)
-const by = (slug: string) => projects.find((p) => p.slug === slug)!
-const a = by('green-city')
-const b = by('villa-palmeras')
+const a = coverImage(projects, ['green-city', 0])
+const b = coverImage(projects, ['villa-palmeras', 0])
 const figures = [
   { value: 2016, label: t('fig.since'), plain: true },
   { value: projects.length, label: t('fig.projects') },
@@ -35,10 +34,10 @@ const figures = [
 
     <div class="relative hidden md:col-span-5 md:block" aria-hidden="true">
       <div class="absolute right-0 top-0 w-[78%] overflow-hidden" data-reveal="clip">
-        <div data-parallax="6"><ProjectImage image={a.images[0]} alt="" sizes="35vw" class="block aspect-[4/5]" /></div>
+        <div data-parallax="6"><ProjectImage image={a} alt="" sizes="35vw" class="block aspect-[4/5]" /></div>
       </div>
       <div class="absolute bottom-[-6%] left-0 w-[52%] overflow-hidden border-8 border-paper" data-reveal="clip" style="--d:.2s">
-        <div data-parallax="10"><ProjectImage image={b.images[0]} alt="" sizes="25vw" class="block aspect-square" /></div>
+        <div data-parallax="10"><ProjectImage image={b} alt="" sizes="25vw" class="block aspect-square" /></div>
       </div>
     </div>
   </div>

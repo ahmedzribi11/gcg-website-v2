@@ -7,7 +7,7 @@ import FinalCta from '../components/FinalCta.astro'
 import Icon from '../components/Icon.astro'
 import { audiences } from '../data/audiences'
 import { route, useT, type Lang } from '../i18n'
-import { getProjects } from '../lib/projects'
+import { coverImage, getProjects, publishedOnly } from '../lib/projects'
 import { whatsappLink } from '../lib/settings'
 
 interface Props {
@@ -17,7 +17,6 @@ const { lang } = Astro.props
 const t = useT(lang)
 const fr = lang === 'fr'
 const projects = await getProjects(lang)
-const by = (slug: string) => projects.find((p) => p.slug === slug)!
 const wa = whatsappLink(t('contact.form.intro'))
 
 /** Arguments factuels (portfolio et réunion de cadrage). */
@@ -49,7 +48,7 @@ const reasons = fr
         <div class="wrap grid gap-12 md:grid-cols-12 md:gap-16">
           <div class:list={['overflow-hidden md:col-span-6', i % 2 === 1 && 'md:order-2']} data-reveal="clip">
             <div data-parallax="6">
-              <ProjectImage image={by(a.image).images[0]} sizes="(min-width: 768px) 50vw, 100vw" class="block aspect-[4/3] md:aspect-[5/4]" />
+              <ProjectImage image={coverImage(projects, [a.image, 0])} sizes="(min-width: 768px) 50vw, 100vw" class="block aspect-[4/3] md:aspect-[5/4]" />
             </div>
           </div>
           <div class="flex flex-col justify-center md:col-span-6">
@@ -79,8 +78,8 @@ const reasons = fr
         <div class="wrap mt-16 md:mt-20">
           <p class="meta text-mist" data-reveal>{t('invest.proof')}</p>
           <div class="mt-6 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-            {a.proof.map((slug, k) => (
-              <ProjectCard project={by(slug)} lang={lang} index={k} transition={false} compact sizes="(min-width: 1024px) 23vw, (min-width: 640px) 45vw, 100vw" />
+            {publishedOnly(projects, a.proof).map((p, k) => (
+              <ProjectCard project={p} lang={lang} index={k} transition={false} compact sizes="(min-width: 1024px) 23vw, (min-width: 640px) 45vw, 100vw" />
             ))}
           </div>
         </div>

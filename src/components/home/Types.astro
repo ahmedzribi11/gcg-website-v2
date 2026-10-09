@@ -2,7 +2,7 @@
 import ProjectImage from '../ProjectImage.astro'
 import SectionHead from '../SectionHead.astro'
 import { route, TYPE_LABELS, useT, type Lang } from '../../i18n'
-import type { Project } from '../../lib/projects'
+import { coverImage, type Project } from '../../lib/projects'
 import { TYPES } from '../../content.config'
 
 interface Props {
@@ -21,7 +21,7 @@ const pick: Record<string, string> = {
   equipements: 'ecole-green-city',
   infrastructures: 'vrd-cite-baobab',
 }
-const img = (type: string) => projects.find((p) => p.slug === pick[type])!.images[0]
+const img = (type: string) => coverImage(projects, [pick[type], 0])
 const count = (type: string) => projects.filter((p) => p.types.includes(type as never)).length
 ---
 

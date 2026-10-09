@@ -109,7 +109,7 @@ Build : `npm run build`, dossier `dist`, Node 22 (`.nvmrc`). Variables d’envir
 
 | Variable | Rôle |
 | --- | --- |
-| `SITE_URL` | Domaine définitif (canoniques, sitemap, QR codes) |
+| `SITE_URL` | Domaine définitif (canoniques, sitemap, QR codes, domaine compté par Umami). Sans lui, un build en CI ou sur la branche de production Cloudflare s’arrête ; Vercel se replie sur son domaine de production |
 | `RESEND_API_KEY`, `CONTACT_TO`, `CONTACT_FROM` | Envoi du formulaire de contact par e-mail |
 | `GITHUB_OAUTH_ID`, `GITHUB_OAUTH_SECRET` | Connexion à l’espace de gestion |
 | `GCG_LAUNCH=1` | Masque les projets sans autorisation de publication du client |

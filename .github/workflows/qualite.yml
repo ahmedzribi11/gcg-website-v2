@@ -1,4 +1,5 @@
-# Contrôles qualité à chaque modification (ENG-04) : un échec bloque la fusion dans main.
+# Contrôles qualité à chaque modification (ENG-04). Un échec ne bloque la fusion dans main que si la branche
+# est protégée avec ces contrôles requis (GATE-03, docs/exploitation.md section 9).
 name: Qualité
 
 on:

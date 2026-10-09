@@ -222,6 +222,7 @@ collections:
             collapsed: false
             fields:
               - { label: Téléphone, name: phone, widget: string, required: false, pattern: ['^(\+?[\d ]{8,20})?$', 'Numéro au format international, ex. +225 07 00 00 00 00'], hint: 'Ex. : +225 07 00 00 00 00' }
+              - { label: 'Second téléphone', name: phone2, widget: string, required: false, pattern: ['^(\+?[\d ]{8,20})?$', 'Numéro au format international, ex. +225 07 00 00 00 00'], hint: 'Numéro complet avec l’indicatif. Ex. : +216 28 00 00 00' }
               - { label: WhatsApp, name: whatsapp, widget: string, required: false, pattern: ['^(\+?[\d ]{8,20})?$', 'Numéro au format international, ex. +225 07 00 00 00 00'], hint: 'Active les boutons WhatsApp du site. Ex. : +225 07 00 00 00 00' }
               - { label: Email, name: email, widget: string, required: false, pattern: ['^([^@\s]+@[^@\s]+\.[^@\s]+)?$', 'Adresse e-mail invalide'], hint: 'Ex. : contact@gcg-ci.com' }
               - { label: Adresse, name: address, widget: string, required: false, hint: 'Ex. : Abidjan, Cocody Riviera 3, rue …' }

@@ -14,7 +14,7 @@ export function organizationLd(lang: Lang, site: URL | undefined, extra: Record<
     alternateName: [legal.shortName, 'General Constructor Group'],
     foundingDate: '2016',
     areaServed: { '@type': 'Country', name: 'Côte d’Ivoire' },
-    address: { '@type': 'PostalAddress', addressCountry: 'CI', ...(contact.address ? { streetAddress: contact.address } : {}) },
+    address: { '@type': 'PostalAddress', addressCountry: 'CI', ...(contact.address ? { streetAddress: contact.address, addressLocality: 'Abidjan' } : {}) },
   }
   if (legal.legalName) o.legalName = legal.legalName
   if (site) {
@@ -22,6 +22,7 @@ export function organizationLd(lang: Lang, site: URL | undefined, extra: Record<
     o.logo = new URL('/brand/gcg-logo-green.png', site).href
   }
   if (contact.phoneE164) o.telephone = contact.phoneE164
+  if (contact.mapsUrl) o.hasMap = contact.mapsUrl
   if (contact.email) o.email = contact.email
   if (contact.phoneE164 || contact.email) {
     o.contactPoint = {

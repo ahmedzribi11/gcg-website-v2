@@ -22,7 +22,7 @@ const studies = projects.filter((p) => p.status === 'etudes').length
 <Base lang={lang} alt={route('references', fr ? 'en' : 'fr')} title={t('refs.title')} description={t('refs.lead')} bare>
   <div class="no-print sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-line bg-ink/90 px-4 py-3 backdrop-blur">
     <a href={route('projects', lang)} class="meta inline-flex items-center gap-2 text-bone/70 hover:text-gold"><Icon name="arrow-left" /> {t('projects.label')}</a>
-    <button type="button" class="btn btn-gold !min-h-10" onclick="window.print()"><Icon name="print" /> {t('refs.print')}</button>
+    <button type="button" class="btn btn-gold !min-h-10" data-print><Icon name="print" /> {t('refs.print')}</button>
   </div>
 
   <div class="refs-stage px-3 py-8 md:px-8 md:py-12">
@@ -87,7 +87,7 @@ const studies = projects.filter((p) => p.status === 'etudes').length
 
       <footer class="mt-10 flex flex-wrap justify-between gap-4 border-t-2 border-brand pt-4 font-mono text-[10px] uppercase tracking-[0.12em] text-brand/80">
         <span>General Constructor Group CI</span>
-        <span>{[contact.phone, contact.email].filter(Boolean).join(' · ')}</span>
+        <span>{[contact.phone, contact.phone2, contact.email].filter(Boolean).join(' · ')}</span>
         <span data-qr-text={route('home', lang)}></span>
       </footer>
     </article>

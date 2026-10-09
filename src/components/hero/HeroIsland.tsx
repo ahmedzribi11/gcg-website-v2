@@ -2,28 +2,23 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { heroState } from '../../scenes/state'
-import { detectTier, isTouch, prefersReducedMotion, type Tier } from '../../scenes/device'
+import { isTouch, type Tier } from '../../scenes/device'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const HeroScene = lazy(() => import('../../scenes/HeroScene'))
 
 /**
- * Scène 3D du hero : particules → plan → structure. Chargée après l’affichage
- * de la page ; la page reste complète sans elle (repli CSS en arrière-plan).
+ * Scène 3D du hero : particules → plan → structure. Montée par le script du hero
+ * (mount.tsx) une fois la page utilisable ; la page reste complète sans elle (repli CSS).
  */
-export default function HeroIsland({ sectionId }: { sectionId: string }) {
-  const [tier, setTier] = useState<Tier | null>(null)
+export default function HeroIsland({ sectionId, tier: detected }: { sectionId: string; tier: Exclude<Tier, 'none'> }) {
+  const [tier, setTier] = useState<Tier>(detected)
   const [active, setActive] = useState(true)
   const [shown, setShown] = useState(false)
   const timeline = useRef<gsap.core.Timeline | null>(null)
 
   useEffect(() => {
-    const reduced = prefersReducedMotion()
-    const t = detectTier()
-    if (reduced || t === 'none') return
-    setTier(t)
-
     const section = document.getElementById(sectionId)
     const s = heroState
     Object.assign(s, { ambient: 0, particles: 0, fog: 0, form: 0, solid: 0, dolly: 0, scroll: 0 })
@@ -71,7 +66,7 @@ export default function HeroIsland({ sectionId }: { sectionId: string }) {
     }
   }, [sectionId])
 
-  if (!tier || tier === 'none') return null
+  if (tier === 'none') return null
 
   return (
     <div

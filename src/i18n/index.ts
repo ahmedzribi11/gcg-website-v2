@@ -137,6 +137,7 @@ const UI = {
 
     'featured.label': 'Réalisations phares',
     'featured.title': 'Des projets qui parlent pour nous.',
+    'featured.skip': 'Passer les projets',
 
     'scale.label': 'À toutes les échelles',
     'scale.title': 'De la villa de 260 m² au programme de 600 000 m².',
@@ -290,7 +291,6 @@ const UI = {
     'share.projects': 'QR code par projet',
     'share.projectsHelp': 'Chaque projet a sa page et son QR code, à afficher sur le chantier correspondant.',
     'share.social': 'Réseaux sociaux',
-    'share.socialPending': 'Les QR codes Instagram et Facebook apparaîtront ici dès que les adresses des pages seront renseignées.',
     'share.copy': 'Copier le lien',
     'share.native': 'Partager…',
     'share.tempWarning':
@@ -413,6 +413,7 @@ const UI = {
 
     'featured.label': 'Flagship projects',
     'featured.title': 'Projects that speak for us.',
+    'featured.skip': 'Skip projects',
 
     'scale.label': 'At every scale',
     'scale.title': 'From a 260 m² villa to a 600,000 m² development.',
@@ -566,7 +567,6 @@ const UI = {
     'share.projects': 'QR code per project',
     'share.projectsHelp': 'Every project has its own page and QR code, to display on the matching site.',
     'share.social': 'Social media',
-    'share.socialPending': 'Instagram and Facebook QR codes will appear here as soon as the page addresses are added.',
     'share.copy': 'Copy link',
     'share.native': 'Share…',
     'share.tempWarning': 'Do not print yet: the site is still on a temporary address. QR codes become permanent once the site is live on GCG’s own domain.',

@@ -69,11 +69,11 @@ const home = route('home', lang)
       ))
     }
 
-    <!-- Réseaux sociaux -->
-    <article class="border border-line p-6 md:col-span-12 md:p-10" data-reveal>
-      <p class="meta text-gold">{t('share.social')}</p>
-      {
-        socials.length > 0 ? (
+    <!-- Réseaux sociaux : la carte n’apparaît qu’une fois les pages renseignées -->
+    {
+      socials.length > 0 && (
+        <article class="border border-line p-6 md:col-span-12 md:p-10" data-reveal>
+          <p class="meta text-gold">{t('share.social')}</p>
           <ul class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {socials.map((s) => (
               <li class="flex flex-col items-center gap-3 border border-line p-4">
@@ -85,11 +85,9 @@ const home = route('home', lang)
               </li>
             ))}
           </ul>
-        ) : (
-          <p class="mt-4 max-w-xl text-[15px] leading-relaxed text-bone/60">{t('share.socialPending')}</p>
-        )
-      }
-    </article>
+        </article>
+      )
+    }
   </section>
 
   <!-- QR par projet -->

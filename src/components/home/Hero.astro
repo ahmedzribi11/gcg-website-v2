@@ -1,5 +1,4 @@
 ---
-import HeroIsland from '../hero/HeroIsland'
 import Icon from '../Icon.astro'
 import { route, useT, type Lang } from '../../i18n'
 import { whatsappLink } from '../../lib/settings'
@@ -14,31 +13,57 @@ const words =
     ? ['des villas', 'des résidences', 'des hôtels', 'des immeubles', 'des usines', 'des écoles', 'des restaurants', 'des routes']
     : ['villas', 'residences', 'hotels', 'buildings', 'factories', 'schools', 'restaurants', 'roads']
 const wa = whatsappLink(t('contact.form.intro'))
+/** Mots du titre, découpés au build : l’animation démarre au premier affichage, sans attendre le JS. */
+const split = (text: string, from = 0) => text.split(' ').map((w, k) => ({ w, i: from + k }))
+const title1 = split(t('hero.title1'))
+const title2 = split(t('hero.title2'), title1.length)
+const title3 = split(t('hero.title3'))
 ---
 
-<section id="hero" class="relative h-svh min-h-[640px] overflow-hidden bg-ink" aria-labelledby="hero-title">
+<section id="hero" class="relative flex min-h-[max(100svh,640px)] flex-col overflow-hidden bg-ink" aria-labelledby="hero-title">
   <div class="absolute inset-0" aria-hidden="true">
     <div class="css-fog opacity-80"><span></span><span></span><span></span></div>
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_68%_38%,rgba(5,46,20,0.55),transparent_60%)]"></div>
   </div>
 
-  <HeroIsland client:idle sectionId="hero" />
+  <div id="hero-3d" class="absolute inset-0" aria-hidden="true"></div>
 
   <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_45%,transparent_35%,rgba(7,12,9,0.85)_100%)]"></div>
   <div class="pointer-events-none absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t from-ink via-ink/75 to-transparent md:h-1/2 md:via-ink/40"></div>
 
-  <div class="wrap relative flex h-full flex-col justify-end pb-24 pt-28 md:pb-16">
-    <p class="label absolute top-24 text-gold md:top-32" data-reveal style="--d:.2s">{t('hero.kicker')}</p>
+  <div class="wrap relative flex flex-1 flex-col pb-24 pt-24 md:pb-16 md:pt-32">
+    <!-- Accroche dans le flux : le titre ne peut plus passer dessous ; si le contenu dépasse l’écran, le hero s’allonge -->
+    <p class="label text-gold" data-intro style="--d:.2s">{t('hero.kicker')}</p>
 
-    <div class="grid items-end gap-10 md:grid-cols-12">
-      <h1 id="hero-title" class="display text-[clamp(2.9rem,10.5vw,5rem)] md:col-span-8 md:text-[clamp(4rem,7.6vw,9.4rem)]">
-        <span class="block" data-split style="--d:.25s">{t('hero.title1')} <em class="serif text-gold">{t('hero.title2')}</em></span>
-        <span class="block" data-split style="--d:.45s">{t('hero.title3')}</span>
+    <div class="mt-auto grid items-end gap-10 pt-10 md:grid-cols-12">
+      <h1 id="hero-title" class="display text-[clamp(2.9rem,10.5vw,5rem)] md:col-span-8 md:text-[clamp(4rem,min(7.6vw,14svh),9.4rem)]">
+        <span class="block" data-intro-split style="--d:.25s">
+          {
+            title1.map(({ w, i }) => (
+              <>
+                <span class="w"><span style={`--i:${i}`}>{w}</span></span>{' '}
+              </>
+            ))
+          }<em class="serif text-gold">{title2.map(({ w, i }, k) => (
+              <>
+                {k > 0 && ' '}<span class="w"><span style={`--i:${i}`}>{w}</span></span>
+              </>
+            ))}</em>
+        </span>
+        <span class="block" data-intro-split style="--d:.45s">
+          {
+            title3.map(({ w, i }, k) => (
+              <>
+                {k > 0 && ' '}<span class="w"><span style={`--i:${i}`}>{w}</span></span>
+              </>
+            ))
+          }
+        </span>
       </h1>
 
       <div class="flex flex-col gap-7 md:col-span-4 md:pb-3">
-        <p class="max-w-md text-[15px] leading-relaxed text-bone/75 md:text-base" data-reveal style="--d:.7s">{t('hero.lead')}</p>
-        <div class="flex flex-wrap gap-3" data-reveal style="--d:.85s">
+        <p class="max-w-md text-[15px] leading-relaxed text-bone/75 md:text-base" data-intro="rise" style="--d:.7s">{t('hero.lead')}</p>
+        <div class="flex flex-wrap gap-3" data-intro style="--d:.85s">
           <a href={route('projects', lang)} class="btn btn-gold" data-magnetic>
             {t('cta.projects')} <Icon name="arrow" />
           </a>
@@ -50,13 +75,15 @@ const wa = whatsappLink(t('contact.form.intro'))
       </div>
     </div>
 
-    <div class="mt-12 flex items-end justify-between gap-6 border-t border-line pt-5" data-reveal style="--d:1s">
+    <div class="mt-12 flex items-end justify-between gap-6 border-t border-line pt-5" data-intro style="--d:1s">
       <p class="flex items-baseline gap-3 text-[15px] text-bone/60">
         <span class="meta text-mist">{t('hero.we')}</span>
         <span class="sr-only">{words.join(', ')}</span>
         <span class="word-rotator relative inline-block h-[1.4em] overflow-hidden align-bottom text-bone" aria-hidden="true">
-          {words.map((w, i) => <span class="block h-[1.4em]" style={`--n:${i}`} aria-hidden="true">{w}</span>)}
-          <span class="block h-[1.4em]" aria-hidden="true">{words[0]}</span>
+          <span class="block">
+            {words.map((w) => <span class="block h-[1.4em]">{w}</span>)}
+            <span class="block h-[1.4em]">{words[0]}</span>
+          </span>
         </span>
       </p>
       <a href="#intro" class="meta hidden items-center gap-3 text-mist hover:text-bone md:flex">
@@ -67,17 +94,57 @@ const wa = whatsappLink(t('contact.form.intro'))
   </div>
 </section>
 
+<script>
+  import { detectTier, isTouch, prefersReducedMotion } from '../../scenes/device'
+
+  /*
+   * Scène 3D du hero, démarrée sans retarder la page : sur téléphone et tablette après le
+   * chargement complet puis un temps libre du fil principal, sur ordinateur dès un temps libre.
+   * Rien n’est téléchargé sans WebGL ni avec « réduire les animations » : le fond CSS reste.
+   */
+  const host = document.getElementById('hero-3d')
+  const idle = (fn: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 3000 }) : setTimeout(fn, 200))
+  const start = () => {
+    const tier = detectTier()
+    if (!host || tier === 'none') return
+    // Scène chargée en parallèle du montage React (pas de cascade de requêtes) ;
+    // téléchargement impossible : le fond CSS reste affiché
+    Promise.all([import('../hero/mount'), import('../../scenes/HeroScene')]).then(
+      ([{ mountHero }]) => mountHero(host, 'hero', tier),
+      () => {},
+    )
+  }
+  if (host && !prefersReducedMotion()) {
+    if (!(isTouch() || innerWidth < 768) || document.readyState === 'complete') idle(start)
+    else addEventListener('load', () => idle(start), { once: true })
+  }
+</script>
+
 <style>
-  .word-rotator > span:first-child { animation: rotate-words 16s var(--ease-cinema) infinite; }
+  /* Entrée du hero jouée en CSS dès le premier affichage, sans attendre le JS.
+     Le paragraphe d’introduction n’est jamais transparent : lisible dès qu’il est peint. */
+  [data-intro] { animation: intro-in 1.2s var(--ease-out-expo) var(--d, 0s) both; }
+  [data-intro='rise'] { animation-name: intro-rise; }
+  [data-intro-split] .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+  [data-intro-split] .w > span { display: inline-block; animation: intro-word 1.2s var(--ease-out-expo) calc(var(--d, 0s) + var(--i, 0) * 0.045s) both; }
+  @keyframes intro-in { from { opacity: 0; transform: translateY(28px); } }
+  @keyframes intro-rise { from { transform: translateY(28px); } }
+  @keyframes intro-word { from { transform: translateY(110%); } }
+  @media (prefers-reduced-motion: reduce), print {
+    [data-intro], [data-intro-split] .w > span { animation: none; }
+  }
+
+  /* translateY (et non margin-top) : la ligne de base du mot ne bouge pas, il reste aligné sur « nous construisons » */
+  .word-rotator > span { animation: rotate-words 16s var(--ease-cinema) infinite; }
   @keyframes rotate-words {
-    0%, 9% { margin-top: 0; }
-    12.5%, 21.5% { margin-top: -1.4em; }
-    25%, 34% { margin-top: -2.8em; }
-    37.5%, 46.5% { margin-top: -4.2em; }
-    50%, 59% { margin-top: -5.6em; }
-    62.5%, 71.5% { margin-top: -7em; }
-    75%, 84% { margin-top: -8.4em; }
-    87.5%, 96.5% { margin-top: -9.8em; }
-    100% { margin-top: -11.2em; }
+    0%, 9% { transform: none; }
+    12.5%, 21.5% { transform: translateY(-1.4em); }
+    25%, 34% { transform: translateY(-2.8em); }
+    37.5%, 46.5% { transform: translateY(-4.2em); }
+    50%, 59% { transform: translateY(-5.6em); }
+    62.5%, 71.5% { transform: translateY(-7em); }
+    75%, 84% { transform: translateY(-8.4em); }
+    87.5%, 96.5% { transform: translateY(-9.8em); }
+    100% { transform: translateY(-11.2em); }
   }
 </style>

@@ -86,6 +86,9 @@ if (header && toggle && menu) {
   })
 }
 
+/* ─── Impression (pas de onclick en ligne : bloqué par la CSP) ────────── */
+document.querySelectorAll('[data-print]').forEach((b) => b.addEventListener('click', () => print()))
+
 /* ─── Découpage des titres en mots ────────────────────────────────────── */
 function splitWords(root: HTMLElement) {
   let i = 0
@@ -181,6 +184,42 @@ if (cursor && !touch && !reducedMotion) {
   const ry = gsap.quickTo(ring, 'y', { duration: 0.5, ease: 'power3.out' })
   const dx = gsap.quickTo(dot, 'x', { duration: 0.12, ease: 'power3.out' })
   const dy = gsap.quickTo(dot, 'y', { duration: 0.12, ease: 'power3.out' })
+
+  /*
+   * Teinte du curseur selon le fond sous le pointeur : or sur fond sombre, vert foncé sur fond clair
+   * (sections claires, mode clair, boutons or). Fond = premier ancêtre au fond opaque à 50 % ou plus ;
+   * une photo, une vidéo ou la 3D comptent comme sombres (le curseur or y garde un léger contour).
+   */
+  const light = (c: string) => {
+    const n = c.match(/-?[\d.]+%?/g)?.map((v) => (v.endsWith('%') ? parseFloat(v) / 100 : +v))
+    if (!n || n.length < 3) return null
+    if ((n[3] ?? 1) < 0.5) return null
+    if (/^ok(lab|lch)/.test(c)) return n[0] > 0.75
+    if (/^(lab|lch)/.test(c)) return n[0] > 75
+    const k = c.startsWith('color(') ? 1 : 255
+    return (0.2126 * n[0] + 0.7152 * n[1] + 0.0722 * n[2]) / k > 0.6
+  }
+  const lightUnder = (el: Element | null) => {
+    for (let n = el; n; n = n.parentElement) {
+      if (n instanceof HTMLImageElement || n instanceof HTMLVideoElement || n instanceof HTMLCanvasElement) return false
+      const l = light(getComputedStyle(n).backgroundColor.replace(/^color\(srgb/, 'color('))
+      if (l !== null) return l
+    }
+    return false
+  }
+  let px = -1
+  let py = -1
+  let queued = false
+  const retint = () => {
+    queued = false
+    if (px < 0) return
+    cursor.dataset.tone = lightUnder(document.elementFromPoint(px, py)) ? 'dark' : ''
+  }
+  const queueTint = () => {
+    if (queued) return
+    queued = true
+    requestAnimationFrame(retint)
+  }
   addEventListener(
     'pointermove',
     (e) => {
@@ -190,11 +229,18 @@ if (cursor && !touch && !reducedMotion) {
       ry(e.clientY)
       dx(e.clientX)
       dy(e.clientY)
+      px = e.clientX
+      py = e.clientY
+      queueTint()
       const t = (e.target as Element | null)?.closest?.('[data-cursor], a, button, summary, input, select, textarea, label')
       cursor.dataset.mode = t?.getAttribute('data-cursor') === 'view' ? 'view' : t ? 'link' : ''
     },
     { passive: true },
   )
+  // Le fond change sous un pointeur immobile : défilement, survol qui colore un bouton, bascule du thème
+  addEventListener('scroll', queueTint, { passive: true })
+  addEventListener('transitionend', queueTint, { passive: true })
+  new MutationObserver(queueTint).observe(html, { attributes: true, attributeFilter: ['data-theme'] })
   document.documentElement.addEventListener('pointerleave', () => (cursor.style.opacity = '0'))
 
   document.querySelectorAll<HTMLElement>('[data-magnetic]').forEach((el) => {

@@ -21,7 +21,7 @@ const publisher: [string, string][] = (
     ['RCCM', legal.rccm],
     [fr ? 'Compte contribuable' : 'Taxpayer number', legal.taxNumber],
     [fr ? 'Siège social' : 'Registered office', legal.address || contact.address],
-    [fr ? 'Téléphone' : 'Phone', contact.phone],
+    [fr ? 'Téléphone' : 'Phone', [contact.phone, contact.phone2].filter(Boolean).join(' · ')],
     ['E-mail', contact.email],
     [fr ? 'Directeur de la publication' : 'Publication director', legal.publicationDirector],
   ] as [string, string][]

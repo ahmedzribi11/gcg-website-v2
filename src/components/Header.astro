@@ -49,8 +49,8 @@ const wa = whatsappLink(t('contact.form.intro'))
     </ul>
 
     <div class="relative z-10 flex items-center gap-2 md:gap-3">
-      <a href={alt} hreflang={lang === 'fr' ? 'en' : 'fr'} lang={lang === 'fr' ? 'en' : 'fr'} class="meta flex h-10 min-w-10 items-center justify-center rounded-full border border-line px-3 text-bone/80 transition-colors hover:border-bone/50 hover:text-bone" aria-label={t('nav.lang')}>
-        {t('nav.langShort')}
+      <a href={alt} hreflang={lang === 'fr' ? 'en' : 'fr'} lang={lang === 'fr' ? 'en' : 'fr'} class="meta flex h-10 min-w-10 items-center justify-center rounded-full border border-line px-3 text-bone/80 transition-colors hover:border-bone/50 hover:text-bone" data-lang-switch>
+        {t('nav.langShort')}<span class="sr-only"> {t('nav.lang')}</span>
       </a>
       <button
         type="button"
@@ -82,52 +82,57 @@ const wa = whatsappLink(t('contact.form.intro'))
     </div>
   </nav>
 
-  <div id="mobile-menu" class="invisible fixed inset-0 -z-0 bg-ink opacity-0 transition-[opacity,visibility] duration-700 lg:hidden" aria-hidden="true">
-    <div class="wrap flex h-full flex-col justify-between pb-8 pt-24">
-      <ul class="flex flex-col">
-        {
-          nav.map((item, i) => (
-            <li class="overflow-hidden border-b border-line">
-              <a href={item.href} tabindex="-1" class="menu-link flex items-baseline justify-between py-4" style={`--i:${i}`}>
-                <span class:list={['display text-[2.6rem]', isActive(item.href) && 'text-gold']}>{item.label}</span>
-                <span class="meta text-mist">0{i + 1}</span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-      <div class="flex flex-col gap-3">
-        {
-          wa && (
-            <a href={wa} target="_blank" rel="noopener" tabindex="-1" class="btn btn-gold w-full">
-              <Icon name="whatsapp" size={18} /> {t('cta.whatsapp')}
-            </a>
-          )
-        }
-        {
-          contact.phoneHref && (
-            <a href={contact.phoneHref} tabindex="-1" class="btn btn-line w-full">
-              <Icon name="phone" size={16} /> {contact.phone}
-            </a>
-          )
-        }
-        {
-          !wa && (
-            <a href={route('contact', lang)} tabindex="-1" class="btn btn-gold w-full">
-              {t('cta.project')}
-            </a>
-          )
-        }
-      </div>
-    </div>
-  </div>
 </header>
 
+<!--
+Hors de l’en-tête : son flou d’arrière-plan (backdrop-filter) et sa translation feraient de l’en-tête le
+bloc conteneur du menu fixe, limité à 64 px de haut pendant ~0,7 s (page visible à travers).
+-->
+<div id="mobile-menu" class="invisible fixed inset-0 z-[49] bg-ink opacity-0 transition-[opacity,visibility] duration-300 lg:hidden" aria-hidden="true">
+  <div class="wrap flex h-full flex-col justify-between pb-8 pt-24">
+    <ul class="flex flex-col">
+      {
+        nav.map((item, i) => (
+          <li class="overflow-hidden border-b border-line">
+            <a href={item.href} tabindex="-1" class="menu-link flex items-baseline justify-between py-4" style={`--i:${i}`}>
+              <span class:list={['display text-[2.6rem]', isActive(item.href) && 'text-gold']}>{item.label}</span>
+              <span class="meta text-mist">0{i + 1}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="flex flex-col gap-3">
+      {
+        wa && (
+          <a href={wa} target="_blank" rel="noopener" tabindex="-1" class="btn btn-gold w-full">
+            <Icon name="whatsapp" size={18} /> {t('cta.whatsapp')}
+          </a>
+        )
+      }
+      {
+        contact.phoneHref && (
+          <a href={contact.phoneHref} tabindex="-1" class="btn btn-line w-full">
+            <Icon name="phone" size={16} /> {contact.phone}
+          </a>
+        )
+      }
+      {
+        !wa && (
+          <a href={route('contact', lang)} tabindex="-1" class="btn btn-gold w-full">
+            {t('cta.project')}
+          </a>
+        )
+      }
+    </div>
+  </div>
+</div>
+
 <style>
-  #site-header[data-menu] #mobile-menu { visibility: visible; opacity: 1; }
+  #site-header[data-menu] + #mobile-menu { visibility: visible; opacity: 1; }
   #site-header[data-menu] { background: transparent !important; border-color: transparent !important; backdrop-filter: none !important; }
   #site-header[data-menu] .menu-bar:first-child { transform: translateY(4px) rotate(45deg); }
   #site-header[data-menu] .menu-bar:last-child { transform: translateY(-4px) rotate(-45deg); }
   .menu-link { transform: translateY(100%); transition: transform 0.9s var(--ease-out-expo); }
-  #site-header[data-menu] .menu-link { transform: none; transition-delay: calc(0.08s + var(--i) * 0.06s); }
+  #site-header[data-menu] + #mobile-menu .menu-link { transform: none; transition-delay: calc(0.08s + var(--i) * 0.06s); }
 </style>

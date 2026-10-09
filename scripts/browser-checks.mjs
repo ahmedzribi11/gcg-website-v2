@@ -1,7 +1,9 @@
 /**
  * Contrôles dans un vrai navigateur (CI) : erreurs console et requêtes en échec (ENG-09),
  * accessibilité axe-core WCAG 2.2 AA sans violation grave ou critique (A11Y-01),
- * aucun débordement horizontal à 320 px et 1440 px (A11Y-05, UX-05).
+ * aucun débordement horizontal à 320 px et 1440 px (A11Y-05, UX-05),
+ * politique de sécurité (CSP) réellement appliquée : aucune violation, aucun gestionnaire
+ * d’événement en ligne (bloqué par la CSP) et boutons d’impression fonctionnels (SEC-04).
  *
  *   npx astro preview --port 4321 &  puis  node scripts/browser-checks.mjs
  * Dépendances (CI uniquement) : npm i --no-save playwright axe-core && npx playwright install chromium
@@ -32,6 +34,7 @@ const PAGES = [
   '/partager',
   '/en/share',
   '/references',
+  '/partager/affiche',
   '/mentions-legales',
   '/confidentialite',
   '/en/privacy',
@@ -46,7 +49,15 @@ for (const [mode, viewport] of [
   ['clair', { width: 1440, height: 900 }],
 ]) {
   // Animations coupées (état final des apparitions GSAP) pour mesurer les contrastes réels
-  const ctx = await browser.newContext({ viewport, bypassCSP: true, isMobile: mode === 'mobile', hasTouch: mode === 'mobile', reducedMotion: 'reduce' })
+  // CSP active (pas de bypassCSP) : une ressource ou un script bloqué doit faire échouer le contrôle
+  const ctx = await browser.newContext({ viewport, isMobile: mode === 'mobile', hasTouch: mode === 'mobile', reducedMotion: 'reduce' })
+  await ctx.addInitScript(() => {
+    const w = window
+    w.__csp = []
+    w.__printed = 0
+    w.print = () => w.__printed++
+    document.addEventListener('securitypolicyviolation', (e) => w.__csp.push(`${e.violatedDirective} ${e.blockedURI || ''}`.trim()))
+  })
   // Mode clair : choix enregistré par le bouton soleil/lune
   if (mode === 'clair') await ctx.addInitScript(() => localStorage.setItem('gcg-theme', 'light'))
   const page = await ctx.newPage()
@@ -63,7 +74,22 @@ for (const [mode, viewport] of [
     await page.waitForTimeout(1200) // fin des transitions
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)
     if (overflow > 0) errs.push(`débordement horizontal de ${overflow} px`)
-    await page.addScriptTag({ content: axe })
+    // Gestionnaires en ligne (onclick…) : interdits par la CSP, donc sans effet
+    const inline = await page.evaluate(() =>
+      [...document.querySelectorAll('*')].flatMap((el) =>
+        [...el.attributes].filter((a) => /^on/i.test(a.name)).map((a) => `<${el.tagName.toLowerCase()} ${a.name}>`),
+      ),
+    )
+    errs.push(...inline.map((h) => `gestionnaire en ligne bloqué par la CSP : ${h}`))
+    // Boutons d’impression : un clic doit ouvrir la boîte d’impression
+    for (const btn of await page.$$('[data-print]')) {
+      const before = await page.evaluate(() => window.__printed)
+      await btn.click()
+      if ((await page.evaluate(() => window.__printed)) === before) errs.push('bouton d’impression sans effet')
+    }
+    errs.push(...(await page.evaluate(() => window.__csp)).map((v) => `violation CSP : ${v}`))
+    // Injection par le protocole DevTools : non soumise à la CSP de la page
+    await page.evaluate(axe)
     const violations = await page.evaluate(async () => {
       const r = await window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'] } })
       return r.violations

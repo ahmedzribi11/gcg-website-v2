@@ -66,8 +66,9 @@ const wa = whatsappLink(t('contact.form.intro'))
         <ul class="mt-5 space-y-3 text-[15px] text-bone/75">
           {wa && <li><a href={wa} target="_blank" rel="noopener" class="link-line hover:text-bone">WhatsApp</a></li>}
           {contact.phone && <li><a href={contact.phoneHref} class="link-line hover:text-bone">{contact.phone}</a></li>}
+          {contact.phone2 && <li><a href={contact.phone2Href} class="link-line hover:text-bone">{contact.phone2}</a></li>}
           {contact.email && <li><a href={`mailto:${contact.email}`} class="link-line break-all hover:text-bone">{contact.email}</a></li>}
-          {contact.address && <li class="text-bone/60">{contact.address}</li>}
+          {contact.address && <li>{contact.mapsUrl ? <a href={contact.mapsUrl} target="_blank" rel="noopener" class="link-line text-bone/60 hover:text-bone">{contact.address}</a> : <span class="text-bone/60">{contact.address}</span>}</li>}
           <li><a href={route('contact', lang)} class="link-line hover:text-bone">{t('cta.project')}</a></li>
         </ul>
       </div>

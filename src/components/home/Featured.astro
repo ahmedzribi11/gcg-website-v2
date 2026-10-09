@@ -64,10 +64,14 @@ const t = useT(lang)
         ))
       }
     </div>
-    <div class="absolute inset-x-10 bottom-8 hidden items-center gap-6 md:flex" aria-hidden="true">
-      <span class="meta text-mist">{t('featured.label')}</span>
-      <div class="h-px flex-1 bg-line"><div data-hprogress class="h-px origin-left scale-x-0 bg-gold"></div></div>
+    <div class="absolute inset-x-10 bottom-8 hidden items-center gap-6 md:flex">
+      <span class="meta text-mist" aria-hidden="true">{t('featured.label')}</span>
+      <div class="h-px flex-1 bg-line" aria-hidden="true"><div data-hprogress class="h-px origin-left scale-x-0 bg-gold"></div></div>
       <a href={route('projects', lang)} class="meta pointer-events-auto text-bone hover:text-gold">{t('cta.allProjects')} →</a>
+      <!-- Sortie du défilement horizontal sans faire défiler tous les projets -->
+      <button type="button" data-hskip class="meta pointer-events-auto inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-bone transition-colors hover:border-gold hover:text-gold">
+        {t('featured.skip')} <Icon name="arrow" class="rotate-90" />
+      </button>
     </div>
   </div>
 
@@ -77,11 +81,14 @@ const t = useT(lang)
 </section>
 
 <script>
-  import { gsap, reducedMotion } from '../../scripts/site'
+  import { gsap, reducedMotion, scrollToEl } from '../../scripts/site'
 
   const pin = document.querySelector<HTMLElement>('[data-hpin]')
   const track = document.querySelector<HTMLElement>('[data-htrack]')
   const progress = document.querySelector<HTMLElement>('[data-hprogress]')
+  // « Passer les projets » : va directement à la section suivante, après tout le défilement horizontal
+  const next = document.querySelector('#featured ~ section')
+  document.querySelector('[data-hskip]')?.addEventListener('click', () => next && scrollToEl(next))
   if (pin && track && !reducedMotion) {
     const mm = gsap.matchMedia()
     mm.add('(min-width: 768px)', () => {

@@ -17,6 +17,14 @@ const profiles = ['particulier', 'diaspora', 'investisseur', 'hotelier', 'entrep
 const types = ['villa', 'residence', 'immeuble', 'hotel', 'commerce', 'industrie', 'equipement', 'vrd', 'renovation', 'etude', 'autre'] as const
 const wa = whatsappLink()
 const hours = fr ? contact.hours : contact.hours_en || contact.hours
+/** Deux numéros : le pays précise lequel appeler (« Téléphone · Côte d’Ivoire »). */
+const country = (e164: string) =>
+  e164.startsWith('+225') ? 'Côte d’Ivoire' : e164.startsWith('+216') ? (fr ? 'Tunisie' : 'Tunisia') : ''
+const phones = [
+  { label: contact.phone, href: contact.phoneHref, e164: contact.phoneE164 },
+  { label: contact.phone2, href: contact.phone2Href, e164: contact.phone2E164 },
+].filter((p) => p.label)
+const phoneLabel = (e164: string) => [t('contact.phone'), phones.length > 1 && country(e164)].filter(Boolean).join(' · ')
 const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transparent px-0 py-3 text-lg font-light text-bone placeholder:text-bone/30 focus:border-gold focus:outline-none focus:ring-0'
 ---
 
@@ -43,12 +51,12 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
             )
           }
           {
-            contact.phone && (
-              <a href={contact.phoneHref} class="group flex items-center justify-between gap-4 border-b border-line py-4">
-                <span class="flex items-center gap-4"><Icon name="phone" size={20} class="text-gold" /><span><span class="meta block text-mist">{t('contact.phone')}</span><span class="text-lg">{contact.phone}</span></span></span>
+            phones.map((p) => (
+              <a href={p.href} class="group flex items-center justify-between gap-4 border-b border-line py-4">
+                <span class="flex items-center gap-4"><Icon name="phone" size={20} class="text-gold" /><span><span class="meta block text-mist">{phoneLabel(p.e164)}</span><span class="text-lg">{p.label}</span></span></span>
                 <Icon name="arrow-up-right" class="opacity-50 group-hover:opacity-100" />
               </a>
-            )
+            ))
           }
           {
             contact.email && (

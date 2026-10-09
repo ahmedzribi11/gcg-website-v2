@@ -27,10 +27,11 @@ export function toE164(raw: string) {
 export function displayPhone(raw: string) {
   const e = toE164(raw)
   const ci = /^\+225(\d{10})$/.exec(e)
-  return ci ? `+225 ${ci[1].replace(/(\d{2})(?=\d)/g, '$1 ')}`.replace(/ /g, '\u00a0') : raw.trim()
+  return (ci ? `+225 ${ci[1].replace(/(\d{2})(?=\d)/g, '$1 ')}` : raw.trim().replace(/\s+/g, ' ')).replace(/ /g, '\u00a0')
 }
 
 const phone = str(c.phone)
+const phone2 = str(c.phone2)
 const whatsapp = str(c.whatsapp)
 const tz = { fr: ' (GMT, heure d’Abidjan)', en: ' (GMT, Abidjan time)' }
 const withTz = (h: string, lang: 'fr' | 'en') => (h && !/GMT|UTC/i.test(h) ? h + tz[lang] : h)
@@ -39,6 +40,10 @@ export const contact = {
   phone: phone ? displayPhone(phone) : '',
   phoneE164: toE164(phone),
   phoneHref: phone ? `tel:${toE164(phone)}` : '',
+  /** Second numéro (ex. bureau en Tunisie), affiché au pied de page, sur Contact et dans les mentions légales. */
+  phone2: phone2 ? displayPhone(phone2) : '',
+  phone2E164: toE164(phone2),
+  phone2Href: phone2 ? `tel:${toE164(phone2)}` : '',
   whatsapp: whatsapp ? displayPhone(whatsapp) : '',
   /** Numéro au format international sans « + » pour wa.me. */
   whatsappNumber: toE164(whatsapp).replace('+', ''),
@@ -101,7 +106,7 @@ export function documentLabel(d: DocumentFile, lang: 'fr' | 'en') {
   return ['PDF', language, size, when].filter(Boolean).join(' · ')
 }
 
-export const hasContact = Boolean(contact.phone || contact.whatsapp || contact.email)
+export const hasContact = Boolean(contact.phone || contact.phone2 || contact.whatsapp || contact.email)
 
 export const whatsappLink = (text?: string) =>
   contact.whatsappNumber ? `https://wa.me/${contact.whatsappNumber}${text ? `?text=${encodeURIComponent(text)}` : ''}` : ''

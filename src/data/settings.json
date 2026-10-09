@@ -1,12 +1,13 @@
 {
   "contact": {
-    "phone": "",
-    "whatsapp": "",
+    "phone": "+225 07 01 62 22 64",
+    "phone2": "+216 28 51 63 51",
+    "whatsapp": "+225 07 01 62 22 64",
     "email": "",
-    "address": "",
-    "mapsUrl": "",
-    "hours": "",
-    "hours_en": ""
+    "address": "Marcory Zone 4, rue Marconi, Abidjan",
+    "mapsUrl": "https://maps.app.goo.gl/y19McxxasVFe6W846",
+    "hours": "8 h 30 – 17 h 30",
+    "hours_en": "8:30 am – 5:30 pm"
   },
   "social": {
     "instagram": "",

@@ -43,7 +43,7 @@ jobs:
       - name: 'Validation HTML (Nu Html Checker)'
         run: |
           npm i --no-save vnu-jar@24
-          java -jar node_modules/vnu-jar/build/dist/vnu.jar --errors-only --filterpattern '.*(view-transition-name|transition-delay|element in .body. must be the first child).*' \
+          java -jar node_modules/vnu-jar/build/dist/vnu.jar --errors-only --filterpattern '.*(view-transition-name|transition-delay|safe-area-inset|element in .body. must be the first child).*' \
             $(find dist -name '*.html' -not -path 'dist/qr/*' -not -name 'qr.html')
 
       - name: 'Navigateur : console, accessibilité axe, débordements (ENG-09, A11Y-01, UX-05)'

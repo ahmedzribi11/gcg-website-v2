@@ -24,7 +24,7 @@ const wa = pageWhatsApp(lang, t('contact.label'))
       {wa && <a href={wa} target="_blank" rel="noopener" class="btn btn-gold"><Icon name="whatsapp" size={16} /> WhatsApp</a>}
       {contact.phone && <a href={contact.phoneHref} class="btn btn-line"><Icon name="phone" size={16} /> {contact.phone}</a>}
       {contact.email && <a href={`mailto:${contact.email}`} class="btn btn-line"><Icon name="mail" size={16} /> {contact.email}</a>}
-      <a href={ok ? route('projects', lang) : `${route('contact', lang)}#formulaire`} class="btn btn-line">{ok ? t('cta.allProjects') : t('cta.project')} <Icon name="arrow" /></a>
+      <a href={ok ? route('projects', lang) : `${route('contact', lang)}#brief`} class="btn btn-line">{ok ? t('cta.allProjects') : t('cta.project')} <Icon name="arrow" /></a>
     </div>
   </section>
 </Base>

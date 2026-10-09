@@ -61,8 +61,6 @@ const strokeN = tone === 'paper' ? 'rgba(5,46,20,.15)' : 'color-mix(in srgb, var
 const ink = tone === 'paper' ? '#052e14' : 'var(--color-bone)'
 const gold = tone === 'paper' ? '#8a7a2e' : 'var(--color-gold)'
 const href = (c: string) => `${route('projects', lang)}?ville=${c}`
-// Nom de l’épingle : les étiquettes du dessin sont masquées sur téléphone (illisibles à cette échelle)
-const pinLabel = (c: CityId, n: number) => (link ? `${cities[c].name}, ${n} ${n > 1 ? t('projects.count.many') : t('projects.count.one')}` : undefined)
 const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
 ---
 
@@ -91,7 +89,7 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
         const tx = left ? x - 18 : x + 18
         const anchor = left ? 'end' : 'start'
         return (
-          <a href={link ? href(c) : undefined} aria-label={pinLabel(c, n)} data-city-pin={c} class="map-pin">
+          <a href={link ? href(c) : undefined} data-city-pin={c} class="map-pin">
             <circle style={`fill:${gold}`} cx={x} cy={y} r={10 + n * 2.5} opacity="0.16" class="map-halo" />
             <circle style={`fill:${gold}`} cx={x} cy={y} r="5" />
             <text style={`fill:${ink}`} x={tx} y={y - 4} font-size="22" font-weight="300" text-anchor={anchor}>{cities[c].name}</text>
@@ -108,7 +106,7 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
         const n = counts[c] ?? 0
         const { lx, ly } = labelAt(i)
         return (
-          <a href={link ? href(c) : undefined} aria-label={pinLabel(c, n)} data-city-pin={c} class="map-pin">
+          <a href={link ? href(c) : undefined} data-city-pin={c} class="map-pin">
             <polyline class="map-leader" style={`stroke:${stroke}`} points={`${x},${y} ${x},${y + 26} ${lx},${ly - 58} ${lx},${ly - 40}`} fill="none" stroke-width="0.8" stroke-dasharray="2 4" />
             <circle style={`fill:${gold}`} cx={x} cy={y} r={7 + n * 1.6} opacity="0.16" class="map-halo" />
             <circle style={`fill:${gold}`} cx={x} cy={y} r="4" />
@@ -145,9 +143,11 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
   .js .presence-map .map-ci { stroke-dasharray: 4000; stroke-dashoffset: 4000; transition: stroke-dashoffset 3s var(--ease-cinema); }
   .js .presence-map.is-in .map-ci { stroke-dashoffset: 0; }
   /* Téléphone : à l’échelle 0,42 les étiquettes feraient 5 à 9 px. Points seuls, carte recadrée sous la côte
-     (la liste des localités porte l’information ; les épingles gardent leur nom par aria-label). */
+     (la liste des localités porte l’information). Étiquettes transparentes et non retirées : elles restent
+     le nom accessible des épingles (un aria-label différerait du texte visible sur ordinateur). */
   @media (max-width: 767px) {
-    .map-main text, .map-main .map-leader { display: none; }
+    .map-main text { opacity: 0; }
+    .map-main .map-leader { display: none; }
     .map-main { aspect-ratio: 800 / 660; }
   }
 </style>

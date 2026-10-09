@@ -57,6 +57,7 @@ const files = readdirSync(PROJECTS).filter((f) => f.endsWith('.json'))
 const numbers = new Map()
 const slugs = []
 const untranslated = []
+const pending = []
 for (const file of files) {
   const slug = file.replace(/\.json$/, '')
   slugs.push(slug)
@@ -69,6 +70,7 @@ for (const file of files) {
     continue
   }
   if (data.en_status === 'a-traduire') untranslated.push(slug)
+  if ((data.permission ?? 'en-attente') === 'en-attente') pending.push(slug)
   if (numbers.has(data.number)) err(`${file} : le N° ${data.number} est déjà utilisé par ${numbers.get(data.number)}.`)
   else numbers.set(data.number, file)
 
@@ -113,6 +115,13 @@ for (const slug of registry) {
       err(`Le projet « ${slug} » a été publié puis retiré : ajoutez une redirection 301 de ${path} (vercel.json et public/_redirects).`)
   }
 }
+// Mode lancement (GCG_LAUNCH=1) : un projet sans autorisation n’a pas de page, mais son QR code imprimé
+// (/qr/p/<projet>) reste valable et mène à la liste des réalisations (OPS-02, SHR-03).
+const hidden = process.env.GCG_LAUNCH === '1' ? pending.filter((s) => registry.includes(s)) : []
+if (hidden.length)
+  warn(
+    `Mode lancement : ${hidden.length} projet(s) sans autorisation de publication ne sont pas affichés (pas de page /realisations/<projet>) ; leur QR code mène à la liste des réalisations : ${hidden.join(', ')}`,
+  )
 const fresh = slugs.filter((s) => !registry.includes(s))
 if (process.argv.includes('--update')) {
   writeFileSync(REGISTRY, JSON.stringify([...registry, ...fresh].sort(), null, 2) + '\n')

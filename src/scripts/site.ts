@@ -58,13 +58,14 @@ onScroll()
 
 /*
  * Barre mobile : affichée une fois sortis de l’écran les boutons de l’ouverture (accueil, data-bar-after)
- * ou l’en-tête de la page, pour ne pas couvrir le premier écran (MOB-03).
+ * ou l’en-tête de la page, ou après un écran de défilement, pour ne pas couvrir le premier écran (MOB-03).
+ * Recalculée à chaque défilement : un observateur d’intersection ne voit pas un saut direct du bas vers le haut.
  */
 const bar = document.getElementById('mobile-bar')
 const barAfter = document.querySelector('[data-bar-after]') ?? document.querySelector('main :is(header, section)')
-if (bar && barAfter) {
-  new IntersectionObserver(([e]) => bar.toggleAttribute('data-visible', !e.isIntersecting && e.boundingClientRect.top < 0)).observe(barAfter)
-} else bar?.setAttribute('data-visible', '')
+const onScrollBar = () => bar?.toggleAttribute('data-visible', !barAfter || scrollY > innerHeight || barAfter.getBoundingClientRect().bottom < 0)
+addEventListener('scroll', onScrollBar, { passive: true })
+onScrollBar()
 
 /* ─── Menu mobile ─────────────────────────────────────────────────────── */
 const toggle = document.getElementById('menu-toggle')

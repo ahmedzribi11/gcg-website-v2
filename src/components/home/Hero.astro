@@ -35,8 +35,8 @@ const title3 = split(t('hero.title3'))
     <!-- Accroche dans le flux : le titre ne peut plus passer dessous ; si le contenu dépasse l’écran, le hero s’allonge -->
     <p class="label text-gold" data-intro style="--d:.2s">{t('hero.kicker')}</p>
 
-    <div class="mt-auto grid items-end gap-10 pt-10 md:grid-cols-12">
-      <h1 id="hero-title" class="display text-[clamp(2.9rem,10.5vw,5rem)] md:col-span-8 md:text-[clamp(4rem,min(7.6vw,14svh),9.4rem)]">
+    <div class="mt-auto grid items-end gap-10 pt-10 lg:grid-cols-12">
+      <h1 id="hero-title" class="display text-[clamp(2.9rem,10.5vw,5rem)] md:text-[clamp(4rem,min(7.6vw,14svh),9.4rem)] lg:col-span-8">
         <span class="block" data-intro-split style="--d:.25s">
           {
             title1.map(({ w, i }) => (
@@ -61,7 +61,7 @@ const title3 = split(t('hero.title3'))
         </span>
       </h1>
 
-      <div class="flex flex-col gap-7 md:col-span-4 md:pb-3">
+      <div class="flex flex-col gap-7 lg:col-span-4 lg:pb-3">
         <p class="max-w-md text-[15px] leading-relaxed text-bone/75 md:text-base" data-intro="rise" style="--d:.7s">{t('hero.lead')}</p>
         <div class="flex flex-wrap gap-3" data-intro data-bar-after style="--d:.85s">
           <a href={route('projects', lang)} class="btn btn-gold" data-magnetic>

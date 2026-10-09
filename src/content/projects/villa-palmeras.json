@@ -52,5 +52,13 @@
   "featured": true,
   "featuredOrder": 2,
   "permission": "en-attente",
-  "en_status": "valide"
+  "en_status": "valide",
+  "highlight": {
+    "value": "116",
+    "unit": "villas",
+    "note": "R+1 haut standing sur 6 ha",
+    "note_en": "high-end R+1 villas on 6 ha",
+    "scaleOrder": 2,
+    "marqueeOrder": 1
+  }
 }

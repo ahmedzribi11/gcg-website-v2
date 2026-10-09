@@ -50,5 +50,14 @@
   "featured": true,
   "featuredOrder": 5,
   "permission": "en-attente",
-  "en_status": "valide"
+  "en_status": "valide",
+  "highlight": {
+    "value": "28",
+    "unit": "tours R+16",
+    "unit_en": "R+16 towers",
+    "note": "600 000 m² couverts sur 14 ha",
+    "note_en": "600,000 m² built area on 14 ha",
+    "scaleOrder": 1,
+    "marqueeOrder": 4
+  }
 }

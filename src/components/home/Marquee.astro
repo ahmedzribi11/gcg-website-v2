@@ -1,47 +1,30 @@
 ---
 import type { Lang } from '../../i18n'
+import { highlights, type Project } from '../../lib/projects'
 
 interface Props {
   lang: Lang
+  projects: Project[]
 }
-const { lang } = Astro.props
-/** Chiffres tirés du portfolio. */
-const items =
-  lang === 'fr'
-    ? [
-        ['Villa Palmeras', '116 villas'],
-        ['Green City', '45 villas'],
-        ['Hôtel Calao', '42 chambres'],
-        ['Projet Élan', '28 tours R+16'],
-        ['Palm Resort Mövenpick', '64 bungalows & 30 villas'],
-        ['Usine de cajou', '55 000 m²'],
-        ['Immeuble Seven 2', '17 appartements'],
-        ['Cité Baobab', '5 ha de VRD'],
-      ]
-    : [
-        ['Villa Palmeras', '116 villas'],
-        ['Green City', '45 villas'],
-        ['Hôtel Calao', '42 rooms'],
-        ['Projet Élan', '28 R+16 towers'],
-        ['Palm Resort Mövenpick', '64 bungalows & 30 villas'],
-        ['Cashew plant', '55,000 m²'],
-        ['Seven 2 building', '17 apartments'],
-        ['Cité Baobab', '5 ha of roads & utilities'],
-      ]
+const { projects } = Astro.props
+/** Chiffres clés saisis dans les fiches projet (champ « Chiffre clé », rang dans le bandeau) ; un projet non publié en est absent (CODE-03). */
+const items = highlights(projects, 'marqueeOrder').map(({ h }) => [h.marqueeName, h.marqueeFigure])
 ---
 
-<div class="relative overflow-hidden border-y border-line bg-ink py-5" aria-hidden="true">
-  <div class="flex w-max animate-[marquee_60s_linear_infinite] gap-12 pr-12 motion-reduce:animate-none">
-    {
-      [0, 1].map(() =>
-        items.map(([name, figure]) => (
-          <span class="flex shrink-0 items-baseline gap-4 whitespace-nowrap">
-            <span class="text-lg font-light tracking-[-0.01em] text-bone/85">{name}</span>
-            <span class="meta text-gold">{figure}</span>
-            <span class="ml-8 h-1 w-1 rounded-full bg-bone/30" />
-          </span>
-        )),
-      )
-    }
-  </div>
-</div>
+{
+  items.length > 0 && (
+    <div class="relative overflow-hidden border-y border-line bg-ink py-5" aria-hidden="true">
+      <div class="flex w-max animate-[marquee_60s_linear_infinite] gap-12 pr-12 motion-reduce:animate-none">
+        {[0, 1].map(() =>
+          items.map(([name, figure]) => (
+            <span class="flex shrink-0 items-baseline gap-4 whitespace-nowrap">
+              <span class="text-lg font-light tracking-[-0.01em] text-bone/85">{name}</span>
+              <span class="meta text-gold">{figure}</span>
+              <span class="ml-8 h-1 w-1 rounded-full bg-bone/30" />
+            </span>
+          )),
+        )}
+      </div>
+    </div>
+  )
+}

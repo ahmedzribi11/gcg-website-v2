@@ -28,10 +28,26 @@ export interface Project {
   services: ProjectEntry['data']['services']
   types: ProjectEntry['data']['types']
   images: ProjectImageData[]
+  /** Chiffre clé affiché sur l’accueil (CODE-03). */
+  highlight?: ProjectHighlight
   seoTitle?: string
   seoDescription?: string
   /** La version de l’autre langue existe (EN relue ou page FR). */
   hasEn: boolean
+}
+
+export interface ProjectHighlight {
+  value: string
+  unit: string
+  note?: string
+  /** Rang dans la grille « À toutes les échelles » ; absent : pas dans la grille. */
+  scaleOrder?: number
+  /** Rang dans le bandeau défilant ; absent : pas dans le bandeau. */
+  marqueeOrder?: number
+  /** Nom affiché dans le bandeau (par défaut : le nom du projet). */
+  marqueeName: string
+  /** Texte du bandeau (par défaut : valeur et unité). */
+  marqueeFigure: string
 }
 
 export interface ProjectImageData {
@@ -48,10 +64,11 @@ export function localize(entry: ProjectEntry, lang: Lang): Project {
   const en = lang === 'en'
   const period = en ? (d.period_en ?? d.period) : d.period
   const year = Number(/\d{4}/.exec(d.period)?.[0] ?? 0)
+  const name = en ? (d.name_en ?? d.name) : d.name
   return {
     slug: entry.id,
     number: d.number,
-    name: en ? (d.name_en ?? d.name) : d.name,
+    name,
     featured: d.featured,
     featuredOrder: d.featuredOrder ?? 99,
     sector: d.sector,
@@ -70,9 +87,26 @@ export function localize(entry: ProjectEntry, lang: Lang): Project {
     services: d.services,
     types: d.types,
     images: d.images.map((im) => ({ src: im.src, alt: en ? im.alt_en : im.alt, kind: im.kind, focus: im.focus })),
+    highlight: localizeHighlight(d.highlight, lang, name),
     seoTitle: en ? d.seo_title_en : d.seo_title,
     seoDescription: en ? d.seo_description_en : d.seo_description,
     hasEn: d.en_status === 'valide',
+  }
+}
+
+function localizeHighlight(h: ProjectEntry['data']['highlight'], lang: Lang, name: string): ProjectHighlight | undefined {
+  if (!h) return undefined
+  const en = lang === 'en'
+  const value = num(lang, h.value) ?? h.value
+  const unit = en ? (h.unit_en ?? h.unit) : h.unit
+  return {
+    value,
+    unit,
+    note: en ? h.note_en : h.note,
+    scaleOrder: h.scaleOrder,
+    marqueeOrder: h.marqueeOrder,
+    marqueeName: (en ? (h.marqueeName_en ?? h.marqueeName) : h.marqueeName) ?? name,
+    marqueeFigure: (en ? h.marqueeFigure_en : h.marqueeFigure) ?? `${value} ${unit}`,
   }
 }
 
@@ -90,6 +124,16 @@ export async function getProjects(lang: Lang): Promise<Project[]> {
 
 export async function getFeatured(lang: Lang): Promise<Project[]> {
   return (await getProjects(lang)).filter((p) => p.featured).sort((a, b) => a.featuredOrder - b.featuredOrder)
+}
+
+/** Projets publiés ayant un chiffre clé pour la grille (scaleOrder) ou le bandeau (marqueeOrder) de l’accueil, dans l’ordre choisi. */
+export function highlights(projects: Project[], order: 'scaleOrder' | 'marqueeOrder') {
+  return projects
+    .flatMap((p) => {
+      const rank = p.highlight?.[order]
+      return p.highlight && rank ? [{ p, h: p.highlight, rank }] : []
+    })
+    .sort((a, b) => a.rank - b.rank || a.p.number - b.p.number)
 }
 
 export const pad = (n: number) => String(n).padStart(2, '0')

@@ -38,6 +38,31 @@ export const EN_STATUSES = ['valide', 'a-traduire'] as const
 /** L’espace de gestion enregistre un champ facultatif vidé en "" ou null : on le traite comme absent. */
 const blank = (v: unknown) => (v === '' || v === null ? undefined : v)
 const opt = <T extends z.ZodType>(schema: T) => z.preprocess(blank, schema.optional())
+/** Un groupe de champs facultatif dont tous les champs ont été vidés est traité comme absent. */
+const blankGroup = (v: unknown) =>
+  v && typeof v === 'object' && !Array.isArray(v) && Object.values(v).every((x) => blank(x) === undefined) ? undefined : blank(v)
+
+/**
+ * Chiffre clé d’un projet, affiché sur l’accueil (CODE-03) : grille « À toutes les échelles » (scaleOrder)
+ * et bandeau défilant (marqueeOrder). Un projet non publié disparaît des deux, avec ses chiffres.
+ */
+const highlight = z.object({
+  value: z
+    .string({ error: 'Chiffre clé : valeur requise (ex. 116), ou videz tous les champs du chiffre clé' })
+    .min(1, 'Chiffre clé : valeur requise (ex. 116)'),
+  unit: z
+    .string({ error: 'Chiffre clé : unité requise (ex. villas), ou videz tous les champs du chiffre clé' })
+    .min(1, 'Chiffre clé : unité requise (ex. villas)'),
+  unit_en: opt(z.string()),
+  note: opt(z.string()),
+  note_en: opt(z.string()),
+  scaleOrder: opt(z.number().int().positive()),
+  marqueeOrder: opt(z.number().int().positive()),
+  marqueeName: opt(z.string()),
+  marqueeName_en: opt(z.string()),
+  marqueeFigure: opt(z.string()),
+  marqueeFigure_en: opt(z.string()),
+})
 
 /**
  * Projets du portfolio GCG — un fichier JSON par projet dans src/content/projects.
@@ -54,6 +79,7 @@ const projects = defineCollection({
         name_en: opt(z.string()),
         featured: z.preprocess(blank, z.boolean().default(false)),
         featuredOrder: opt(z.number()),
+        highlight: z.preprocess(blankGroup, highlight.optional()),
         sector: z.enum(SECTORS),
         city: z.enum(CITIES),
         location: z.string(),
@@ -98,6 +124,18 @@ const projects = defineCollection({
             ctx.addIssue({ code: 'custom', path: ['composition_en'], message: 'Résumé anglais requis (ou version anglaise « à traduire »)' })
           if (!d.missions_en?.length)
             ctx.addIssue({ code: 'custom', path: ['missions_en'], message: 'Missions en anglais requises (ou version anglaise « à traduire »)' })
+          if (d.highlight?.note && !d.highlight.note_en)
+            ctx.addIssue({
+              code: 'custom',
+              path: ['highlight', 'note_en'],
+              message: 'Chiffre clé : précision en anglais requise (ou version anglaise « à traduire »)',
+            })
+          if (d.highlight?.marqueeFigure && !d.highlight.marqueeFigure_en)
+            ctx.addIssue({
+              code: 'custom',
+              path: ['highlight', 'marqueeFigure_en'],
+              message: 'Chiffre clé : texte du bandeau en anglais requis (ou version anglaise « à traduire »)',
+            })
         }
       }),
 })

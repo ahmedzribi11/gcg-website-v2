@@ -6,7 +6,7 @@ import PresenceMap from '../components/PresenceMap.astro'
 import FinalCta from '../components/FinalCta.astro'
 import { competences, equipment, keyFigures, poles, totalQty, vehicles } from '../data/organisation'
 import { projectPath, route, useT, type Lang } from '../i18n'
-import { getProjects, pad } from '../lib/projects'
+import { coverImage, getProjects, pad } from '../lib/projects'
 import { media, videoEmbed } from '../lib/settings'
 
 interface Props {
@@ -16,7 +16,6 @@ const { lang } = Astro.props
 const t = useT(lang)
 const fr = lang === 'fr'
 const projects = await getProjects(lang)
-const by = (slug: string) => projects.find((p) => p.slug === slug)!
 
 // Historique : projets par année de démarrage
 const years: number[] = []
@@ -36,9 +35,9 @@ const video = videoEmbed(media.videoUrl)
         <p class="mt-6 max-w-xl text-[15px] leading-relaxed text-brand/70" data-reveal>{t('about.team')}</p>
       </div>
       <div class="grid grid-cols-2 gap-3 md:col-span-6" aria-hidden="true">
-        <div class="col-span-2 overflow-hidden" data-reveal="clip"><div data-parallax="5"><ProjectImage image={by('residence-privee-beverly-hills').images[0]} alt="" sizes="(min-width: 768px) 45vw, 100vw" class="block aspect-[16/10]" /></div></div>
-        <div class="overflow-hidden" data-reveal="clip" style="--d:.15s"><ProjectImage image={by('green-city').images[2]} alt="" sizes="(min-width: 768px) 22vw, 50vw" class="block aspect-square" /></div>
-        <div class="overflow-hidden" data-reveal="clip" style="--d:.3s"><ProjectImage image={by('hotel-calao-korhogo').images[0]} alt="" sizes="(min-width: 768px) 22vw, 50vw" class="block aspect-square" /></div>
+        <div class="col-span-2 overflow-hidden" data-reveal="clip"><div data-parallax="5"><ProjectImage image={coverImage(projects, ['residence-privee-beverly-hills', 0])} alt="" sizes="(min-width: 768px) 45vw, 100vw" class="block aspect-[16/10]" /></div></div>
+        <div class="overflow-hidden" data-reveal="clip" style="--d:.15s"><ProjectImage image={coverImage(projects, ['green-city', 2])} alt="" sizes="(min-width: 768px) 22vw, 50vw" class="block aspect-square" /></div>
+        <div class="overflow-hidden" data-reveal="clip" style="--d:.3s"><ProjectImage image={coverImage(projects, ['hotel-calao-korhogo', 0])} alt="" sizes="(min-width: 768px) 22vw, 50vw" class="block aspect-square" /></div>
       </div>
     </div>
   </section>

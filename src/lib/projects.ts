@@ -94,15 +94,61 @@ export async function getFeatured(lang: Lang): Promise<Project[]> {
 
 export const pad = (n: number) => String(n).padStart(2, '0')
 
-/** Image d’illustration d’un service ([projet, index]). */
-export function coverImage(projects: Project[], [slug, i]: [string, number]) {
-  const p = requireProject(projects, slug)
-  return p.images[Math.min(i, p.images.length - 1)]
+/** Fiches de tous les projets, publiés ou non : secteur, types et expertises servent à choisir une illustration de remplacement. */
+type Catalogue = Pick<ProjectEntry['data'], 'number' | 'sector'> & { types?: string[]; services?: string[] }
+const catalogue = import.meta.glob<Catalogue>('../content/projects/*.json', { eager: true, import: 'default' })
+const facts = (slug: string): Catalogue | undefined => catalogue[`../content/projects/${slug}.json`]
+
+const warned = new Set<string>()
+const warnOnce = (msg: string) => {
+  if (warned.has(msg)) return
+  warned.add(msg)
+  console.warn(`  avertissement : ${msg}`)
 }
 
-/** Projet utilisé comme illustration : erreur explicite au build s’il n’est plus publié. */
-export function requireProject(projects: Project[], slug: string): Project {
-  const p = projects.find((x) => x.slug === slug)
-  if (!p) throw new Error(`Le projet « ${slug} » sert d’illustration mais n’est pas publié (ou introuvable). Choisissez une autre illustration dans src/data.`)
-  return p
+/**
+ * Projet utilisé comme illustration (photo d’une section, d’une expertise, d’un public).
+ * S’il n’est pas publié (autorisation en attente en mode lancement, version anglaise non relue, fiche supprimée),
+ * le build ne s’arrête pas : on prend le projet publié suivant du même secteur, puis d’un même type,
+ * puis d’une même expertise, puis le suivant tout court, et le build affiche un avertissement (OPS-02).
+ * Renvoie undefined seulement si aucun projet n’est publié.
+ */
+export function illustration(projects: Project[], slug: string): Project | undefined {
+  const found = projects.find((x) => x.slug === slug)
+  if (found) return found
+  const f = facts(slug)
+  // Ordre « suivant » : numéros du portfolio après celui du projet manquant, puis retour au début
+  const n = f?.number ?? 0
+  const ordered = [...projects].sort((a, b) => ((a.number - n + 1000) % 1000) - ((b.number - n + 1000) % 1000))
+  const shares = (list: readonly string[] | undefined, other: readonly string[]) => (list ?? []).some((x) => other.includes(x))
+  const pick =
+    ordered.find((p) => f && p.sector === f.sector) ??
+    ordered.find((p) => shares(f?.types, p.types)) ??
+    ordered.find((p) => shares(f?.services, p.services)) ??
+    ordered[0]
+  warnOnce(
+    pick
+      ? `le projet « ${slug} » sert d’illustration mais n’est pas publié : remplacé par « ${pick.slug} ». Choisissez une autre illustration dans src/data ou src/components si ce remplacement ne convient pas.`
+      : `le projet « ${slug} » sert d’illustration mais aucun projet n’est publié : l’image est omise.`,
+  )
+  return pick
+}
+
+/**
+ * Projets cités nommément (preuves, chiffres) : les projets non publiés sont retirés de la liste,
+ * jamais remplacés, car le texte qui les accompagne leur est propre.
+ */
+export function publishedOnly(projects: Project[], slugs: string[]): Project[] {
+  return slugs.flatMap((slug) => {
+    const p = projects.find((x) => x.slug === slug)
+    if (!p) warnOnce(`le projet « ${slug} » est cité sur le site mais n’est pas publié : il est retiré de la liste.`)
+    return p ? [p] : []
+  })
+}
+
+/** Image d’illustration ([projet, rang de la photo]) : expertise, section, public, avec remplacement si besoin. */
+export function coverImage(projects: Project[], [slug, i]: [string, number]): ProjectImageData | undefined {
+  const p = illustration(projects, slug)
+  // Le rang de photo choisi vaut pour le projet prévu ; pour un remplaçant, sa première photo
+  return p?.images[p.slug === slug ? Math.min(i, p.images.length - 1) : 0]
 }

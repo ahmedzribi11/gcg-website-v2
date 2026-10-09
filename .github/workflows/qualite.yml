@@ -56,6 +56,24 @@ jobs:
       - name: 'Lighthouse : budgets de performance et d’accessibilité (PERF-01/02/03/05/06/09)'
         run: npx --yes @lhci/cli@0.14 autorun
 
+  lancement:
+    # Build du mode lancement (GCG_LAUNCH=1, CODE-02 / OPS-02) : seuls les projets autorisés sont publiés,
+    # les illustrations se replient sur un autre projet et les QR codes imprimés restent valables.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SITE_URL: https://www.gcg-ci.example
+      GCG_LAUNCH: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: 'Build en mode lancement, puis contrôle du site'
+        run: npm run build && node scripts/audit-dist.mjs
+
   secrets:
     runs-on: ubuntu-latest
     steps:

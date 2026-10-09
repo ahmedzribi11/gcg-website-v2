@@ -49,14 +49,14 @@ const wa = whatsappLink(t('contact.form.intro'))
     </ul>
 
     <div class="relative z-10 flex items-center gap-2 md:gap-3">
-      <a href={alt} hreflang={lang === 'fr' ? 'en' : 'fr'} lang={lang === 'fr' ? 'en' : 'fr'} class="meta flex h-10 min-w-10 items-center justify-center rounded-full border border-line px-3 text-bone/80 transition-colors hover:border-bone/50 hover:text-bone" data-lang-switch>
+      <a href={alt} hreflang={lang === 'fr' ? 'en' : 'fr'} lang={lang === 'fr' ? 'en' : 'fr'} class="meta flex h-11 min-w-11 items-center justify-center rounded-full border border-line px-3 text-bone/80 transition-colors hover:border-bone/50 hover:text-bone" data-lang-switch>
         {t('nav.langShort')}<span class="sr-only"> {t('nav.lang')}</span>
       </a>
       <button
         type="button"
         id="theme-toggle"
         data-theme-toggle
-        class="hidden h-10 w-10 items-center justify-center rounded-full border border-line text-bone/80 transition-colors hover:border-bone/50 hover:text-bone sm:flex"
+        class="hidden h-11 w-11 items-center justify-center rounded-full border border-line text-bone/80 transition-colors hover:border-bone/50 hover:text-bone sm:flex"
         aria-pressed="false"
         aria-label={lang === 'fr' ? 'Mode clair' : 'Light mode'}
         title={lang === 'fr' ? 'Mode clair / sombre' : 'Light / dark mode'}
@@ -73,7 +73,7 @@ const wa = whatsappLink(t('contact.form.intro'))
         {wa && <Icon name="whatsapp" size={15} />}
         {t('nav.cta')}
       </a>
-      <button type="button" id="menu-toggle" class="meta flex h-10 items-center gap-3 rounded-full border border-line px-4 text-bone lg:hidden" aria-expanded="false" aria-controls="mobile-menu">
+      <button type="button" id="menu-toggle" class="meta flex h-11 items-center gap-3 rounded-full border border-line px-4 text-bone lg:hidden" aria-expanded="false" aria-controls="mobile-menu">
         <span data-label-open>{t('nav.menu')}</span><span data-label-close hidden>{t('nav.close')}</span>
         <span class="relative block h-2.5 w-4" aria-hidden="true">
           <span class="menu-bar absolute left-0 top-0 h-px w-full bg-bone transition-transform duration-500"></span>

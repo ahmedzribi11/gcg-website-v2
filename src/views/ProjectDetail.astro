@@ -68,9 +68,9 @@ const crumbs = breadcrumbLd(
       <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-ink/50"></div>
       <div class="wrap relative pb-12 md:pb-16">
         <nav class="meta flex flex-wrap items-center gap-2 text-bone/70" aria-label={lang === 'fr' ? 'Fil d’Ariane' : 'Breadcrumb'} data-reveal>
-          <a href={route('home', lang)} class="hover:text-gold">{t('nav.home')}</a>
+          <a href={route('home', lang)} class="-my-3.5 py-3.5 hover:text-gold">{t('nav.home')}</a>
           <span aria-hidden="true">/</span>
-          <a href={route('projects', lang)} class="hover:text-gold">{t('projects.label')}</a>
+          <a href={route('projects', lang)} class="-my-3.5 py-3.5 hover:text-gold">{t('projects.label')}</a>
           <span aria-hidden="true">/</span>
           <span class="text-gold" aria-current="page">{p.name}</span>
         </nav>
@@ -172,13 +172,13 @@ const crumbs = breadcrumbLd(
           <div class="mt-4 flex flex-wrap gap-4">
             <span id="project-qr" class="block w-24 shrink-0 rounded bg-white p-1" data-qr={qrPath(lang, 'panneau', p.slug)}></span>
             <div class="flex flex-col gap-2">
-              <button type="button" class="chip !h-9 !text-[12px]" data-share={path} data-title={shareText} data-copied={t('project.copied')}>
+              <button type="button" class="chip !h-11 !text-[12px]" data-share={path} data-title={shareText} data-copied={t('project.copied')}>
                 <Icon name="share" size={14} /> <span data-copy-label>{t('cta.share')}</span>
               </button>
-              <button type="button" class="chip !h-9 !text-[12px]" data-copy={path} data-copied={t('project.copied')}>
+              <button type="button" class="chip !h-11 !text-[12px]" data-copy={path} data-copied={t('project.copied')}>
                 <Icon name="link" size={14} /> <span data-copy-label>{t('project.copy')}</span>
               </button>
-              <a href={`${route('poster', lang)}?p=${p.slug}`} class="chip !h-9 !text-[12px]"><Icon name="print" size={14} /> {t('project.poster')}</a>
+              <a href={`${route('poster', lang)}?p=${p.slug}`} class="chip !h-11 !text-[12px]"><Icon name="print" size={14} /> {t('project.poster')}</a>
             </div>
           </div>
           <p class="mt-4 text-[13px] leading-relaxed text-bone/55">{t('project.qrHelp')}</p>

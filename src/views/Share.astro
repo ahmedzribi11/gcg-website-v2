@@ -81,7 +81,7 @@ const home = route('home', lang)
                 <a href={s.url} target="_blank" rel="noopener" class="flex items-center gap-2 text-[15px] hover:text-gold">
                   <Icon name={s.key} size={16} /> {s.name}
                 </a>
-                <button type="button" class="meta inline-flex min-h-6 items-center text-mist hover:text-gold" data-qr-download={`qr-${s.key}`} data-format="png" data-qr-name={`gcg-${s.key}-qr`}>{t('share.downloadPng')}</button>
+                <button type="button" class="meta inline-flex min-h-11 min-w-11 items-center text-mist hover:text-gold" data-qr-download={`qr-${s.key}`} data-format="png" data-qr-name={`gcg-${s.key}-qr`}>{t('share.downloadPng')}</button>
               </li>
             ))}
           </ul>
@@ -110,9 +110,9 @@ const home = route('home', lang)
                 </a>
               </div>
               <div class="flex flex-wrap gap-x-4 gap-y-1">
-                <button type="button" class="meta inline-flex min-h-6 items-center text-mist hover:text-gold" data-qr-download={`qr-p-${p.slug}`} data-format="png" data-qr-name={`gcg-${p.slug}-qr`}>PNG</button>
-                <button type="button" class="meta inline-flex min-h-6 items-center text-mist hover:text-gold" data-qr-download={`qr-p-${p.slug}`} data-qr-name={`gcg-${p.slug}-qr`}>SVG</button>
-                <a href={`${route('poster', lang)}?p=${p.slug}`} class="meta inline-flex min-h-6 items-center text-mist hover:text-gold">{t('project.poster')}</a>
+                <button type="button" class="meta inline-flex min-h-11 min-w-11 items-center text-mist hover:text-gold" data-qr-download={`qr-p-${p.slug}`} data-format="png" data-qr-name={`gcg-${p.slug}-qr`}>PNG</button>
+                <button type="button" class="meta inline-flex min-h-11 min-w-11 items-center text-mist hover:text-gold" data-qr-download={`qr-p-${p.slug}`} data-qr-name={`gcg-${p.slug}-qr`}>SVG</button>
+                <a href={`${route('poster', lang)}?p=${p.slug}`} class="meta inline-flex min-h-11 min-w-11 items-center text-mist hover:text-gold">{t('project.poster')}</a>
               </div>
             </div>
           </li>

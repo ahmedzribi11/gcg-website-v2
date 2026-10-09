@@ -8,8 +8,11 @@ backend:
   repo: ahmedzribi11/gcg-website-v2
   branch: main
   auth_endpoint: api/auth
-  # Aperçu réel avant publication : nom exact du statut de déploiement (ex. « Vercel – gcg-website-v2 »)
-  # preview_context: 'Vercel – gcg-website-v2'
+  # preview_context volontairement absent (OPS-04) : Decap lit l’adresse d’aperçu dans le statut de commit GitHub,
+  # et celui de Vercel (contexte « Vercel ») pointe vers le tableau de bord vercel.com, pas vers l’aperçu ; Decap y
+  # ajouterait le chemin de la fiche, d’où un lien cassé. À activer seulement avec un hébergeur dont le statut porte
+  # l’adresse de l’aperçu. Garde-fou réel : le contrôle « Qualité » requis sur main (GATE-03) bloque la publication
+  # d’une fiche refusée par le build.
   commit_messages:
     create: 'Projet ajouté : {{slug}}'
     update: 'Mise à jour : {{slug}}'
@@ -128,7 +131,7 @@ collections:
       - { label: 'Typologie (texte libre)', name: typology, widget: string, required: false, hint: 'Ex. : Villas R+1 de 4 et 5 pièces' }
       - { label: 'Typologie en anglais', name: typology_en, widget: string, required: false }
       - { label: 'Missions GCG (français)', label_singular: mission, name: missions, widget: list, min: 1, field: { label: Mission, name: mission, widget: string, hint: 'Ex. : Gros œuvre et second œuvre' } }
-      - { label: 'Missions GCG (anglais)', label_singular: 'mission (anglais)', name: missions_en, widget: list, required: false, field: { label: Mission, name: mission, widget: string, hint: 'Ex. : Structural and finishing works' } }
+      - { label: 'Missions GCG (anglais)', label_singular: 'mission (anglais)', name: missions_en, widget: list, required: false, hint: 'Au moins une mission si la version anglaise est « validée ».', field: { label: Mission, name: mission, widget: string, hint: 'Ex. : Structural and finishing works' } }
       - label: Expertises mobilisées
         name: services
         widget: select
@@ -168,8 +171,8 @@ collections:
         hint: 'La première image sert de couverture ; glisser pour réordonner. Photo d’origine (JPG, PNG ou HEIC d’iPhone, 20 Mo maximum), 2 400 px de large idéalement : le site la convertit et l’optimise automatiquement.'
         fields:
           - { label: Image, name: src, widget: image, choose_url: false }
-          - { label: 'Description (français)', name: alt, widget: string, hint: 'Ce que montre l’image, pour les malvoyants et Google. Ex. : Villa Palmeras, façade principale et piscine' }
-          - { label: 'Description (anglais)', name: alt_en, widget: string, hint: 'Ex. : Villa Palmeras, main façade and pool' }
+          - { label: 'Description (français)', name: alt, widget: string, pattern: ['^.{5,140}$', '5 à 140 caractères'], hint: 'Ce que montre l’image, pour les malvoyants et Google, 5 à 140 caractères. Ex. : Villa Palmeras, façade principale et piscine' }
+          - { label: 'Description (anglais)', name: alt_en, widget: string, pattern: ['^.{5,140}$', '5 à 140 caractères'], hint: 'Requise même si la version anglaise est « à traduire », 5 à 140 caractères. Ex. : Villa Palmeras, main façade and pool' }
           - label: Nature
             name: kind
             widget: select
@@ -193,7 +196,7 @@ collections:
         name: en_status
         widget: select
         default: a-traduire
-        hint: 'Un nouveau projet reste « à traduire » : il n’apparaît en anglais qu’après relecture.'
+        hint: 'Un nouveau projet reste « à traduire » : il n’apparaît en anglais qu’après relecture. « Validée » exige le résumé et au moins une mission en anglais.'
         options:
           - { label: 'Version anglaise relue et validée', value: valide }
           - { label: 'À traduire (non publiée en anglais)', value: a-traduire }

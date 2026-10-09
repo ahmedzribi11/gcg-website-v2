@@ -62,7 +62,7 @@ onScroll()
 const toggle = document.getElementById('menu-toggle')
 const menu = document.getElementById('mobile-menu')
 if (header && toggle && menu) {
-  const links = () => menu.querySelectorAll<HTMLElement>('a')
+  const links = () => menu.querySelectorAll<HTMLElement>('a, button')
   const setOpen = (open: boolean) => {
     header.toggleAttribute('data-menu', open)
     header.removeAttribute('data-hidden')
@@ -265,15 +265,16 @@ addEventListener('load', () => ScrollTrigger.refresh())
 export { gsap, ScrollTrigger }
 
 /* ─── Mode clair / sombre ─────────────────────────────────────────────── */
-const themeBtn = document.getElementById('theme-toggle')
+// Deux boutons : dans l’en-tête (tablette, ordinateur) et dans le menu plein écran (téléphone)
+const themeBtns = document.querySelectorAll<HTMLElement>('[data-theme-toggle]')
 const applyThemeUi = () => {
   const light = document.documentElement.dataset.theme === 'light'
   const fr = document.documentElement.lang === 'fr'
-  themeBtn?.setAttribute('aria-pressed', String(light))
-  themeBtn?.setAttribute('aria-label', light ? (fr ? 'Mode sombre' : 'Dark mode') : fr ? 'Mode clair' : 'Light mode')
+  themeBtns.forEach((b) => b.setAttribute('aria-pressed', String(light)))
+  document.getElementById('theme-toggle')?.setAttribute('aria-label', light ? (fr ? 'Mode sombre' : 'Dark mode') : fr ? 'Mode clair' : 'Light mode')
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', light ? '#f4f0e6' : '#070c09')
 }
-themeBtn?.addEventListener('click', () => {
+const toggleTheme = () => {
   const light = document.documentElement.dataset.theme !== 'light'
   if (light) document.documentElement.dataset.theme = 'light'
   else delete document.documentElement.dataset.theme
@@ -283,5 +284,6 @@ themeBtn?.addEventListener('click', () => {
     /* stockage indisponible : le choix vaut pour cette page */
   }
   applyThemeUi()
-})
+}
+themeBtns.forEach((b) => b.addEventListener('click', toggleTheme))
 applyThemeUi()

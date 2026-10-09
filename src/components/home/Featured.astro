@@ -85,7 +85,7 @@ Sans lui (animations réduites, pas de JS, téléphone) : liste verticale, tous 
 </section>
 
 <script>
-  import { gsap, reducedMotion, scrollToEl } from '../../scripts/site'
+  import { gsap, reducedMotion, scrollToEl, touch } from '../../scripts/site'
 
   const section = document.getElementById('featured')
   const pin = document.querySelector<HTMLElement>('[data-hpin]')
@@ -108,6 +108,12 @@ Sans lui (animations réduites, pas de JS, téléphone) : liste verticale, tous 
           start: 'top top',
           end: () => `+=${distance()}`,
           pin: true,
+          /*
+           * Épinglage par translation (et non position: fixed) quand le défilement est piloté par Lenis :
+           * le passage en position fixe comptait comme un décalage de mise en page de 1,0 à l’entrée et à la
+           * sortie (GATE-02). Au doigt (défilement natif), position fixe gardée pour éviter les saccades.
+           */
+          pinType: touch ? 'fixed' : 'transform',
           scrub: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => progress && (progress.style.transform = `scaleX(${self.progress})`),

@@ -22,7 +22,7 @@ const wa = whatsappLink(t('contact.form.intro'))
       <em class="serif">{t('final.title')}</em>
     </h2>
     <p class="mt-8 max-w-lg text-[15px] leading-relaxed text-bone/65 md:text-base" data-reveal>{t('final.lead')}</p>
-    <div class="mt-12 flex flex-col items-center gap-3 sm:flex-row" data-reveal>
+    <div class="mt-12 flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:justify-center" data-reveal>
       {
         wa && (
           <a href={wa} target="_blank" rel="noopener" class="btn btn-gold !min-h-16 !px-9" data-magnetic>

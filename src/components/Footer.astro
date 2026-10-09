@@ -27,8 +27,8 @@ const wa = whatsappLink(t('contact.form.intro'))
 
 <footer class="no-print relative overflow-hidden border-t border-line bg-ink pb-28 pt-20 md:pb-12 md:pt-28">
   <div class="wrap">
-    <div class="grid gap-14 md:grid-cols-12">
-      <div class="md:col-span-5">
+    <div class="grid gap-14 sm:grid-cols-2 lg:grid-cols-12">
+      <div class="lg:col-span-4">
         <img src="/brand/gcg-logo-gold.png" alt="GCG — General Constructor Group CI" width="720" height="218" loading="lazy" decoding="async" class="h-14 w-auto md:h-16" />
         <p class="mt-6 max-w-sm text-[15px] leading-relaxed text-bone/60">{t('site.description')}</p>
         {
@@ -46,14 +46,14 @@ const wa = whatsappLink(t('contact.form.intro'))
         }
       </div>
 
-      <nav class="md:col-span-2 md:col-start-7" aria-label={lang === 'fr' ? 'Pied de page' : 'Footer'}>
+      <nav class="lg:col-span-2 lg:col-start-6" aria-label={lang === 'fr' ? 'Pied de page' : 'Footer'}>
         <p class="meta text-mist">GCG</p>
         <ul class="mt-5 space-y-3">
           {nav.map((n) => <li><a href={n.href} class="link-line text-[15px] text-bone/75 hover:text-bone">{n.label}</a></li>)}
         </ul>
       </nav>
 
-      <div class="md:col-span-2">
+      <div class="lg:col-span-2">
         <p class="meta text-mist">{t('footer.links')}</p>
         <ul class="mt-5 space-y-3">
           {useful.map((n) => <li><a href={n.href} class="link-line text-[15px] text-bone/75 hover:text-bone">{n.label}</a></li>)}
@@ -61,7 +61,7 @@ const wa = whatsappLink(t('contact.form.intro'))
         </ul>
       </div>
 
-      <div class="md:col-span-2">
+      <div class="lg:col-span-3">
         <p class="meta text-mist">{t('contact.direct')}</p>
         <ul class="mt-5 space-y-3 text-[15px] text-bone/75">
           {wa && <li><a href={wa} target="_blank" rel="noopener" class="link-line hover:text-bone">WhatsApp</a></li>}

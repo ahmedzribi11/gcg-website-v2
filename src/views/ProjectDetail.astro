@@ -84,8 +84,8 @@ const crumbs = breadcrumbLd(
       </div>
     </header>
 
-    <div class="wrap grid gap-16 py-20 md:grid-cols-12 md:py-28">
-      <div class="md:col-span-7">
+    <div class="wrap grid gap-16 py-20 md:py-28 lg:grid-cols-12">
+      <div class="lg:col-span-7">
         <p class="label text-gold" data-reveal>{t('project.composition')}</p>
         <p class="mt-6 text-[clamp(1.6rem,2.8vw,2.6rem)] font-light leading-[1.2] tracking-[-0.02em]" data-reveal>{p.composition}</p>
         {p.typology && <p class="mt-6 text-lg text-bone/70" data-reveal><span class="meta mr-3 text-mist">{t('project.typology')}</span>{p.typology}</p>}
@@ -142,21 +142,21 @@ const crumbs = breadcrumbLd(
         }
       </div>
 
-      <aside class="md:col-span-4 md:col-start-9">
+      <aside class="lg:col-span-4 lg:col-start-9">
         <div class="cartouche border border-bone/30 bg-ink-2" data-reveal>
           <div class="flex items-center justify-between bg-brand px-5 py-3">
             <span class="meta text-gold">{t('project.sheet')}</span>
             <span class="meta text-gold">N° {pad(p.number)}</span>
           </div>
           <p class="border-b border-line px-5 py-4 text-lg font-light">{p.name}</p>
-          <dl class="grid grid-cols-[auto_1fr]">
+          <dl class="grid grid-cols-[auto_minmax(0,1fr)]">
             {
               sheet
                 .filter(([, v]) => v)
                 .map(([k, v, q]) => (
                   <>
                     <dt class="meta border-b border-r border-line px-5 py-3.5 text-mist">{k}</dt>
-                    <dd class="border-b border-line px-5 py-3.5 text-[15px]">{q ? <a href={`${route('projects', lang)}?${q}`} class="link-line hover:text-gold">{v}</a> : v}</dd>
+                    <dd class="min-w-0 break-words border-b border-line px-5 py-3.5 text-[15px]">{q ? <a href={`${route('projects', lang)}?${q}`} class="link-line hover:text-gold">{v}</a> : v}</dd>
                   </>
                 ))
             }
@@ -169,7 +169,7 @@ const crumbs = breadcrumbLd(
 
         <div class="mt-6 border border-line p-5" data-reveal style="--d:.1s">
           <p class="meta text-gold">{t('project.share')}</p>
-          <div class="mt-4 flex gap-4">
+          <div class="mt-4 flex flex-wrap gap-4">
             <span id="project-qr" class="block w-24 shrink-0 rounded bg-white p-1" data-qr={qrPath(lang, 'panneau', p.slug)}></span>
             <div class="flex flex-col gap-2">
               <button type="button" class="chip !h-9 !text-[12px]" data-share={path} data-title={shareText} data-copied={t('project.copied')}>

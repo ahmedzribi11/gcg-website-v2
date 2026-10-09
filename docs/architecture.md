@@ -7,7 +7,7 @@ fonctions serveur (formulaire de contact, connexion à l’espace de gestion) et
 (Decap CMS) qui enregistre le contenu directement dans le dépôt GitHub.
 
 ```
- Éditeur GCG ──► /admin (Decap CMS) ──► GitHub (dépôt My-web, branche main)
+ Éditeur GCG ──► /admin (Decap CMS) ──► GitHub (dépôt gcg-website-v2, branche main)
                                               │  chaque publication
                                               ▼
                                    Build automatique (npm run build)

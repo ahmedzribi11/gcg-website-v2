@@ -8,8 +8,11 @@ backend:
   repo: ahmedzribi11/gcg-website-v2
   branch: main
   auth_endpoint: api/auth
-  # Aperçu réel avant publication : nom exact du statut de déploiement (ex. « Vercel – gcg-website-v2 »)
-  # preview_context: 'Vercel – gcg-website-v2'
+  # preview_context volontairement absent (OPS-04) : Decap lit l’adresse d’aperçu dans le statut de commit GitHub,
+  # et celui de Vercel (contexte « Vercel ») pointe vers le tableau de bord vercel.com, pas vers l’aperçu ; Decap y
+  # ajouterait le chemin de la fiche, d’où un lien cassé. À activer seulement avec un hébergeur dont le statut porte
+  # l’adresse de l’aperçu. Garde-fou réel : le contrôle « Qualité » requis sur main (GATE-03) bloque la publication
+  # d’une fiche refusée par le build.
   commit_messages:
     create: 'Projet ajouté : {{slug}}'
     update: 'Mise à jour : {{slug}}'
@@ -128,7 +131,7 @@ collections:
       - { label: 'Typologie (texte libre)', name: typology, widget: string, required: false, hint: 'Ex. : Villas R+1 de 4 et 5 pièces' }
       - { label: 'Typologie en anglais', name: typology_en, widget: string, required: false }
       - { label: 'Missions GCG (français)', label_singular: mission, name: missions, widget: list, min: 1, field: { label: Mission, name: mission, widget: string, hint: 'Ex. : Gros œuvre et second œuvre' } }
-      - { label: 'Missions GCG (anglais)', label_singular: 'mission (anglais)', name: missions_en, widget: list, required: false, field: { label: Mission, name: mission, widget: string, hint: 'Ex. : Structural and finishing works' } }
+      - { label: 'Missions GCG (anglais)', label_singular: 'mission (anglais)', name: missions_en, widget: list, required: false, hint: 'Au moins une mission si la version anglaise est « validée ».', field: { label: Mission, name: mission, widget: string, hint: 'Ex. : Structural and finishing works' } }
       - label: Expertises mobilisées
         name: services
         widget: select
@@ -168,13 +171,13 @@ collections:
         hint: 'La première image sert de couverture ; glisser pour réordonner. Photo d’origine (JPG, PNG ou HEIC d’iPhone, 20 Mo maximum), 2 400 px de large idéalement : le site la convertit et l’optimise automatiquement.'
         fields:
           - { label: Image, name: src, widget: image, choose_url: false }
-          - { label: 'Description (français)', name: alt, widget: string, hint: 'Ce que montre l’image, pour les malvoyants et Google. Ex. : Villa Palmeras, façade principale et piscine' }
-          - { label: 'Description (anglais)', name: alt_en, widget: string, hint: 'Ex. : Villa Palmeras, main façade and pool' }
+          - { label: 'Description (français)', name: alt, widget: string, pattern: ['^.{5,140}$', '5 à 140 caractères'], hint: 'Ce que montre l’image, pour les malvoyants et Google, 5 à 140 caractères. Ex. : Villa Palmeras, façade principale et piscine' }
+          - { label: 'Description (anglais)', name: alt_en, widget: string, pattern: ['^.{5,140}$', '5 à 140 caractères'], hint: 'Requise même si la version anglaise est « à traduire », 5 à 140 caractères. Ex. : Villa Palmeras, main façade and pool' }
           - label: Nature
             name: kind
             widget: select
             default: photo
-            hint: 'Une perspective 3D est signalée « Perspective » sur le site.'
+            hint: 'Choisir « Perspective 3D » pour toute image de synthèse et « Plan » pour un dessin : une perspective ne doit jamais passer pour une photo réelle.'
             options:
               - { label: 'Photo réelle', value: photo }
               - { label: 'Perspective 3D (rendu)', value: render }
@@ -193,16 +196,34 @@ collections:
         name: en_status
         widget: select
         default: a-traduire
-        hint: 'Un nouveau projet reste « à traduire » : il n’apparaît en anglais qu’après relecture.'
+        hint: 'Un nouveau projet reste « à traduire » : il n’apparaît en anglais qu’après relecture. « Validée » exige le résumé et au moins une mission en anglais.'
         options:
           - { label: 'Version anglaise relue et validée', value: valide }
           - { label: 'À traduire (non publiée en anglais)', value: a-traduire }
       - { label: 'Mettre en avant sur l’accueil', name: featured, widget: boolean, default: false, required: false, hint: 'Projets phares : hôtels, grands ensembles.' }
       - { label: 'Ordre sur l’accueil', name: featuredOrder, widget: number, value_type: int, required: false, hint: 'Ex. : 1 pour le premier' }
-      - { label: 'Titre Google (français)', name: seo_title, widget: string, required: false, hint: 'Facultatif, 60 caractères maximum. Par défaut : le nom du projet.' }
-      - { label: 'Titre Google (anglais)', name: seo_title_en, widget: string, required: false }
-      - { label: 'Description Google (français)', name: seo_description, widget: text, required: false, hint: 'Facultatif, 160 caractères maximum. Par défaut : le résumé.' }
-      - { label: 'Description Google (anglais)', name: seo_description_en, widget: text, required: false }
+      - label: 'Chiffre clé sur l’accueil'
+        name: highlight
+        widget: object
+        required: false
+        collapsed: true
+        hint: 'Facultatif : un chiffre tiré de cette fiche, affiché dans la grille « À toutes les échelles » et/ou le bandeau défilant de l’accueil. Il disparaît si le projet n’est pas publié. Pour le retirer, vider tous ses champs.'
+        fields:
+          - { label: Valeur, name: value, widget: string, required: false, hint: 'Requise dès qu’un champ du chiffre clé est rempli. Ex. : 116 ou 55 000' }
+          - { label: Unité, name: unit, widget: string, required: false, hint: 'Requise dès qu’un champ du chiffre clé est rempli. Ex. : villas' }
+          - { label: 'Unité en anglais', name: unit_en, widget: string, required: false, hint: 'Seulement si elle change en anglais. Ex. : rooms' }
+          - { label: Précision, name: note, widget: string, required: false, hint: 'Affichée sous le chiffre dans la grille. Ex. : R+1 haut standing sur 6 ha' }
+          - { label: 'Précision en anglais', name: note_en, widget: string, required: false, hint: 'Requise si la précision est remplie et la version anglaise « validée ». Ex. : high-end R+1 villas on 6 ha' }
+          - { label: 'Rang dans la grille « À toutes les échelles »', name: scaleOrder, widget: number, value_type: int, min: 1, required: false, hint: 'Vide : absent de la grille. Ex. : 1 pour le premier' }
+          - { label: 'Rang dans le bandeau défilant', name: marqueeOrder, widget: number, value_type: int, min: 1, required: false, hint: 'Vide : absent du bandeau. Ex. : 1 pour le premier' }
+          - { label: 'Nom dans le bandeau', name: marqueeName, widget: string, required: false, hint: 'Par défaut : le nom du projet. Ex. : Hôtel Calao' }
+          - { label: 'Nom dans le bandeau en anglais', name: marqueeName_en, widget: string, required: false, hint: 'Par défaut : le nom ci-dessus, sinon le nom en anglais du projet' }
+          - { label: 'Texte du bandeau', name: marqueeFigure, widget: string, required: false, hint: 'Par défaut : valeur et unité. Ex. : 64 bungalows & 30 villas' }
+          - { label: 'Texte du bandeau en anglais', name: marqueeFigure_en, widget: string, required: false, hint: 'Requis si le texte du bandeau est rempli et la version anglaise « validée ».' }
+      - { label: 'Titre Google (français)', name: seo_title, widget: string, required: false, pattern: ['^.{0,70}$', '70 caractères maximum'], hint: 'Facultatif : remplace le titre de l’onglet et du résultat Google. 60 caractères conseillés, 70 au plus. Par défaut : « Nom du projet · projet GCG, Côte d’Ivoire ».' }
+      - { label: 'Titre Google (anglais)', name: seo_title_en, widget: string, required: false, pattern: ['^.{0,70}$', '70 caractères maximum'], hint: 'Facultatif, pour la page anglaise. 60 caractères conseillés, 70 au plus.' }
+      - { label: 'Description Google (français)', name: seo_description, widget: text, required: false, pattern: ['^[\s\S]{0,170}$', '170 caractères maximum'], hint: 'Facultatif : remplace la description du résultat Google. 160 caractères conseillés, 170 au plus. Par défaut : le résumé, suivi du lieu et de la période.' }
+      - { label: 'Description Google (anglais)', name: seo_description_en, widget: text, required: false, pattern: ['^[\s\S]{0,170}$', '170 caractères maximum'], hint: 'Facultatif, pour la page anglaise. 160 caractères conseillés, 170 au plus.' }
 
   - name: settings
     label: Paramètres

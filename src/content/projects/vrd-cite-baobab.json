@@ -41,5 +41,12 @@
     }
   ],
   "permission": "en-attente",
-  "en_status": "valide"
+  "en_status": "valide",
+  "highlight": {
+    "value": "5",
+    "unit": "ha de VRD",
+    "unit_en": "ha of roads & utilities",
+    "marqueeOrder": 8,
+    "marqueeName": "Cité Baobab"
+  }
 }

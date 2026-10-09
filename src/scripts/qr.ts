@@ -1,12 +1,18 @@
 import { renderSVG } from 'uqr'
 
 /**
- * Rend les QR codes [data-qr] côté client à partir de l’adresse réelle du site
- * (fonctionne quel que soit le domaine : Vercel, domaine définitif, local).
+ * Domaine définitif connu au build (SITE_URL, voir astro.config.mjs) : les QR codes et les liens
+ * partagés l’encodent quel que soit l’hôte qui affiche la page (aperçu Vercel, apex, local) (SHR-02).
+ * Vide si SITE_URL n’est pas renseigné : on encode alors l’adresse de la page.
+ */
+const SITE_ORIGIN: string = import.meta.env.PUBLIC_QR_ORIGIN || ''
+
+/**
+ * Rend les QR codes [data-qr] côté client.
  * data-qr : chemin (/realisations/...) ou URL complète.
  */
 export function qrUrl(target: string) {
-  return /^https?:\/\//.test(target) ? target : new URL(target, location.origin).href
+  return /^https?:\/\//.test(target) ? target : new URL(target, SITE_ORIGIN || location.origin).href
 }
 
 export function qrSvg(url: string, dark = '#052e14', light = '#ffffff') {
@@ -39,8 +45,11 @@ export function renderQrs(root: ParentNode = document) {
 
 renderQrs()
 
-/** Adresse provisoire (Vercel, Cloudflare, local) : les QR codes ne doivent pas être imprimés. */
-if (/(\.vercel\.app|\.pages\.dev|localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+/**
+ * Ne pas imprimer (SHR-02) : le domaine définitif n’est pas connu au build, ou la page est ouverte
+ * sur une autre adresse que lui (aperçu, apex non redirigé, local) et ce domaine n’est peut-être pas encore en ligne.
+ */
+if (!SITE_ORIGIN || location.origin !== SITE_ORIGIN) {
   document.querySelectorAll<HTMLElement>('[data-qr-warning]').forEach((el) => el.removeAttribute('hidden'))
 }
 

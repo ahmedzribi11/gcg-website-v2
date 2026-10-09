@@ -19,4 +19,8 @@ import Icon from '../components/Icon.astro'
       </div>
     </div>
   </section>
+  <script>
+    // Adresse de QR code imprimé inconnue (SHR-03) : jamais de page introuvable, retour à l’accueil
+    if (/^\/qr(\/|$)/.test(location.pathname)) location.replace((/^\/qr\/en(\/|$)/.test(location.pathname) ? '/en' : '/') + '?utm_source=qr&utm_medium=inconnu')
+  </script>
 </Base>

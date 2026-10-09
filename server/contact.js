@@ -11,6 +11,7 @@
  * Variables d’environnement : RESEND_API_KEY, CONTACT_TO (adresses séparées par des virgules),
  * CONTACT_FROM (ex. « Site GCG <site@gcg-ci.com> », domaine authentifié SPF/DKIM).
  */
+import { secure } from './headers.js'
 
 const TYPES = ['villa', 'residence', 'immeuble', 'hotel', 'commerce', 'industrie', 'equipement', 'vrd', 'renovation', 'etude', 'autre']
 const PROFILES = ['particulier', 'diaspora', 'investisseur', 'hotelier', 'entreprise', 'autre', '']
@@ -118,10 +119,10 @@ export async function handleContact(request, env, ip) {
   let lang = 'fr'
 
   const reply = (status, code, extra = {}) => {
-    if (wantsJson) return Response.json({ ok: status < 300, code, ...extra }, { status, headers: { 'Cache-Control': 'no-store' } })
+    if (wantsJson) return Response.json({ ok: status < 300, code, ...extra }, { status, headers: secure({ 'Cache-Control': 'no-store' }) })
     const to =
       status < 300 ? (lang === 'en' ? '/en/contact/thanks' : '/contact/merci') : `${lang === 'en' ? '/en/contact/error' : '/contact/erreur'}?code=${code}`
-    return new Response(null, { status: 303, headers: { Location: to, 'Cache-Control': 'no-store' } })
+    return new Response(null, { status: 303, headers: secure({ Location: to, 'Cache-Control': 'no-store' }) })
   }
 
   if (ctype.includes('multipart/form-data')) return reply(415, 'unsupported')

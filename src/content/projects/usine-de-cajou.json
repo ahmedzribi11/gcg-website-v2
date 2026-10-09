@@ -45,5 +45,13 @@
     }
   ],
   "permission": "en-attente",
-  "en_status": "valide"
+  "en_status": "valide",
+  "highlight": {
+    "value": "55 000",
+    "unit": "m²",
+    "note": "usine de stockage de cajou",
+    "note_en": "cashew storage plant",
+    "scaleOrder": 4,
+    "marqueeOrder": 6
+  }
 }

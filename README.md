@@ -8,11 +8,15 @@ Astro (site statique multipage) · React Three Fiber (ouverture 3D de l’accuei
 défilement) · Tailwind CSS v4 · Decap CMS (espace de gestion) · fonctions serveur pour le formulaire et la
 connexion à l’espace de gestion.
 
-> **Site séparé.** Ce dépôt reprend à l’identique l’apparence et le comportement du site en ligne (dépôt
-> `My-web`, qui n’est pas modifié), avec en plus la sécurité, le référencement, l’accessibilité, les pages
-> légales, l’envoi du formulaire par e-mail et l’espace de gestion amélioré.
+> **Dépôt de référence (décision du 9 octobre 2026).** `ahmedzribi11/gcg-website-v2` est le seul dépôt
+> du site : l’espace de gestion y enregistre les modifications (`public/admin/config.yml`,
+> `src/pages/admin.astro`) et le projet d’hébergement de production doit être construit à partir de lui
+> (Vercel → Settings → Git). Tout autre dépôt ou projet Vercel du site est une ancienne copie, à archiver
+> en lecture seule.
 
-Prérequis : **Node.js 22** (voir `.nvmrc` ; 20.19+ accepté) et npm.
+Prérequis : **Node.js 22.23.3** (voir `.nvmrc` ; 22.22.3+ ou 24.16+ accepté, comme les outils d’analyse) et npm.
+Les outils de contrôle (Playwright, axe-core, Nu Html Checker) sont des dépendances de développement à
+version exacte, installées par `npm ci`.
 
 ```bash
 git clone https://github.com/ahmedzribi11/gcg-website-v2.git
@@ -101,11 +105,11 @@ Le même dépôt se déploie sur **Vercel** (`vercel.json`, fonctions `api/`) ou
 > site de GCG : **Vercel Pro**, ou **Cloudflare Pages** (offre gratuite, usage commercial autorisé).
 > Procédure : `docs/exploitation.md`, section 6.
 
-Build : `npm run build`, dossier `dist`, Node 22. Variables d’environnement :
+Build : `npm run build`, dossier `dist`, Node 22 (`.nvmrc`). Variables d’environnement :
 
 | Variable | Rôle |
 | --- | --- |
-| `SITE_URL` | Domaine définitif (canoniques, sitemap, QR codes) |
+| `SITE_URL` | Domaine définitif (canoniques, sitemap, QR codes, domaine compté par Umami). Sans lui, un build en CI ou sur la branche de production Cloudflare s’arrête ; Vercel se replie sur son domaine de production |
 | `RESEND_API_KEY`, `CONTACT_TO`, `CONTACT_FROM` | Envoi du formulaire de contact par e-mail |
 | `GITHUB_OAUTH_ID`, `GITHUB_OAUTH_SECRET` | Connexion à l’espace de gestion |
 | `GCG_LAUNCH=1` | Masque les projets sans autorisation de publication du client |

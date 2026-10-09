@@ -20,6 +20,8 @@ interface Props {
   description?: string
   /** Chemin de la page équivalente dans l’autre langue. */
   alt: string
+  /** La page existe dans l’autre langue (sinon `alt` mène à une page voisine et aucun hreflang n’est annoncé). */
+  translated?: boolean
   /** URL (relative ou absolue) de l’image de partage. */
   image?: string
   header?: 'overlay' | 'solid'
@@ -32,7 +34,7 @@ interface Props {
   docTitle?: string
 }
 
-const { lang, title, description, alt, image = '/og-image.jpg', header = 'solid', noindex = false, bare = false, jsonLd = [], organization = false, docTitle } = Astro.props
+const { lang, title, description, alt, translated = true, image = '/og-image.jpg', header = 'solid', noindex = false, bare = false, jsonLd = [], organization = false, docTitle } = Astro.props
 const t = useT(lang)
 const brand = 'GCG Côte d’Ivoire'
 const fullTitle = docTitle ?? (title ? `${title} · ${brand}` : `${brand} · ${t('site.tagline')}`)
@@ -64,7 +66,7 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
     {robots && <meta name="robots" content={robots} />}
     {site && <link rel="canonical" href={abs(path)} />}
     {
-      site && !noindex && (
+      site && !noindex && translated && (
         <>
           <link rel="alternate" hreflang="fr" href={abs(frPath)} />
           <link rel="alternate" hreflang="en" href={abs(enPath)} />
@@ -100,7 +102,10 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
       document.documentElement.classList.replace('no-js', 'js')
     </script>
     {ld.length > 0 && <script type="application/ld+json" set:html={JSON.stringify(ld.length === 1 ? ld[0] : ld)} />}
-    {umamiId && !isPreview && <script is:inline defer src={umamiSrc} data-website-id={umamiId} data-do-not-track="true" />}
+    {
+      /* Mesure limitée au domaine public (OPS-09) : les copies du site (*.vercel.app, autres projets) ne sont pas comptées */
+      umamiId && !isPreview && <script is:inline defer src={umamiSrc} data-website-id={umamiId} data-domains={site?.hostname} data-do-not-track="true" />
+    }
   </head>
   <body class:list={['grain min-h-svh', { 'is-bare': bare }]} data-lang={lang}>
     {

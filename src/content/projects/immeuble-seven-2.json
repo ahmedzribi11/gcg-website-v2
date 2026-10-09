@@ -47,5 +47,11 @@
     }
   ],
   "permission": "en-attente",
-  "en_status": "valide"
+  "en_status": "valide",
+  "highlight": {
+    "value": "17",
+    "unit": "appartements",
+    "unit_en": "apartments",
+    "marqueeOrder": 7
+  }
 }

@@ -3,7 +3,7 @@ import { getImage } from 'astro:assets'
 import Base from '../layouts/Base.astro'
 import Icon from '../components/Icon.astro'
 import { qrPath, route, useT, type Lang } from '../i18n'
-import { getProjects } from '../lib/projects'
+import { getProjects, illustration } from '../lib/projects'
 
 interface Props {
   lang: Lang
@@ -20,7 +20,9 @@ const data = Object.fromEntries(
     }),
   ),
 )
-const general = await getImage({ src: projects.find((p) => p.slug === 'villa-palmeras')!.images[0].src, width: 1400, format: 'jpg', quality: 82 })
+// Photo de l’affiche générale ; sans aucun projet publié, l’image de partage de la marque
+const cover = illustration(projects, 'villa-palmeras')
+const general = cover ? await getImage({ src: cover.images[0].src, width: 1400, format: 'jpg', quality: 82 }) : { src: '/og-image.jpg' }
 ---
 
 <Base lang={lang} alt={route('poster', fr ? 'en' : 'fr')} title={t('share.poster')} noindex bare>
@@ -35,6 +37,7 @@ const general = await getImage({ src: projects.find((p) => p.slug === 'villa-pal
       </select>
     </label>
     <button type="button" class="btn btn-gold !min-h-10" data-print><Icon name="print" /> {t('poster.print')}</button>
+    <p data-qr-warning hidden role="note" class="w-full border border-gold/60 px-3 py-2 text-[13px] text-gold">{t('share.tempWarning')}</p>
   </div>
 
   <div class="poster-stage flex justify-center px-4 py-10">

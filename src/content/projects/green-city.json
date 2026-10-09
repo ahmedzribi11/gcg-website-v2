@@ -74,5 +74,10 @@
   "featured": true,
   "featuredOrder": 1,
   "permission": "en-attente",
-  "en_status": "valide"
+  "en_status": "valide",
+  "highlight": {
+    "value": "45",
+    "unit": "villas",
+    "marqueeOrder": 2
+  }
 }

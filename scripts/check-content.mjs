@@ -1,6 +1,7 @@
 /**
  * Contrôle du contenu avant chaque build (MODEL-05/07/13, PERF-17, MEDIA-07/11, SEC-19, CMS-04).
- * Les photos HEIC/HEIF (iPhone) sont d’abord converties en JPG et la fiche du projet mise à jour.
+ * Les photos HEIC/HEIF (iPhone) sont d’abord converties en JPG et la fiche du projet mise à jour ;
+ * les photos avec métadonnées (GPS, appareil) ou de plus de 3 000 px sont réécrites sans elles (OPS-07).
  * Le build échoue avec un message en français si une règle bloquante n’est pas respectée ;
  * les avertissements n’arrêtent pas le build.
  *
@@ -23,11 +24,14 @@ const warn = (m) => warnings.push(m)
 const SUPPORTED = ['.jpg', '.jpeg', '.png', '.webp', '.avif']
 const MIN_WIDTH = 500
 const HERO_WIDTH = 2400
+/** Plus grand côté conservé : l’original est copié tel quel dans le site publié (dist/_astro), il ne doit rien révéler. */
+const MAX_EDGE = 3000
+const REENCODE = { jpeg: { quality: 88 }, png: {}, webp: { quality: 88 }, avif: { quality: 70 } }
 const MAX_PDF = 10 * 1024 * 1024
 
 /* ─── Photos iPhone (HEIC/HEIF) : conversion en JPG (CMS-04) ───────────── */
 // Les navigateurs n’affichent pas le HEIC et l’optimiseur d’images ne le lit pas : la photo est convertie
-// à côté de l’original, la fiche pointe vers le JPG ; les métadonnées (GPS) disparaissent à l’optimisation.
+// à côté de l’original, la fiche pointe vers le JPG ; ses métadonnées sont retirées plus bas (OPS-07).
 const HEIC = ['.heic', '.heif']
 for (const file of readdirSync(PROJECTS).filter((f) => f.endsWith('.json'))) {
   const jsonPath = join(PROJECTS, file)
@@ -95,12 +99,25 @@ for (const file of files) {
       err(`${where} : fichier introuvable (${src}).`)
       continue
     }
+    // Le site publie aussi le fichier d’origine (dist/_astro) : il est réécrit sur place, orienté, sans métadonnées
+    // (GPS, appareil, date) et ramené à 3 000 px au plus grand côté (OPS-07, MEDIA-07). Le dépôt garde l’ancienne version dans son historique.
+    const before = await sharp(path).metadata()
+    const edge = Math.max(before.width ?? 0, before.height ?? 0)
+    if ((before.exif || before.xmp || before.iptc || edge > MAX_EDGE) && REENCODE[before.format]) {
+      const hidden = before.exif || before.xmp || before.iptc ? 'métadonnées retirées : GPS, appareil, date éventuels' : ''
+      const out = await sharp(readFileSync(path))
+        .rotate()
+        .resize({ width: MAX_EDGE, height: MAX_EDGE, fit: 'inside', withoutEnlargement: true })
+        .toFormat(before.format, REENCODE[before.format])
+        .toBuffer()
+      writeFileSync(path, out)
+      const done = [hidden, edge > MAX_EDGE ? `réduite de ${edge} à ${MAX_EDGE} px` : ''].filter(Boolean).join(', ')
+      warn(`${where} : image réécrite pour la publication (${done}). En local, enregistrez ce fichier modifié dans le dépôt.`)
+    }
     const meta = await sharp(path).metadata()
     if ((meta.width ?? 0) < MIN_WIDTH) err(`${where} : image trop petite (${meta.width} px de large, ${MIN_WIDTH} px minimum).`)
     if (i === 0 && (meta.width ?? 0) < HERO_WIDTH)
       warn(`${where} : utilisée en grand format, ${meta.width} px de large (${HERO_WIDTH} px recommandés, MEDIA-11).`)
-    if (meta.exif && meta.exif.includes(Buffer.from('GPS')))
-      warn(`${where} : l’original contient des métadonnées GPS (elles sont retirées des images publiées, mais restent dans le dépôt).`)
   }
 }
 

@@ -49,8 +49,8 @@ const studies = n((p) => p.status === 'etudes')
       <button type="button" class="meta hidden text-mist hover:text-gold md:inline" data-reset>{t('projects.filter.reset')}</button>
       <p class="meta shrink-0 text-bone/70" aria-live="polite"><span data-results class="text-gold">{projects.length}</span> <span data-count-label>{t('projects.count.many')}</span></p>
       <div class="flex shrink-0 rounded-full border border-line" role="group" aria-label={lang === 'fr' ? 'Affichage' : 'View'}>
-        <button type="button" class="flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-[12px] aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="true" data-view="grid" aria-label={t('projects.view.grid')}><Icon name="grid" size={14} /><span class="hidden sm:inline">{t('projects.view.grid')}</span></button>
-        <button type="button" class="flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-[12px] aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="false" data-view="map" aria-label={t('projects.view.map')}><Icon name="map" size={14} /><span class="hidden sm:inline">{t('projects.view.map')}</span></button>
+        <button type="button" class="flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-[0.75rem] aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="true" data-view="grid" aria-label={t('projects.view.grid')}><Icon name="grid" size={14} /><span class="hidden sm:inline">{t('projects.view.grid')}</span></button>
+        <button type="button" class="flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-[0.75rem] aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="false" data-view="map" aria-label={t('projects.view.map')}><Icon name="map" size={14} /><span class="hidden sm:inline">{t('projects.view.map')}</span></button>
       </div>
     </div>
     <div class="wrap hidden pb-4" data-groups-mobile></div>
@@ -65,7 +65,7 @@ const studies = n((p) => p.status === 'etudes')
             {g.items
               .filter((it) => it.n > 0)
               .map((it) => (
-                <button type="button" class="chip !h-8 !px-3 !text-[12px]" aria-pressed="false" data-filter={g.key} data-value={it.v}>
+                <button type="button" class="chip !h-8 !px-3 !text-[0.75rem]" aria-pressed="false" data-filter={g.key} data-value={it.v}>
                   {it.label} <small>{it.n}</small>
                 </button>
               ))}
@@ -87,7 +87,7 @@ const studies = n((p) => p.status === 'etudes')
             {g.items
               .filter((it) => it.n > 0)
               .map((it) => (
-                <button type="button" class="dd-item flex items-center justify-between gap-6 rounded-xl px-3 py-2.5 text-left text-[13px] text-bone/80 hover:bg-ink-3 hover:text-bone aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="false" data-filter={g.key} data-value={it.v} data-label={it.label}>
+                <button type="button" class="dd-item flex items-center justify-between gap-6 rounded-xl px-3 py-2.5 text-left text-[0.8125rem] text-bone/80 hover:bg-ink-3 hover:text-bone aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="false" data-filter={g.key} data-value={it.v} data-label={it.label}>
                   {it.label} <small class="meta opacity-60">{it.n}</small>
                 </button>
               ))}

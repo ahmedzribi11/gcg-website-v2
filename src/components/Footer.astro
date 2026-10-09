@@ -30,7 +30,7 @@ const wa = whatsappLink(t('contact.form.intro'))
     <div class="grid gap-14 sm:grid-cols-2 lg:grid-cols-12">
       <div class="lg:col-span-4">
         <img src="/brand/gcg-logo-gold.png" alt="GCG — General Constructor Group CI" width="720" height="218" loading="lazy" decoding="async" class="h-14 w-auto md:h-16" />
-        <p class="mt-6 max-w-sm text-[15px] leading-relaxed text-bone/60">{t('site.description')}</p>
+        <p class="mt-6 max-w-sm text-[0.9375rem] leading-relaxed text-bone/60">{t('site.description')}</p>
         {
           socials.length > 0 && (
             <ul class="mt-8 flex gap-2" aria-label={t('contact.social')}>
@@ -49,21 +49,21 @@ const wa = whatsappLink(t('contact.form.intro'))
       <nav class="lg:col-span-2 lg:col-start-6" aria-label={lang === 'fr' ? 'Pied de page' : 'Footer'}>
         <p class="meta text-mist">GCG</p>
         <ul class="mt-5 space-y-3">
-          {nav.map((n) => <li><a href={n.href} class="link-line text-[15px] text-bone/75 hover:text-bone">{n.label}</a></li>)}
+          {nav.map((n) => <li><a href={n.href} class="link-line text-[0.9375rem] text-bone/75 hover:text-bone">{n.label}</a></li>)}
         </ul>
       </nav>
 
       <div class="lg:col-span-2">
         <p class="meta text-mist">{t('footer.links')}</p>
         <ul class="mt-5 space-y-3">
-          {useful.map((n) => <li><a href={n.href} class="link-line text-[15px] text-bone/75 hover:text-bone">{n.label}</a></li>)}
-          {documents.map((d) => <li><a href={d.href} download={d.downloadName} class="link-line text-[15px] text-bone/75 hover:text-bone">{lang === 'fr' ? d.title : d.title_en}</a></li>)}
+          {useful.map((n) => <li><a href={n.href} class="link-line text-[0.9375rem] text-bone/75 hover:text-bone">{n.label}</a></li>)}
+          {documents.map((d) => <li><a href={d.href} download={d.downloadName} class="link-line text-[0.9375rem] text-bone/75 hover:text-bone">{lang === 'fr' ? d.title : d.title_en}</a></li>)}
         </ul>
       </div>
 
       <div class="lg:col-span-3">
         <p class="meta text-mist">{t('contact.direct')}</p>
-        <ul class="mt-5 space-y-3 text-[15px] text-bone/75">
+        <ul class="mt-5 space-y-3 text-[0.9375rem] text-bone/75">
           {wa && <li><a href={wa} target="_blank" rel="noopener" class="link-line hover:text-bone">WhatsApp</a></li>}
           {contact.phone && <li><a href={contact.phoneHref} class="link-line hover:text-bone">{contact.phone}</a></li>}
           {contact.phone2 && <li><a href={contact.phone2Href} class="link-line hover:text-bone">{contact.phone2}</a></li>}

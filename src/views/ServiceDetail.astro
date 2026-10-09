@@ -36,7 +36,7 @@ const others = services.filter((x) => x.id !== s.id)
         <span aria-hidden="true">/</span>
         <span class="text-gold" aria-current="page">{s.title[lang]}</span>
       </nav>
-      <h1 class="display mt-6 text-[clamp(3rem,9vw,9.5rem)]" data-split>
+      <h1 class="display mt-6 text-[clamp(min(3rem,15vw),9vw,9.5rem)]" data-split>
         {s.id === 'cle-en-main' ? <em class="serif text-gold">{s.title[lang]}</em> : s.title[lang]}
       </h1>
       <p class="mt-6 max-w-xl text-lg text-bone/80" data-reveal style="--d:.2s">{s.short[lang]}</p>

@@ -39,10 +39,10 @@ const by = (slug: string) => projects.find((p) => p.slug === slug)!
                 </div>
                 <div>
                   <p class="flex flex-wrap items-baseline gap-x-3">
-                    <span class="display whitespace-nowrap text-[clamp(3.6rem,6.4vw,6.6rem)] text-gold">{it.value}</span>
+                    <span class="display whitespace-nowrap text-[clamp(min(3.6rem,18vw),6.4vw,6.6rem)] text-gold">{it.value}</span>
                     <span class="text-xl font-light text-bone/80 md:text-2xl">{it.unit}</span>
                   </p>
-                  <p class="mt-3 text-[14px] text-bone/55">{it.note} · {p.location}</p>
+                  <p class="mt-3 text-[0.875rem] text-bone/55">{it.note} · {p.location}</p>
                 </div>
               </a>
             </li>

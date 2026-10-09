@@ -21,7 +21,7 @@ const home = route('home', lang)
   <PageHeader label={t('share.label')} title={t('share.title')} accent={fr ? 'un scan.' : 'one scan.'} lead={t('share.lead')} />
 
   <section class="wrap grid gap-6 pb-20 md:grid-cols-12">
-    <p data-qr-warning hidden role="note" class="border border-gold/60 p-4 text-[15px] text-gold md:col-span-12">{t('share.tempWarning')}</p>
+    <p data-qr-warning hidden role="note" class="border border-gold/60 p-4 text-[0.9375rem] text-gold md:col-span-12">{t('share.tempWarning')}</p>
     <!-- QR du site -->
     <article class="flex flex-col gap-8 border border-line bg-ink-2 p-6 md:col-span-7 md:flex-row md:p-10" data-reveal>
       <div id="qr-site" class="mx-auto w-full max-w-[280px] shrink-0 self-start rounded-xl bg-white p-3 md:mx-0" data-qr={qrPath(lang, 'panneau')}></div>
@@ -29,7 +29,7 @@ const home = route('home', lang)
         <div>
           <p class="meta text-gold">{t('share.site')}</p>
           <p class="mt-4 break-all text-2xl font-light md:text-3xl" data-qr-text={home}></p>
-          <p class="mt-3 text-[15px] text-bone/60">{t('share.siteHelp')}</p>
+          <p class="mt-3 text-[0.9375rem] text-bone/60">{t('share.siteHelp')}</p>
         </div>
         <div class="flex flex-wrap gap-2">
           <button type="button" class="chip" data-qr-download="qr-site" data-qr-name="gcg-site-qr"><Icon name="download" size={14} /> {t('share.download')}</button>
@@ -45,7 +45,7 @@ const home = route('home', lang)
       <div class="flex items-start justify-between gap-6">
         <div>
           <p class="meta text-gold">{t('share.poster')}</p>
-          <p class="mt-4 max-w-xs text-[15px] leading-relaxed text-bone/75">{t('share.posterHelp')}</p>
+          <p class="mt-4 max-w-xs text-[0.9375rem] leading-relaxed text-bone/75">{t('share.posterHelp')}</p>
         </div>
         <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold/50 text-gold transition-colors group-hover:bg-gold group-hover:text-brand"><Icon name="print" size={18} /></span>
       </div>
@@ -62,7 +62,7 @@ const home = route('home', lang)
         <a href={d.href} download={d.downloadName} class="group flex items-center justify-between gap-6 border border-line p-6 transition-colors hover:border-gold md:col-span-12 md:px-10" data-reveal>
           <span>
             <span class="meta block text-gold">{lang === 'fr' ? d.title : d.title_en}</span>
-            <span class="mt-2 block text-[15px] text-bone/70">{documentLabel(d, lang)}</span>
+            <span class="mt-2 block text-[0.9375rem] text-bone/70">{documentLabel(d, lang)}</span>
           </span>
           <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold/50 text-gold transition-colors group-hover:bg-gold group-hover:text-brand"><Icon name="download" size={18} /></span>
         </a>
@@ -78,7 +78,7 @@ const home = route('home', lang)
             {socials.map((s) => (
               <li class="flex flex-col items-center gap-3 border border-line p-4">
                 <span id={`qr-${s.key}`} class="block w-full max-w-[160px] rounded-lg bg-white p-2" data-qr={`/qr/${s.key}`} />
-                <a href={s.url} target="_blank" rel="noopener" class="flex items-center gap-2 text-[15px] hover:text-gold">
+                <a href={s.url} target="_blank" rel="noopener" class="flex items-center gap-2 text-[0.9375rem] hover:text-gold">
                   <Icon name={s.key} size={16} /> {s.name}
                 </a>
                 <button type="button" class="meta inline-flex min-h-11 min-w-11 items-center text-mist hover:text-gold" data-qr-download={`qr-${s.key}`} data-format="png" data-qr-name={`gcg-${s.key}-qr`}>{t('share.downloadPng')}</button>
@@ -94,7 +94,7 @@ const home = route('home', lang)
   <section class="wrap pb-28 md:pb-40" aria-labelledby="qr-projects">
     <div class="grid gap-6 border-t border-line pt-14 md:grid-cols-12 md:items-end">
       <h2 id="qr-projects" class="display text-[clamp(2rem,4vw,4rem)] md:col-span-7" data-split>{t('share.projects')}</h2>
-      <p class="text-[15px] leading-relaxed text-bone/60 md:col-span-5" data-reveal>{t('share.projectsHelp')}</p>
+      <p class="text-[0.9375rem] leading-relaxed text-bone/60 md:col-span-5" data-reveal>{t('share.projectsHelp')}</p>
     </div>
     <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {
@@ -104,7 +104,7 @@ const home = route('home', lang)
             <div class="flex min-w-0 flex-1 flex-col justify-between gap-2">
               <div class="flex items-start gap-3">
                 <ProjectImage image={p.images[0]} alt="" sizes="2.5rem" class="block h-10 w-10 shrink-0 overflow-hidden rounded" />
-                <a href={projectPath(p.slug, lang)} class="min-w-0 text-[14px] leading-snug hover:text-gold">
+                <a href={projectPath(p.slug, lang)} class="min-w-0 text-[0.875rem] leading-snug hover:text-gold">
                   <span class="meta block text-mist">N° {pad(p.number)}</span>
                   {p.name}
                 </a>

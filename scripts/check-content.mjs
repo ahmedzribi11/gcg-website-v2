@@ -105,14 +105,24 @@ for (const file of files) {
 }
 
 /* ─── Adresses stables : un projet publié ne disparaît pas sans redirection ─── */
+// Les deux hébergeurs prévus lisent chacun leur fichier (OPS-08) : la redirection doit figurer dans les deux.
 const registry = existsSync(REGISTRY) ? JSON.parse(readFileSync(REGISTRY, 'utf8')) : []
 const vercel = JSON.parse(readFileSync(join(ROOT, 'vercel.json'), 'utf8'))
-const redirected = new Set((vercel.redirects ?? []).map((r) => r.source))
+const hosts = {
+  'vercel.json': new Set((vercel.redirects ?? []).map((r) => r.source)),
+  'public/_redirects': new Set(
+    readFileSync(join(ROOT, 'public/_redirects'), 'utf8')
+      .split('\n')
+      .map((l) => l.trim())
+      .filter((l) => l && !l.startsWith('#'))
+      .map((l) => l.split(/\s+/)[0]),
+  ),
+}
 for (const slug of registry) {
   if (slugs.includes(slug)) continue
   for (const path of [`/realisations/${slug}`, `/en/projects/${slug}`]) {
-    if (!redirected.has(path))
-      err(`Le projet « ${slug} » a été publié puis retiré : ajoutez une redirection 301 de ${path} (vercel.json et public/_redirects).`)
+    const missing = Object.keys(hosts).filter((f) => !hosts[f].has(path))
+    if (missing.length) err(`Le projet « ${slug} » a été publié puis retiré : ajoutez une redirection 301 de ${path} (${missing.join(' et ')}).`)
   }
 }
 // Mode lancement (GCG_LAUNCH=1) : un projet sans autorisation n’a pas de page, mais son QR code imprimé

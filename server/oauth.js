@@ -4,23 +4,29 @@
  * Variables d’environnement : GITHUB_OAUTH_ID, GITHUB_OAUTH_SECRET
  * (OAuth App GitHub, callback : https://<domaine>/api/callback).
  */
+import { secure } from './headers.js'
+
 const SCOPES = new Set(['repo', 'public_repo', 'repo,user', 'public_repo,user'])
 const COOKIE = 'gcg_oauth_state'
 
 /** Étape 1 : redirection vers GitHub avec un état anti-falsification (cookie HttpOnly). */
 export function authStart(request, env) {
-  if (!env.GITHUB_OAUTH_ID) return new Response('GITHUB_OAUTH_ID manquant dans les variables d’environnement.', { status: 500 })
+  if (!env.GITHUB_OAUTH_ID)
+    return new Response('GITHUB_OAUTH_ID manquant dans les variables d’environnement.', {
+      status: 500,
+      headers: secure({ 'Content-Type': 'text/plain; charset=utf-8' }),
+    })
   const url = new URL(request.url)
   const scope = SCOPES.has(url.searchParams.get('scope') ?? '') ? url.searchParams.get('scope') : 'repo'
   const state = crypto.randomUUID().replace(/-/g, '')
   const params = new URLSearchParams({ client_id: env.GITHUB_OAUTH_ID, redirect_uri: `${url.origin}/api/callback`, scope, state })
   return new Response(null, {
     status: 302,
-    headers: {
+    headers: secure({
       Location: `https://github.com/login/oauth/authorize?${params}`,
       'Set-Cookie': `${COOKIE}=${state}; Path=/api; HttpOnly; Secure; SameSite=Lax; Max-Age=600`,
       'Cache-Control': 'no-store',
-    },
+    }),
   })
 }
 
@@ -67,10 +73,10 @@ function page(origin, status, content) {
 </script>`
   return new Response(html, {
     status: 200,
-    headers: {
+    headers: secure({
       'Content-Type': 'text/html; charset=utf-8',
       'Cache-Control': 'no-store',
       'Set-Cookie': `${COOKIE}=; Path=/api; HttpOnly; Secure; SameSite=Lax; Max-Age=0`,
-    },
+    }),
   })
 }

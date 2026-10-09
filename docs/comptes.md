@@ -16,7 +16,7 @@ passe) appartenant à GCG — jamais envoyés par e-mail ou WhatsApp.
 | Registrar du domaine (NIC.CI pour `.ci` ou registrar `.com`) | à créer | GCG + responsable technique | délégué technique | à activer | codes rangés dans le coffre | annuel, renouvellement automatique | GCG |
 | DNS (registrar ou Cloudflare) | à créer | GCG + responsable technique | éditeur DNS | à activer | idem | — | GCG |
 | Hébergement : Vercel (plan **Pro** requis pour un usage commercial) ou Cloudflare Pages (gratuit) | à transférer | GCG + responsable technique | membre | à activer | idem | mensuel (Vercel Pro) ou 0 | GCG |
-| GitHub : dépôt `My-web` (à transférer vers une organisation GCG) | à transférer | GCG + responsable technique | écriture ; branche `main` protégée | à activer | idem | 0 | — |
+| GitHub : dépôt `gcg-website-v2` (à transférer vers une organisation GCG) | à transférer | GCG + responsable technique | écriture ; branche `main` protégée | à activer | idem | 0 | — |
 | GitHub OAuth App (connexion /admin) | organisation GCG | responsable technique | — | via GitHub | — | 0 | — |
 | Éditeurs de l’espace de gestion (comptes GitHub) | personne nommée de GCG | — | — | obligatoire | — | 0 | — |
 | Resend (envoi du formulaire) | à créer | GCG + responsable technique | développeur | à activer | idem | gratuit jusqu’à 3 000 e-mails/mois | GCG |

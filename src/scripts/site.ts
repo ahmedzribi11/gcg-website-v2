@@ -279,7 +279,7 @@ const themeBtns = document.querySelectorAll<HTMLElement>('[data-theme-toggle]')
 const applyThemeUi = () => {
   const light = document.documentElement.dataset.theme === 'light'
   const fr = document.documentElement.lang === 'fr'
-  themeBtns.forEach((b) => b.setAttribute('aria-pressed', String(light)))
+  document.getElementById('theme-toggle')?.setAttribute('aria-pressed', String(light))
   document.getElementById('theme-toggle')?.setAttribute('aria-label', light ? (fr ? 'Mode sombre' : 'Dark mode') : fr ? 'Mode clair' : 'Light mode')
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', light ? '#f4f0e6' : '#070c09')
 }

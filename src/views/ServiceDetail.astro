@@ -29,7 +29,7 @@ const others = services.filter((x) => x.id !== s.id)
     <ProjectImage image={cover} alt="" sizes="100vw" priority class="absolute inset-0 block h-full w-full" />
     <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/45"></div>
     <div class="wrap relative pb-12 pt-32 md:pb-16">
-      <nav class="meta flex items-center gap-2 text-bone/70" aria-label={lang === 'fr' ? 'Fil d’Ariane' : 'Breadcrumb'} data-reveal>
+      <nav class="meta flex flex-wrap items-center gap-2 text-bone/70" aria-label={lang === 'fr' ? 'Fil d’Ariane' : 'Breadcrumb'} data-reveal>
         <a href={route('home', lang)} class="-my-3.5 py-3.5 hover:text-gold">{t('nav.home')}</a>
         <span aria-hidden="true">/</span>
         <a href={route('services', lang)} class="-my-3.5 py-3.5 hover:text-gold">{t('services.label')}</a>

@@ -128,7 +128,7 @@ Contenu défilant sous l’en-tête : en paysage, à 200 % ou en grand texte, to
         )
       }
       <!-- Sur téléphone, le bouton du thème quitte l’en-tête (place pour le logo et le menu à 320 px) et vient ici -->
-      <button type="button" tabindex="-1" class="btn btn-line w-full sm:hidden" data-theme-toggle aria-pressed="false">
+      <button type="button" tabindex="-1" class="btn btn-line w-full sm:hidden" data-theme-toggle>
         <svg data-icon-sun width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
           <circle cx="12" cy="12" r="4" />
           <path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4" />
@@ -136,7 +136,8 @@ Contenu défilant sous l’en-tête : en paysage, à 200 % ou en grand texte, to
         <svg data-icon-moon width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
           <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
         </svg>
-        {lang === 'fr' ? 'Mode clair' : 'Light mode'}
+        <!-- Libellé de l’action, comme l’aria-label du bouton de l’en-tête (affichage selon le thème) -->
+        <span data-icon-sun>{lang === 'fr' ? 'Mode clair' : 'Light mode'}</span><span data-icon-moon>{lang === 'fr' ? 'Mode sombre' : 'Dark mode'}</span>
       </button>
     </div>
   </div>

@@ -177,7 +177,7 @@ collections:
             name: kind
             widget: select
             default: photo
-            hint: 'Une perspective 3D est signalée « Perspective » sur le site.'
+            hint: 'Choisir « Perspective 3D » pour toute image de synthèse et « Plan » pour un dessin : une perspective ne doit jamais passer pour une photo réelle.'
             options:
               - { label: 'Photo réelle', value: photo }
               - { label: 'Perspective 3D (rendu)', value: render }

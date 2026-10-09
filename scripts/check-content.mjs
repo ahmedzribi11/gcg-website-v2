@@ -7,7 +7,9 @@
  *
  *   node scripts/check-content.mjs            contrôle
  *   node scripts/check-content.mjs --update   ajoute les nouveaux projets au registre des adresses publiées
+ *                                             (inutile pour un projet enregistré dans git : voir « Adresses stables »)
  */
+import { execFileSync } from 'node:child_process'
 import { closeSync, existsSync, openSync, readFileSync, readSync, readdirSync, statSync, writeFileSync } from 'node:fs'
 import { extname, join, relative, resolve } from 'node:path'
 import sharp from 'sharp'
@@ -123,7 +125,36 @@ for (const file of files) {
 
 /* ─── Adresses stables : un projet publié ne disparaît pas sans redirection ─── */
 // Les deux hébergeurs prévus lisent chacun leur fichier (OPS-08) : la redirection doit figurer dans les deux.
-const registry = existsSync(REGISTRY) ? JSON.parse(readFileSync(REGISTRY, 'utf8')) : []
+// Registre = liste versionnée (src/data/published-slugs.json) + toute fiche déjà enregistrée dans l’historique git :
+// un projet créé depuis l’espace de gestion est protégé sans commande à lancer (OPS-11). Le registre complété est
+// réécrit pour que les QR codes (/qr/p/<projet>) en tiennent compte ; sans git, seule la liste versionnée compte.
+const listed = existsSync(REGISTRY) ? JSON.parse(readFileSync(REGISTRY, 'utf8')) : []
+const history = (() => {
+  try {
+    const out = execFileSync('git', ['log', '--no-renames', '--diff-filter=A', '--format=', '--name-only', 'HEAD', '--', 'src/content/projects/*.json'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    })
+    return out
+      .split('\n')
+      .filter((l) => l.endsWith('.json'))
+      .map((l) =>
+        l
+          .split('/')
+          .pop()
+          .replace(/\.json$/, ''),
+      )
+  } catch {
+    return null // pas de dépôt git (archive) : registre versionné seul
+  }
+})()
+const registry = [...new Set([...listed, ...(history ?? [])])].sort()
+const learned = registry.filter((s) => !listed.includes(s))
+if (learned.length && !process.argv.includes('--update')) {
+  writeFileSync(REGISTRY, JSON.stringify(registry, null, 2) + '\n')
+  console.log(`Registre des adresses publiées complété depuis l’historique git : ${learned.join(', ')}`)
+}
 const vercel = JSON.parse(readFileSync(join(ROOT, 'vercel.json'), 'utf8'))
 const hosts = {
   'vercel.json': new Set((vercel.redirects ?? []).map((r) => r.source)),
@@ -153,7 +184,8 @@ const fresh = slugs.filter((s) => !registry.includes(s))
 if (process.argv.includes('--update')) {
   writeFileSync(REGISTRY, JSON.stringify([...registry, ...fresh].sort(), null, 2) + '\n')
   if (fresh.length) console.log(`Registre mis à jour : ${fresh.join(', ')}`)
-} else if (fresh.length) {
+} else if (fresh.length && !history) {
+  // Avec git, un projet pas encore enregistré dans l’historique y entrera à sa publication : rien à faire
   warn(`Nouveaux projets à ajouter au registre des adresses publiées (npm run content:register) : ${fresh.join(', ')}`)
 }
 

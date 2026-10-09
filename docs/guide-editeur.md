@@ -50,6 +50,8 @@ années, statut) : en cas de doute, laisser vide.
 | Résumé (français / anglais) | Une ou deux phrases, 300 caractères au plus. |
 | Missions GCG | Ce que GCG a réellement fait (études, gros œuvre…). Ne jamais revendiquer une conception faite par un autre. |
 | Expertises mobilisées | Le projet apparaît aussi sur la page de chaque expertise cochée. |
+| Chiffre clé sur l’accueil | Facultatif. Un chiffre de la fiche (« 116 villas ») montré dans la grille « À toutes les échelles » et/ou le bandeau défilant de l’accueil, selon le rang indiqué. Il disparaît si le projet n’est pas publié. |
+| Titre et description Google | Facultatifs. S’ils sont remplis, ils remplacent le titre de l’onglet et la description du résultat Google (70 et 170 caractères au plus). |
 
 Les règles d’écriture (espaces, nombres, termes anglais) sont dans `charte-redactionnelle.md`.
 Le site place lui-même les espaces insécables avant `: ; ! ?`.
@@ -61,14 +63,15 @@ Le site place lui-même les espaces insécables avant `: ; ! ?`.
 1. **Ajouter photo** → **Choisir une image** → **Téléverser** ; on peut sélectionner plusieurs fichiers.
 2. Pour chaque photo, écrire une **description** en français et en anglais : ce que montre l’image
    (« Villa Palmeras, façade principale et piscine »). Elle est lue par les personnes malvoyantes et par Google.
-3. Indiquer la **nature** : photo réelle, perspective 3D (le site affiche alors « Perspective ») ou plan.
+3. Indiquer la **nature** : photo réelle, perspective 3D ou plan. Une image de synthèse ne doit jamais être
+   enregistrée comme « Photo réelle ».
 4. **La première photo est la couverture.** Glisser les photos par la poignée `═` pour changer l’ordre.
 5. Facultatif : **point focal** (« 50% 30% ») si le recadrage coupe une partie importante.
 
 Formats acceptés : JPG, PNG, WebP ou HEIC (iPhone), 20 Mo au plus, de préférence la photo d’origine
-(2 400 px de large ou plus). Le site convertit les photos HEIC en JPG, crée lui-même les versions légères et
-retire les données de localisation (GPS). Un autre format (vidéo, PDF, capture renommée) est refusé avec un
-message.
+(2 400 px de large ou plus). Le site convertit les photos HEIC en JPG, crée lui-même les versions légères,
+retire des fichiers publiés les données de localisation (GPS) et de l’appareil, et ramène les très grandes
+photos à 3 000 px. Un autre format (vidéo, PDF, capture renommée) est refusé avec un message.
 
 - **Photos reçues par WhatsApp** : elles sont fortement compressées ; demander l’original (envoi en
   « Document » ou par e-mail en taille réelle).
@@ -90,9 +93,9 @@ message.
 **Publier en production** (circuit de relecture) :
 
 1. **Enregistrer** : la modification devient un **brouillon**, invisible des visiteurs.
-2. **Aperçu** : après 2 à 5 minutes, le lien « Voir l’aperçu » ouvre la vraie page sur une adresse de test
-   (en français, puis en anglais avec le bouton EN), à regarder sur ordinateur et sur téléphone avant toute
-   mise en ligne. *Réglage à faire une fois par l’équipe : `preview_context` dans `public/admin/config.yml`.*
+2. **Aperçu** : l’espace de gestion n’affiche pas de lien d’aperçu avec l’hébergeur actuel (Vercel ne
+   transmet pas l’adresse de test à l’espace de gestion). Pour voir la page avant la mise en ligne, demander
+   à l’équipe l’adresse de test du brouillon.
 3. Statut **En cours de révision**, puis **Prêt**.
 4. **Publier** → **Publier maintenant** : le site est à jour en **2 à 5 minutes**, sans intervention de l’équipe.
 
@@ -100,8 +103,11 @@ L’onglet **Flux éditorial** (en haut) montre les brouillons en cours dans tro
 
 ## 6. Quand la publication est refusée
 
-Un projet incomplet ne peut pas être publié : le champ manquant est signalé en rouge, avec son nom.
-Compléter puis publier à nouveau.
+Un projet incomplet ne peut pas être publié : le champ manquant ou trop long est signalé en rouge, avec son
+nom. Compléter puis publier à nouveau. Deux règles ne sont vérifiées qu’après la publication, par la
+vérification automatique décrite plus bas : une version anglaise « validée » exige le résumé et au moins une
+mission en anglais ; un chiffre clé exige une valeur et une unité, et, si la version anglaise est validée, la
+traduction de sa précision et de son texte de bandeau.
 
 ![Champs obligatoires signalés](images/cms-06-erreurs.png)
 
@@ -164,6 +170,7 @@ Autorisation du client final : <oui (e-mail joint) / en attente>
 | Ajouter un projet | Réalisations → Nouveau projet |
 | Changer la photo de couverture | Projet → Photos → glisser la bonne photo en premier |
 | Mettre un projet en avant sur l’accueil | Projet → « Mettre en avant sur l’accueil » + ordre |
+| Changer un chiffre de l’accueil | Projet → « Chiffre clé sur l’accueil » |
 | Changer le numéro WhatsApp | Paramètres → Coordonnées |
 | Ajouter la plaquette PDF | Paramètres → Documents à télécharger |
 | Retirer un projet | Demander à l’équipe |

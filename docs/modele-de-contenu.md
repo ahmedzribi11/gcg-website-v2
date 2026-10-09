@@ -23,22 +23,23 @@ Elle est générée à partir du nom, en minuscules sans accents, et **ne change
 | `composition`, `composition_en` | texte ≤ 300 caractères | FR oui ; EN si version anglaise validée | résumé |
 | `typologies` | liste {nom, surface} | non | |
 | `typology`, `typology_en` | texte | non | |
-| `missions`, `missions_en` | liste de textes | FR oui ; EN si validée | missions exactes de GCG |
+| `missions`, `missions_en` | liste de textes | FR oui ; EN si validée | missions exactes de GCG ; `missions_en` peut être vide si « a-traduire » |
 | `services` | liste fermée | non | relie le projet aux pages Expertises |
 | `types` | liste fermée | non | villas, résidences, immeubles, hôtels, loisirs, usines, équipements, infrastructures |
 | `images` | liste | ≥ 1 | voir ci-dessous ; la première est la couverture |
 | `featured`, `featuredOrder` | booléen, entier | non | projets phares de l’accueil et leur ordre |
+| `highlight` | groupe | non | chiffre clé de l’accueil (CODE-03) : `value` et `unit` requis si le groupe est rempli ; `unit_en`, `note`, `note_en` ; `scaleOrder` (rang dans la grille « À toutes les échelles ») ; `marqueeOrder` (rang dans le bandeau), `marqueeName(_en)` et `marqueeFigure(_en)` (par défaut : nom du projet, « valeur unité ») ; `note_en` et `marqueeFigure_en` requis si la version anglaise est validée |
 | `permission` | liste fermée | oui (défaut « en-attente ») | autorisation du client final ; « en-attente » = masqué quand `GCG_LAUNCH=1` |
 | `en_status` | liste fermée | oui | « a-traduire » = page anglaise non publiée (CMS-10) |
-| `seo_title(_en)`, `seo_description(_en)` | texte | non | par défaut : nom et résumé |
+| `seo_title(_en)`, `seo_description(_en)` | texte ≤ 70 / ≤ 170 caractères | non | remplacent le titre et la description de la page ; par défaut : « Nom · projet GCG, Côte d’Ivoire » et « résumé lieu, période » |
 
 ### Image d’un projet
 
 | Champ | Règle |
 | --- | --- |
-| `src` | JPG, PNG, WebP, AVIF ou HEIC (converti en JPG au build) ; ≤ 20 Mo ; ≥ 500 px de large (2 400 px recommandés pour la couverture) ; autre format refusé avec message |
+| `src` | JPG, PNG, WebP, AVIF ou HEIC (converti en JPG au build) ; ≤ 20 Mo ; ≥ 500 px de large (2 400 px recommandés pour la couverture) ; autre format refusé avec message. Au build, une photo avec métadonnées (EXIF, XMP, IPTC) ou de plus de 3 000 px est réécrite sur place sans elles et à 3 000 px au plus grand côté (OPS-07) |
 | `alt`, `alt_en` | description de ce que montre l’image (5 à 140 caractères), obligatoire dans les deux langues |
-| `kind` | `photo`, `render` (perspective 3D, signalée sur le site) ou `plan` |
+| `kind` | `photo`, `render` (perspective 3D) ou `plan` ; pas encore affiché sur le site (UX-02) |
 | `focus` | facultatif, point à garder visible au recadrage (« 50% 30% ») |
 
 ## Paramètres (`src/data/settings.json`)
@@ -57,7 +58,8 @@ structurées.
 
 - **Suppression** : désactivée dans l’espace de gestion. Un projet retiré doit recevoir une redirection 301
   vers la liste des projets ; le build l’exige (registre `src/data/published-slugs.json`).
-- **Nouveaux projets** : `npm run content:register` les ajoute au registre des adresses publiées.
+- **Nouveaux projets** : le registre est complété à chaque build par les fiches présentes dans l’historique
+  git (OPS-11) ; `npm run content:register` reste utile pour l’écrire sans git.
 - **Évolution du schéma** : tout nouveau champ est facultatif ou a une valeur par défaut ; rendre un champ
   obligatoire s’accompagne d’une migration qui complète les fichiers existants.
 - **Portabilité** : tout le contenu est en JSON et en images dans le dépôt Git ; un `git clone` suffit à

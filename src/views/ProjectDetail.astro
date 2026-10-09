@@ -46,10 +46,13 @@ function galleryClass(i: number, n: number) {
 }
 const shareText = `${p.name} — GCG`
 const wa = whatsappLink(`${t('contact.form.intro')} (${p.name})`)
-const desc = `${p.composition} ${p.location}, ${p.period}.`
+// Titre et description Google saisis dans l’espace de gestion, sinon construits (CODE-04)
+const desc = p.seoDescription ?? `${p.composition} ${p.location}, ${p.period}.`
 // Titre d’onglet unique par langue, ≈ 60 caractères au plus
 const titleLong = `${p.name} · ${lang === 'fr' ? 'projet GCG, Côte d’Ivoire' : 'GCG project, Côte d’Ivoire'}`
-const docTitle = titleLong.length <= 60 ? titleLong : `${p.name} · GCG`
+const docTitle = p.seoTitle ?? (titleLong.length <= 60 ? titleLong : `${p.name} · GCG`)
+// Sans version anglaise relue, le bouton de langue mène à la liste des réalisations, et aucun hreflang n’est annoncé (CODE-04)
+const altPath = p.hasEn ? projectPath(p.slug, other) : route('projects', other)
 const crumbs = breadcrumbLd(
   [
     { name: t('nav.home'), path: route('home', lang) },
@@ -61,7 +64,7 @@ const crumbs = breadcrumbLd(
 
 ---
 
-<Base lang={lang} alt={projectPath(p.slug, other)} title={p.name} docTitle={docTitle} description={desc} image={og.src} header="overlay" jsonLd={[crumbs]}>
+<Base lang={lang} alt={altPath} translated={p.hasEn} title={p.name} docTitle={docTitle} description={desc} image={og.src} header="overlay" jsonLd={[crumbs]}>
   <article>
     <header class="relative flex h-[86svh] min-h-[560px] items-end overflow-hidden bg-ink-3 force-dark">
       <ProjectImage image={p.images[0]} sizes="100vw" priority class="absolute inset-0 block h-full w-full" vt={`p-${p.slug}`} />

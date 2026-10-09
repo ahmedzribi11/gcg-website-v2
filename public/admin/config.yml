@@ -217,10 +217,10 @@ collections:
           - { label: 'Nom dans le bandeau en anglais', name: marqueeName_en, widget: string, required: false, hint: 'Par défaut : le nom ci-dessus, sinon le nom en anglais du projet' }
           - { label: 'Texte du bandeau', name: marqueeFigure, widget: string, required: false, hint: 'Par défaut : valeur et unité. Ex. : 64 bungalows & 30 villas' }
           - { label: 'Texte du bandeau en anglais', name: marqueeFigure_en, widget: string, required: false, hint: 'Requis si le texte du bandeau est rempli et la version anglaise « validée ».' }
-      - { label: 'Titre Google (français)', name: seo_title, widget: string, required: false, hint: 'Facultatif, 60 caractères maximum. Par défaut : le nom du projet.' }
-      - { label: 'Titre Google (anglais)', name: seo_title_en, widget: string, required: false }
-      - { label: 'Description Google (français)', name: seo_description, widget: text, required: false, hint: 'Facultatif, 160 caractères maximum. Par défaut : le résumé.' }
-      - { label: 'Description Google (anglais)', name: seo_description_en, widget: text, required: false }
+      - { label: 'Titre Google (français)', name: seo_title, widget: string, required: false, pattern: ['^.{0,70}$', '70 caractères maximum'], hint: 'Facultatif : remplace le titre de l’onglet et du résultat Google. 60 caractères conseillés, 70 au plus. Par défaut : « Nom du projet · projet GCG, Côte d’Ivoire ».' }
+      - { label: 'Titre Google (anglais)', name: seo_title_en, widget: string, required: false, pattern: ['^.{0,70}$', '70 caractères maximum'], hint: 'Facultatif, pour la page anglaise. 60 caractères conseillés, 70 au plus.' }
+      - { label: 'Description Google (français)', name: seo_description, widget: text, required: false, pattern: ['^[\s\S]{0,170}$', '170 caractères maximum'], hint: 'Facultatif : remplace la description du résultat Google. 160 caractères conseillés, 170 au plus. Par défaut : le résumé, suivi du lieu et de la période.' }
+      - { label: 'Description Google (anglais)', name: seo_description_en, widget: text, required: false, pattern: ['^[\s\S]{0,170}$', '170 caractères maximum'], hint: 'Facultatif, pour la page anglaise. 160 caractères conseillés, 170 au plus.' }
 
   - name: settings
     label: Paramètres

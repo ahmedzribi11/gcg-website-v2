@@ -64,11 +64,11 @@ const reasons = fr
             <div class="mt-8 flex flex-wrap gap-3">
               {wa && (
                 <a href={wa} target="_blank" rel="noopener" class="btn btn-gold">
-                  <Icon name="whatsapp" size={16} /> WhatsApp
+                  <Icon name="whatsapp" size={20} /> WhatsApp
                 </a>
               )}
               <a href={`${route('contact', lang)}?profil=${a.id}`} class:list={['btn', wa ? 'btn-line' : 'btn-gold']}>
-                {t('cta.project')} <Icon name="arrow" />
+                {t('cta.project')} <Icon name="arrow" size={20} />
               </a>
             </div>
           </div>

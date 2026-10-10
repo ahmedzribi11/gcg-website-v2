@@ -114,7 +114,7 @@ const proofs = [
                 <span class="whitespace-nowrap">{showcase.project.period}</span>
               </span>
             </span>
-            <Icon name="arrow" size={14} class="shrink-0" />
+            <Icon name="arrow" class="shrink-0" />
           </a>
         </figcaption>
       </figure>
@@ -155,10 +155,10 @@ const proofs = [
         <p class="max-w-md text-[0.9375rem] leading-relaxed text-bone/75 md:text-base" data-intro="rise" style="--d:.7s">{t('hero.lead')}</p>
         <div class="flex flex-wrap gap-3" data-intro data-bar-after style="--d:.85s">
           <a href={route('projects', lang)} class="btn btn-gold">
-            {t('cta.projects')} <Icon name="arrow" />
+            {t('cta.projects')} <Icon name="arrow" size={20} />
           </a>
           <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="btn btn-line">
-            {wa && <Icon name="whatsapp" size={16} />}
+            {wa && <Icon name="whatsapp" size={20} />}
             {t('cta.project')}
           </a>
         </div>

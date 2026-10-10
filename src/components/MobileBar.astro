@@ -14,17 +14,17 @@ const wa = whatsappLink(t('contact.form.intro'))
 <nav id="mobile-bar" aria-label={lang === 'fr' ? 'Actions rapides' : 'Quick actions'} class="no-print fixed inset-x-3 bottom-3 z-40 transition-transform duration-700 ease-[var(--ease-out-expo)] md:hidden [@media(max-height:480px)]:hidden" style="padding-bottom: env(safe-area-inset-bottom)">
   <div class="flex gap-2 rounded-full border border-line bg-ink p-1.5 shadow-2xl">
     <a href={route('projects', lang)} class="flex h-12 flex-1 items-center justify-center gap-2 rounded-full text-[0.8125rem] tracking-wide text-bone">
-      <Icon name="grid" size={16} /> {t('nav.projects')}
+      <Icon name="grid" size={20} /> {t('nav.projects')}
     </a>
     {
       contact.phoneHref && (
         <a href={contact.phoneHref} class="flex h-12 w-12 items-center justify-center rounded-full border border-line text-bone" aria-label={t('cta.call')}>
-          <Icon name="phone" size={17} />
+          <Icon name="phone" size={24} />
         </a>
       )
     }
     <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-gold text-[0.8125rem] font-medium tracking-wide text-brand">
-      {wa ? <Icon name="whatsapp" size={17} /> : <Icon name="arrow" size={16} />}
+      {wa ? <Icon name="whatsapp" size={20} /> : <Icon name="arrow" size={20} />}
       {wa ? 'WhatsApp' : t('nav.cta')}
     </a>
   </div>

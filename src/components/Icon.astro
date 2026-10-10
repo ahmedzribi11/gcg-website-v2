@@ -24,9 +24,13 @@ export type IconName =
   | 'play'
   | 'clock'
 
+/**
+ * Trois tailles seulement (SLOP-20) : 16 dans le texte, les puces et les liens discrets ; 20 dans les boutons
+ * (.btn, barre mobile) ; 24 pour une icône seule dans un bouton rond, sans texte à côté.
+ */
 interface Props {
   name: IconName
-  size?: number
+  size?: 16 | 20 | 24
   class?: string
 }
 const { name, size = 16, class: cls } = Astro.props

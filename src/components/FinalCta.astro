@@ -21,17 +21,17 @@ const wa = whatsappLink(t('contact.form.intro'))
       {
         wa && (
           <a href={wa} target="_blank" rel="noopener" class="btn btn-gold !min-h-16 !px-9">
-            <Icon name="whatsapp" size={18} /> {t('cta.whatsapp')}
+            <Icon name="whatsapp" size={20} /> {t('cta.whatsapp')}
           </a>
         )
       }
       <a href={route('contact', lang)} class:list={['btn !min-h-16 !px-9', wa ? 'btn-line' : 'btn-gold']}>
-        {t('cta.project')} <Icon name="arrow" />
+        {t('cta.project')} <Icon name="arrow" size={20} />
       </a>
       {
         contact.phoneHref && (
           <a href={contact.phoneHref} class="btn btn-line !min-h-16 !px-9">
-            <Icon name="phone" /> {contact.phone}
+            <Icon name="phone" size={20} /> {contact.phone}
           </a>
         )
       }

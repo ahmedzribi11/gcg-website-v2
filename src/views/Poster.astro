@@ -54,7 +54,7 @@ const phoneLabel = contact.phone && contact.whatsapp === contact.phone ? `${t('c
         {FORMATS.map((f) => <option value={f}>{f === 'A4' ? `A4 · ${t('poster.office')}` : `${f} · ${t('poster.printShop')}`}</option>)}
       </select>
     </label>
-    <button type="button" class="btn btn-gold !min-h-10" data-print><Icon name="print" /> {t('poster.print')}</button>
+    <button type="button" class="btn btn-gold !min-h-10" data-print><Icon name="print" size={20} /> {t('poster.print')}</button>
     <p data-qr-warning hidden role="note" class="w-full border border-gold/60 px-3 py-2 text-[13px] text-gold">{t('share.tempWarning')}</p>
   </div>
   <p class="no-print mx-auto max-w-[210mm] px-4 pt-6 text-[13px] leading-relaxed text-bone/70">{t('poster.formatHelp')}</p>

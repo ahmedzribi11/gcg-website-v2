@@ -646,7 +646,8 @@ body:has(#site-header:not([data-hidden])) [data-filters] {
 
 /* ─── Mode clair (choisi par le visiteur ; le mode sombre reste celui par défaut) ───
    Les couleurs du site sont des variables : le mode clair les inverse. L’ouverture 3D, les grandes photos,
-   l’en-tête, le pied de page et les sections vertes restent sombres (.force-dark). */
+   l’en-tête, le menu plein écran, le pied de page et les sections vertes restent sombres (.force-dark).
+   Le menu est hors de l’en-tête : sans cette liste, il deviendrait crème sous un en-tête aux couleurs claires (BRW-01). */
 :root[data-theme='light'] {
   color-scheme: light;
   --color-ink: #f4f0e6;
@@ -659,7 +660,7 @@ body:has(#site-header:not([data-hidden])) [data-filters] {
   --color-paper: #e9e2d1;
   --color-paper-2: #ded6c2;
 }
-:root[data-theme='light'] :is(.force-dark, #hero, #site-header, #mobile-bar, body > footer, .pill, .theme-brand, .bg-brand) {
+:root[data-theme='light'] :is(.force-dark, #hero, #site-header, #mobile-menu, #mobile-bar, body > footer, .pill, .theme-brand, .bg-brand) {
   color-scheme: dark;
   --color-ink: #070c09;
   --color-ink-2: #0c1410;
@@ -683,7 +684,7 @@ body:has(#site-header:not([data-hidden])) [data-filters] {
 :root[data-theme='light'] .btn-gold:hover {
   background: var(--color-brand-2);
 }
-:root[data-theme='light'] :is(.force-dark, #hero, #site-header, #mobile-bar, body > footer, .pill, .theme-brand, .bg-brand) .btn-gold {
+:root[data-theme='light'] :is(.force-dark, #hero, #site-header, #mobile-menu, #mobile-bar, body > footer, .pill, .theme-brand, .bg-brand) .btn-gold {
   background: var(--color-gold);
   color: var(--color-brand);
 }

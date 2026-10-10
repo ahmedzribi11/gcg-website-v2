@@ -115,7 +115,7 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
       umamiId && !isPreview && <script is:inline defer src={umamiSrc} data-website-id={umamiId} data-domains={site?.hostname} data-do-not-track="true" />
     }
   </head>
-  <body class:list={['grain min-h-svh', { 'is-bare': bare }]} data-lang={lang}>
+  <body class:list={['min-h-svh', { 'is-bare': bare }]} data-lang={lang}>
     {
       !bare && (
         <a

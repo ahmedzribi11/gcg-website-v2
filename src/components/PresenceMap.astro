@@ -64,7 +64,7 @@ const href = (c: string) => `${route('projects', lang)}?ville=${c}`
 const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
 ---
 
-<figure class="presence-map relative" data-tone={tone} data-reveal="fade">
+<figure class="presence-map relative" data-tone={tone} data-reveal>
   <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMin slice" class="map-main h-auto w-full" role="group" aria-labelledby="map-title map-desc">
     <title id="map-title">{t('presence.title')}</title>
     <desc id="map-desc">{(Object.keys(counts) as CityId[]).map((c) => `${cities[c].name} : ${counts[c]}`).join(', ')}</desc>
@@ -140,8 +140,6 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
   .map-halo { transform-box: fill-box; transform-origin: center; animation: halo 3.2s var(--ease-cinema) infinite; }
   .map-pin:hover .map-halo, .map-pin[data-active] .map-halo { opacity: 0.4; }
   @keyframes halo { 0%, 100% { transform: scale(0.85); } 50% { transform: scale(1.15); } }
-  .js .presence-map .map-ci { stroke-dasharray: 4000; stroke-dashoffset: 4000; transition: stroke-dashoffset 3s var(--ease-cinema); }
-  .js .presence-map.is-in .map-ci { stroke-dashoffset: 0; }
   /* Téléphone : à l’échelle 0,42 les étiquettes feraient 5 à 9 px. Points seuls, carte recadrée sous la côte
      (la liste des localités porte l’information). Étiquettes transparentes et non retirées : elles restent
      le nom accessible des épingles (un aria-label différerait du texte visible sur ordinateur). */

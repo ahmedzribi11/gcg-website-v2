@@ -9,13 +9,12 @@ interface Props {
   size?: 'md' | 'lg'
   theme?: 'dark' | 'paper'
   sizes?: string
-  index?: number
   /** Morphing vers la page projet (un seul par projet et par page). */
   transition?: boolean
   /** Masque le secteur (cartes étroites). */
   compact?: boolean
 }
-const { project: p, lang, size = 'md', theme = 'dark', sizes = '(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw', index = 0, transition = true, compact = false } = Astro.props
+const { project: p, lang, size = 'md', theme = 'dark', sizes = '(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw', transition = true, compact = false } = Astro.props
 const href = projectPath(p.slug, lang)
 ---
 
@@ -29,7 +28,6 @@ const href = projectPath(p.slug, lang)
   data-city={p.city}
   data-types={p.types.join(' ')}
   data-reveal
-  style={`--d:${(index % 3) * 0.08}s`}
 >
   <div class:list={['relative overflow-hidden', size === 'lg' ? 'aspect-[4/5] md:aspect-[5/4]' : 'aspect-[4/3]', theme === 'paper' ? 'bg-paper-2' : 'bg-ink-3']}>
     <ProjectImage

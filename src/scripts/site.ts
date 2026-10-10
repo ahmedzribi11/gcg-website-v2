@@ -108,85 +108,27 @@ if (header && toggle && menu) {
 /* ─── Impression (pas de onclick en ligne : bloqué par la CSP) ────────── */
 document.querySelectorAll('[data-print]').forEach((b) => b.addEventListener('click', () => print()))
 
-/* ─── Découpage des titres en mots ────────────────────────────────────── */
-function splitWords(root: HTMLElement) {
-  let i = 0
-  const walk = (node: Node) => {
-    if (node.nodeType === Node.TEXT_NODE) {
-      const parts = node.textContent!.split(/(\s+)/)
-      const frag = document.createDocumentFragment()
-      for (const part of parts) {
-        if (!part) continue
-        if (/^\s+$/.test(part)) {
-          frag.append(document.createTextNode(part))
-          continue
-        }
-        const w = document.createElement('span')
-        w.className = 'w'
-        const inner = document.createElement('span')
-        inner.textContent = part
-        inner.style.setProperty('--i', String(i++))
-        w.append(inner)
-        frag.append(w)
-      }
-      node.parentNode!.replaceChild(frag, node)
-    } else if (node.nodeType === Node.ELEMENT_NODE && !(node as Element).classList.contains('w')) {
-      Array.from(node.childNodes).forEach(walk)
-    }
-  }
-  Array.from(root.childNodes).forEach(walk)
-}
-document.querySelectorAll<HTMLElement>('[data-split]').forEach(splitWords)
-
-/* ─── Révélations, compteurs ──────────────────────────────────────────── */
-function countUp(el: HTMLElement) {
-  const target = Number(el.dataset.count)
-  if (reducedMotion || Number.isNaN(target)) {
-    el.textContent = String(target)
-    return
-  }
-  const state = { v: 0 }
-  gsap.to(state, {
-    v: target,
-    duration: 2,
-    ease: 'power2.out',
-    onUpdate: () => (el.textContent = String(Math.round(state.v))),
-  })
-}
-
+/* ─── Apparition au défilement ───────────────────────────────────────── */
+/*
+ * Un seul fondu (global.css), pour les images et les cartes [data-reveal] situées sous le premier écran au
+ * chargement. Celles déjà à l’écran ne sont jamais masquées (PERF-03) ; pas de découpage des titres en mots,
+ * qui cassait les espaces insécables (CONT-07), pas de compteurs ni de parallaxe (SLOP-13).
+ */
 const io = new IntersectionObserver(
   (entries) => {
     for (const e of entries) {
       if (!e.isIntersecting) continue
-      const el = e.target as HTMLElement
-      el.classList.add('is-in')
-      if (el.dataset.count !== undefined) countUp(el)
-      io.unobserve(el)
+      e.target.classList.add('is-in')
+      io.unobserve(e.target)
     }
   },
   { rootMargin: '0px 0px -8% 0px', threshold: 0.01 },
 )
-document.querySelectorAll<HTMLElement>('[data-reveal], [data-split], [data-count]').forEach((el) => {
-  if (reducedMotion) {
-    el.classList.add('is-in')
-    if (el.dataset.count !== undefined) el.textContent = el.dataset.count!
-  } else {
-    if (el.dataset.count !== undefined) el.textContent = '0'
-    io.observe(el)
-  }
+document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
+  if (reducedMotion || el.getBoundingClientRect().top < innerHeight) return el.classList.add('is-in')
+  el.classList.add('reveal-wait')
+  io.observe(el)
 })
-
-/* ─── Parallaxe ───────────────────────────────────────────────────────── */
-if (!reducedMotion) {
-  document.querySelectorAll<HTMLElement>('[data-parallax]').forEach((el) => {
-    const amount = Number(el.dataset.parallax || 10)
-    gsap.fromTo(
-      el,
-      { yPercent: -amount },
-      { yPercent: amount, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } },
-    )
-  })
-}
 
 /* ─── Curseur & boutons magnétiques (desktop) ─────────────────────────── */
 const cursor = document.getElementById('cursor')

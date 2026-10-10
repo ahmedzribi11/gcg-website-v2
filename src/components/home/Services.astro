@@ -26,7 +26,7 @@ const count = (id: string) => projects.filter((p) => p.services.includes(id as n
           const n = count(s.id)
           const turnkey = s.id === 'cle-en-main'
           return (
-            <li class="border-b border-line" data-reveal style={`--d:${i * 0.04}s`}>
+            <li class="border-b border-line">
               <a href={servicePath(s.slug[lang], lang)} class="group grid grid-cols-12 items-baseline gap-x-4 gap-y-2 py-6 md:py-8" data-preview={s.id}>
                 <span class="meta col-span-2 text-mist md:col-span-1">{String(i + 1).padStart(2, '0')}</span>
                 <span class:list={['col-span-10 text-[1.7rem] font-light leading-tight tracking-[-0.03em] transition-[color,transform] duration-700 ease-[var(--ease-out-expo)] group-hover:translate-x-2 md:col-span-5 md:text-[clamp(1.8rem,3.2vw,3.4rem)]', turnkey ? 'text-gold' : 'text-bone/90 group-hover:text-bone']}>

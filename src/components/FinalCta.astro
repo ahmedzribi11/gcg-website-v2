@@ -17,12 +17,12 @@ const wa = whatsappLink(t('contact.form.intro'))
     <div class="final-glow absolute inset-0 bg-[radial-gradient(ellipse_at_50%_55%,rgba(5,46,20,0.6),transparent_65%)]"></div>
   </div>
   <div class="wrap relative flex flex-col items-center text-center">
-    <p class="label text-gold" data-reveal>{t('final.kicker')}</p>
-    <h2 id="final-title" class="display mt-8 text-[clamp(min(4rem,20vw),16vw,15rem)]" data-split>
+    <p class="label text-gold">{t('final.kicker')}</p>
+    <h2 id="final-title" class="display mt-8 text-[clamp(min(4rem,20vw),16vw,15rem)]">
       <em class="serif">{t('final.title')}</em>
     </h2>
-    <p class="mt-8 max-w-lg text-[0.9375rem] leading-relaxed text-bone/65 md:text-base" data-reveal>{t('final.lead')}</p>
-    <div class="mt-12 flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:justify-center" data-reveal>
+    <p class="mt-8 max-w-lg text-[0.9375rem] leading-relaxed text-bone/65 md:text-base">{t('final.lead')}</p>
+    <div class="mt-12 flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
       {
         wa && (
           <a href={wa} target="_blank" rel="noopener" class="btn btn-gold !min-h-16 !px-9" data-magnetic>

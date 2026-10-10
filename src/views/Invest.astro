@@ -46,16 +46,14 @@ const reasons = fr
     audiences.map((a, i) => (
       <section id={a.id} class:list={['scroll-mt-24 py-20 md:py-32', i % 2 === 1 ? 'bg-ink-2' : 'bg-ink']} aria-labelledby={`${a.id}-title`}>
         <div class="wrap grid gap-12 md:grid-cols-12 md:gap-16">
-          <div class:list={['overflow-hidden md:col-span-6', i % 2 === 1 && 'md:order-2']} data-reveal="clip">
-            <div data-parallax="6">
-              <ProjectImage image={coverImage(projects, [a.image, 0])} sizes="(min-width: 768px) 50vw, 100vw" class="block aspect-[4/3] md:aspect-[5/4]" />
-            </div>
+          <div class:list={['overflow-hidden md:col-span-6', i % 2 === 1 && 'md:order-2']} data-reveal>
+            <ProjectImage image={coverImage(projects, [a.image, 0])} sizes="(min-width: 768px) 50vw, 100vw" class="block aspect-[4/3] md:aspect-[5/4]" />
           </div>
           <div class="flex flex-col justify-center md:col-span-6">
-            <p class="meta text-gold" data-reveal>0{i + 1}</p>
-            <h2 id={`${a.id}-title`} class="display mt-5 text-[clamp(2.4rem,5vw,5.2rem)]" data-split>{a.title[lang]}</h2>
-            <p class="mt-6 max-w-xl text-lg leading-relaxed text-bone/70" data-reveal>{a.text[lang]}</p>
-            <ul class="mt-8 border-t border-line" data-reveal>
+            <p class="meta text-gold">0{i + 1}</p>
+            <h2 id={`${a.id}-title`} class="display mt-5 text-[clamp(2.4rem,5vw,5.2rem)]">{a.title[lang]}</h2>
+            <p class="mt-6 max-w-xl text-lg leading-relaxed text-bone/70">{a.text[lang]}</p>
+            <ul class="mt-8 border-t border-line">
               {a.points[lang].map((pt) => (
                 <li class="flex items-center gap-3 border-b border-line py-3.5 text-[0.9375rem] text-bone/85">
                   <span class="h-1 w-1 rounded-full bg-gold" aria-hidden="true" />
@@ -63,7 +61,7 @@ const reasons = fr
                 </li>
               ))}
             </ul>
-            <div class="mt-8 flex flex-wrap gap-3" data-reveal>
+            <div class="mt-8 flex flex-wrap gap-3">
               {wa && (
                 <a href={wa} target="_blank" rel="noopener" class="btn btn-gold">
                   <Icon name="whatsapp" size={16} /> WhatsApp
@@ -76,10 +74,10 @@ const reasons = fr
           </div>
         </div>
         <div class="wrap mt-16 md:mt-20">
-          <p class="meta text-mist" data-reveal>{t('invest.proof')}</p>
+          <p class="meta text-mist">{t('invest.proof')}</p>
           <div class="mt-6 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-            {publishedOnly(projects, a.proof).map((p, k) => (
-              <ProjectCard project={p} lang={lang} index={k} transition={false} compact sizes="(min-width: 1024px) 23vw, (min-width: 640px) 45vw, 100vw" />
+            {publishedOnly(projects, a.proof).map((p) => (
+              <ProjectCard project={p} lang={lang} transition={false} compact sizes="(min-width: 1024px) 23vw, (min-width: 640px) 45vw, 100vw" />
             ))}
           </div>
         </div>
@@ -89,14 +87,14 @@ const reasons = fr
 
   <section class="theme-paper py-24 md:py-36" aria-labelledby="why-title">
     <div class="wrap">
-      <p class="label text-brand/75" data-reveal>{t('invest.why')}</p>
-      <h2 id="why-title" class="display mt-8 max-w-[16ch] text-[clamp(2.4rem,5.6vw,6rem)]" data-split>
+      <p class="label text-brand/75">{t('invest.why')}</p>
+      <h2 id="why-title" class="display mt-8 max-w-[16ch] text-[clamp(2.4rem,5.6vw,6rem)]">
         {fr ? 'Un partenaire,' : 'One partner,'} <em class="serif">{fr ? 'de l’étude aux clés.' : 'from study to keys.'}</em>
       </h2>
       <ol class="mt-16 grid gap-px overflow-hidden border border-brand/15 bg-brand/15 sm:grid-cols-2 lg:grid-cols-4 md:mt-24">
         {
           reasons.map(([title, text], i) => (
-            <li class="flex flex-col gap-10 bg-paper p-7 md:p-9" data-reveal style={`--d:${i * 0.06}s`}>
+            <li class="flex flex-col gap-10 bg-paper p-7 md:p-9">
               <span class="meta text-brand/75">0{i + 1}</span>
               <div>
                 <h3 class="text-2xl font-light tracking-[-0.02em]">{title}</h3>

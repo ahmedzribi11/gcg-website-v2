@@ -89,15 +89,15 @@ const crumbs = breadcrumbLd(
 
     <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-16 py-20 md:py-28 lg:grid-cols-12">
       <div class="min-w-0 lg:col-span-7">
-        <p class="label text-gold" data-reveal>{t('project.composition')}</p>
-        <p class="mt-6 text-[clamp(1.6rem,2.8vw,2.6rem)] font-light leading-[1.2] tracking-[-0.02em]" data-reveal>{p.composition}</p>
-        {p.typology && <p class="mt-6 text-lg text-bone/70" data-reveal><span class="meta mr-3 text-mist">{t('project.typology')}</span>{p.typology}</p>}
+        <p class="label text-gold">{t('project.composition')}</p>
+        <p class="mt-6 text-[clamp(1.6rem,2.8vw,2.6rem)] font-light leading-[1.2] tracking-[-0.02em]">{p.composition}</p>
+        {p.typology && <p class="mt-6 text-lg text-bone/70"><span class="meta mr-3 text-mist">{t('project.typology')}</span>{p.typology}</p>}
 
-        <h2 class="label mt-16 text-gold" data-reveal>{t('project.missions')}</h2>
+        <h2 class="label mt-16 text-gold">{t('project.missions')}</h2>
         <ol class="mt-6 border-t border-line">
           {
             p.missions.map((m, i) => (
-              <li class="flex gap-6 border-b border-line py-5 text-xl font-light md:text-2xl" data-reveal style={`--d:${i * 0.05}s`}>
+              <li class="flex gap-6 border-b border-line py-5 text-xl font-light md:text-2xl">
                 <span class="meta pt-2 text-mist">{pad(i + 1)}</span>
                 {m}
               </li>
@@ -108,8 +108,8 @@ const crumbs = breadcrumbLd(
         {
           p.typologies && (
             <>
-              <h2 class="label mt-16 text-gold" data-reveal>{t('project.typologies')}</h2>
-              <table class="mt-6 w-full border-t border-line text-left" data-reveal>
+              <h2 class="label mt-16 text-gold">{t('project.typologies')}</h2>
+              <table class="mt-6 w-full border-t border-line text-left">
                 <thead class="sr-only">
                   <tr><th>{t('project.typology')}</th><th>{t('project.surface')}</th></tr>
                 </thead>
@@ -129,8 +129,8 @@ const crumbs = breadcrumbLd(
         {
           p.services.length > 0 && (
             <>
-              <h2 class="label mt-16 text-gold" data-reveal>{t('project.services')}</h2>
-              <ul class="mt-6 flex flex-wrap gap-2" data-reveal>
+              <h2 class="label mt-16 text-gold">{t('project.services')}</h2>
+              <ul class="mt-6 flex flex-wrap gap-2">
                 {p.services.map((id) => {
                   const s = getService(id)
                   return (
@@ -146,7 +146,7 @@ const crumbs = breadcrumbLd(
       </div>
 
       <aside class="min-w-0 lg:col-span-4 lg:col-start-9">
-        <div class="cartouche border border-bone/30 bg-ink-2" data-reveal>
+        <div class="cartouche border border-bone/30 bg-ink-2">
           <div class="flex items-center justify-between bg-brand px-5 py-3">
             <span class="meta text-gold">{t('project.sheet')}</span>
             <span class="meta text-gold">N° {pad(p.number)}</span>
@@ -172,7 +172,7 @@ const crumbs = breadcrumbLd(
           </div>
         </div>
 
-        <div class="mt-6 border border-line p-5" data-reveal style="--d:.1s">
+        <div class="mt-6 border border-line p-5">
           <p class="meta text-gold">{t('project.share')}</p>
           <div class="mt-4 flex flex-wrap gap-4">
             <span id="project-qr" class="block w-24 shrink-0 self-start rounded bg-white p-1" data-qr={qrPath(lang, 'panneau', p.slug)}></span>
@@ -204,7 +204,7 @@ const crumbs = breadcrumbLd(
                 data-cursor="view"
                 aria-label={`${t('project.enlarge')}${colon(lang)}${img.alt}`}
                 aria-haspopup="dialog"
-                data-reveal="clip"
+                data-reveal
               >
                 <ProjectImage image={img} sizes={i === 0 ? '(min-width: 768px) 66vw, 100vw' : '(min-width: 768px) 33vw, 100vw'} class="block aspect-[4/3] h-full w-full" imgClass="h-full w-full object-cover transition-transform duration-[1.4s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" />
               </button>
@@ -234,10 +234,10 @@ const crumbs = breadcrumbLd(
     <section class="theme-paper py-20 md:py-28">
       <div class="wrap flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
         <div>
-          <p class="label text-brand/75" data-reveal>{t('project.similar')}</p>
-          <h2 class="display mt-6 max-w-[18ch] text-[clamp(2.2rem,5vw,5rem)]" data-split>{t('project.similarText')}</h2>
+          <p class="label text-brand/75">{t('project.similar')}</p>
+          <h2 class="display mt-6 max-w-[18ch] text-[clamp(2.2rem,5vw,5rem)]">{t('project.similarText')}</h2>
         </div>
-        <div class="flex flex-wrap gap-3" data-reveal>
+        <div class="flex flex-wrap gap-3">
           {wa && <a href={wa} target="_blank" rel="noopener" class="btn btn-dark"><Icon name="whatsapp" size={16} /> WhatsApp</a>}
           <a href={`${route('contact', lang)}?projet=${p.slug}`} class:list={['btn', wa ? 'btn-line-dark' : 'btn-dark']}>{t('cta.project')} <Icon name="arrow" /></a>
         </div>
@@ -247,9 +247,9 @@ const crumbs = breadcrumbLd(
     {
       related.length > 0 && (
         <section class="wrap py-20 md:py-28" aria-labelledby="related-title">
-          <h2 id="related-title" class="label text-gold" data-reveal>{t('project.related')}</h2>
+          <h2 id="related-title" class="label text-gold">{t('project.related')}</h2>
           <div class="mt-10 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-            {related.map((r, i) => <ProjectCard project={r} lang={lang} index={i} />)}
+            {related.map((r) => <ProjectCard project={r} lang={lang} />)}
           </div>
         </section>
       )

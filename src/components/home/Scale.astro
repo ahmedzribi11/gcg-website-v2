@@ -20,9 +20,9 @@ const shown = highlights(projects, 'scaleOrder')
 
     <ul class="mt-16 grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-2 lg:grid-cols-3 md:mt-24">
       {
-        shown.map(({ p, h: it }, i) => {
+        shown.map(({ p, h: it }) => {
           return (
-            <li class="bg-ink-2" data-reveal style={`--d:${(i % 3) * 0.08}s`}>
+            <li class="bg-ink-2" data-reveal>
               <a href={projectPath(p.slug, lang)} class="group flex h-full flex-col justify-between gap-10 p-7 transition-colors duration-500 hover:bg-ink-3 md:p-10">
                 <div class="flex items-center justify-between gap-4">
                   <span class="meta text-mist">{p.name}</span>

@@ -71,7 +71,8 @@ export function renderQrs(root: ParentNode = document) {
     const svg = el.querySelector('svg')
     if (svg) {
       svg.setAttribute('role', 'img')
-      svg.setAttribute('aria-label', `QR code : ${url}`)
+      // Deux-points selon la langue de la page ; insécable en français (CONT-06, CONT-08)
+      svg.setAttribute('aria-label', `QR code${document.documentElement.lang === 'fr' ? '\u00a0: ' : ': '}${url}`)
       svg.removeAttribute('width')
       svg.removeAttribute('height')
       svg.style.width = '100%'

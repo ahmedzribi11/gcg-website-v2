@@ -208,6 +208,8 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
       subject: fr ? 'Demande de projet — site GCG' : 'Project enquiry — GCG website',
       sending: t('contact.form.sending'),
       rate: t('contact.form.rate'),
+      // Deux-points du message composé dans le navigateur, hors de la passe typographique du build (CONT-06, CONT-08)
+      colon: fr ? '\u00a0: ' : ': ',
     },
   })} />
 <script>
@@ -231,7 +233,7 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
     ;(form.elements.namedItem('ref') as HTMLInputElement).value = ref
     const chip = form.querySelector<HTMLElement>('[data-ref-chip]')!
     chip.hidden = false
-    chip.textContent = `${L.ref} : ${data.projects[ref]}`
+    chip.textContent = `${L.ref}${L.colon}${data.projects[ref]}`
   }
 
   // Délai minimal de saisie (anti-robots), vérifié par le serveur
@@ -289,14 +291,14 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
     const lines = [
       L.intro,
       '',
-      `${L.name} : ${f.get('name')}`,
-      `${L.phone} : ${f.get('phone')}`,
-      f.get('email') ? `${L.email} : ${f.get('email')}` : '',
-      `${L.profile} : ${sel('profile')}`,
-      `${L.type} : ${sel('type')}`,
-      f.get('location') ? `${L.location} : ${f.get('location')}` : '',
-      refSlug ? `${L.ref} : ${data.projects[refSlug]} (${location.origin}${location.pathname.replace(/\/contact$/, '')}${document.body.dataset.lang === 'en' ? '/projects/' : '/realisations/'}${refSlug})` : '',
-      f.get('message') ? `\n${L.message} :\n${f.get('message')}` : '',
+      `${L.name}${L.colon}${f.get('name')}`,
+      `${L.phone}${L.colon}${f.get('phone')}`,
+      f.get('email') ? `${L.email}${L.colon}${f.get('email')}` : '',
+      `${L.profile}${L.colon}${sel('profile')}`,
+      `${L.type}${L.colon}${sel('type')}`,
+      f.get('location') ? `${L.location}${L.colon}${f.get('location')}` : '',
+      refSlug ? `${L.ref}${L.colon}${data.projects[refSlug]} (${location.origin}${location.pathname.replace(/\/contact$/, '')}${document.body.dataset.lang === 'en' ? '/projects/' : '/realisations/'}${refSlug})` : '',
+      f.get('message') ? `\n${L.message}${L.colon.trimEnd()}\n${f.get('message')}` : '',
     ].filter(Boolean)
     const text = lines.join('\n')
     if (via === 'whatsapp' && form.dataset.wa) {

@@ -105,7 +105,7 @@ const home = route('home', lang)
               <div class="flex items-start gap-3">
                 <ProjectImage image={p.images[0]} alt="" sizes="2.5rem" class="block h-10 w-10 shrink-0 overflow-hidden rounded" />
                 <a href={projectPath(p.slug, lang)} class="min-w-0 text-[0.875rem] leading-snug hover:text-gold">
-                  <span class="meta block text-mist">N° {pad(p.number)}</span>
+                  <span class="meta block text-mist">{t('project.no')} {pad(p.number)}</span>
                   {p.name}
                 </a>
               </div>

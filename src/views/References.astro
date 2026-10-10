@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro'
 import Icon from '../components/Icon.astro'
-import { route, SECTOR_LABELS, STATUS_LABELS, useT, type Lang } from '../i18n'
+import { colon, route, SECTOR_LABELS, STATUS_LABELS, useT, type Lang } from '../i18n'
 import { getProjects, pad } from '../lib/projects'
 import { contact } from '../lib/settings'
 import { SECTORS } from '../content.config'
@@ -34,7 +34,7 @@ const studies = projects.filter((p) => p.status === 'etudes').length
         </div>
         <div class="text-right">
           <h1 class="text-3xl font-normal tracking-[-0.02em] text-brand md:text-4xl">{t('refs.title')}</h1>
-          <p class="mt-1 font-mono text-[11px] uppercase tracking-[0.16em] text-brand/80">{t('refs.edition')} : {edition}</p>
+          <p class="mt-1 font-mono text-[11px] uppercase tracking-[0.16em] text-brand/80">{t('refs.edition')}{colon(lang)}{edition}</p>
         </div>
       </header>
 
@@ -75,7 +75,7 @@ const studies = projects.filter((p) => p.status === 'etudes').length
                     <td class="py-2.5 pr-3">{p.period}</td>
                     <td class="py-2.5 pr-3">{[p.surface, p.coveredSurface && `(${p.coveredSurface} ${fr ? 'couverts' : 'built'})`].filter(Boolean).join(' ')}</td>
                     <td class="py-2.5 pr-3">{p.composition}</td>
-                    <td class="py-2.5 pr-3">{p.missions.join(' ; ')}</td>
+                    <td class="py-2.5 pr-3">{p.missions.join(fr ? ' ; ' : '; ')}</td>
                     <td class="py-2.5">{p.status ? STATUS_LABELS[p.status][lang] : p.designOnly ? t('project.designOnly') : ''}</td>
                   </tr>
                 ))}

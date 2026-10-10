@@ -194,6 +194,7 @@ const UI = {
 
     'project.back': 'Toutes les réalisations',
     'project.sheet': 'Fiche projet',
+    'project.no': 'N°',
     'project.location': 'Lieu',
     'project.period': 'Période',
     'project.status': 'Statut',
@@ -475,6 +476,7 @@ const UI = {
 
     'project.back': 'All projects',
     'project.sheet': 'Project sheet',
+    'project.no': 'No.',
     'project.location': 'Location',
     'project.period': 'Period',
     'project.status': 'Status',

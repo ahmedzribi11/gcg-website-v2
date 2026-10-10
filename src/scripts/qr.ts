@@ -1,4 +1,4 @@
-import { renderSVG } from 'uqr'
+import { encode } from 'uqr'
 
 /**
  * Domaine définitif connu au build (SITE_URL, voir astro.config.mjs) : les QR codes et les liens
@@ -21,8 +21,47 @@ export function qrUrl(target: string) {
  */
 export type QrEcc = 'M' | 'Q'
 
-export function qrSvg(url: string, dark = '#052e14', light = '#ffffff', ecc: QrEcc = 'M') {
-  return renderSVG(url, { ecc, border: 4, pixelSize: 10, blackColor: dark, whiteColor: light })
+const colour = (c: string, fallback: string) => (/^#[\da-f]{3,8}$/i.test(c) ? c : fallback)
+
+/**
+ * Modules du code (zone blanche de 4 modules comprise) regroupés en segments horizontaux : un tracé par suite
+ * de modules foncés, et non un carré par module, évite les fines lignes claires entre carrés à l’impression (SHR-12).
+ */
+function qrRuns(url: string, ecc: QrEcc) {
+  const { data, size } = encode(url, { ecc, border: 4 })
+  const runs: [x: number, y: number, w: number][] = []
+  data.forEach((row, y) => {
+    for (let x = 0; x < size; x++) {
+      if (!row[x]) continue
+      const start = x
+      while (row[x + 1]) x++
+      runs.push([start, y, x - start + 1])
+    }
+  })
+  return { size, runs }
+}
+
+/** SVG du code ; `mm` donne au fichier une taille physique (fichier téléchargé), sinon il suit son conteneur. */
+export function qrSvg(url: string, dark = '#052e14', light = '#ffffff', ecc: QrEcc = 'M', mm?: number) {
+  const { size, runs } = qrRuns(url, ecc)
+  const u = 10
+  const d = runs.map(([x, y, w]) => `M${x * u},${y * u}h${w * u}v${u}h-${w * u}z`).join('')
+  const dims = mm ? ` width="${mm}mm" height="${mm}mm"` : ''
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size * u} ${size * u}"${dims}><rect fill="${colour(light, '#ffffff')}" width="${size * u}" height="${size * u}"/><path fill="${colour(dark, '#052e14')}" d="${d}"/></svg>`
+}
+
+/** PNG net : un nombre entier de pixels par module (40), deux couleurs seulement, sans lissage (SHR-12). */
+function qrPng(url: string, ecc: QrEcc): Promise<Blob | null> {
+  const { size, runs } = qrRuns(url, ecc)
+  const px = 40
+  const c = document.createElement('canvas')
+  c.width = c.height = size * px
+  const ctx = c.getContext('2d')!
+  ctx.fillStyle = '#ffffff'
+  ctx.fillRect(0, 0, c.width, c.height)
+  ctx.fillStyle = '#052e14'
+  for (const [x, y, w] of runs) ctx.fillRect(x * px, y * px, w * px, px)
+  return new Promise((resolve) => c.toBlob(resolve, 'image/png'))
 }
 
 export function renderQrs(root: ParentNode = document) {
@@ -67,19 +106,11 @@ document.addEventListener('click', async (e) => {
   const url = target?.dataset.qrUrl
   if (!url) return
   const name = btn.dataset.qrName || 'gcg-qr'
-  const svg = qrSvg(url, '#052e14', '#ffffff', 'Q')
-  const blob = new Blob([svg], { type: 'image/svg+xml' })
+  // Fichiers pour l’impression : correction Q (SHR-04) ; SVG de 100 mm de côté, PNG à 40 px par module (SHR-12)
   if (btn.dataset.format === 'png') {
-    const img = new Image()
-    img.src = URL.createObjectURL(blob)
-    await img.decode()
-    const c = document.createElement('canvas')
-    c.width = c.height = 1200
-    const ctx = c.getContext('2d')!
-    ctx.imageSmoothingEnabled = false
-    ctx.drawImage(img, 0, 0, 1200, 1200)
-    c.toBlob((b) => b && save(b, `${name}.png`), 'image/png')
-  } else save(blob, `${name}.svg`)
+    const png = await qrPng(url, 'Q')
+    if (png) save(png, `${name}.png`)
+  } else save(new Blob([qrSvg(url, '#052e14', '#ffffff', 'Q', 100)], { type: 'image/svg+xml' }), `${name}.svg`)
 })
 
 function save(blob: Blob, filename: string) {

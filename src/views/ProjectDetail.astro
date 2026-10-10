@@ -50,7 +50,8 @@ function galleryClass(i: number, n: number) {
 const shareText = `${p.name} — GCG`
 const wa = whatsappLink(`${t('contact.form.intro')} (${p.name})`)
 // Titre et description Google saisis dans l’espace de gestion, sinon construits (CODE-04)
-const base = `${p.composition} ${p.location}, ${p.period}.`
+// « Depuis 2025 » prend une minuscule après la virgule
+const base = `${p.composition} ${p.location}, ${p.period.replace(/^(Depuis|Since) /, (m) => m.toLowerCase())}.`
 /**
  * Description Google construite : programme, lieu, période, puis les missions de GCG tant que le tout tient
  * en 155 caractères, longueur au-delà de laquelle Google coupe (SEO-04).

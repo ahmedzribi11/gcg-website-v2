@@ -37,7 +37,7 @@ const studies = n((p) => p.status === 'etudes')
     </div>
   </PageHeader>
 
-  <div id="filters" class="sticky top-0 z-30 border-y border-line bg-ink/85 backdrop-blur-xl transition-[top] duration-700" data-filters>
+  <div id="filters" class="sticky top-0 z-30 border-y border-line bg-ink transition-[top] duration-700" data-filters>
     <div class="wrap flex items-center gap-3 py-3">
       <details class="filters-panel group relative flex-1 md:hidden">
         <summary class="chip w-full justify-between list-none">
@@ -83,7 +83,7 @@ const studies = n((p) => p.status === 'etudes')
             <span class="text-bone" data-dd-value></span>
             <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" class="transition-transform"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
           </summary>
-          <div class="absolute left-0 top-full z-20 mt-2 flex min-w-60 flex-col gap-1 rounded-2xl border border-line bg-ink-2/95 p-2 shadow-2xl backdrop-blur-xl">
+          <div class="absolute left-0 top-full z-20 mt-2 flex min-w-60 flex-col gap-1 rounded-2xl border border-line bg-ink-2 p-2 shadow-2xl">
             {g.items
               .filter((it) => it.n > 0)
               .map((it) => (

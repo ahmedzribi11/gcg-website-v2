@@ -12,10 +12,6 @@ const wa = whatsappLink(t('contact.form.intro'))
 ---
 
 <section class="relative flex min-h-svh items-center overflow-hidden bg-ink py-32" aria-labelledby="final-title">
-  <div class="absolute inset-0" aria-hidden="true">
-    <div class="css-fog"><span></span><span></span><span></span></div>
-    <div class="final-glow absolute inset-0 bg-[radial-gradient(ellipse_at_50%_55%,rgba(5,46,20,0.6),transparent_65%)]"></div>
-  </div>
   <div class="wrap relative flex flex-col items-center text-center">
     <p class="label text-gold">{t('final.kicker')}</p>
     <h2 id="final-title" class="display mt-8 text-[clamp(min(4rem,20vw),16vw,15rem)]">
@@ -42,7 +38,7 @@ const wa = whatsappLink(t('contact.form.intro'))
       }
     </div>
 
-    <a href={route('share', lang)} class="group mt-20 flex items-center gap-5 rounded-2xl border border-line bg-ink/40 p-3 pr-6 text-left backdrop-blur transition-colors hover:border-gold/60" data-reveal>
+    <a href={route('share', lang)} class="group mt-20 flex items-center gap-5 rounded-2xl border border-line bg-ink p-3 pr-6 text-left transition-colors hover:border-gold/60" data-reveal>
       <span class="block w-16 rounded-lg bg-white p-1" data-qr={qrPath(lang)} aria-hidden="true"></span>
       <span>
         <span class="meta block text-gold">{t('contact.share')}</span>

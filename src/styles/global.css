@@ -244,9 +244,9 @@
     font-size: 0.625rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    background: rgba(7, 12, 9, 0.6);
+    /* Fond plein, sans flou d’arrière-plan (SLOP-10) : lisible sur photo comme sur aplat */
+    background: var(--color-ink);
     color: var(--color-bone);
-    backdrop-filter: blur(8px);
   }
   .pill::before {
     content: '';
@@ -363,15 +363,7 @@
     transform: translateY(200%);
   }
 }
-@keyframes fog-drift {
-  0% {
-    transform: translate(-56%, -48%) scale(1);
-  }
-  100% {
-    transform: translate(-44%, -54%) scale(1.15);
-  }
-}
-
+/* Fond de l’ouverture de l’accueil : dégradés fixes (ni flou ni mouvement) ; plus de brouillard ailleurs (SLOP-10, PERF-07) */
 .css-fog {
   position: absolute;
   inset: 0;
@@ -386,22 +378,16 @@
   height: 50vmax;
   border-radius: 50%;
   background: radial-gradient(closest-side, rgba(210, 205, 180, 0.14), transparent);
-  filter: blur(40px);
   transform: translate(-50%, -50%);
-  animation: fog-drift 26s var(--ease-cinema) infinite alternate;
 }
 .css-fog span:nth-child(2) {
   width: 70vmax;
   height: 34vmax;
-  animation-duration: 34s;
-  animation-delay: -8s;
   opacity: 0.8;
 }
 .css-fog span:nth-child(3) {
   width: 110vmax;
   height: 40vmax;
-  animation-duration: 41s;
-  animation-delay: -16s;
   opacity: 0.6;
 }
 
@@ -542,6 +528,14 @@
   }
 }
 
+/* Flou d’arrière-plan encore utilisé (barres d’outils de l’affiche et des références) : Safari avant 18
+   ne lit que la propriété préfixée (BRW-05) */
+@layer utilities {
+  .backdrop-blur {
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+
 /* Barre mobile : cachée à l’ouverture puis montrée par site.ts après le premier écran (MOB-03). Seulement quand le
    script tourne (.js) : script absent, bloqué ou en échec (classe retirée après 3 s, Base.astro), elle reste visible (CODE-01) */
 .js #mobile-bar:not([data-visible]) {
@@ -637,12 +631,4 @@ html {
 }
 :root[data-theme='light'] :is(.text-brand\/45, .text-brand\/65, .text-brand\/70) {
   color: color-mix(in srgb, var(--color-brand) 82%, transparent);
-}
-:root[data-theme='light'] .pill {
-  background: rgba(7, 12, 9, 0.86);
-}
-/* Dernier appel en mode clair : le halo vert du mode sombre ferait une tache grise derrière les boutons
-   et passerait le texte sous 4,5:1 ; halo or léger à la place (BRW-03) */
-:root[data-theme='light'] .final-glow {
-  background: radial-gradient(ellipse at 50% 55%, rgba(232, 222, 159, 0.35), transparent 65%);
 }

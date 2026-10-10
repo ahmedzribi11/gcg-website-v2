@@ -118,8 +118,24 @@ collections:
       - { label: 'Surface', name: surface, widget: string, required: false, hint: 'Ex. : 2 500 m²' }
       - { label: 'Terrain', name: terrain, widget: string, required: false, hint: 'Ex. : 6 ha' }
       - { label: 'Surface couverte', name: coveredSurface, widget: string, required: false, hint: 'Ex. : 12 000 m²' }
+      - { label: 'Durée du chantier', name: duration, widget: string, required: false, hint: 'Facultatif, seulement si GCG la confirme. Ex. : 18 mois' }
+      - { label: 'Durée du chantier en anglais', name: duration_en, widget: string, required: false, hint: 'Requise si la durée est remplie et la version anglaise « validée ». Ex. : 18 months' }
+      - { label: 'Effectif au plus fort', name: workforce, widget: number, value_type: int, min: 1, required: false, hint: 'Facultatif : nombre de personnes sur le chantier au plus fort, seulement si GCG le confirme. Ex. : 45' }
       - { label: 'Résumé (français)', name: composition, widget: text, pattern: ['^[\s\S]{1,300}$', '300 caractères maximum'], hint: 'Une à deux phrases, 300 caractères maximum. Ex. : Construction d’une cité de 45 villas haut standing.' }
-      - { label: 'Résumé (anglais)', name: composition_en, widget: text, required: false, pattern: ['^[\s\S]{0,300}$', '300 caractères maximum'], hint: 'Requis si la version anglaise est « validée ». Ex. : A gated community of 45 high-end villas.' }
+      - { label: 'Résumé (anglais)', name: composition_en, widget: text, required: false, pattern: ['^[\s\S]{0,300}$', '300 caractères maximum'], hint: 'Requis si la version anglaise est « validée ». Ex. : Construction of an estate of 45 high-end villas.' }
+      - label: 'Récit du projet'
+        name: story
+        widget: object
+        required: false
+        collapsed: true
+        hint: 'Facultatif : trois paragraphes courts affichés sur la fiche, seulement ceux qui sont remplis. N’écrire que des faits confirmés par GCG. Pour le retirer, vider tous ses champs.'
+        fields:
+          - { label: 'Le besoin', name: need, widget: text, required: false, pattern: ['^[\s\S]{0,700}$', '700 caractères maximum'], hint: 'Ce que le client demandait et ses contraintes (terrain, délai, budget).' }
+          - { label: 'Le besoin (anglais)', name: need_en, widget: text, required: false, pattern: ['^[\s\S]{0,700}$', '700 caractères maximum'], hint: 'Requis si « Le besoin » est rempli et la version anglaise « validée ».' }
+          - { label: 'Ce que GCG a fait', name: work, widget: text, required: false, pattern: ['^[\s\S]{0,700}$', '700 caractères maximum'], hint: 'Les missions réellement assurées par GCG, sans revendiquer celles des autres intervenants.' }
+          - { label: 'Ce que GCG a fait (anglais)', name: work_en, widget: text, required: false, pattern: ['^[\s\S]{0,700}$', '700 caractères maximum'], hint: 'Requis si « Ce que GCG a fait » est rempli et la version anglaise « validée ».' }
+          - { label: 'Le résultat', name: result, widget: text, required: false, pattern: ['^[\s\S]{0,700}$', '700 caractères maximum'], hint: 'Ce qui a été livré, et quand.' }
+          - { label: 'Le résultat (anglais)', name: result_en, widget: text, required: false, pattern: ['^[\s\S]{0,700}$', '700 caractères maximum'], hint: 'Requis si « Le résultat » est rempli et la version anglaise « validée ».' }
       - label: Typologies
         label_singular: typologie
         name: typologies

@@ -49,6 +49,8 @@ années, statut) : en cas de doute, laisser vide.
 | Statut | En cours d’études, en cours d’exécution ou réceptionné. Vide si non confirmé. |
 | Mission d’études seulement | À cocher quand GCG n’a fait que des études, de la conception ou un dossier de permis, sans travaux : le projet porte la mention « Études uniquement » au lieu de passer pour un ouvrage construit par GCG. |
 | Résumé (français / anglais) | Une ou deux phrases, 300 caractères au plus. |
+| Récit du projet | Facultatif. Trois paragraphes courts : « Le besoin » (la demande du client, ses contraintes), « Ce que GCG a fait », « Le résultat ». Seuls les paragraphes remplis s’affichent. N’écrire que des faits confirmés par GCG. |
+| Durée du chantier, Effectif au plus fort | Facultatifs. Ajoutés à la fiche du projet s’ils sont remplis (« 18 mois », « 45 personnes »). |
 | Missions GCG | Ce que GCG a réellement fait (études, gros œuvre…). Ne jamais revendiquer une conception faite par un autre. |
 | Expertises mobilisées | Le projet apparaît aussi sur la page de chaque expertise cochée. |
 | Chiffre clé sur l’accueil | Facultatif. Un chiffre de la fiche (« 116 villas ») montré dans la grille « À toutes les échelles » et/ou le bandeau défilant de l’accueil, selon le rang indiqué. Il disparaît si le projet n’est pas publié. |

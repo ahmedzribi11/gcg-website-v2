@@ -23,7 +23,12 @@ export interface Project {
   surface?: string
   terrain?: string
   coveredSurface?: string
+  /** Durée du chantier et effectif au plus fort (COPY-04). */
+  duration?: string
+  workforce?: number
   composition: string
+  /** Récit : le besoin, ce que GCG a fait, le résultat (COPY-04) ; seuls les paragraphes remplis. */
+  story: { need?: string; work?: string; result?: string }
   typologies?: { name: string; surface: string }[]
   typology?: string
   missions: string[]
@@ -85,7 +90,14 @@ export function localize(entry: ProjectEntry, lang: Lang): Project {
     surface: num(lang, d.surface),
     terrain: num(lang, d.terrain),
     coveredSurface: num(lang, d.coveredSurface),
+    duration: en ? d.duration_en : d.duration,
+    workforce: d.workforce,
     composition: en ? d.composition_en! : d.composition,
+    story: {
+      need: en ? d.story?.need_en : d.story?.need,
+      work: en ? d.story?.work_en : d.story?.work,
+      result: en ? d.story?.result_en : d.story?.result,
+    },
     typologies: d.typologies?.map((t) => ({ name: t.name, surface: num(lang, t.surface)! })),
     typology: en ? (d.typology_en ?? d.typology) : d.typology,
     missions: en ? d.missions_en! : d.missions,

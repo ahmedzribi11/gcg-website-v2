@@ -21,7 +21,9 @@ Elle est générée à partir du nom, en minuscules sans accents, et **ne change
 | `status` | liste fermée | non | en cours d’exécution, en cours d’études, réceptionné — vide si non confirmé |
 | `designOnly` | booléen | non (défaut `false`) | missions d’études, de conception ou de permis seulement, sans travaux : sans statut, le projet porte la mention « Études uniquement » / « Design only » (CONT-12) |
 | `surface`, `terrain`, `coveredSurface` | texte | non | ex. « 2 500 m² » |
+| `duration`, `duration_en`, `workforce` | texte, texte, entier | non ; `duration_en` si `duration` est rempli et la version anglaise validée | chiffres clés du chantier dans la fiche : durée du chantier, effectif au plus fort (« 45 personnes ») ; seulement s’ils sont confirmés par GCG (COPY-04) |
 | `composition`, `composition_en` | texte ≤ 300 caractères | FR oui ; EN si version anglaise validée | résumé |
+| `story` | groupe | non | récit du projet (COPY-04) : `need` (« Le besoin »), `work` (« Ce que GCG a fait »), `result` (« Le résultat ») et leurs versions `_en`, 700 caractères au plus chacun ; seuls les paragraphes remplis s’affichent ; chaque `_en` est requis si le paragraphe français est rempli et la version anglaise validée |
 | `typologies` | liste {nom, surface} | non | |
 | `typology`, `typology_en` | texte | non | |
 | `missions`, `missions_en` | liste de textes | FR oui ; EN si validée | missions exactes de GCG ; `missions_en` peut être vide si « a-traduire » |

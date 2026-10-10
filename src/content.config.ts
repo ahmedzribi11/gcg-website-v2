@@ -75,6 +75,20 @@ const highlight = z.object({
 })
 
 /**
+ * Récit d’un projet (COPY-04) : trois paragraphes courts, affichés sur la fiche seulement s’ils sont remplis.
+ * Ne rédiger que des faits confirmés par GCG.
+ */
+const storyText = (label: string) => opt(z.string().max(700, `${label} : 700 caractères maximum`))
+const story = z.object({
+  need: storyText('Le besoin'),
+  need_en: storyText('Le besoin (anglais)'),
+  work: storyText('Ce que GCG a fait'),
+  work_en: storyText('Ce que GCG a fait (anglais)'),
+  result: storyText('Le résultat'),
+  result_en: storyText('Le résultat (anglais)'),
+})
+
+/**
  * Projets du portfolio GCG — un fichier JSON par projet dans src/content/projects.
  * Règle éditoriale : ne renseigner que les informations attestées par GCG.
  * Un champ absent n’est pas affiché.
@@ -102,8 +116,18 @@ const projects = defineCollection({
         surface: opt(z.string()),
         terrain: opt(z.string()),
         coveredSurface: opt(z.string()),
+        /** Chiffres clés du chantier (COPY-04), affichés dans la fiche s’ils sont renseignés. */
+        duration: opt(z.string()),
+        duration_en: opt(z.string()),
+        workforce: opt(
+          z
+            .number({ error: 'Effectif au plus fort : un nombre entier (ex. 45)' })
+            .int('Effectif au plus fort : nombre entier')
+            .positive('Effectif au plus fort : 1 ou plus'),
+        ),
         composition: z.string({ error: 'Résumé (français) requis' }).max(300, 'Résumé : 300 caractères maximum'),
         composition_en: opt(z.string().max(300, 'Résumé anglais : 300 caractères maximum')),
+        story: z.preprocess(blankGroup, story.optional()),
         typologies: opt(
           z.array(z.object({ name: z.string({ error: 'Typologie : nom requis' }), surface: z.string({ error: 'Typologie : surface requise' }) })),
         ),
@@ -146,6 +170,11 @@ const projects = defineCollection({
             ctx.addIssue({ code: 'custom', path: ['composition_en'], message: 'Résumé anglais requis (ou version anglaise « à traduire »)' })
           if (!d.missions_en?.length)
             ctx.addIssue({ code: 'custom', path: ['missions_en'], message: 'Missions en anglais requises (ou version anglaise « à traduire »)' })
+          if (d.duration && !d.duration_en)
+            ctx.addIssue({ code: 'custom', path: ['duration_en'], message: 'Durée du chantier en anglais requise (ou version anglaise « à traduire »)' })
+          for (const k of ['need', 'work', 'result'] as const)
+            if (d.story?.[k] && !d.story[`${k}_en`])
+              ctx.addIssue({ code: 'custom', path: ['story', `${k}_en`], message: 'Récit : paragraphe anglais requis (ou version anglaise « à traduire »)' })
           if (d.highlight?.note && !d.highlight.note_en)
             ctx.addIssue({
               code: 'custom',

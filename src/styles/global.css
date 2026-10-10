@@ -97,10 +97,6 @@
     max-width: 100%;
     height: auto;
   }
-  .has-cursor,
-  .has-cursor * {
-    cursor: none !important;
-  }
 }
 
 @layer components {
@@ -527,82 +523,6 @@
   }
 }
 
-/* ─── Curseur ─────────────────────────────────────────────────────────── */
-/* Couleurs fixes (pas les variables du thème) : la teinte suit le fond sous le pointeur,
-   or sur fond sombre, vert GCG sur fond clair (data-tone="dark", calculé dans site.ts). */
-#cursor {
-  --cur: #e8de9f;
-  --cur-ring: rgba(232, 222, 159, 0.45);
-  --cur-ring-strong: rgba(232, 222, 159, 0.8);
-  --cur-text: #052e14;
-  --cur-halo: drop-shadow(0 0 1px rgba(7, 12, 9, 0.45));
-  opacity: 0;
-  transition: opacity 0.4s;
-}
-#cursor[data-tone='dark'] {
-  --cur: #052e14;
-  --cur-ring: rgba(5, 46, 20, 0.5);
-  --cur-ring-strong: rgba(5, 46, 20, 0.85);
-  --cur-text: #e8de9f;
-  --cur-halo: none;
-}
-.cursor-dot {
-  width: 6px;
-  height: 6px;
-  margin: -3px 0 0 -3px;
-  border-radius: 50%;
-  background: var(--cur);
-  filter: var(--cur-halo);
-  transition:
-    opacity 0.3s,
-    background-color 0.3s;
-}
-.cursor-ring {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  margin: -15px 0 0 -15px;
-  border-radius: 50%;
-  border: 1px solid var(--cur-ring);
-  filter: var(--cur-halo);
-  transition:
-    width 0.5s var(--ease-out-expo),
-    height 0.5s var(--ease-out-expo),
-    margin 0.5s var(--ease-out-expo),
-    background-color 0.4s,
-    border-color 0.4s;
-}
-.cursor-ring span {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  color: var(--cur-text);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-#cursor[data-mode='link'] .cursor-ring {
-  width: 46px;
-  height: 46px;
-  margin: -23px 0 0 -23px;
-  border-color: var(--cur-ring-strong);
-}
-#cursor[data-mode='view'] .cursor-ring {
-  width: 88px;
-  height: 88px;
-  margin: -44px 0 0 -44px;
-  background: var(--cur);
-  border-color: transparent;
-  filter: none;
-}
-#cursor[data-mode='view'] .cursor-ring span {
-  opacity: 1;
-}
-#cursor[data-mode='view'] .cursor-dot {
-  opacity: 0;
-}
-
 /* ─── Couleurs forcées (Windows, contraste élevé) : formes, traits et logos gardés (BRW-04) ─── */
 @media (forced-colors: active) {
   /* Le bouton principal perd son fond : un contour le garde lisible comme bouton */
@@ -612,8 +532,7 @@
   }
   /* Traits et points dessinés par un fond, que le navigateur remet à Canvas */
   .menu-bar,
-  .pill::before,
-  .cursor-dot {
+  .pill::before {
     forced-color-adjust: none;
     background: CanvasText;
   }

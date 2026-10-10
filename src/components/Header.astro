@@ -69,7 +69,7 @@ const wa = whatsappLink(t('contact.form.intro'))
           <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
         </svg>
       </button>
-      <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="btn btn-gold hidden !min-h-10 !px-5 !text-[0.75rem] md:inline-flex" data-magnetic>
+      <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="btn btn-gold hidden !min-h-10 !px-5 !text-[0.75rem] md:inline-flex">
         {wa && <Icon name="whatsapp" size={15} />}
         {t('nav.cta')}
       </a>

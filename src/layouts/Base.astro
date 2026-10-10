@@ -136,7 +136,6 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
     </main>
     {!bare && <Footer lang={lang} />}
     {!bare && <MobileBar lang={lang} />}
-    {!bare && <div id="cursor" aria-hidden="true" class="pointer-events-none fixed inset-0 z-[95] hidden" />}
     <script>
       import '../scripts/site'
       import '../scripts/analytics'

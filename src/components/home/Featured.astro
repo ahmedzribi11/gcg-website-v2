@@ -27,7 +27,7 @@ Sans lui (animations réduites, pas de JS, téléphone) : liste verticale, tous 
       {
         featured.map((p, i) => (
           <article data-slide class="relative w-full shrink-0 group-data-[pinned]/featured:h-[72vh] group-data-[pinned]/featured:w-[78vw] lg:group-data-[pinned]/featured:w-[70vw]">
-            <a href={projectPath(p.slug, lang)} class="group grid h-full gap-6 md:grid-cols-12 md:gap-10" data-cursor="view">
+            <a href={projectPath(p.slug, lang)} class="group grid h-full gap-6 md:grid-cols-12 md:gap-10">
               <div data-slide-frame class="relative aspect-[4/3] overflow-hidden bg-ink-3 md:col-span-8 group-data-[pinned]/featured:aspect-auto group-data-[pinned]/featured:h-full">
                 <div data-slide-media class="absolute -inset-x-[6%] inset-y-0">
                   <ProjectImage image={p.images[0]} sizes="(min-width: 768px) 55vw, 100vw" class="block h-full w-full" imgClass="h-full w-full object-cover transition-transform duration-[1.8s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" vt={`p-${p.slug}`} />

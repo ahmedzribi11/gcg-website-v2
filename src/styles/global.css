@@ -629,6 +629,36 @@
   opacity: 0;
 }
 
+/* ─── Couleurs forcées (Windows, contraste élevé) : formes, traits et logos gardés (BRW-04) ─── */
+@media (forced-colors: active) {
+  /* Le bouton principal perd son fond : un contour le garde lisible comme bouton */
+  .btn,
+  #mobile-bar a.bg-gold {
+    border: 1px solid ButtonText;
+  }
+  /* Traits et points dessinés par un fond, que le navigateur remet à Canvas */
+  .menu-bar,
+  .pill::before,
+  .cursor-dot {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+  /* Icônes : la couleur du texte voisin (couleur système) au lieu de l’or pâle de text-gold */
+  svg {
+    color: inherit;
+  }
+  /* Logos PNG clairs (blanc, or) : silhouette blanche sur fond système sombre… */
+  .logo-mono {
+    filter: brightness(0) invert(1);
+  }
+}
+/* … et noire sur fond système clair */
+@media (forced-colors: active) and (prefers-color-scheme: light) {
+  .logo-mono {
+    filter: brightness(0);
+  }
+}
+
 /* Barre de filtres collante sous l’en-tête visible */
 body:has(#site-header:not([data-hidden])) [data-filters] {
   top: 4rem;

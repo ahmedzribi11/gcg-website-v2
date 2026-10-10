@@ -551,6 +551,14 @@
   tr {
     break-inside: avoid;
   }
+  /* Un intertitre ne reste jamais seul en bas de page (SHR-06) ; .label passe en bloc pour que la règle s’applique */
+  body:not(.is-bare) h2,
+  body:not(.is-bare) .label {
+    break-after: avoid;
+  }
+  body:not(.is-bare) .label {
+    display: flex;
+  }
 }
 
 /* ─── Curseur ─────────────────────────────────────────────────────────── */

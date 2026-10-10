@@ -48,7 +48,7 @@ for (const [mode, viewport] of [
   ['desktop', { width: 1440, height: 900 }],
   ['clair', { width: 1440, height: 900 }],
 ]) {
-  // Animations coupées (état final des apparitions GSAP) pour mesurer les contrastes réels
+  // Animations coupées (état final des apparitions) pour mesurer les contrastes réels
   // CSP active (pas de bypassCSP) : une ressource ou un script bloqué doit faire échouer le contrôle
   const ctx = await browser.newContext({ viewport, isMobile: mode === 'mobile', hasTouch: mode === 'mobile', reducedMotion: 'reduce' })
   await ctx.addInitScript(() => {
@@ -109,7 +109,7 @@ for (const [mode, viewport] of [
  * Mise en page aux largeurs intermédiaires et en paysage (MOB-01, MOB-02, DESK-02, BRW-02, BRW-06, MOB-03).
  * html coupe le débordement horizontal (overflow-x: clip) : scrollWidth ne voit pas un texte ou un bouton coupé
  * par le bord de l’écran. On mesure donc chaque texte et chaque contrôle par rapport à la largeur configurée
- * (l’émulation mobile élargit innerWidth jusqu’au contenu). Carrousels, zones qui défilent et décor aria-hidden exclus.
+ * (l’émulation mobile élargit innerWidth jusqu’au contenu). Zones qui défilent et décor aria-hidden exclus.
  */
 const LAYOUTS = [
   { id: '320', viewport: { width: 320, height: 568 }, mobile: true },
@@ -132,8 +132,7 @@ for (const { id, viewport, mobile = false, landscape = false } of LAYOUTS) {
         for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) if (/auto|scroll/.test(getComputedStyle(a).overflowX)) return true
         return false
       }
-      const skip = (el) =>
-        el.closest('[aria-hidden="true"],[data-htrack],[class*="animate-[marquee"],.sr-only,#mobile-menu,[hidden],.print-only,.no-scrollbar') || scroller(el)
+      const skip = (el) => el.closest('[aria-hidden="true"],.sr-only,#mobile-menu,[hidden],.print-only,.no-scrollbar') || scroller(el)
       const shown = (el) => {
         const s = getComputedStyle(el)
         return s.visibility !== 'hidden' && s.display !== 'none' && Number(s.opacity) > 0.05
@@ -159,7 +158,7 @@ for (const { id, viewport, mobile = false, landscape = false } of LAYOUTS) {
       }
       const sw = document.documentElement.scrollWidth
       if (sw > W + 1) res.unshift(`mise en page de ${sw} px pour un écran de ${W} px`)
-      // Projets à la une sans épinglage (animations réduites) : chaque projet doit rester atteignable (DESK-01)
+      // Projets à la une, en grille depuis SLOP-14 : chaque projet doit rester dans l’écran (DESK-01)
       for (const s of document.querySelectorAll('[data-slide]')) {
         const b = s.getBoundingClientRect()
         if (b.width && (b.left < -1 || b.right > W + 1)) res.push(`projet à la une hors de l’écran (x ${Math.round(b.left)} à ${Math.round(b.right)})`)

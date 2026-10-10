@@ -147,7 +147,7 @@ src/i18n/            routes et textes FR/EN
 src/layouts/         gabarit HTML (SEO, Open Graph, hreflang, données structurées)
 src/lib/             accès aux projets, paramètres, SEO, environnement
 src/pages/           routes FR et EN
-src/scripts/         navigation, animation d’ouverture, QR codes, aperçus, mesure d’audience
+src/scripts/         navigation, apparitions au défilement, QR codes, mesure d’audience
 src/styles/          jetons de design, composants, impression
 src/views/           pages partagées entre FR et EN
 docs/                dossier de remise (FR)

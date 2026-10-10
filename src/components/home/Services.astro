@@ -1,10 +1,9 @@
 ---
-import ProjectImage from '../ProjectImage.astro'
 import SectionHead from '../SectionHead.astro'
 import Icon from '../Icon.astro'
 import { services } from '../../data/services'
 import { route, servicePath, useT, type Lang } from '../../i18n'
-import { coverImage, type Project } from '../../lib/projects'
+import type { Project } from '../../lib/projects'
 
 interface Props {
   lang: Lang
@@ -12,11 +11,10 @@ interface Props {
 }
 const { lang, projects } = Astro.props
 const t = useT(lang)
-const img = (id: string) => coverImage(projects, services.find((s) => s.id === id)!.cover)
 const count = (id: string) => projects.filter((p) => p.services.includes(id as never)).length
 ---
 
-<section id="expertises" class="relative py-24 md:py-40" aria-labelledby="services-title" data-preview-root>
+<section id="expertises" class="relative py-24 md:py-40" aria-labelledby="services-title">
   <div class="wrap">
     <SectionHead id="services-title" label={t('services.label')} title={t('services.title')} accent={lang === 'fr' ? 'même toit.' : 'one roof.'} lead={t('services.lead')} />
 
@@ -27,7 +25,7 @@ const count = (id: string) => projects.filter((p) => p.services.includes(id as n
           const turnkey = s.id === 'cle-en-main'
           return (
             <li class="border-b border-line">
-              <a href={servicePath(s.slug[lang], lang)} class="group grid grid-cols-12 items-baseline gap-x-4 gap-y-2 py-6 md:py-8" data-preview={s.id}>
+              <a href={servicePath(s.slug[lang], lang)} class="group grid grid-cols-12 items-baseline gap-x-4 gap-y-2 py-6 md:py-8">
                 <span class="meta col-span-2 text-mist md:col-span-1">{String(i + 1).padStart(2, '0')}</span>
                 <span class:list={['col-span-10 text-[1.7rem] font-light leading-tight tracking-[-0.03em] transition-[color,transform] duration-700 ease-[var(--ease-out-expo)] group-hover:translate-x-2 md:col-span-5 md:text-[clamp(1.8rem,3.2vw,3.4rem)]', turnkey ? 'text-gold' : 'text-bone/90 group-hover:text-bone']}>
                   {turnkey ? <em class="serif">{s.title[lang]}</em> : s.title[lang]}
@@ -48,23 +46,4 @@ const count = (id: string) => projects.filter((p) => p.services.includes(id as n
       <a href={route('services', lang)} class="btn btn-line">{t('nav.services')} <Icon name="arrow" /></a>
     </div>
   </div>
-
-  <div data-preview-stage class="preview-stage pointer-events-none absolute left-0 top-0 z-10 hidden md:block" aria-hidden="true">
-    {
-      services.map((s) => (
-        <div data-preview-for={s.id} class="preview-item absolute left-0 top-0 h-[17rem] w-[13rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden">
-          <ProjectImage image={img(s.id)} alt="" sizes="13rem" class="block h-full w-full" />
-        </div>
-      ))
-    }
-  </div>
 </section>
-
-<script>
-  import '../../scripts/preview'
-</script>
-
-<style>
-  .preview-item { opacity: 0; clip-path: inset(50% 50% 50% 50%); transition: opacity 0.5s, clip-path 0.9s var(--ease-out-expo); }
-  .preview-item[data-on] { opacity: 1; clip-path: inset(0 0 0 0); }
-</style>

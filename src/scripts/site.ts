@@ -1,11 +1,5 @@
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
-
 const html = document.documentElement
 export const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches
-export const touch = matchMedia('(hover: none), (pointer: coarse)').matches
 
 /* Défilement natif du navigateur (molette, clavier, ancres) : plus de défilement fluide simulé (SLOP-12) */
 export function scrollToEl(target: Element | number) {
@@ -116,12 +110,6 @@ document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
   el.classList.add('reveal-wait')
   io.observe(el)
 })
-
-/* Recalcul après chargement des polices et images */
-document.fonts?.ready.then(() => ScrollTrigger.refresh())
-addEventListener('load', () => ScrollTrigger.refresh())
-
-export { gsap, ScrollTrigger }
 
 /* ─── Mode clair / sombre ─────────────────────────────────────────────── */
 // Deux boutons : dans l’en-tête (tablette, ordinateur) et dans le menu plein écran (téléphone)

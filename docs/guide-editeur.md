@@ -50,7 +50,7 @@ années, statut) : en cas de doute, laisser vide.
 | Résumé (français / anglais) | Une ou deux phrases, 300 caractères au plus. |
 | Missions GCG | Ce que GCG a réellement fait (études, gros œuvre…). Ne jamais revendiquer une conception faite par un autre. |
 | Expertises mobilisées | Le projet apparaît aussi sur la page de chaque expertise cochée. |
-| Chiffre clé sur l’accueil | Facultatif. Un chiffre de la fiche (« 116 villas ») montré dans la grille « À toutes les échelles » et/ou le bandeau défilant de l’accueil, selon le rang indiqué. Il disparaît si le projet n’est pas publié. |
+| Chiffre clé sur l’accueil | Facultatif. Un chiffre de la fiche (« 116 villas ») montré dans la grille « À toutes les échelles » et/ou le bandeau des chiffres clés sous l’ouverture de l’accueil (les 4 premiers rangs), selon le rang indiqué. Il disparaît si le projet n’est pas publié. |
 | Titre et description Google | Facultatifs. S’ils sont remplis, ils remplacent le titre de l’onglet et la description du résultat Google (70 et 170 caractères au plus). |
 
 Les règles d’écriture (espaces, nombres, termes anglais) sont dans `charte-redactionnelle.md`.

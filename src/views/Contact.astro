@@ -25,7 +25,8 @@ const phones = [
 ].filter((p) => p.label)
 const phoneLabel = (e164: string) => [t('contact.phone'), phones.length > 1 && country(e164)].filter(Boolean).join(' · ')
 const err = 'mt-2 border-l border-[#ff9b8a] pl-3 text-[0.875rem] text-bone/80'
-const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transparent px-0 py-3 text-lg font-light text-bone placeholder:text-bone/30 focus:border-gold focus:outline-none focus:ring-0'
+// Trait des champs à 50 % : au moins 3:1 sur le panneau dans les deux thèmes (BRW-07, WCAG 1.4.11)
+const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-transparent px-0 py-3 text-lg font-light text-bone placeholder:text-bone/30 focus:border-gold focus:outline-none focus:ring-0'
 ---
 
 <Base lang={lang} alt={route('contact', fr ? 'en' : 'fr')} title={fr ? 'Contact' : 'Contact us'} description={t('contact.lead')}>

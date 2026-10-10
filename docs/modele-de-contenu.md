@@ -34,7 +34,7 @@ Elle est générée à partir du nom, en minuscules sans accents, et **ne change
 | `highlight` | groupe | non | chiffre clé de l’accueil (CODE-03) : `value` et `unit` requis si le groupe est rempli ; `unit_en`, `note`, `note_en` ; `scaleOrder` (rang dans la grille « À toutes les échelles ») ; `marqueeOrder` (rang dans le bandeau), `marqueeName(_en)` et `marqueeFigure(_en)` (par défaut : nom du projet, « valeur unité ») ; `note_en` et `marqueeFigure_en` requis si la version anglaise est validée |
 | `permission` | liste fermée | oui (défaut « en-attente ») | autorisation du client final ; « en-attente » = masqué quand `GCG_LAUNCH=1` |
 | `en_status` | liste fermée | oui | « a-traduire » = page anglaise non publiée (CMS-10) |
-| `seo_title(_en)`, `seo_description(_en)` | texte ≤ 70 / ≤ 170 caractères | non | remplacent le titre et la description de la page ; par défaut : « Nom · projet GCG, Côte d’Ivoire » et « résumé lieu, période » |
+| `seo_title(_en)`, `seo_description(_en)` | texte ≤ 70 / ≤ 170 caractères | non | remplacent le titre et la description de la page ; par défaut : « Nom · projet GCG, Côte d’Ivoire » et « résumé lieu, période », suivis des missions de GCG tant que la description tient en 155 caractères (SEO-04) |
 
 ### Image d’un projet
 

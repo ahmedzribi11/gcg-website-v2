@@ -72,7 +72,14 @@ const toggle = document.getElementById('menu-toggle')
 const menu = document.getElementById('mobile-menu')
 if (header && toggle && menu) {
   const links = () => menu.querySelectorAll<HTMLElement>('a, button')
+  /*
+   * Menu ouvert : le reste de la page (lien d’évitement, main, pied de page, barre mobile…) devient inerte,
+   * la tabulation reste dans l’en-tête et le menu, et les lecteurs d’écran ne lisent plus la page cachée (A11Y-01).
+   * Pas de role="dialog" aria-modal sur le menu : le bouton Fermer est dans l’en-tête, il serait masqué.
+   */
+  const behind = () => Array.from(document.body.children).filter((el) => el !== header && el !== menu && el.tagName !== 'SCRIPT')
   const setOpen = (open: boolean) => {
+    behind().forEach((el) => el.toggleAttribute('inert', open))
     header.toggleAttribute('data-menu', open)
     header.removeAttribute('data-hidden')
     toggle.setAttribute('aria-expanded', String(open))

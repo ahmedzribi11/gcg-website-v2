@@ -458,7 +458,8 @@
   }
 }
 
-/* ─── Impression A4 : logo et adresse de la page, sans menus ni boutons ─── */
+/* ─── Impression A4 : logo et adresse de la page, sans menus ni boutons ───
+   Seul le pied de page du site est masqué : celui de la liste de références (coordonnées) s’imprime (SHR-05). */
 .print-only {
   display: none;
 }
@@ -471,7 +472,7 @@
   #site-header,
   #mobile-bar,
   #cursor,
-  footer,
+  body > footer,
   .btn,
   dialog,
   a[href='#main'] {

@@ -91,12 +91,12 @@ export const services: Service[] = [
     slug: { fr: 'construction', en: 'construction' },
     title: { fr: 'Construction', en: 'Construction' },
     short: {
-      fr: 'Gros œuvre, second œuvre et finitions, avec nos équipes et nos propres engins.',
-      en: 'Structural works, finishing and trims, with our own teams and machinery.',
+      fr: 'Gros œuvre, second œuvre et finitions, avec nos équipes et un parc d’engins de chantier.',
+      en: 'Structural works, finishing works and finishes, with our own teams and a fleet of site machinery.',
     },
     intro: {
-      fr: 'Le pôle Construction pilote les chantiers, du gros œuvre aux finitions : villas, cités résidentielles, immeubles, hôtels, usines en structure métallique. GCG dispose de ses propres engins et équipements de chantier, et assure le suivi jusqu’à la réception.',
-      en: 'The Construction division runs the sites, from structural works to finishing: villas, residential estates, buildings, hotels and steel-frame factories. GCG operates its own machinery and site equipment, and follows each project through to handover.',
+      fr: 'Le pôle Construction pilote les chantiers, du gros œuvre aux finitions : villas, cités résidentielles, immeubles, hôtels, usines en structure métallique. GCG mobilise un parc d’engins et d’équipements de chantier, et assure le suivi jusqu’à la réception.',
+      en: 'The Construction division runs the sites, from structural works to finishing: villas, residential estates, buildings, hotels and steel-frame factories. GCG deploys a fleet of machinery and site equipment, and follows each project through to handover.',
     },
     includes: {
       fr: ['Gros œuvre', 'Second œuvre', 'Finitions', 'Structures métalliques', 'Suivi de chantier et réception', 'Planning et coordination'],

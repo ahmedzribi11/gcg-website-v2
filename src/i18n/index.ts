@@ -153,7 +153,7 @@ const UI = {
     'types.label': 'Tout type de projet',
     'types.title': 'Vous voulez un hôtel ? Nous construisons un hôtel.',
     'types.lead':
-      'Villas, résidences, immeubles, hôtels, bars de plage, spas, usines, écoles, voiries : le portfolio de GCG couvre presque tout ce qui se construit.',
+      'Villas, résidences, immeubles, hôtels, bars de plage, spas, usines, salles polyvalentes, voiries : le portfolio de GCG couvre presque tout ce qui se construit.',
 
     'featured.label': 'Réalisations phares',
     'featured.title': 'Des projets qui parlent pour nous.',
@@ -246,7 +246,7 @@ const UI = {
     'about.org.skills': 'Domaines de compétences',
     'about.org.staff': 'collaborateurs',
     'about.means.label': 'Moyens matériels',
-    'about.means.title': 'Nos propres engins, nos propres équipements.',
+    'about.means.title': 'Engins, équipements et véhicules de chantier.',
     'about.means.lead': 'Un parc d’engins, d’équipements de chantier et de véhicules pour maîtriser l’exécution.',
     'about.means.units': 'unités',
     'about.video': 'GCG en vidéo',
@@ -435,7 +435,7 @@ const UI = {
     'types.label': 'Every kind of project',
     'types.title': 'You want a hotel? We build a hotel.',
     'types.lead':
-      'Villas, residences, buildings, hotels, beach bars, spas, factories, schools, roads: GCG’s portfolio covers almost everything that gets built.',
+      'Villas, residences, buildings, hotels, beach bars, spas, factories, multipurpose halls, roads: GCG’s portfolio covers almost everything that gets built.',
 
     'featured.label': 'Flagship projects',
     'featured.title': 'Projects that speak for us.',
@@ -528,8 +528,8 @@ const UI = {
     'about.org.skills': 'Areas of expertise',
     'about.org.staff': 'staff',
     'about.means.label': 'Equipment',
-    'about.means.title': 'Our own machinery, our own equipment.',
-    'about.means.lead': 'A fleet of machinery, site equipment and vehicles to keep execution in our hands.',
+    'about.means.title': 'Machinery, site equipment and vehicles.',
+    'about.means.lead': 'A fleet of machinery, site equipment and vehicles so we control the work on site.',
     'about.means.units': 'units',
     'about.video': 'GCG on video',
 

@@ -10,8 +10,8 @@ const { lang } = Astro.props
 const t = useT(lang)
 const words =
   lang === 'fr'
-    ? ['des villas', 'des résidences', 'des hôtels', 'des immeubles', 'des usines', 'des écoles', 'des restaurants', 'des routes']
-    : ['villas', 'residences', 'hotels', 'buildings', 'factories', 'schools', 'restaurants', 'roads']
+    ? ['des villas', 'des résidences', 'des hôtels', 'des immeubles', 'des usines', 'des spas', 'des restaurants', 'des routes']
+    : ['villas', 'residences', 'hotels', 'buildings', 'factories', 'spas', 'restaurants', 'roads']
 const wa = whatsappLink(t('contact.form.intro'))
 /** Mots du titre, découpés au build : l’animation démarre au premier affichage, sans attendre le JS. */
 const split = (text: string, from = 0) => text.split(' ').map((w, k) => ({ w, i: from + k }))

@@ -1,6 +1,6 @@
 ---
 import SectionHead from '../SectionHead.astro'
-import { projectPath, STATUS_SHORT, useT, type Lang } from '../../i18n'
+import { colon, projectPath, STATUS_SHORT, useT, type Lang } from '../../i18n'
 import { highlights, type Project } from '../../lib/projects'
 
 interface Props {
@@ -12,11 +12,21 @@ const t = useT(lang)
 const fr = lang === 'fr'
 /** Chiffres clés saisis dans les fiches projet (champ « Chiffre clé », rang dans la grille) ; un projet non publié en est absent (CODE-03, OPS-02). */
 const shown = highlights(projects, 'scaleOrder')
+/**
+ * Titre bâti sur deux projets avec travaux (COPY-02), et non sur une étude : la villa de luxe d’Assouindé et les
+ * 116 villas de Villa Palmeras, chiffres lus dans leur fiche. Si l’un n’est pas publié, titre sans chiffre.
+ */
+const small = projects.find((p) => p.slug === 'villa-de-luxe-assouinde')?.highlight
+const large = projects.find((p) => p.slug === 'villa-palmeras')?.highlight
+const accent = small && large ? `${large.value} ${large.unit}.` : undefined
+const title = small && large ? (fr ? `De la villa de ${small.value} ${small.unit} au programme de ${accent}` : `From a ${small.value} ${small.unit} villa to a programme of ${accent}`) : t('scale.title')
+/** Projet en études ou d’études seulement : le rôle de GCG est écrit à côté du chiffre (COPY-02). */
+const studyOnly = (p: Project) => p.status === 'etudes' || p.designOnly
 ---
 
 <section class="relative overflow-hidden bg-ink-2 py-24 md:py-40" aria-labelledby="scale-title">
   <div class="wrap">
-    <SectionHead id="scale-title" label={t('scale.label')} title={t('scale.title')} accent={fr ? '600 000 m².' : '600,000 m² development.'} lead={t('scale.lead')} size="md" />
+    <SectionHead id="scale-title" label={t('scale.label')} title={title} accent={accent} lead={t('scale.lead')} size="md" />
 
     <ul class="mt-16 grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-2 lg:grid-cols-3 md:mt-24">
       {
@@ -35,6 +45,7 @@ const shown = highlights(projects, 'scaleOrder')
                     <span class="text-xl font-light text-bone/80 md:text-2xl">{it.unit}</span>
                   </p>
                   <p class="mt-3 text-[0.875rem] text-bone/55">{it.note ? `${it.note} · ${p.location}` : p.location}</p>
+                  {studyOnly(p) && <p class="mt-1 text-[0.875rem] text-bone/55">{`${t('project.missions')}${colon(lang)}${p.missions.join(' · ')}`}</p>}
                 </div>
               </a>
             </li>

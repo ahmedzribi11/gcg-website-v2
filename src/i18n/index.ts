@@ -160,8 +160,8 @@ const UI = {
     'featured.skip': 'Passer les projets',
 
     'scale.label': 'À toutes les échelles',
-    'scale.title': 'De la villa de 260 m² au programme de 600 000 m².',
-    'scale.lead': 'GCG accompagne les projets particuliers comme les grands programmes immobiliers, hôteliers et industriels.',
+    'scale.title': 'De la villa au grand programme.',
+    'scale.lead': 'Une villa pour un particulier ou des dizaines de villas pour un programme immobilier : la même équipe d’études et de chantier.',
 
     'presence.label': 'Présence',
     'presence.title': 'De Korhogo à Assinie.',
@@ -442,8 +442,8 @@ const UI = {
     'featured.skip': 'Skip projects',
 
     'scale.label': 'At every scale',
-    'scale.title': 'From a 260 m² villa to a 600,000 m² development.',
-    'scale.lead': 'GCG works for private owners and on large residential, hospitality and industrial developments alike.',
+    'scale.title': 'From single villas to large programmes.',
+    'scale.lead': 'A single villa for a private owner or dozens of villas for a housing programme: the same design and site team.',
 
     'presence.label': 'Presence',
     'presence.title': 'From Korhogo to Assinie.',

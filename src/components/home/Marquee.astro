@@ -8,7 +8,8 @@ interface Props {
 }
 const { projects } = Astro.props
 /** Chiffres clés saisis dans les fiches projet (champ « Chiffre clé », rang dans le bandeau) ; un projet non publié en est absent (CODE-03). */
-const items = highlights(projects, 'marqueeOrder').map(({ h }) => [h.marqueeName, h.marqueeFigure])
+// Projet en études ou d’études seulement : missions de GCG à côté du chiffre (COPY-02)
+const items = highlights(projects, 'marqueeOrder').map(({ p, h }) => [h.marqueeName, p.status === 'etudes' || p.designOnly ? `${h.marqueeFigure} · ${p.missions.join(' · ')}` : h.marqueeFigure])
 ---
 
 {

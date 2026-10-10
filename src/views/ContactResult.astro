@@ -22,7 +22,7 @@ const wa = pageWhatsApp(lang, t('contact.label'))
 
 <Base lang={lang} alt={route(kind, lang === 'fr' ? 'en' : 'fr')} title={ok ? t('contact.form.okTitle') : t('contact.form.failTitle')} noindex>
   <section class="wrap max-w-3xl pb-28 pt-36 md:pt-48">
-    <h1 class="display text-[clamp(2.8rem,8vw,6rem)]">{ok ? t('contact.form.okTitle') : t('contact.form.failTitle')}</h1>
+    <h1 class="display text-4xl">{ok ? t('contact.form.okTitle') : t('contact.form.failTitle')}</h1>
     <p class="mt-8 text-lg text-bone/85">{text}</p>
     <div class="mt-10 flex flex-wrap gap-3">
       {wa && <a href={wa} target="_blank" rel="noopener" class="btn btn-gold"><Icon name="whatsapp" size={20} /> WhatsApp</a>}

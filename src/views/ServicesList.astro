@@ -41,7 +41,7 @@ const MIN_COUNT = 5
             <div class:list={['flex flex-col justify-between md:col-span-6', flip ? 'md:order-1 md:col-start-1' : 'md:col-start-7']}>
               <div>
                 {n >= MIN_COUNT && <p class="meta text-gold">{n} {t('services.projects')}</p>}
-                <h2 class:list={['display text-[clamp(2.2rem,4.6vw,4.8rem)]', n >= MIN_COUNT && 'mt-5']}>
+                <h2 class:list={['display text-3xl', n >= MIN_COUNT && 'mt-5']}>
                   {s.title[lang]}
                 </h2>
                 <p class="mt-6 max-w-xl text-lg leading-relaxed text-bone/70">{s.intro[lang]}</p>
@@ -49,7 +49,7 @@ const MIN_COUNT = 5
               <div class="mt-10">
                 <ul class="grid gap-x-6 border-t border-line sm:grid-cols-2">
                   {s.includes[lang].map((it) => (
-                    <li class="flex items-center gap-3 border-b border-line py-3 text-[0.9375rem] text-bone/80">
+                    <li class="flex items-center gap-3 border-b border-line py-3 text-base text-bone/80">
                       <span class="h-1 w-1 rounded-full bg-gold" aria-hidden="true" />
                       {it}
                     </li>

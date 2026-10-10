@@ -42,7 +42,7 @@ const wa = whatsappLink(t('contact.form.intro'))
           <li>
             <a
               href={item.href}
-              class:list={['link-line pb-1 text-[0.8125rem] tracking-[0.05em] transition-colors duration-500 hover:text-bone', isActive(item.href) ? 'text-gold' : 'text-bone/70']}
+              class:list={['link-line pb-1 text-sm tracking-[0.05em] transition-colors duration-500 hover:text-bone', isActive(item.href) ? 'text-gold' : 'text-bone/70']}
               aria-current={isActive(item.href) ? 'page' : undefined}
             >
               {item.label}
@@ -73,7 +73,7 @@ const wa = whatsappLink(t('contact.form.intro'))
           <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
         </svg>
       </button>
-      <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="btn btn-gold hidden !min-h-10 !px-5 !text-[0.75rem] md:inline-flex">
+      <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="btn btn-gold hidden !min-h-10 !px-5 !text-xs md:inline-flex">
         {wa && <Icon name="whatsapp" size={20} />}
         {t('nav.cta')}
       </a>
@@ -102,7 +102,7 @@ Contenu défilant sous l’en-tête : en paysage, à 200 % ou en grand texte, to
         nav.map((item, i) => (
           <li class="overflow-hidden border-b border-line">
             <a href={item.href} tabindex="-1" class="menu-link flex items-baseline justify-between py-4" style={`--i:${i}`}>
-              <span class:list={['display text-[2.6rem]', isActive(item.href) && 'text-gold']}>{item.label}</span>
+              <span class:list={['display text-3xl', isActive(item.href) && 'text-gold']}>{item.label}</span>
             </a>
           </li>
         ))
@@ -153,6 +153,6 @@ Contenu défilant sous l’en-tête : en paysage, à 200 % ou en grand texte, to
   #site-header[data-menu] .menu-bar:first-child { transform: translateY(4px) rotate(45deg); }
   #site-header[data-menu] .menu-bar:last-child { transform: translateY(-4px) rotate(-45deg); }
   .menu-link { transform: translateY(100%); transition: transform 0.9s var(--ease-out-expo); }
-  @media (max-height: 500px) { .menu-link span:first-child { font-size: 1.75rem; } }
+  @media (max-height: 500px) { .menu-link span:first-child { font-size: var(--text-xl); } }
   #site-header[data-menu] + #mobile-menu .menu-link { transform: none; transition-delay: calc(0.08s + var(--i) * 0.06s); }
 </style>

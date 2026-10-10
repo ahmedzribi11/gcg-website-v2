@@ -41,8 +41,8 @@ const paper = tone === 'paper'
           <li class="method-step relative" style={`--i:${i}`}>
             <span class:list={['absolute -left-8 top-1.5 block h-[11px] w-[11px] rounded-full lg:-top-[3.05rem] lg:left-0', paper ? 'bg-brand' : 'bg-gold']} aria-hidden="true" />
             <p class:list={['meta', paper ? 'text-brand/75' : 'text-mist']}>{String(i + 1).padStart(2, '0')}</p>
-            <h3 class="mt-3 text-2xl tracking-[-0.03em] lg:text-[clamp(1.3rem,1.8vw,2rem)]">{title}</h3>
-            <p class:list={['mt-2 max-w-[24ch] text-[0.875rem] leading-relaxed', paper ? 'text-brand/65' : 'text-bone/55']}>{text}</p>
+            <h3 class="mt-3 text-xl tracking-[-0.03em]">{title}</h3>
+            <p class:list={['mt-2 max-w-[24ch] text-sm leading-relaxed', paper ? 'text-brand/65' : 'text-bone/55']}>{text}</p>
           </li>
         ))
       }

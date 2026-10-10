@@ -34,9 +34,9 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
   <section class="theme-paper py-24 md:py-36" aria-label={t('about.label')}>
     <div class="wrap grid gap-16 md:grid-cols-12">
       <div class="md:col-span-6">
-        <p class="display text-[clamp(5rem,14vw,13rem)] leading-none text-brand">2016</p>
-        <p class="mt-10 max-w-xl text-xl leading-relaxed md:text-2xl">{t('about.p2')}</p>
-        <p class="mt-6 max-w-xl text-[0.9375rem] leading-relaxed text-brand/70">{t('about.team')}</p>
+        <p class="display text-4xl leading-none text-brand">2016</p>
+        <p class="mt-10 max-w-xl text-lg leading-relaxed md:text-xl">{t('about.p2')}</p>
+        <p class="mt-6 max-w-xl text-base leading-relaxed text-brand/70">{t('about.team')}</p>
       </div>
       <div class="grid grid-cols-2 gap-3 md:col-span-6" aria-hidden="true">
         <div class="relative col-span-2 overflow-hidden" data-reveal><ProjectImage image={coverImage(projects, ['residence-privee-beverly-hills', 0])} alt="" sizes="(min-width: 768px) 45vw, 100vw" class="block aspect-[16/10]" lang={lang} /></div>
@@ -58,7 +58,7 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
             )}
             <figure class:list={[director.photo ? 'md:col-span-7 md:col-start-6' : 'md:col-span-10']}>
               <h2 class="label text-gold" data-reveal>{t('about.director')}</h2>
-              <blockquote class="mt-8 text-[clamp(1.6rem,2.8vw,2.6rem)] leading-tight" data-reveal>
+              <blockquote class="mt-8 text-xl md:text-2xl leading-tight" data-reveal>
                 <p>{director.statement[lang]}</p>
               </blockquote>
               <figcaption class="mt-8" data-reveal>
@@ -77,14 +77,14 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
                 const p = projectName(q.project)
                 return (
                   <figure class="flex flex-col justify-between gap-8 border border-line p-7 md:p-9" data-reveal style={`--d:${i * 0.06}s`}>
-                    <blockquote class="text-xl leading-relaxed">
+                    <blockquote class="text-lg leading-relaxed">
                       <p>{fr ? `« ${q.quote.fr} »` : `“${q.quote.en}”`}</p>
                     </blockquote>
                     <figcaption>
                       <span class="block">{q.name}</span>
                       {q.role && <span class="meta mt-1 block text-mist">{q.role[lang]}</span>}
                       {p && (
-                        <a href={projectPath(p.slug, lang)} class="link-line mt-2 inline-block text-[0.875rem] text-bone/70 hover:text-gold">
+                        <a href={projectPath(p.slug, lang)} class="link-line mt-2 inline-block text-sm text-bone/70 hover:text-gold">
                           {p.name}
                         </a>
                       )}
@@ -115,8 +115,8 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
             <ul class="mt-6 border-t border-line">
               {credentials.map((c) => (
                 <li class="grid gap-1 border-b border-line py-5 md:grid-cols-12 md:gap-8" data-reveal>
-                  <span class="text-xl md:col-span-5">{c.name[lang]}</span>
-                  {c.detail && <span class="text-[0.9375rem] text-bone/60 md:col-span-7">{c.detail[lang]}</span>}
+                  <span class="text-lg md:col-span-5">{c.name[lang]}</span>
+                  {c.detail && <span class="text-base text-bone/60 md:col-span-7">{c.detail[lang]}</span>}
                 </li>
               ))}
             </ul>
@@ -145,8 +145,8 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
   <section class="py-24 md:py-40" aria-labelledby="history-title">
     <div class="wrap">
       <div class="grid gap-8 md:grid-cols-12 md:items-end">
-        <h2 id="history-title" class="display text-[clamp(2.4rem,5.6vw,6rem)] md:col-span-8">{t('about.history.title')}</h2>
-        <p class="max-w-md text-[0.9375rem] leading-relaxed text-bone/60 md:col-span-4">{t('about.history.lead')}</p>
+        <h2 id="history-title" class="display text-3xl md:col-span-8">{t('about.history.title')}</h2>
+        <p class="max-w-md text-base leading-relaxed text-bone/60 md:col-span-4">{t('about.history.lead')}</p>
       </div>
 
       <ol class="mt-16 border-t border-line md:mt-24">
@@ -155,10 +155,10 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
             const list = byYear(y)
             return (
               <li class="grid gap-4 border-b border-line py-8 md:grid-cols-12 md:gap-8 md:py-10">
-                <p class="display text-[clamp(2.6rem,5vw,5rem)] text-gold md:col-span-3">{y}</p>
+                <p class="display text-3xl text-gold md:col-span-3">{y}</p>
                 <div class="md:col-span-9">
                   {y === 2016 && list.length === 0 ? (
-                    <p class="pt-2 text-xl text-bone/80 md:text-2xl">{fr ? 'Création de General Constructor Group en Côte d’Ivoire.' : 'General Constructor Group founded in Côte d’Ivoire.'}</p>
+                    <p class="pt-2 text-lg text-bone/80 md:text-xl">{fr ? 'Création de General Constructor Group en Côte d’Ivoire.' : 'General Constructor Group founded in Côte d’Ivoire.'}</p>
                   ) : list.length === 0 ? (
                     <p class="pt-3 text-bone/40">—</p>
                   ) : (
@@ -167,7 +167,7 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
                         <li>
                           <a href={projectPath(p.slug, lang)} class="group flex items-center gap-3 rounded-full border border-line py-1.5 pl-1.5 pr-4 transition-colors hover:border-gold">
                             <ProjectImage image={p.images[0]} alt="" sizes="2.5rem" class="block h-9 w-9 overflow-hidden rounded-full" />
-                            <span class="text-[0.875rem] text-bone/85 group-hover:text-bone">{p.name}</span>
+                            <span class="text-sm text-bone/85 group-hover:text-bone">{p.name}</span>
                           </a>
                         </li>
                       ))}
@@ -185,14 +185,14 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
   <!-- Organisation -->
   <section class="bg-ink-2 py-24 md:py-40" aria-labelledby="org-title">
     <div class="wrap">
-      <h2 id="org-title" class="display max-w-[22ch] text-[clamp(2.2rem,5vw,5.4rem)]">{t('about.org.title')}</h2>
+      <h2 id="org-title" class="display max-w-[22ch] text-3xl">{t('about.org.title')}</h2>
 
       <dl class="mt-16 grid grid-cols-2 gap-x-6 gap-y-12 md:mt-24 md:grid-cols-4">
         {
           keyFigures.map((f) => (
             <div class="flex flex-col border-t border-line pt-6">
               <dt class="meta order-2 mt-3 text-mist">{f.label[lang]}</dt>
-              <dd class="display order-1 text-[clamp(3.6rem,7.5vw,8rem)] text-gold">
+              <dd class="display order-1 text-4xl text-gold">
                 {f.value}
                 {f.suffix}
               </dd>
@@ -208,9 +208,9 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
             {
               poles.map((p) => (
                 <li class="grid grid-cols-[1fr_auto] gap-x-6 border-b border-line py-5">
-                  <span class="text-xl">{fr ? 'Pôle' : ''} {p.name[lang]}</span>
+                  <span class="text-lg">{fr ? 'Pôle' : ''} {p.name[lang]}</span>
                   <span class="meta pt-1.5 text-gold">{p.team} {t('about.org.staff')}</span>
-                  <span class="col-span-2 mt-1 text-[0.875rem] text-bone/55">{p.role[lang]}</span>
+                  <span class="col-span-2 mt-1 text-sm text-bone/55">{p.role[lang]}</span>
                 </li>
               ))
             }
@@ -222,10 +222,10 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
             {
               competences.map((c) => (
                 <div>
-                  <p class="text-2xl font-light tracking-[-0.02em]">{c.name[lang]}</p>
+                  <p class="text-xl font-light tracking-[-0.02em]">{c.name[lang]}</p>
                   <ul class="mt-3 space-y-1.5">
                     {c.items[lang].map((it) => (
-                      <li class="flex items-center gap-3 text-[0.875rem] text-bone/60">
+                      <li class="flex items-center gap-3 text-sm text-bone/60">
                         <span class="h-px w-3 bg-gold/60" aria-hidden="true" />
                         {it}
                       </li>
@@ -244,22 +244,22 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
   <section class="py-24 md:py-40" aria-labelledby="means-title">
     <div class="wrap">
       <div class="grid gap-8 md:grid-cols-12 md:items-end">
-        <h2 id="means-title" class="display text-[clamp(2.2rem,5vw,5.4rem)] md:col-span-8">{t('about.means.title')}</h2>
-        <p class="max-w-md text-[0.9375rem] leading-relaxed text-bone/60 md:col-span-4">{t('about.means.lead')}</p>
+        <h2 id="means-title" class="display text-3xl md:col-span-8">{t('about.means.title')}</h2>
+        <p class="max-w-md text-base leading-relaxed text-bone/60 md:col-span-4">{t('about.means.lead')}</p>
       </div>
       <div class="mt-16 grid gap-14 md:mt-24 md:grid-cols-3 md:gap-10">
         {
           equipment.map((g) => (
             <div>
               <div class="flex items-baseline justify-between border-b border-bone/30 pb-4">
-                <h3 class="text-2xl font-light tracking-[-0.02em]">{g.name[lang]}</h3>
+                <h3 class="text-xl font-light tracking-[-0.02em]">{g.name[lang]}</h3>
                 <span class="meta text-mist">{totalQty(g.items)} {t('about.means.units')}</span>
               </div>
               <ul>
                 {g.items.map((it) => (
                   <li class="flex items-baseline justify-between gap-6 border-b border-line py-3.5">
-                    <span class="text-[0.9375rem] text-bone/85">{it.name}</span>
-                    <span class="font-mono text-[0.8125rem] text-gold">{it.qty}</span>
+                    <span class="text-base text-bone/85">{it.name}</span>
+                    <span class="font-mono text-sm text-gold">{it.qty}</span>
                   </li>
                 ))}
               </ul>
@@ -268,15 +268,15 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
         }
         <div>
           <div class="flex items-baseline justify-between border-b border-bone/30 pb-4">
-            <h3 class="text-2xl font-light tracking-[-0.02em]">{fr ? 'Véhicules' : 'Vehicles'}</h3>
+            <h3 class="text-xl font-light tracking-[-0.02em]">{fr ? 'Véhicules' : 'Vehicles'}</h3>
             <span class="meta text-mist">{totalQty(vehicles)} {t('about.means.units')}</span>
           </div>
           <ul>
             {
               vehicles.map((v) => (
                 <li class="flex items-baseline justify-between gap-6 border-b border-line py-3.5">
-                  <span class="text-[0.9375rem] text-bone/85">{v.name[lang]}</span>
-                  <span class="font-mono text-[0.8125rem] text-gold">{v.qty}</span>
+                  <span class="text-base text-bone/85">{v.name[lang]}</span>
+                  <span class="font-mono text-sm text-gold">{v.qty}</span>
                 </li>
               ))
             }
@@ -290,9 +290,9 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
   <section class="theme-paper py-24 md:py-40" aria-labelledby="where-title">
     <div class="wrap grid gap-16 md:grid-cols-12 md:items-center">
       <div class="md:col-span-5">
-        <h2 id="where-title" class="display text-[clamp(2.4rem,5.6vw,6rem)]">{t('presence.title')}</h2>
+        <h2 id="where-title" class="display text-3xl">{t('presence.title')}</h2>
         <p class="mt-8 max-w-md text-lg leading-relaxed text-brand/70">{t('presence.lead')}</p>
-        <p class="mt-10 max-w-md text-[clamp(1.6rem,2.6vw,2.4rem)] leading-tight text-brand">{t('presence.ambition')}</p>
+        <p class="mt-10 max-w-md text-xl md:text-2xl leading-tight text-brand">{t('presence.ambition')}</p>
       </div>
       <div class="md:col-span-7">
         <PresenceMap lang={lang} projects={projects} tone="paper" />

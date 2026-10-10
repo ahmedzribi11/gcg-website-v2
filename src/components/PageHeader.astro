@@ -14,11 +14,11 @@ const theme = tone === 'paper' ? 'theme-paper' : tone === 'brand' ? 'theme-brand
   <div class="wrap relative grid gap-10 md:grid-cols-12 md:items-end">
     <div class="md:col-span-8">
       <!-- Pas de surtitre : il répétait le menu (SLOP-03) -->
-      <h1 class="display text-[clamp(min(2.8rem,14vw),8vw,8.4rem)]" data-intro="rise" style="--d:.1s">{title}</h1>
+      <h1 class="display text-4xl" data-intro="rise" style="--d:.1s">{title}</h1>
     </div>
     {
       lead && (
-        <p class:list={['max-w-md text-[0.9375rem] leading-relaxed md:col-span-4 md:pb-4 md:text-base', tone === 'paper' ? 'text-brand/70' : 'text-bone/65']} data-intro="rise" style="--d:.2s">
+        <p class:list={['max-w-md text-base leading-relaxed md:col-span-4 md:pb-4 md:text-base', tone === 'paper' ? 'text-brand/70' : 'text-bone/65']} data-intro="rise" style="--d:.2s">
           {lead}
         </p>
       )

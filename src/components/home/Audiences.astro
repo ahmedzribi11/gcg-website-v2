@@ -29,11 +29,11 @@ const t = useT(lang)
             <ProjectImage image={coverImage(projects, [a.image, 0])} alt="" sizes="(min-width: 768px) 50vw, 100vw" lang={lang} kindClass="right-4 top-4" class="absolute inset-0 block h-full w-full" imgClass="h-full w-full object-cover opacity-55 transition-[transform,opacity] duration-[1.6s] ease-[var(--ease-out-expo)] group-hover:scale-105 group-hover:opacity-40" />
             <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/10" />
             <div class="relative mt-auto flex w-full flex-col p-6 md:p-8">
-              <h3 class="text-[1.9rem] font-light leading-[1.05] tracking-[-0.03em] lg:text-[clamp(1.6rem,2.3vw,2.6rem)]">{a.title[lang]}</h3>
-              <p class="mt-5 max-w-md text-[0.9375rem] leading-relaxed text-bone/75">{a.text[lang]}</p>
+              <h3 class="text-2xl font-light leading-[1.05] tracking-[-0.03em]">{a.title[lang]}</h3>
+              <p class="mt-5 max-w-md text-base leading-relaxed text-bone/75">{a.text[lang]}</p>
               <ul class="mt-5 flex flex-wrap gap-2">
                 {publishedOnly(projects, a.proof).slice(0, 3).map((p) => (
-                  <li class="rounded-full border border-line bg-ink px-3 py-1.5 text-[0.75rem] text-bone/80">{p.name}</li>
+                  <li class="rounded-full border border-line bg-ink px-3 py-1.5 text-xs text-bone/80">{p.name}</li>
                 ))}
               </ul>
               <span class="meta mt-6 inline-flex items-center gap-2 text-bone">

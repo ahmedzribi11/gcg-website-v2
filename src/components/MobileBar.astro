@@ -13,7 +13,7 @@ const wa = whatsappLink(t('contact.form.intro'))
 
 <nav id="mobile-bar" aria-label={lang === 'fr' ? 'Actions rapides' : 'Quick actions'} class="no-print fixed inset-x-3 bottom-3 z-40 transition-transform duration-700 ease-[var(--ease-out-expo)] md:hidden [@media(max-height:480px)]:hidden" style="padding-bottom: env(safe-area-inset-bottom)">
   <div class="flex gap-2 rounded-full border border-line bg-ink p-1.5 shadow-2xl">
-    <a href={route('projects', lang)} class="flex h-12 flex-1 items-center justify-center gap-2 rounded-full text-[0.8125rem] tracking-wide text-bone">
+    <a href={route('projects', lang)} class="flex h-12 flex-1 items-center justify-center gap-2 rounded-full text-sm tracking-wide text-bone">
       <Icon name="grid" size={20} /> {t('nav.projects')}
     </a>
     {
@@ -23,7 +23,7 @@ const wa = whatsappLink(t('contact.form.intro'))
         </a>
       )
     }
-    <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-gold text-[0.8125rem] font-medium tracking-wide text-brand">
+    <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-gold text-sm font-medium tracking-wide text-brand">
       {wa ? <Icon name="whatsapp" size={20} /> : <Icon name="arrow" size={20} />}
       {wa ? 'WhatsApp' : t('nav.cta')}
     </a>

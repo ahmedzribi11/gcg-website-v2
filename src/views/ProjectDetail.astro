@@ -105,13 +105,13 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
           <span aria-hidden="true">/</span>
           <span class="text-gold" aria-current="page">{p.name}</span>
         </nav>
-        <h1 class="display mt-6 max-w-[16ch] text-balance text-[clamp(min(2.8rem,14vw),8vw,8.8rem)]" data-intro="rise" style="--d:.1s">{p.name}</h1>
+        <h1 class="display mt-6 max-w-[16ch] text-balance text-4xl" data-intro="rise" style="--d:.1s">{p.name}</h1>
         <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3" data-intro="rise" style="--d:.2s">
           {p.status && <span class="pill" data-status={p.status}>{STATUS_LABELS[p.status][lang]}</span>}
           {!p.status && p.designOnly && <span class="pill" data-scope="design">{t('project.designOnly')}</span>}
-          <span class="flex items-center gap-2 text-[0.9375rem] text-bone/80"><Icon name="pin" size={16} class="text-gold" />{p.location}</span>
-          <span class="flex items-center gap-2 text-[0.9375rem] text-bone/80"><Icon name="clock" size={16} class="text-gold" />{p.period}</span>
-          {p.surface && <span class="text-[0.9375rem] text-bone/80">{p.surface}</span>}
+          <span class="flex items-center gap-2 text-base text-bone/80"><Icon name="pin" size={16} class="text-gold" />{p.location}</span>
+          <span class="flex items-center gap-2 text-base text-bone/80"><Icon name="clock" size={16} class="text-gold" />{p.period}</span>
+          {p.surface && <span class="text-base text-bone/80">{p.surface}</span>}
         </div>
       </div>
     </header>
@@ -119,7 +119,7 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
     <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-16 py-20 md:py-28 lg:grid-cols-12">
       <div class="min-w-0 lg:col-span-7">
         <p class="label text-gold">{t('project.composition')}</p>
-        <p class="mt-6 text-[clamp(1.6rem,2.8vw,2.6rem)] font-light leading-[1.2] tracking-[-0.02em]">{p.composition}</p>
+        <p class="mt-6 text-xl md:text-2xl font-light leading-[1.2] tracking-[-0.02em]">{p.composition}</p>
         {p.typology && <p class="mt-6 text-lg text-bone/70"><span class="meta mr-3 text-mist">{t('project.typology')}</span>{p.typology}</p>}
 
         {/* Récit du projet, paragraphe par paragraphe, seulement ceux que GCG a confirmés (COPY-04) */}
@@ -138,7 +138,7 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
         <ol class="mt-6 border-t border-line">
           {
             p.missions.map((m) => (
-              <li class="flex gap-6 border-b border-line py-5 text-xl md:text-2xl">
+              <li class="flex gap-6 border-b border-line py-5 text-lg md:text-xl">
                 {m}
               </li>
             ))
@@ -156,7 +156,7 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
                 <tbody>
                   {p.typologies.map((ty) => (
                     <tr class="border-b border-line">
-                      <td class="py-5 text-xl md:text-2xl">{ty.name}</td>
+                      <td class="py-5 text-lg md:text-xl">{ty.name}</td>
                       <td class="py-5 text-right font-mono text-sm text-gold">{ty.surface}</td>
                     </tr>
                   ))}
@@ -199,7 +199,7 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
                 .map(([k, v, q]) => (
                   <>
                     <dt class="meta border-b border-r border-line px-5 py-3.5 text-mist">{k}</dt>
-                    <dd class="min-w-0 break-words border-b border-line px-5 py-3.5 text-[0.9375rem]">{q ? <a href={`${route('projects', lang)}?${q}`} class="link-line hover:text-gold">{v}</a> : v}</dd>
+                    <dd class="min-w-0 break-words border-b border-line px-5 py-3.5 text-base">{q ? <a href={`${route('projects', lang)}?${q}`} class="link-line hover:text-gold">{v}</a> : v}</dd>
                   </>
                 ))
             }
@@ -217,17 +217,17 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
           <div class="mt-4 flex flex-wrap gap-4">
             <span id="project-qr" class="block w-24 shrink-0 self-start rounded bg-white p-1" data-qr={qrPath(lang, 'panneau', p.slug)}></span>
             <div class="flex flex-col gap-2">
-              <button type="button" class="chip !h-11 !text-[0.75rem]" data-share={path} data-title={shareText} data-copied={t('project.copied')}>
+              <button type="button" class="chip !h-11 !text-xs" data-share={path} data-title={shareText} data-copied={t('project.copied')}>
                 <Icon name="share" /> <span data-copy-label>{t('cta.share')}</span>
               </button>
-              <button type="button" class="chip !h-11 !text-[0.75rem]" data-copy={path} data-copied={t('project.copied')}>
+              <button type="button" class="chip !h-11 !text-xs" data-copy={path} data-copied={t('project.copied')}>
                 <Icon name="link" /> <span data-copy-label>{t('project.copy')}</span>
               </button>
-              <a href={`${route('poster', lang)}?p=${p.slug}`} class="chip !h-11 !text-[0.75rem]"><Icon name="print" /> {t('project.poster')}</a>
+              <a href={`${route('poster', lang)}?p=${p.slug}`} class="chip !h-11 !text-xs"><Icon name="print" /> {t('project.poster')}</a>
             </div>
           </div>
-          <p class="mt-4 text-[0.8125rem] leading-relaxed text-bone/55">{t('project.qrHelp')}</p>
-          <p data-qr-warning hidden role="note" class="mt-3 border border-gold/60 p-3 text-[0.8125rem] leading-relaxed text-gold">{t('share.tempWarning')}</p>
+          <p class="mt-4 text-sm leading-relaxed text-bone/55">{t('project.qrHelp')}</p>
+          <p data-qr-warning hidden role="note" class="mt-3 border border-gold/60 p-3 text-sm leading-relaxed text-gold">{t('share.tempWarning')}</p>
         </div>
       </aside>
     </div>
@@ -273,7 +273,7 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
     <section class="no-print theme-paper py-20 md:py-28">
       <div class="wrap flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
         <div>
-          <h2 class="display max-w-[18ch] text-[clamp(2.2rem,5vw,5rem)]">{t('project.similarText')}</h2>
+          <h2 class="display max-w-[18ch] text-3xl">{t('project.similarText')}</h2>
         </div>
         <div class="flex flex-wrap gap-3">
           {wa && <a href={wa} target="_blank" rel="noopener" class="btn btn-dark"><Icon name="whatsapp" size={20} /> WhatsApp</a>}
@@ -296,11 +296,11 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
     <nav class="no-print grid border-t border-line md:grid-cols-2" aria-label={lang === 'fr' ? 'Projets voisins' : 'Adjacent projects'}>
       <a href={projectPath(prev.slug, lang)} class="group block border-b border-line px-5 py-12 md:border-b-0 md:border-r md:px-10 md:py-16">
         <span class="meta flex items-center gap-2 text-mist"><Icon name="arrow-left" /> {t('project.prev')}</span>
-        <span class="display mt-4 block text-[clamp(1.8rem,3.4vw,3.4rem)] text-bone/50 transition-colors duration-500 group-hover:text-bone">{prev.name}</span>
+        <span class="display mt-4 block text-2xl text-bone/50 transition-colors duration-500 group-hover:text-bone">{prev.name}</span>
       </a>
       <a href={projectPath(next.slug, lang)} class="group block px-5 py-12 text-right md:px-10 md:py-16">
         <span class="meta flex items-center justify-end gap-2 text-mist">{t('project.next')} <Icon name="arrow" /></span>
-        <span class="display mt-4 block text-[clamp(1.8rem,3.4vw,3.4rem)] text-bone/50 transition-colors duration-500 group-hover:text-bone">{next.name}</span>
+        <span class="display mt-4 block text-2xl text-bone/50 transition-colors duration-500 group-hover:text-bone">{next.name}</span>
       </a>
     </nav>
   </article>

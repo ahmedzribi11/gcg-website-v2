@@ -104,7 +104,7 @@ const proofs = [
         <figcaption class="wrap relative -mt-14">
           <a
             href={projectPath(showcase.project.slug, lang)}
-            class="inline-flex min-h-11 max-w-full items-center gap-2.5 rounded-[1.375rem] bg-ink py-1.5 pl-1.5 pr-4 text-[0.8125rem] leading-snug text-bone hover:text-gold"
+            class="inline-flex min-h-11 max-w-full items-center gap-2.5 rounded-[1.375rem] bg-ink py-1.5 pl-1.5 pr-4 text-sm leading-snug text-bone hover:text-gold"
           >
             <span class="pill shrink-0" data-status="receptionne">{STATUS_SHORT.receptionne[lang]}</span>
             <span>
@@ -126,7 +126,7 @@ const proofs = [
     <p class="label text-gold" data-intro style="--d:.2s">{t('hero.kicker')}</p>
 
     <div class="hero-main mt-auto grid items-end gap-10 pt-10 lg:grid-cols-12">
-      <h1 id="hero-title" class="display text-[clamp(min(2.25rem,11vw),9.4vw,5rem)] md:text-[clamp(4rem,min(7.6vw,14svh),9.4rem)] lg:col-span-8">
+      <h1 id="hero-title" class="display text-3xl md:text-4xl lg:col-span-8">
         <span class="block" data-intro-split style="--d:.25s">
           {
             title1.map(({ w, i }, k) => (
@@ -152,7 +152,7 @@ const proofs = [
       </h1>
 
       <div class="hero-side flex flex-col gap-7 lg:col-span-4 lg:pb-3">
-        <p class="max-w-md text-[0.9375rem] leading-relaxed text-bone/75 md:text-base" data-intro="rise" style="--d:.7s">{t('hero.lead')}</p>
+        <p class="max-w-md text-base leading-relaxed text-bone/75 md:text-base" data-intro="rise" style="--d:.7s">{t('hero.lead')}</p>
         <div class="flex flex-wrap gap-3" data-intro data-bar-after style="--d:.85s">
           <a href={route('projects', lang)} class="btn btn-gold">
             {t('cta.projects')} <Icon name="arrow" size={20} />
@@ -167,7 +167,7 @@ const proofs = [
 
     {
       proofs.length > 0 && (
-        <ul class="mt-12 flex flex-col gap-x-8 gap-y-2 border-t border-line pt-5 text-[0.9375rem] text-bone/75 md:flex-row md:flex-wrap" data-intro style="--d:1s">
+        <ul class="mt-12 flex flex-col gap-x-8 gap-y-2 border-t border-line pt-5 text-base text-bone/75 md:flex-row md:flex-wrap" data-intro style="--d:1s">
           {proofs.map((x) => (
             <li>{x}</li>
           ))}

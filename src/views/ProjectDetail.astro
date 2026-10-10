@@ -1,5 +1,4 @@
 ---
-import { getImage } from 'astro:assets'
 import Base from '../layouts/Base.astro'
 import ProjectImage from '../components/ProjectImage.astro'
 import ProjectCard from '../components/ProjectCard.astro'
@@ -8,7 +7,7 @@ import { getService } from '../data/services'
 import { colon, qrPath, projectPath, route, SECTOR_LABELS, servicePath, STATUS_LABELS, useT, type Lang } from '../i18n'
 import { pad, type Project } from '../lib/projects'
 import { whatsappLink } from '../lib/settings'
-import { breadcrumbLd } from '../lib/seo'
+import { breadcrumbLd, ogImage } from '../lib/seo'
 
 interface Props {
   lang: Lang
@@ -25,7 +24,7 @@ const related = all
   .filter((x) => x.slug !== p.slug && (x.sector === p.sector || x.types.some((ty) => p.types.includes(ty))))
   .sort((a, b) => Number(b.sector === p.sector) - Number(a.sector === p.sector) || Math.abs(a.number - p.number) - Math.abs(b.number - p.number))
   .slice(0, 3)
-const og = await getImage({ src: p.images[0].src, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 80 })
+const og = await ogImage(p.images[0].src)
 const sheet: [string, string | undefined, string?][] = [
   [t('project.location'), p.location],
   [t('project.period'), p.period],
@@ -64,7 +63,7 @@ const crumbs = breadcrumbLd(
 
 ---
 
-<Base lang={lang} alt={altPath} translated={p.hasEn} title={p.name} docTitle={docTitle} description={desc} image={og.src} header="overlay" jsonLd={[crumbs]}>
+<Base lang={lang} alt={altPath} translated={p.hasEn} title={p.name} docTitle={docTitle} description={desc} image={og.src} imageWidth={og.width} imageHeight={og.height} header="overlay" jsonLd={[crumbs]}>
   <article>
     <header class="relative flex h-[86svh] min-h-[560px] items-end overflow-hidden bg-ink-3 force-dark">
       <ProjectImage image={p.images[0]} sizes="100vw" priority class="absolute inset-0 block h-full w-full" vt={`p-${p.slug}`} />

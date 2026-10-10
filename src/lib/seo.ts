@@ -1,6 +1,20 @@
+import { getImage } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
 import legal from '../data/legal.json'
 import type { Lang } from '../i18n'
 import { contact, socials } from './settings'
+
+/**
+ * Image de partage (Open Graph) au rapport 1,91:1 des aperçus de liens (SHR-08) : 1 200 × 630 quand la source le
+ * permet, sinon le plus grand recadrage à ce rapport qu’elle contient, car Astro n’agrandit jamais une image.
+ * Les dimensions renvoyées sont celles du fichier produit, annoncées telles quelles dans og:image:width/height.
+ */
+export async function ogImage(src: ImageMetadata) {
+  const width = Math.min(1200, src.width, Math.floor((src.height * 1200) / 630))
+  const height = Math.round((width * 630) / 1200)
+  const img = await getImage({ src, width, height, fit: 'cover', format: 'jpg', quality: 80 })
+  return { src: img.src, width, height }
+}
 
 /**
  * Données structurées de l’entreprise (schema.org GeneralContractor, sous-type d’Organization).

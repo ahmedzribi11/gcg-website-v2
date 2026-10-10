@@ -24,6 +24,9 @@ interface Props {
   translated?: boolean
   /** URL (relative ou absolue) de l’image de partage. */
   image?: string
+  /** Dimensions réelles de l’image de partage (SHR-08) ; par défaut celles de /og-image.jpg. */
+  imageWidth?: number
+  imageHeight?: number
   header?: 'overlay' | 'solid'
   noindex?: boolean
   bare?: boolean
@@ -34,7 +37,7 @@ interface Props {
   docTitle?: string
 }
 
-const { lang, title, description, alt, translated = true, image = '/og-image.jpg', header = 'solid', noindex = false, bare = false, jsonLd = [], organization = false, docTitle } = Astro.props
+const { lang, title, description, alt, translated = true, image = '/og-image.jpg', imageWidth = 1200, imageHeight = 630, header = 'solid', noindex = false, bare = false, jsonLd = [], organization = false, docTitle } = Astro.props
 const t = useT(lang)
 const brand = 'GCG Côte d’Ivoire'
 const fullTitle = docTitle ?? (title ? `${title} · ${brand}` : `${brand} · ${t('site.tagline')}`)
@@ -93,8 +96,8 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />
     <meta property="og:image" content={abs(image)} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:width" content={String(imageWidth)} />
+    <meta property="og:image:height" content={String(imageHeight)} />
     {site && <meta property="og:url" content={abs(path)} />}
     <meta name="twitter:card" content="summary_large_image" />
 

@@ -244,6 +244,11 @@ const UI = {
     'about.p2':
       'Notre savoir-faire s’étend aux domaines du génie civil, des infrastructures et de la construction de bâtiments. Notre engagement : concevoir et livrer des projets conformes aux attentes de nos clients et aux normes en vigueur.',
     'about.team': 'Une équipe technique pluridisciplinaire d’ingénieurs, d’architectes et de techniciens, organisée en quatre pôles.',
+    'about.trust.label': 'Confiance',
+    'about.director': 'Le mot du directeur général',
+    'about.quotes': 'Ce que disent nos clients',
+    'about.clients': 'Clients et partenaires',
+    'about.credentials': 'Assurances et agréments',
     'about.history.label': 'Historique',
     'about.history.title': 'Dix ans de projets, année après année.',
     'about.history.lead': 'Chaque année, les projets du portfolio démarrés ou étudiés par GCG.',
@@ -534,6 +539,11 @@ const UI = {
     'about.p2':
       'Our expertise covers civil engineering, infrastructure and building construction. Our commitment: to design and deliver projects that meet our clients’ expectations and current standards.',
     'about.team': 'A multidisciplinary technical team of engineers, architects and technicians, organised in four divisions.',
+    'about.trust.label': 'Trust',
+    'about.director': 'From the managing director',
+    'about.quotes': 'What our clients say',
+    'about.clients': 'Clients and partners',
+    'about.credentials': 'Insurance and licences',
     'about.history.label': 'History',
     'about.history.title': 'Ten years of projects, year after year.',
     'about.history.lead': 'Each year, the portfolio projects started or designed by GCG.',

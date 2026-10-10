@@ -138,7 +138,7 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
         <ol class="mt-6 border-t border-line">
           {
             p.missions.map((m) => (
-              <li class="flex gap-6 border-b border-line py-5 text-xl font-light md:text-2xl">
+              <li class="flex gap-6 border-b border-line py-5 text-xl md:text-2xl">
                 {m}
               </li>
             ))
@@ -156,7 +156,7 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
                 <tbody>
                   {p.typologies.map((ty) => (
                     <tr class="border-b border-line">
-                      <td class="py-5 text-xl font-light md:text-2xl">{ty.name}</td>
+                      <td class="py-5 text-xl md:text-2xl">{ty.name}</td>
                       <td class="py-5 text-right font-mono text-sm text-gold">{ty.surface}</td>
                     </tr>
                   ))}
@@ -191,7 +191,7 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
             <span class="meta text-gold">{t('project.sheet')}</span>
             <span class="meta text-gold">{t('project.no')} {pad(p.number)}</span>
           </div>
-          <p class="border-b border-line px-5 py-4 text-lg font-light">{p.name}</p>
+          <p class="border-b border-line px-5 py-4 text-lg">{p.name}</p>
           <dl class="grid grid-cols-[auto_minmax(0,1fr)]">
             {
               sheet

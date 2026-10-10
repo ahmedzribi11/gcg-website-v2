@@ -48,7 +48,8 @@
   body {
     background: var(--color-ink);
     font-family: var(--font-sans);
-    font-weight: 300;
+    /* Texte courant en 400 ; 300 réservé aux titres de 24 px et plus (SLOP-04) */
+    font-weight: 400;
     overflow-x: clip;
   }
   ::selection {

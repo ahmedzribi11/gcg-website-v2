@@ -42,7 +42,7 @@ interface Props {
 const { lang, title, description, alt, translated = true, image, imageWidth, imageHeight, header = 'solid', noindex = false, bare = false, jsonLd = [], organization = false, docTitle, ogTitle, ogDescription } = Astro.props
 const t = useT(lang)
 const brand = 'GCG Côte d’Ivoire'
-const fullTitle = docTitle ?? (title ? `${title} · ${brand}` : `${brand} · ${t('site.tagline')}`)
+const fullTitle = docTitle ?? (title ? `${title} — ${brand}` : `${brand} — ${t('site.tagline')}`)
 const desc = description ?? t('site.description')
 const site = Astro.site
 const abs = (p: string) => (site ? new URL(p, site).href : p)

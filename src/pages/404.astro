@@ -3,13 +3,13 @@ import Base from '../layouts/Base.astro'
 import Icon from '../components/Icon.astro'
 ---
 
-<Base lang="fr" alt="/en" title="Page introuvable · Page not found" noindex>
+<Base lang="fr" alt="/en" title="Page introuvable / Page not found" noindex>
   <section class="relative flex min-h-svh items-center overflow-hidden">
     <div class="wrap relative">
-      <p class="label text-gold">Erreur 404 · Error 404</p>
+      <p class="label text-gold">Erreur 404 / <span lang="en">Error 404</span></p>
       <h1 class="display mt-8 text-[clamp(3rem,10vw,10rem)]">Page introuvable.</h1>
       <p class="display mt-3 text-[clamp(1.6rem,4vw,3.5rem)] text-bone/60" lang="en">Page not found.</p>
-      <p class="mt-6 max-w-lg text-lg text-bone/70">Cette page n’existe pas ou a été déplacée. — <span lang="en">This page does not exist or has moved.</span></p>
+      <p class="mt-6 max-w-lg text-lg text-bone/70">Cette page n’existe pas ou a été déplacée. <span lang="en">This page does not exist or has moved.</span></p>
       <div class="mt-10 flex flex-wrap gap-3">
         <a href="/" class="btn btn-gold">Accueil <Icon name="arrow" size={20} /></a>
         <a href="/realisations" class="btn btn-line">Réalisations</a>

@@ -69,11 +69,11 @@ function withMissions(text: string) {
 }
 const desc = p.seoDescription ?? withMissions(base)
 // Titre d’onglet unique par langue, ≈ 60 caractères au plus
-const titleLong = `${p.name} · ${lang === 'fr' ? 'projet GCG, Côte d’Ivoire' : 'GCG project, Côte d’Ivoire'}`
-const docTitle = p.seoTitle ?? (titleLong.length <= 60 ? titleLong : `${p.name} · GCG`)
+const titleLong = `${p.name} — ${lang === 'fr' ? 'projet GCG, Côte d’Ivoire' : 'GCG project, Côte d’Ivoire'}`
+const docTitle = p.seoTitle ?? (titleLong.length <= 60 ? titleLong : `${p.name} — GCG`)
 // Aperçu de lien (SHR-13) : le domaine s’affiche déjà sous le titre, qui se limite au nom du projet ;
 // la description commence par le rôle de GCG (ses missions)
-const ogDescription = `GCG${colon(lang)}${p.missions.join(' · ')}. ${p.seoDescription ?? base}`
+const ogDescription = `GCG${colon(lang)}${p.missions.join(', ')}. ${p.seoDescription ?? base}`
 // Sans version anglaise relue, le bouton de langue mène à la liste des réalisations, et aucun hreflang n’est annoncé (CODE-04)
 const altPath = p.hasEn ? projectPath(p.slug, other) : route('projects', other)
 const crumbs = breadcrumbLd(

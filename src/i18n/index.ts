@@ -137,7 +137,7 @@ const UI = {
     'cta.discover': 'Découvrir',
     'cta.share': 'Partager',
 
-    'hero.kicker': 'Construction & ingénierie · Côte d’Ivoire · depuis 2016',
+    'hero.kicker': 'Construction & ingénierie, Côte d’Ivoire, depuis 2016',
     // La phrase de Zouhair, montée de la section Types (SLOP-18) ; title3 est en accent
     'hero.title1': 'Vous voulez un hôtel ?',
     'hero.title2': 'Nous construisons',
@@ -385,8 +385,6 @@ const UI = {
     'refs.col.status': 'Statut',
 
     'footer.rights': 'Tous droits réservés.',
-    'footer.since': 'Construction & ingénierie — depuis 2016',
-    'footer.country': 'Côte d’Ivoire',
     'footer.links': 'Liens utiles',
     'legal.title': 'Mentions légales',
     'privacy.title': 'Politique de confidentialité',
@@ -423,7 +421,7 @@ const UI = {
     'cta.discover': 'Discover',
     'cta.share': 'Share',
 
-    'hero.kicker': 'Construction & engineering · Côte d’Ivoire · since 2016',
+    'hero.kicker': 'Construction & engineering, Côte d’Ivoire, since 2016',
     'hero.title1': 'You want a hotel?',
     'hero.title2': 'We build',
     'hero.title3': 'a hotel.',
@@ -667,8 +665,6 @@ const UI = {
     'refs.col.status': 'Status',
 
     'footer.rights': 'All rights reserved.',
-    'footer.since': 'Construction & engineering — since 2016',
-    'footer.country': 'Côte d’Ivoire',
     'footer.links': 'Useful links',
     'legal.title': 'Legal notice',
     'privacy.title': 'Privacy policy',

@@ -306,3 +306,6 @@ const toggleTheme = () => {
 if (CSS.supports('color', 'color-mix(in srgb, red, red)')) themeBtns.forEach((b) => b.addEventListener('click', toggleTheme))
 else themeBtns.forEach((b) => b.remove())
 applyThemeUi()
+
+// Fin du script principal : le minuteur de Base.astro ne retire plus la classe js (CODE-01)
+;(window as unknown as { __gcgReady?: boolean }).__gcgReady = true

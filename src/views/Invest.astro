@@ -37,7 +37,7 @@ const reasons = fr
 
 <Base lang={lang} alt={route('invest', fr ? 'en' : 'fr')} title={t('invest.label')} description={t('invest.lead')}>
   <PageHeader label={t('invest.label')} title={t('invest.title')} accent={fr ? 'construire avec GCG.' : 'build with GCG.'} lead={t('invest.lead')}>
-    <nav class="flex flex-wrap gap-2 md:col-span-12" aria-label={t('audiences.label')} data-reveal style="--d:.3s">
+    <nav class="flex flex-wrap gap-2 md:col-span-12" aria-label={t('audiences.label')} data-intro="rise" style="--d:.3s">
       {audiences.map((a) => <a href={`#${a.id}`} class="chip">{a.title[lang]}</a>)}
     </nav>
   </PageHeader>

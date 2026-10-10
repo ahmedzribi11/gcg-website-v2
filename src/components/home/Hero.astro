@@ -121,18 +121,7 @@ const title3 = split(t('hero.title3'))
 </script>
 
 <style>
-  /* Entrée du hero jouée en CSS dès le premier affichage, sans attendre le JS.
-     Le paragraphe d’introduction n’est jamais transparent : lisible dès qu’il est peint. */
-  [data-intro] { animation: intro-in 1.2s var(--ease-out-expo) var(--d, 0s) both; }
-  [data-intro='rise'] { animation-name: intro-rise; }
-  [data-intro-split] .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.12em; margin-bottom: -0.12em; }
-  [data-intro-split] .w > span { display: inline-block; animation: intro-word 1.2s var(--ease-out-expo) calc(var(--d, 0s) + var(--i, 0) * 0.045s) both; }
-  @keyframes intro-in { from { opacity: 0; transform: translateY(28px); } }
-  @keyframes intro-rise { from { transform: translateY(28px); } }
-  @keyframes intro-word { from { transform: translateY(110%); } }
-  @media (prefers-reduced-motion: reduce), print {
-    [data-intro], [data-intro-split] .w > span { animation: none; }
-  }
+  /* Entrée du hero (data-intro, data-intro-split) : règles communes dans global.css, reprises par les en-têtes de page (PERF-03) */
 
   /* translateY (et non margin-top) : la ligne de base du mot ne bouge pas, il reste aligné sur « nous construisons » */
   .word-rotator > span { animation: rotate-words 16s var(--ease-cinema) infinite; }

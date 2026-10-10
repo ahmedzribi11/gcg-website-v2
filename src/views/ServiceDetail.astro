@@ -29,17 +29,17 @@ const others = services.filter((x) => x.id !== s.id)
     <ProjectImage image={cover} alt="" sizes="100vw" priority class="absolute inset-0 block h-full w-full" />
     <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/45"></div>
     <div class="wrap relative pb-12 pt-32 md:pb-16">
-      <nav class="meta flex flex-wrap items-center gap-2 text-bone/70" aria-label={lang === 'fr' ? 'Fil d’Ariane' : 'Breadcrumb'} data-reveal>
+      <nav class="meta flex flex-wrap items-center gap-2 text-bone/70" aria-label={lang === 'fr' ? 'Fil d’Ariane' : 'Breadcrumb'} data-intro style="--d:.05s">
         <a href={route('home', lang)} class="-mx-2 -my-3.5 px-2 py-3.5 hover:text-gold">{t('nav.home')}</a>
         <span aria-hidden="true">/</span>
         <a href={route('services', lang)} class="-mx-2 -my-3.5 px-2 py-3.5 hover:text-gold">{t('services.label')}</a>
         <span aria-hidden="true">/</span>
         <span class="text-gold" aria-current="page">{s.title[lang]}</span>
       </nav>
-      <h1 class="display mt-6 text-[clamp(min(3rem,15vw),9vw,9.5rem)]" data-split>
+      <h1 class="display mt-6 text-[clamp(min(3rem,15vw),9vw,9.5rem)]" data-intro="rise" style="--d:.1s">
         {s.id === 'cle-en-main' ? <em class="serif text-gold">{s.title[lang]}</em> : s.title[lang]}
       </h1>
-      <p class="mt-6 max-w-xl text-lg text-bone/80" data-reveal style="--d:.2s">{s.short[lang]}</p>
+      <p class="mt-6 max-w-xl text-lg text-bone/80" data-intro="rise" style="--d:.2s">{s.short[lang]}</p>
     </div>
   </header>
 

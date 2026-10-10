@@ -103,6 +103,11 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
 
     <script is:inline>
       document.documentElement.classList.replace('no-js', 'js')
+      // Script principal absent après 3 s (réseau coupé, bloqueur, erreur au démarrage) : la classe js est retirée,
+      // rien ne reste masqué en l’attendant et la barre mobile s’affiche (CODE-01). site.ts pose __gcgReady à la fin.
+      setTimeout(() => {
+        if (!window.__gcgReady) document.documentElement.classList.remove('js')
+      }, 3000)
     </script>
     {ld.length > 0 && <script type="application/ld+json" set:html={JSON.stringify(ld.length === 1 ? ld[0] : ld)} />}
     {

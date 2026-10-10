@@ -279,6 +279,33 @@
     color: var(--color-bone);
   }
 
+  /* Entrée du premier écran jouée en CSS dès le premier affichage, sans attendre le JS (ouverture de l’accueil,
+     en-têtes de page) : rien n’y dépend du script principal (PERF-03, CODE-01). « rise » : mouvement seul,
+     le texte n’est jamais transparent et compte pour le premier affichage (LCP). */
+  [data-intro] {
+    animation: intro-in 1.2s var(--ease-out-expo) var(--d, 0s) both;
+  }
+  [data-intro='rise'] {
+    animation-name: intro-rise;
+  }
+  [data-intro-split] .w {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding-bottom: 0.12em;
+    margin-bottom: -0.12em;
+  }
+  [data-intro-split] .w > span {
+    display: inline-block;
+    animation: intro-word 1.2s var(--ease-out-expo) calc(var(--d, 0s) + var(--i, 0) * 0.045s) both;
+  }
+  @media (prefers-reduced-motion: reduce), print {
+    [data-intro],
+    [data-intro-split] .w > span {
+      animation: none;
+    }
+  }
+
   /* Révélations au défilement (activées par JS ; contenu visible sans JS) */
   .js [data-reveal] {
     opacity: 0;
@@ -385,6 +412,22 @@
   }
   100% {
     transform: translate(0, 0);
+  }
+}
+@keyframes intro-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+}
+@keyframes intro-rise {
+  from {
+    transform: translateY(28px);
+  }
+}
+@keyframes intro-word {
+  from {
+    transform: translateY(110%);
   }
 }
 @keyframes marquee {
@@ -657,6 +700,12 @@
   .logo-mono {
     filter: brightness(0);
   }
+}
+
+/* Barre mobile : cachée à l’ouverture puis montrée par site.ts après le premier écran (MOB-03). Seulement quand le
+   script tourne (.js) : script absent, bloqué ou en échec (classe retirée après 3 s, Base.astro), elle reste visible (CODE-01) */
+.js #mobile-bar:not([data-visible]) {
+  transform: translateY(150%);
 }
 
 /* Barre de filtres collante sous l’en-tête visible. Classe posée par site.ts plutôt que :has(),

@@ -50,9 +50,8 @@ const others = services.filter((x) => x.id !== s.id)
       <h2 class="label text-gold">{t('services.includes')}</h2>
       <ol class="mt-6 border-t border-line">
         {
-          s.includes[lang].map((it, i) => (
+          s.includes[lang].map((it) => (
             <li class="flex gap-5 border-b border-line py-4 text-lg font-light">
-              <span class="meta pt-1.5 text-mist">{String(i + 1).padStart(2, '0')}</span>
               {it}
             </li>
           ))

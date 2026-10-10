@@ -120,7 +120,7 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
             <circle style={`fill:${gold}`} cx={x} cy={y} r={7 + n * 1.6} opacity="0.16" class="map-halo" />
             <circle style={`fill:${gold}`} cx={x} cy={y} r="4" />
             <text style={`fill:${ink}`} x={lx} y={ly} font-size="20" font-weight="300" text-anchor="middle">{cities[c].name}</text>
-            <text style={`fill:${gold}`} x={lx} y={ly + 26} font-size="13" text-anchor="middle" font-family="Geist Mono Variable, monospace" letter-spacing="2">{String(n).padStart(2, '0')}</text>
+            <text style={`fill:${gold}`} x={lx} y={ly + 26} font-size="13" text-anchor="middle" font-family="Geist Mono Variable, monospace" letter-spacing="2">{n}</text>
           </a>
         )
       })

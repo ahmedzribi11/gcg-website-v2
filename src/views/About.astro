@@ -7,7 +7,7 @@ import FinalCta from '../components/FinalCta.astro'
 import { Image } from 'astro:assets'
 import { clientLogos, competences, credentials, director, equipment, keyFigures, poles, testimonials, totalQty, vehicles } from '../data/organisation'
 import { projectPath, route, useT, type Lang } from '../i18n'
-import { coverImage, getProjects, pad } from '../lib/projects'
+import { coverImage, getProjects } from '../lib/projects'
 import { media, videoEmbed } from '../lib/settings'
 
 interface Props {
@@ -169,7 +169,6 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
                           <a href={projectPath(p.slug, lang)} class="group flex items-center gap-3 rounded-full border border-line py-1.5 pl-1.5 pr-4 transition-colors hover:border-gold">
                             <ProjectImage image={p.images[0]} alt="" sizes="2.5rem" class="block h-9 w-9 overflow-hidden rounded-full" />
                             <span class="text-[0.875rem] text-bone/85 group-hover:text-bone">{p.name}</span>
-                            <span class="meta text-mist">{pad(p.number)}</span>
                           </a>
                         </li>
                       ))}
@@ -257,13 +256,13 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
             <div>
               <div class="flex items-baseline justify-between border-b border-bone/30 pb-4">
                 <h3 class="text-2xl font-light tracking-[-0.02em]">{g.name[lang]}</h3>
-                <span class="meta text-mist">{pad(totalQty(g.items))} {t('about.means.units')}</span>
+                <span class="meta text-mist">{totalQty(g.items)} {t('about.means.units')}</span>
               </div>
               <ul>
                 {g.items.map((it) => (
                   <li class="flex items-baseline justify-between gap-6 border-b border-line py-3.5">
                     <span class="text-[0.9375rem] text-bone/85">{it.name}</span>
-                    <span class="font-mono text-[0.8125rem] text-gold">{pad(it.qty)}</span>
+                    <span class="font-mono text-[0.8125rem] text-gold">{it.qty}</span>
                   </li>
                 ))}
               </ul>
@@ -273,14 +272,14 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
         <div>
           <div class="flex items-baseline justify-between border-b border-bone/30 pb-4">
             <h3 class="text-2xl font-light tracking-[-0.02em]">{fr ? 'Véhicules' : 'Vehicles'}</h3>
-            <span class="meta text-mist">{pad(totalQty(vehicles))} {t('about.means.units')}</span>
+            <span class="meta text-mist">{totalQty(vehicles)} {t('about.means.units')}</span>
           </div>
           <ul>
             {
               vehicles.map((v) => (
                 <li class="flex items-baseline justify-between gap-6 border-b border-line py-3.5">
                   <span class="text-[0.9375rem] text-bone/85">{v.name[lang]}</span>
-                  <span class="font-mono text-[0.8125rem] text-gold">{pad(v.qty)}</span>
+                  <span class="font-mono text-[0.8125rem] text-gold">{v.qty}</span>
                 </li>
               ))
             }

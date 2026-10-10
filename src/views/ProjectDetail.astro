@@ -136,9 +136,8 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
         <h2 class="label mt-16 text-gold">{t('project.missions')}</h2>
         <ol class="mt-6 border-t border-line">
           {
-            p.missions.map((m, i) => (
+            p.missions.map((m) => (
               <li class="flex gap-6 border-b border-line py-5 text-xl font-light md:text-2xl">
-                <span class="meta pt-2 text-mist">{pad(i + 1)}</span>
                 {m}
               </li>
             ))

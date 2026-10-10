@@ -25,32 +25,14 @@
 }
 
 /* ─── Transitions entre pages (navigateurs compatibles) ─────────────── */
+/* Fondu enchaîné simple du navigateur entre deux pages, sans flou ni glissement (SLOP-15, PERF-07) ;
+   l’image d’une carte projet glisse vers l’en-tête de la fiche (view-transition-name) */
 @view-transition {
   navigation: auto;
-}
-::view-transition-old(root) {
-  animation: vt-out 0.45s var(--ease-cinema) both;
-}
-::view-transition-new(root) {
-  animation: vt-in 0.65s var(--ease-out-expo) both;
 }
 ::view-transition-group(*) {
   animation-duration: 0.7s;
   animation-timing-function: var(--ease-out-expo);
-}
-@keyframes vt-out {
-  to {
-    opacity: 0;
-    filter: blur(6px);
-    transform: translateY(-1.5vh);
-  }
-}
-@keyframes vt-in {
-  from {
-    opacity: 0;
-    filter: blur(6px);
-    transform: translateY(2vh);
-  }
 }
 
 @layer base {
@@ -551,11 +533,6 @@ body:not(.header-hidden) [data-filters] {
   body:not(.header-hidden) [data-filters] {
     top: 5rem;
   }
-}
-
-/* Filigrane décoratif du pied de page : texte en pseudo-élément (ignoré par les lecteurs d’écran) */
-.watermark::before {
-  content: attr(data-text);
 }
 
 /* ─── Mode clair (choisi par le visiteur ; le mode sombre reste celui par défaut) ───

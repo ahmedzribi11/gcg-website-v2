@@ -4,7 +4,21 @@ export const LANGS: Lang[] = ['fr', 'en']
 /* ─── Routes ──────────────────────────────────────────────────────────── */
 
 export type RouteKey =
-  'home' | 'services' | 'projects' | 'about' | 'invest' | 'contact' | 'thanks' | 'formError' | 'share' | 'poster' | 'references' | 'legal' | 'privacy'
+  | 'home'
+  | 'services'
+  | 'projects'
+  | 'about'
+  | 'invest'
+  | 'contact'
+  | 'thanks'
+  | 'formError'
+  | 'formRate'
+  | 'formFailed'
+  | 'share'
+  | 'poster'
+  | 'references'
+  | 'legal'
+  | 'privacy'
 
 const ROUTES: Record<RouteKey, Record<Lang, string>> = {
   home: { fr: '/', en: '/en' },
@@ -14,7 +28,10 @@ const ROUTES: Record<RouteKey, Record<Lang, string>> = {
   invest: { fr: '/investir', en: '/en/invest' },
   contact: { fr: '/contact', en: '/en/contact' },
   thanks: { fr: '/contact/merci', en: '/en/contact/thanks' },
+  // Pages d’erreur du formulaire envoyé sans JavaScript, une par cause (OPS-05) ; server/contact.js y redirige
   formError: { fr: '/contact/erreur', en: '/en/contact/error' },
+  formRate: { fr: '/contact/erreur/attente', en: '/en/contact/error/wait' },
+  formFailed: { fr: '/contact/erreur/envoi', en: '/en/contact/error/sending' },
   share: { fr: '/partager', en: '/en/share' },
   poster: { fr: '/partager/affiche', en: '/en/share/poster' },
   references: { fr: '/references', en: '/en/references' },
@@ -304,6 +321,11 @@ const UI = {
     'contact.form.failText': 'Vos informations sont conservées dans le formulaire. Réessayez dans un instant ou contactez GCG directement :',
     'contact.form.rate': 'Trop de demandes envoyées depuis cette connexion. Réessayez dans quelques minutes ou contactez GCG directement :',
     'contact.form.honeypot': 'Ne pas remplir ce champ',
+    'contact.result.invalid':
+      'Il manque votre nom, ou un téléphone ou un e-mail valide. Revenez au formulaire avec le bouton « Précédent » de votre navigateur : ce que vous avez saisi y est encore. Vous pouvez aussi contacter GCG directement :',
+    'contact.result.rate': 'Trop de demandes ont été envoyées depuis cette connexion. Attendez 10 minutes avant de réessayer, ou contactez GCG directement :',
+    'contact.result.failed':
+      'Le site n’a pas pu transmettre votre demande. Contactez GCG sur WhatsApp ou par téléphone ; pour reprendre votre message, revenez au formulaire avec le bouton « Précédent » de votre navigateur.',
     'contact.form.optional': 'facultatif',
     'contact.form.pending': 'Les coordonnées de GCG seront publiées très prochainement sur cette page.',
     'contact.direct': 'Nous joindre',
@@ -583,6 +605,11 @@ const UI = {
     'contact.form.failText': 'Your details are still in the form. Try again in a moment or contact GCG directly:',
     'contact.form.rate': 'Too many enquiries were sent from this connection. Try again in a few minutes or contact GCG directly:',
     'contact.form.honeypot': 'Leave this field empty',
+    'contact.result.invalid':
+      'Your name, or a valid phone number or email address, is missing. Go back to the form with your browser’s Back button: what you typed is still there. You can also contact GCG directly:',
+    'contact.result.rate': 'Too many enquiries were sent from this connection. Wait 10 minutes before trying again, or contact GCG directly:',
+    'contact.result.failed':
+      'The website could not pass on your enquiry. Contact GCG on WhatsApp or by phone; to copy your message, go back to the form with your browser’s Back button.',
     'contact.form.optional': 'optional',
     'contact.form.pending': 'GCG’s contact details will be published on this page very soon.',
     'contact.direct': 'Reach us',

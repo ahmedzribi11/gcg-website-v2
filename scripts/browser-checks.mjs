@@ -39,6 +39,8 @@ const PAGES = [
   '/confidentialite',
   '/en/privacy',
   '/contact/merci',
+  '/contact/erreur/envoi',
+  '/en/contact/error/wait',
   '/page-inexistante',
 ]
 const problems = []

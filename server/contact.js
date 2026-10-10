@@ -23,6 +23,16 @@ import { PROFILES, PROJECT_TYPES } from '../src/data/contact-options.js'
 import registry from '../src/data/published-slugs.json' with { type: 'json' }
 
 const KNOWN_PROJECTS = new Set(registry)
+
+/**
+ * Pages d’arrivée sans JavaScript (mêmes adresses que src/i18n, routes thanks, formError, formRate, formFailed) :
+ * une page par cause, pour donner le bon conseil (OPS-05). Toute autre erreur (envoi en échec, service non
+ * configuré, format refusé, autre site) mène à « envoi impossible ».
+ */
+const RESULT_PAGES = {
+  fr: { ok: '/contact/merci', invalid: '/contact/erreur', rate: '/contact/erreur/attente', other: '/contact/erreur/envoi' },
+  en: { ok: '/en/contact/thanks', invalid: '/en/contact/error', rate: '/en/contact/error/wait', other: '/en/contact/error/sending' },
+}
 const LIMIT = 5
 const WINDOW = 10 * 60 * 1000
 const MIN_FILL_MS = 3000
@@ -168,8 +178,8 @@ export async function handleContact(request, env, ip) {
 
   const reply = (status, code, extra = {}) => {
     if (wantsJson) return Response.json({ ok: status < 300, code, ...extra }, { status, headers: secure({ 'Cache-Control': 'no-store' }) })
-    const to =
-      status < 300 ? (lang === 'en' ? '/en/contact/thanks' : '/contact/merci') : `${lang === 'en' ? '/en/contact/error' : '/contact/erreur'}?code=${code}`
+    const pages = RESULT_PAGES[lang]
+    const to = status < 300 ? pages.ok : `${pages[code] ?? pages.other}?code=${code}`
     return new Response(null, { status: 303, headers: secure({ Location: to, 'Cache-Control': 'no-store' }) })
   }
 

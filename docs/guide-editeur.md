@@ -63,8 +63,9 @@ Le site place lui-même les espaces insécables avant `: ; ! ?`.
 1. **Ajouter photo** → **Choisir une image** → **Téléverser** ; on peut sélectionner plusieurs fichiers.
 2. Pour chaque photo, écrire une **description** en français et en anglais : ce que montre l’image
    (« Villa Palmeras, façade principale et piscine »). Elle est lue par les personnes malvoyantes et par Google.
-3. Indiquer la **nature** : photo réelle, perspective 3D ou plan. Une image de synthèse ne doit jamais être
-   enregistrée comme « Photo réelle ».
+3. Indiquer la **nature** : photo réelle, perspective 3D ou plan. Le site affiche la mention « Perspective »
+   (« Rendering » en anglais) ou « Plan » sur l’image, partout où elle apparaît. Une image de synthèse ne doit
+   donc jamais être enregistrée comme « Photo réelle ».
 4. **La première photo est la couverture.** Glisser les photos par la poignée `═` pour changer l’ordre.
 5. Facultatif : **point focal** (« 50% 30% ») si le recadrage coupe une partie importante.
 

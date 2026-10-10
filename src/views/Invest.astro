@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro'
 import PageHeader from '../components/PageHeader.astro'
 import ProjectImage from '../components/ProjectImage.astro'
+import ImageKind from '../components/ImageKind.astro'
 import ProjectCard from '../components/ProjectCard.astro'
 import FinalCta from '../components/FinalCta.astro'
 import Icon from '../components/Icon.astro'
@@ -46,10 +47,11 @@ const reasons = fr
     audiences.map((a, i) => (
       <section id={a.id} class:list={['scroll-mt-24 py-20 md:py-32', i % 2 === 1 ? 'bg-ink-2' : 'bg-ink']} aria-labelledby={`${a.id}-title`}>
         <div class="wrap grid gap-12 md:grid-cols-12 md:gap-16">
-          <div class:list={['overflow-hidden md:col-span-6', i % 2 === 1 && 'md:order-2']} data-reveal="clip">
+          <div class:list={['relative overflow-hidden md:col-span-6', i % 2 === 1 && 'md:order-2']} data-reveal="clip">
             <div data-parallax="6">
               <ProjectImage image={coverImage(projects, [a.image, 0])} sizes="(min-width: 768px) 50vw, 100vw" class="block aspect-[4/3] md:aspect-[5/4]" />
             </div>
+            <ImageKind image={coverImage(projects, [a.image, 0])} lang={lang} />
           </div>
           <div class="flex flex-col justify-center md:col-span-6">
             <p class="meta text-gold" data-reveal>0{i + 1}</p>

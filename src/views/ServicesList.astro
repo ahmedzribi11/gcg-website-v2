@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro'
 import PageHeader from '../components/PageHeader.astro'
 import ProjectImage from '../components/ProjectImage.astro'
+import ImageKind from '../components/ImageKind.astro'
 import Method from '../components/Method.astro'
 import FinalCta from '../components/FinalCta.astro'
 import Icon from '../components/Icon.astro'
@@ -32,6 +33,7 @@ const count = (id: string) => projects.filter((p) => p.services.includes(id as n
               <div data-parallax="6">
                 <ProjectImage image={coverImage(projects, s.cover)} alt="" sizes="(min-width: 768px) 40vw, 100vw" class="block aspect-[4/3] md:aspect-[5/4]" imgClass="h-full w-full object-cover transition-transform duration-[1.6s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" />
               </div>
+              <ImageKind image={coverImage(projects, s.cover)} lang={lang} />
             </a>
             <div class:list={['flex flex-col justify-between md:col-span-6', flip ? 'md:order-1 md:col-start-1' : 'md:col-start-7']}>
               <div>

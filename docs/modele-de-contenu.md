@@ -39,7 +39,7 @@ Elle est générée à partir du nom, en minuscules sans accents, et **ne change
 | --- | --- |
 | `src` | JPG, PNG, WebP, AVIF ou HEIC (converti en JPG au build) ; ≤ 20 Mo ; ≥ 500 px de large (2 400 px recommandés pour la couverture) ; autre format refusé avec message. Au build, une photo avec métadonnées (EXIF, XMP, IPTC) ou de plus de 3 000 px est réécrite sur place sans elles et à 3 000 px au plus grand côté (OPS-07) |
 | `alt`, `alt_en` | description de ce que montre l’image (5 à 140 caractères), obligatoire dans les deux langues |
-| `kind` | `photo`, `render` (perspective 3D) ou `plan` ; pas encore affiché sur le site (UX-02) |
+| `kind` | `photo`, `render` (perspective 3D) ou `plan` ; une image `render` ou `plan` porte la mention « Perspective » / « Rendering » ou « Plan » / « Drawing » (UX-02) ; les cartes projet prennent la première `photo` comme couverture s’il y en a une |
 | `focus` | facultatif, point à garder visible au recadrage (« 50% 30% ») |
 
 ## Paramètres (`src/data/settings.json`)

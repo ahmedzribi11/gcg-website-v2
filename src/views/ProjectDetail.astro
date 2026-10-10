@@ -69,7 +69,7 @@ const crumbs = breadcrumbLd(
 <Base lang={lang} alt={altPath} translated={p.hasEn} title={p.name} docTitle={docTitle} description={desc} ogTitle={p.name} ogDescription={ogDescription} image={og.src} imageWidth={og.width} imageHeight={og.height} header="overlay" jsonLd={[crumbs]}>
   <article>
     <header class="relative flex h-[86svh] min-h-[560px] items-end overflow-hidden bg-ink-3 force-dark">
-      <ProjectImage image={p.images[0]} sizes="100vw" priority class="absolute inset-0 block h-full w-full" vt={`p-${p.slug}`} />
+      <ProjectImage image={p.images[0]} sizes="100vw" priority class="absolute inset-0 block h-full w-full" vt={`p-${p.slug}`} lang={lang} kindClass="bottom-4 right-5" />
       <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-ink/50"></div>
       <div class="wrap relative pb-12 md:pb-16">
         <nav class="meta flex flex-wrap items-center gap-2 text-bone/70" aria-label={lang === 'fr' ? 'Fil d’Ariane' : 'Breadcrumb'} data-reveal>
@@ -202,11 +202,11 @@ const crumbs = breadcrumbLd(
                 class:list={['group relative overflow-hidden bg-ink-3', galleryClass(i, p.images.length)]}
                 data-lightbox={i}
                 data-cursor="view"
-                aria-label={`${t('project.enlarge')}${colon(lang)}${img.alt}`}
+                aria-label={`${t('project.enlarge')}${colon(lang)}${img.alt}${img.kind === 'photo' ? '' : ` (${t(img.kind === 'plan' ? 'project.plan' : 'project.render')})`}`}
                 aria-haspopup="dialog"
                 data-reveal="clip"
               >
-                <ProjectImage image={img} sizes={i === 0 ? '(min-width: 768px) 66vw, 100vw' : '(min-width: 768px) 33vw, 100vw'} class="block aspect-[4/3] h-full w-full" imgClass="h-full w-full object-cover transition-transform duration-[1.4s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" />
+                <ProjectImage image={img} sizes={i === 0 ? '(min-width: 768px) 66vw, 100vw' : '(min-width: 768px) 33vw, 100vw'} class="block aspect-[4/3] h-full w-full" imgClass="h-full w-full object-cover transition-transform duration-[1.4s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" lang={lang} />
               </button>
             ))}
           </div>
@@ -219,7 +219,7 @@ const crumbs = breadcrumbLd(
         {
           p.images.map((img, i) => (
             <figure data-slide={i} hidden class="flex h-full w-full items-center justify-center p-4 md:p-16">
-              <ProjectImage image={img} sizes="100vw" class="block max-h-full" imgClass="max-h-[82svh] w-auto max-w-full object-contain" />
+              <ProjectImage image={img} sizes="100vw" class="block max-h-full" imgClass="max-h-[82svh] w-auto max-w-full object-contain" lang={lang} kindClass="bottom-5 right-5" />
             </figure>
           ))
         }

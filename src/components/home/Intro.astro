@@ -26,8 +26,7 @@ const figures = [
     <div class="md:col-span-7">
       <p class="label text-brand/75" data-reveal>{t('intro.label')}</p>
       <h2 id="intro-title" class="display mt-8 text-[clamp(2.4rem,5.6vw,6rem)]" data-split>
-        {lang === 'fr' ? 'Une seule équipe, des études au' : 'One team, from design to'}
-        <em class="serif">{lang === 'fr' ? 'chantier.' : 'construction.'}</em>
+        {lang === 'fr' ? 'Une seule équipe, des études au' : 'One team, from design to'} <em class="serif">{lang === 'fr' ? 'chantier.' : 'construction.'}</em>
       </h2>
       <p class="mt-10 max-w-xl text-lg leading-relaxed text-brand/75 md:text-xl" data-reveal>{t('intro.text')}</p>
       <a href={route('about', lang)} class="btn btn-line-dark mt-10" data-reveal data-magnetic>{t('cta.discover')} GCG <Icon name="arrow" /></a>

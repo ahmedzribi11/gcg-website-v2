@@ -116,7 +116,7 @@ const UI = {
     'cta.whatsapp': 'Écrire sur WhatsApp',
     'cta.call': 'Appeler',
     'cta.email': 'Écrire un e-mail',
-    'cta.more': 'En savoir plus',
+    'cta.service': 'Voir l’expertise',
     'cta.discover': 'Découvrir',
     'cta.share': 'Partager',
 
@@ -133,14 +133,14 @@ const UI = {
     'intro.label': 'GCG en bref',
     'intro.statement': 'Une seule équipe, des études au chantier.',
     'intro.text':
-      'General Constructor Group est une entreprise de construction et d’ingénierie installée en Côte d’Ivoire depuis 2016. Nous accompagnons nos clients sur l’ensemble de leurs projets : études de faisabilité, études architecturales et techniques, construction, aménagement.',
+      'General Constructor Group est une entreprise de construction et d’ingénierie installée en Côte d’Ivoire depuis 2016. Études de faisabilité, études architecturales et techniques, construction, aménagement : nous prenons en charge tout le projet ou une partie.',
     'fig.since': 'Création',
     'fig.projects': 'Projets au portfolio',
     'fig.staff': 'Collaborateurs',
     'fig.poles': 'Pôles opérationnels',
 
     'services.label': 'Expertises',
-    'services.title': 'Tout ce qu’un projet exige, sous un même toit.',
+    'services.title': 'Une étape ou tout le projet.',
     'services.lead':
       'Un client peut venir pour une étude, un plan d’architecte ou un chantier complet : GCG intervient à chaque étape, ou sur l’ensemble du projet.',
     'services.projects': 'projets',
@@ -156,7 +156,7 @@ const UI = {
       'Villas, résidences, immeubles, hôtels, bars de plage, spas, usines, salles polyvalentes, voiries : le portfolio de GCG couvre presque tout ce qui se construit.',
 
     'featured.label': 'Réalisations phares',
-    'featured.title': 'Des projets qui parlent pour nous.',
+    'featured.title': 'Ce que nous construisons et concevons.',
     'featured.skip': 'Passer les projets',
 
     'scale.label': 'À toutes les échelles',
@@ -166,10 +166,10 @@ const UI = {
     'presence.label': 'Présence',
     'presence.title': 'De Korhogo à Assinie.',
     'presence.lead': 'Des projets dans six localités de Côte d’Ivoire, d’Abidjan au littoral et jusqu’au nord du pays.',
-    'presence.ambition': 'Ancrés en Côte d’Ivoire, tournés vers l’Afrique de l’Ouest.',
+    'presence.ambition': 'Siège à Abidjan, Marcory Zone 4.',
 
-    'audiences.label': 'Pour qui nous construisons',
-    'audiences.title': 'Votre projet, notre métier.',
+    'audiences.label': 'Nos clients',
+    'audiences.title': 'Pour qui nous construisons.',
 
     'method.label': 'Méthode',
     'method.title': 'Six étapes, un seul interlocuteur.',
@@ -233,7 +233,7 @@ const UI = {
     'about.label': 'À propos',
     'about.title': 'Construire, depuis 2016.',
     'about.lead':
-      'General Constructor Group est une entreprise spécialisée dans la construction et l’ingénierie. Nous accompagnons nos clients dans la réalisation de leurs projets, des études de faisabilité et études architecturales et techniques jusqu’à la réalisation des ouvrages.',
+      'Entreprise de construction et d’ingénierie en Côte d’Ivoire depuis 2016 : plus de 20 collaborateurs, quatre pôles, un parc d’engins et de véhicules.',
     'about.p2':
       'Notre savoir-faire s’étend aux domaines du génie civil, des infrastructures et de la construction de bâtiments. Notre engagement : concevoir et livrer des projets conformes aux attentes de nos clients et aux normes en vigueur.',
     'about.team': 'Une équipe technique pluridisciplinaire d’ingénieurs, d’architectes et de techniciens, organisée en quatre pôles.',
@@ -241,7 +241,7 @@ const UI = {
     'about.history.title': 'Dix ans de projets, année après année.',
     'about.history.lead': 'Chaque année, les projets du portfolio démarrés ou étudiés par GCG.',
     'about.org.label': 'Organisation',
-    'about.org.title': 'Une organisation structurée au service de l’excellence et de la performance.',
+    'about.org.title': 'Plus de 20 collaborateurs, quatre pôles, un pilotage centralisé.',
     'about.org.poles': 'Pôles opérationnels',
     'about.org.skills': 'Domaines de compétences',
     'about.org.staff': 'collaborateurs',
@@ -301,7 +301,7 @@ const UI = {
 
     'share.label': 'Partager',
     'share.title': 'GCG en un scan.',
-    'share.lead': 'Un QR code pour chaque support : panneaux de chantier, cartes de visite, brochures, réseaux sociaux. Scannez, imprimez, partagez.',
+    'share.lead': 'Un QR code pour chaque support : panneaux de chantier, cartes de visite, brochures, réseaux sociaux. Pour un chantier, imprimez l’affiche et fixez-la sur le panneau.',
     'share.site': 'Site GCG',
     'share.siteHelp': 'Mène à la page d’accueil.',
     'share.download': 'Télécharger (SVG)',
@@ -399,7 +399,7 @@ const UI = {
     'cta.whatsapp': 'Message us on WhatsApp',
     'cta.call': 'Call',
     'cta.email': 'Send an email',
-    'cta.more': 'Learn more',
+    'cta.service': 'See this service',
     'cta.discover': 'Discover',
     'cta.share': 'Share',
 
@@ -416,14 +416,14 @@ const UI = {
     'intro.label': 'GCG at a glance',
     'intro.statement': 'One team, from design to construction.',
     'intro.text':
-      'General Constructor Group is a construction and engineering company based in Côte d’Ivoire since 2016. We support our clients across their whole project: feasibility studies, architectural and engineering design, construction and fit-out.',
+      'General Constructor Group is a construction and engineering company that has worked in Côte d’Ivoire since 2016. Feasibility studies, architectural and engineering design, construction, fit-out: we take on the whole project or any part of it.',
     'fig.since': 'Founded',
     'fig.projects': 'Projects in the portfolio',
     'fig.staff': 'Staff',
     'fig.poles': 'Operating divisions',
 
     'services.label': 'Services',
-    'services.title': 'Everything a project needs, under one roof.',
+    'services.title': 'One stage or the whole project.',
     'services.lead': 'Clients come to us for a study, an architect’s design or a complete build: GCG works at any stage, or on the whole project.',
     'services.projects': 'projects',
     'services.project': 'project',
@@ -438,7 +438,7 @@ const UI = {
       'Villas, residences, buildings, hotels, beach bars, spas, factories, multipurpose halls, roads: GCG’s portfolio covers almost everything that gets built.',
 
     'featured.label': 'Flagship projects',
-    'featured.title': 'Projects that speak for us.',
+    'featured.title': 'What we build and design.',
     'featured.skip': 'Skip projects',
 
     'scale.label': 'At every scale',
@@ -448,10 +448,10 @@ const UI = {
     'presence.label': 'Presence',
     'presence.title': 'From Korhogo to Assinie.',
     'presence.lead': 'Projects in six locations across Côte d’Ivoire, from Abidjan to the coast and the north of the country.',
-    'presence.ambition': 'Rooted in Côte d’Ivoire, looking to West Africa.',
+    'presence.ambition': 'Head office in Abidjan, Marcory Zone 4.',
 
-    'audiences.label': 'Who we build for',
-    'audiences.title': 'Your project, our craft.',
+    'audiences.label': 'Our clients',
+    'audiences.title': 'Who we build for.',
 
     'method.label': 'Method',
     'method.title': 'Six stages, one point of contact.',
@@ -515,7 +515,7 @@ const UI = {
     'about.label': 'About',
     'about.title': 'Building since 2016.',
     'about.lead':
-      'General Constructor Group is a construction and engineering company. We support our clients in delivering their projects, from feasibility, architectural and engineering studies through to construction.',
+      'A construction and engineering company working in Côte d’Ivoire since 2016: more than 20 staff, four divisions, a fleet of machinery and vehicles.',
     'about.p2':
       'Our expertise covers civil engineering, infrastructure and building construction. Our commitment: to design and deliver projects that meet our clients’ expectations and current standards.',
     'about.team': 'A multidisciplinary technical team of engineers, architects and technicians, organised in four divisions.',
@@ -523,7 +523,7 @@ const UI = {
     'about.history.title': 'Ten years of projects, year after year.',
     'about.history.lead': 'Each year, the portfolio projects started or designed by GCG.',
     'about.org.label': 'Organisation',
-    'about.org.title': 'A structured organisation, built for excellence and performance.',
+    'about.org.title': 'More than 20 staff, four divisions, central management.',
     'about.org.poles': 'Operating divisions',
     'about.org.skills': 'Areas of expertise',
     'about.org.staff': 'staff',
@@ -583,7 +583,7 @@ const UI = {
 
     'share.label': 'Share',
     'share.title': 'GCG in one scan.',
-    'share.lead': 'A QR code for every medium: site hoardings, business cards, brochures, social media. Scan, print, share.',
+    'share.lead': 'A QR code for every medium: site hoardings, business cards, brochures, social media. For a building site, print the poster and fix it to the hoarding.',
     'share.site': 'GCG website',
     'share.siteHelp': 'Opens the home page.',
     'share.download': 'Download (SVG)',

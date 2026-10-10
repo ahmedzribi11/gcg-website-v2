@@ -7,7 +7,7 @@ import Method from '../components/Method.astro'
 import FinalCta from '../components/FinalCta.astro'
 import Icon from '../components/Icon.astro'
 import { services } from '../data/services'
-import { route, servicePath, useT, type Lang } from '../i18n'
+import { colon, route, servicePath, useT, type Lang } from '../i18n'
 import { coverImage, getProjects } from '../lib/projects'
 
 interface Props {
@@ -53,7 +53,9 @@ const count = (id: string) => projects.filter((p) => p.services.includes(id as n
                   ))}
                 </ul>
                 <a href={servicePath(s.slug[lang], lang)} class="btn btn-line mt-8" data-magnetic>
-                  {t('cta.more')} <Icon name="arrow" />
+                  {t('cta.service')}
+                  <span class="sr-only">{`${colon(lang)}${s.title[lang]}`}</span>
+                  <Icon name="arrow" />
                 </a>
               </div>
             </div>

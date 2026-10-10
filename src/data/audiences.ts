@@ -5,6 +5,8 @@ export interface Audience {
   title: L<string>
   text: L<string>
   points: L<string[]>
+  /** Texte du lien vers la section de la page Investir : il nomme ce qu’on y trouve. */
+  more: L<string>
   /** Projets cités en preuve (identifiants de fichiers). */
   proof: string[]
   /** Projet dont la photo illustre le panneau. */
@@ -27,6 +29,7 @@ export const audiences: Audience[] = [
       fr: ['Études de faisabilité et conception', 'Programmes de plusieurs dizaines de villas', 'Voirie et réseaux du site (VRD)'],
       en: ['Feasibility studies and design', 'Programmes of dozens of villas', 'Site roads and utilities'],
     },
+    more: { fr: 'Voir les programmes immobiliers', en: 'See residential programmes' },
     proof: ['villa-palmeras', 'green-city', 'projet-elan', 'residence-abatta'],
     image: 'villa-palmeras',
   },
@@ -41,6 +44,7 @@ export const audiences: Audience[] = [
       fr: ['Hôtels clé en main', 'Rénovation et modernisation', 'Mise en conformité technique et incendie'],
       en: ['Turnkey hotels', 'Renovation and modernisation', 'Technical and fire-safety compliance'],
     },
+    more: { fr: 'Voir les projets hôteliers', en: 'See hospitality projects' },
     proof: ['hotel-calao-korhogo', 'palm-resort-movenpick', 'hotel-akwabeach', 'royal-palm'],
     image: 'hotel-calao-korhogo',
   },
@@ -55,6 +59,7 @@ export const audiences: Audience[] = [
       fr: ['Villas haut standing avec piscine', 'Projets clé en main', 'Plans d’architecte sur mesure'],
       en: ['High-end villas with pools', 'Turnkey projects', 'Bespoke architectural design'],
     },
+    more: { fr: 'Voir les villas et résidences', en: 'See villas and residences' },
     proof: ['villa-de-luxe-assouinde', 'residence-privee-beverly-hills', 'villa-palmerais', 'villa-de-maitre-beverly-hills'],
     image: 'residence-privee-beverly-hills',
   },
@@ -69,6 +74,7 @@ export const audiences: Audience[] = [
       fr: ['Usines en structure métallique', 'Bureaux clé en main', 'Études techniques d’installations'],
       en: ['Steel-frame factories', 'Turnkey offices', 'Engineering studies for installations'],
     },
+    more: { fr: 'Voir les projets d’entreprises', en: 'See company and industrial projects' },
     proof: ['saif-ivoire', 'usine-pharmanova', 'usine-de-cajou', 'immeuble-bureautique-kone'],
     image: 'usine-de-cajou',
   },

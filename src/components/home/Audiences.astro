@@ -16,7 +16,7 @@ const t = useT(lang)
 
 <section class="relative py-24 md:py-40" aria-labelledby="audiences-title">
   <div class="wrap">
-    <SectionHead id="audiences-title" label={t('audiences.label')} title={t('audiences.title')} accent={lang === 'fr' ? 'notre métier.' : 'our craft.'} />
+    <SectionHead id="audiences-title" label={t('audiences.label')} title={t('audiences.title')} accent={lang === 'fr' ? 'nous construisons.' : 'build for.'} />
 
     <div class="audiences mt-16 flex flex-col gap-3 md:mt-24 lg:h-[78vh] lg:min-h-[560px] lg:flex-row">
       {
@@ -41,7 +41,7 @@ const t = useT(lang)
                     ))}
                   </ul>
                   <span class="meta mt-6 inline-flex items-center gap-2 text-bone">
-                    {t('cta.more')} <Icon name="arrow" />
+                    {a.more[lang]} <Icon name="arrow" />
                   </span>
                 </div>
               </div>

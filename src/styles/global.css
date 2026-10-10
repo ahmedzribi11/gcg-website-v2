@@ -25,32 +25,14 @@
 }
 
 /* ─── Transitions entre pages (navigateurs compatibles) ─────────────── */
+/* Fondu enchaîné simple du navigateur entre deux pages, sans flou ni glissement (SLOP-15, PERF-07) ;
+   l’image d’une carte projet glisse vers l’en-tête de la fiche (view-transition-name) */
 @view-transition {
   navigation: auto;
-}
-::view-transition-old(root) {
-  animation: vt-out 0.45s var(--ease-cinema) both;
-}
-::view-transition-new(root) {
-  animation: vt-in 0.65s var(--ease-out-expo) both;
 }
 ::view-transition-group(*) {
   animation-duration: 0.7s;
   animation-timing-function: var(--ease-out-expo);
-}
-@keyframes vt-out {
-  to {
-    opacity: 0;
-    filter: blur(6px);
-    transform: translateY(-1.5vh);
-  }
-}
-@keyframes vt-in {
-  from {
-    opacity: 0;
-    filter: blur(6px);
-    transform: translateY(2vh);
-  }
 }
 
 @layer base {
@@ -62,16 +44,6 @@
     text-rendering: optimizeLegibility;
     scrollbar-color: #24302a var(--color-ink);
     scroll-padding-top: 6rem;
-  }
-  html.lenis,
-  html.lenis body {
-    height: auto;
-  }
-  .lenis.lenis-smooth {
-    scroll-behavior: auto !important;
-  }
-  .lenis.lenis-stopped {
-    overflow: hidden;
   }
 
   body {
@@ -96,10 +68,6 @@
   img {
     max-width: 100%;
     height: auto;
-  }
-  .has-cursor,
-  .has-cursor * {
-    cursor: none !important;
   }
 }
 
@@ -258,9 +226,9 @@
     font-size: 0.625rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    background: rgba(7, 12, 9, 0.6);
+    /* Fond plein, sans flou d’arrière-plan (SLOP-10) : lisible sur photo comme sur aplat */
+    background: var(--color-ink);
     color: var(--color-bone);
-    backdrop-filter: blur(8px);
   }
   .pill::before {
     content: '';
@@ -279,54 +247,46 @@
     color: var(--color-bone);
   }
 
-  /* Révélations au défilement (activées par JS ; contenu visible sans JS) */
-  .js [data-reveal] {
-    opacity: 0;
-    transform: translateY(28px);
-    transition:
-      opacity 1.1s var(--ease-out-expo),
-      transform 1.2s var(--ease-out-expo);
-    transition-delay: var(--d, 0s);
+  /* Entrée du premier écran jouée en CSS dès le premier affichage, sans attendre le JS (ouverture de l’accueil,
+     en-têtes de page) : rien n’y dépend du script principal (PERF-03, CODE-01). « rise » : mouvement seul,
+     le texte n’est jamais transparent et compte pour le premier affichage (LCP). */
+  [data-intro] {
+    animation: intro-in 1.2s var(--ease-out-expo) var(--d, 0s) both;
   }
-  .js [data-reveal].is-in {
-    opacity: 1;
-    transform: none;
+  [data-intro='rise'] {
+    animation-name: intro-rise;
   }
-  .js [data-reveal='fade'] {
-    transform: none;
-  }
-  .js [data-reveal='clip'] {
-    opacity: 1;
-    transform: none;
-    clip-path: inset(12% 8% 12% 8%);
-    transition: clip-path 1.6s var(--ease-cinema);
-  }
-  .js [data-reveal='clip'].is-in {
-    clip-path: inset(0 0 0 0);
-  }
-  .js [data-reveal='clip'] img {
-    transform: scale(1.12);
-    transition: transform 2s var(--ease-out-expo);
-  }
-  .js [data-reveal='clip'].is-in img {
-    transform: scale(1);
-  }
-
-  .js [data-split] .w {
+  [data-intro-split] .w {
     display: inline-block;
     overflow: hidden;
     vertical-align: top;
     padding-bottom: 0.12em;
     margin-bottom: -0.12em;
   }
-  .js [data-split] .w > span {
+  [data-intro-split] .w > span {
     display: inline-block;
-    transform: translateY(110%);
-    transition: transform 1.2s var(--ease-out-expo);
-    transition-delay: calc(var(--d, 0s) + var(--i, 0) * 0.045s);
+    animation: intro-word 1.2s var(--ease-out-expo) calc(var(--d, 0s) + var(--i, 0) * 0.045s) both;
   }
-  .js [data-split].is-in .w > span {
-    transform: none;
+  @media (prefers-reduced-motion: reduce), print {
+    [data-intro],
+    [data-intro-split] .w > span {
+      animation: none;
+    }
+  }
+
+  /* Apparition au défilement : un seul fondu, pour les images et les cartes situées sous le premier écran.
+     site.ts pose .reveal-wait sur ces éléments seulement ; rien n’est masqué sans le script ni dans le
+     premier écran, aucun texte courant n’est animé (SLOP-13, PERF-03). */
+  @media (prefers-reduced-motion: no-preference) {
+    .js [data-reveal].reveal-wait {
+      transition:
+        opacity 0.6s var(--ease-out-expo),
+        transform 0.6s var(--ease-out-expo);
+    }
+    .js [data-reveal].reveal-wait:not(.is-in) {
+      opacity: 0;
+      transform: translateY(16px);
+    }
   }
 
   .hairline {
@@ -348,17 +308,6 @@
     color: var(--color-bone);
   }
 
-  .grain::after {
-    content: '';
-    position: fixed;
-    inset: -50%;
-    z-index: 90;
-    pointer-events: none;
-    opacity: 0.045;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    animation: grain 1.2s steps(6) infinite;
-  }
-
   .no-scrollbar {
     scrollbar-width: none;
   }
@@ -367,29 +316,20 @@
   }
 }
 
-@keyframes grain {
-  0% {
-    transform: translate(0, 0);
-  }
-  20% {
-    transform: translate(-3%, 2%);
-  }
-  40% {
-    transform: translate(2%, -4%);
-  }
-  60% {
-    transform: translate(-4%, -1%);
-  }
-  80% {
-    transform: translate(3%, 3%);
-  }
-  100% {
-    transform: translate(0, 0);
+@keyframes intro-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
   }
 }
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
+@keyframes intro-rise {
+  from {
+    transform: translateY(28px);
+  }
+}
+@keyframes intro-word {
+  from {
+    transform: translateY(110%);
   }
 }
 @keyframes cue {
@@ -400,15 +340,7 @@
     transform: translateY(200%);
   }
 }
-@keyframes fog-drift {
-  0% {
-    transform: translate(-56%, -48%) scale(1);
-  }
-  100% {
-    transform: translate(-44%, -54%) scale(1.15);
-  }
-}
-
+/* Fond de l’ouverture de l’accueil : dégradés fixes (ni flou ni mouvement) ; plus de brouillard ailleurs (SLOP-10, PERF-07) */
 .css-fog {
   position: absolute;
   inset: 0;
@@ -423,22 +355,16 @@
   height: 50vmax;
   border-radius: 50%;
   background: radial-gradient(closest-side, rgba(210, 205, 180, 0.14), transparent);
-  filter: blur(40px);
   transform: translate(-50%, -50%);
-  animation: fog-drift 26s var(--ease-cinema) infinite alternate;
 }
 .css-fog span:nth-child(2) {
   width: 70vmax;
   height: 34vmax;
-  animation-duration: 34s;
-  animation-delay: -8s;
   opacity: 0.8;
 }
 .css-fog span:nth-child(3) {
   width: 110vmax;
   height: 40vmax;
-  animation-duration: 41s;
-  animation-delay: -16s;
   opacity: 0.6;
 }
 
@@ -449,9 +375,6 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-  .grain::after {
-    display: none;
   }
   @view-transition {
     navigation: none;
@@ -471,7 +394,6 @@
   .no-print,
   #site-header,
   #mobile-bar,
-  #cursor,
   body > footer,
   .btn,
   dialog,
@@ -495,21 +417,15 @@
     background: #fff !important;
     color: #000 !important;
   }
-  .grain::after {
-    display: none;
-  }
   body:not(.is-bare) .css-fog,
   body:not(.is-bare) [class*='bg-gradient'],
   body:not(.is-bare) [class*='bg-[radial'],
   body:not(.is-bare) canvas {
     display: none !important;
   }
-  [data-reveal],
-  [data-split],
-  [data-split] * {
+  [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
-    clip-path: none !important;
   }
   body:not(.is-bare) .border-line,
   body:not(.is-bare) [class*='border-line'],
@@ -562,100 +478,69 @@
   }
 }
 
-/* ─── Curseur ─────────────────────────────────────────────────────────── */
-/* Couleurs fixes (pas les variables du thème) : la teinte suit le fond sous le pointeur,
-   or sur fond sombre, vert GCG sur fond clair (data-tone="dark", calculé dans site.ts). */
-#cursor {
-  --cur: #e8de9f;
-  --cur-ring: rgba(232, 222, 159, 0.45);
-  --cur-ring-strong: rgba(232, 222, 159, 0.8);
-  --cur-text: #052e14;
-  --cur-halo: drop-shadow(0 0 1px rgba(7, 12, 9, 0.45));
-  opacity: 0;
-  transition: opacity 0.4s;
+/* ─── Couleurs forcées (Windows, contraste élevé) : formes, traits et logos gardés (BRW-04) ─── */
+@media (forced-colors: active) {
+  /* Le bouton principal perd son fond : un contour le garde lisible comme bouton */
+  .btn,
+  #mobile-bar a.bg-gold {
+    border: 1px solid ButtonText;
+  }
+  /* Traits et points dessinés par un fond, que le navigateur remet à Canvas */
+  .menu-bar,
+  .pill::before {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+  /* Icônes : la couleur du texte voisin (couleur système) au lieu de l’or pâle de text-gold */
+  svg {
+    color: inherit;
+  }
+  /* Logos PNG clairs (blanc, or) : silhouette blanche sur fond système sombre… */
+  .logo-mono {
+    filter: brightness(0) invert(1);
+  }
 }
-#cursor[data-tone='dark'] {
-  --cur: #052e14;
-  --cur-ring: rgba(5, 46, 20, 0.5);
-  --cur-ring-strong: rgba(5, 46, 20, 0.85);
-  --cur-text: #e8de9f;
-  --cur-halo: none;
-}
-.cursor-dot {
-  width: 6px;
-  height: 6px;
-  margin: -3px 0 0 -3px;
-  border-radius: 50%;
-  background: var(--cur);
-  filter: var(--cur-halo);
-  transition:
-    opacity 0.3s,
-    background-color 0.3s;
-}
-.cursor-ring {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  margin: -15px 0 0 -15px;
-  border-radius: 50%;
-  border: 1px solid var(--cur-ring);
-  filter: var(--cur-halo);
-  transition:
-    width 0.5s var(--ease-out-expo),
-    height 0.5s var(--ease-out-expo),
-    margin 0.5s var(--ease-out-expo),
-    background-color 0.4s,
-    border-color 0.4s;
-}
-.cursor-ring span {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  color: var(--cur-text);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-#cursor[data-mode='link'] .cursor-ring {
-  width: 46px;
-  height: 46px;
-  margin: -23px 0 0 -23px;
-  border-color: var(--cur-ring-strong);
-}
-#cursor[data-mode='view'] .cursor-ring {
-  width: 88px;
-  height: 88px;
-  margin: -44px 0 0 -44px;
-  background: var(--cur);
-  border-color: transparent;
-  filter: none;
-}
-#cursor[data-mode='view'] .cursor-ring span {
-  opacity: 1;
-}
-#cursor[data-mode='view'] .cursor-dot {
-  opacity: 0;
+/* … et noire sur fond système clair */
+@media (forced-colors: active) and (prefers-color-scheme: light) {
+  .logo-mono {
+    filter: brightness(0);
+  }
 }
 
-/* Barre de filtres collante sous l’en-tête visible */
-body:has(#site-header:not([data-hidden])) [data-filters] {
+/* Flou d’arrière-plan encore utilisé (barres d’outils de l’affiche et des références) : Safari avant 18
+   ne lit que la propriété préfixée (BRW-05) */
+@layer utilities {
+  .backdrop-blur {
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+
+/* Barre mobile : cachée à l’ouverture puis montrée par site.ts après le premier écran (MOB-03). Seulement quand le
+   script tourne (.js) : script absent, bloqué ou en échec (classe retirée après 3 s, Base.astro), elle reste visible (CODE-01) */
+.js #mobile-bar:not([data-visible]) {
+  transform: translateY(150%);
+}
+
+/* Barre de filtres collante sous l’en-tête visible. Classe posée par site.ts plutôt que :has(),
+   absent de Firefox avant 121 (ESR 115) : la barre y glissait sous l’en-tête (BRW-13) */
+body:not(.header-hidden) [data-filters] {
   top: 4rem;
 }
 @media (min-width: 768px) {
-  body:has(#site-header:not([data-hidden])) [data-filters] {
+  body:not(.header-hidden) [data-filters] {
     top: 5rem;
   }
 }
 
-/* Filigrane décoratif du pied de page : texte en pseudo-élément (ignoré par les lecteurs d’écran) */
-.watermark::before {
-  content: attr(data-text);
-}
-
 /* ─── Mode clair (choisi par le visiteur ; le mode sombre reste celui par défaut) ───
    Les couleurs du site sont des variables : le mode clair les inverse. L’ouverture 3D, les grandes photos,
-   l’en-tête, le pied de page et les sections vertes restent sombres (.force-dark). */
+   l’en-tête, le menu plein écran, le pied de page et les sections vertes restent sombres (.force-dark).
+   Le menu est hors de l’en-tête : sans cette liste, il deviendrait crème sous un en-tête aux couleurs claires (BRW-01). */
+/* Sombre par défaut, quelle que soit la préférence du système : contrôles natifs (listes, remplissage
+   automatique, correcteur) et couleurs système suivent le thème affiché (BRW-09) */
+:root {
+  color-scheme: dark;
+}
 :root[data-theme='light'] {
   color-scheme: light;
   --color-ink: #f4f0e6;
@@ -668,7 +553,7 @@ body:has(#site-header:not([data-hidden])) [data-filters] {
   --color-paper: #e9e2d1;
   --color-paper-2: #ded6c2;
 }
-:root[data-theme='light'] :is(.force-dark, #hero, #site-header, #mobile-bar, body > footer, .pill, .theme-brand, .bg-brand) {
+:root[data-theme='light'] :is(.force-dark, #hero, #site-header, #mobile-menu, #mobile-bar, body > footer, .pill, .theme-brand, .bg-brand) {
   color-scheme: dark;
   --color-ink: #070c09;
   --color-ink-2: #0c1410;
@@ -692,7 +577,7 @@ body:has(#site-header:not([data-hidden])) [data-filters] {
 :root[data-theme='light'] .btn-gold:hover {
   background: var(--color-brand-2);
 }
-:root[data-theme='light'] :is(.force-dark, #hero, #site-header, #mobile-bar, body > footer, .pill, .theme-brand, .bg-brand) .btn-gold {
+:root[data-theme='light'] :is(.force-dark, #hero, #site-header, #mobile-menu, #mobile-bar, body > footer, .pill, .theme-brand, .bg-brand) .btn-gold {
   background: var(--color-gold);
   color: var(--color-brand);
 }
@@ -706,13 +591,18 @@ html {
 :root[data-theme='light'] [data-icon-moon] {
   display: block;
 }
+/* Variantes d’une image selon le thème (logo de la fiche projet, BRW-08) ; l’image masquée n’est pas chargée (loading="lazy") */
+.theme-light-only,
+:root[data-theme='light'] .theme-dark-only {
+  display: none;
+}
+:root[data-theme='light'] .theme-light-only {
+  display: block;
+}
 /* Mode clair : les textes très transparents du design sombre seraient trop pâles sur fond clair */
 :root[data-theme='light'] :is(.text-bone\/30, .text-bone\/40, .text-bone\/50, .text-bone\/55, .text-bone\/60, .text-bone\/65, .text-bone\/70) {
   color: color-mix(in srgb, var(--color-bone) 76%, transparent);
 }
 :root[data-theme='light'] :is(.text-brand\/45, .text-brand\/65, .text-brand\/70) {
   color: color-mix(in srgb, var(--color-brand) 82%, transparent);
-}
-:root[data-theme='light'] .pill {
-  background: rgba(7, 12, 9, 0.86);
 }

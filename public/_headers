@@ -10,6 +10,10 @@
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Logos : noms non versionnés, donc un jour de cache (PERF-05)
+/brand/*
+  Cache-Control: public, max-age=86400
+
 /admin*
   X-Robots-Tag: noindex
 /api/*

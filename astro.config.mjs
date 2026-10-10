@@ -4,6 +4,7 @@ import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import typography from './integrations/typography.mjs'
+import fontPreload from './integrations/font-preload.mjs'
 
 /**
  * URL publique du site (balises canoniques, Open Graph, sitemap, QR codes).
@@ -53,6 +54,7 @@ export default defineConfig({
         ]
       : []),
     typography(),
+    fontPreload(),
   ],
   image: {
     responsiveStyles: false,

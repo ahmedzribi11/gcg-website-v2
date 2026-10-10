@@ -224,7 +224,7 @@ collections:
         widget: object
         required: false
         collapsed: true
-        hint: 'Facultatif : un chiffre tiré de cette fiche, affiché dans la grille « À toutes les échelles » et/ou le bandeau défilant de l’accueil. Il disparaît si le projet n’est pas publié. Pour le retirer, vider tous ses champs.'
+        hint: 'Facultatif : un chiffre tiré de cette fiche, affiché dans la grille « À toutes les échelles » et/ou le bandeau des chiffres clés sous l’ouverture de l’accueil (4 au plus). Il disparaît si le projet n’est pas publié. Pour le retirer, vider tous ses champs.'
         fields:
           - { label: Valeur, name: value, widget: string, required: false, hint: 'Requise dès qu’un champ du chiffre clé est rempli. Ex. : 116 ou 55 000' }
           - { label: Unité, name: unit, widget: string, required: false, hint: 'Requise dès qu’un champ du chiffre clé est rempli. Ex. : villas' }
@@ -232,7 +232,7 @@ collections:
           - { label: Précision, name: note, widget: string, required: false, hint: 'Affichée sous le chiffre dans la grille. Ex. : R+1 haut standing sur 6 ha' }
           - { label: 'Précision en anglais', name: note_en, widget: string, required: false, hint: 'Requise si la précision est remplie et la version anglaise « validée ». Ex. : high-end R+1 villas on 6 ha' }
           - { label: 'Rang dans la grille « À toutes les échelles »', name: scaleOrder, widget: number, value_type: int, min: 1, required: false, hint: 'Vide : absent de la grille. Ex. : 1 pour le premier' }
-          - { label: 'Rang dans le bandeau défilant', name: marqueeOrder, widget: number, value_type: int, min: 1, required: false, hint: 'Vide : absent du bandeau. Ex. : 1 pour le premier' }
+          - { label: 'Rang dans le bandeau des chiffres clés', name: marqueeOrder, widget: number, value_type: int, min: 1, required: false, hint: 'Vide : absent du bandeau. Seuls les 4 premiers rangs sont affichés. Ex. : 1 pour le premier' }
           - { label: 'Nom dans le bandeau', name: marqueeName, widget: string, required: false, hint: 'Laisser vide de préférence : le nom du projet s’affiche alors, écrit comme partout ailleurs sur le site.' }
           - { label: 'Nom dans le bandeau en anglais', name: marqueeName_en, widget: string, required: false, hint: 'Par défaut : le nom ci-dessus, sinon le nom en anglais du projet' }
           - { label: 'Texte du bandeau', name: marqueeFigure, widget: string, required: false, hint: 'Par défaut : valeur et unité. Ex. : 64 bungalows & 30 villas' }

@@ -25,12 +25,12 @@ const labelColor = tone === 'paper' ? 'text-brand/75' : tone === 'brand' ? 'text
 
 <div class:list={['grid gap-8', align === 'split' && lead ? 'md:grid-cols-12 md:items-end' : '']}>
   <div class:list={[align === 'split' && lead ? 'md:col-span-8' : '']}>
-    <p class:list={['label', labelColor]} data-reveal>{label}</p>
-    <Tag id={id} class:list={['display mt-7 max-w-[18ch]', sizeClass]} data-split set:html={html} />
+    <p class:list={['label', labelColor]}>{label}</p>
+    <Tag id={id} class:list={['display mt-7 max-w-[18ch]', sizeClass]} set:html={html} />
   </div>
   {
     lead && (
-      <p class:list={['max-w-md text-[0.9375rem] leading-relaxed md:text-base', leadColor, align === 'split' ? 'md:col-span-4 md:pb-3' : '']} data-reveal style="--d:.15s">
+      <p class:list={['max-w-md text-[0.9375rem] leading-relaxed md:text-base', leadColor, align === 'split' ? 'md:col-span-4 md:pb-3' : '']}>
         {lead}
       </p>
     )

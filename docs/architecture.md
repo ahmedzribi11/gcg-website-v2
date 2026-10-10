@@ -42,8 +42,7 @@ fonctions serveur (formulaire de contact, connexion à l’espace de gestion) et
 ## Choix techniques et raisons
 
 - **Astro, sortie statique** : pages lisibles sans JavaScript ; aucune base de données à maintenir ni à
-  sécuriser. L’accueil garde son ouverture 3D (three.js, chargée après l’affichage de la page) et les
-  animations GSAP ; les autres pages s’affichent en 2 à 3 secondes sur mobile.
+  sécuriser. L’accueil garde son ouverture 3D (three.js et GSAP, chargés après l’affichage de la page) ; les autres pages s’affichent en 2 à 3 secondes sur mobile.
 - **Aucun cookie, aucun traceur** : pas de bandeau cookies nécessaire. La mesure d’audience (Umami, sans
   cookie) ne s’active que si la variable `PUBLIC_UMAMI_WEBSITE_ID` est définie.
 - **Images** : converties au build en WebP (repli JPEG), 15 tailles, métadonnées (GPS) supprimées.

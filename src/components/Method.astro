@@ -33,7 +33,7 @@ const paper = tone === 'paper'
   <div class="wrap">
     <SectionHead id="method-title" label={t('method.label')} title={t('method.title')} accent={lang === 'fr' ? 'un seul interlocuteur.' : 'one point of contact.'} size="md" tone={paper ? 'paper' : 'dark'} />
 
-    <div class="method relative mt-16 md:mt-28" data-reveal="fade">
+    <div class="method relative mt-16 md:mt-28">
       <span class:list={['method-rail absolute bottom-2 left-[5px] top-2 w-px lg:bottom-auto lg:left-0 lg:right-0 lg:top-[5px] lg:h-px lg:w-auto', paper ? 'bg-brand/40' : 'bg-gold/50']} aria-hidden="true"></span>
       <ol class="grid gap-10 pl-8 lg:grid-cols-6 lg:gap-6 lg:pl-0 lg:pt-12">
       {
@@ -50,11 +50,3 @@ const paper = tone === 'paper'
     </div>
   </div>
 </section>
-
-<style>
-  .js .method .method-rail { transform: scaleY(0); transform-origin: top; transition: transform 2.4s var(--ease-cinema); }
-  @media (min-width: 1024px) { .js .method .method-rail { transform: scaleX(0); transform-origin: left; } }
-  .js .method.is-in .method-rail { transform: none; }
-  .js .method .method-step { opacity: 0; transform: translateY(18px); transition: opacity 1s var(--ease-out-expo), transform 1s var(--ease-out-expo); transition-delay: calc(0.3s + var(--i) * 0.28s); }
-  .js .method.is-in .method-step { opacity: 1; transform: none; }
-</style>

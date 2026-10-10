@@ -7,25 +7,28 @@ interface Props {
   projects: Project[]
 }
 const { projects } = Astro.props
-/** Chiffres clés saisis dans les fiches projet (champ « Chiffre clé », rang dans le bandeau) ; un projet non publié en est absent (CODE-03). */
+/**
+ * Rangée fixe de quatre chiffres clés, lue par les lecteurs d’écran (SLOP-14 : plus de bandeau défilant masqué).
+ * Chiffres saisis dans les fiches projet (champ « Chiffre clé ») ; les quatre premiers rangs du bandeau sont
+ * affichés, un projet non publié en est absent (CODE-03).
+ */
 // Projet en études ou d’études seulement : missions de GCG à côté du chiffre (COPY-02)
-const items = highlights(projects, 'marqueeOrder').map(({ p, h }) => [h.marqueeName, p.status === 'etudes' || p.designOnly ? `${h.marqueeFigure} · ${p.missions.join(' · ')}` : h.marqueeFigure])
+const items = highlights(projects, 'marqueeOrder')
+  .slice(0, 4)
+  .map(({ p, h }) => [h.marqueeName, p.status === 'etudes' || p.designOnly ? `${h.marqueeFigure} · ${p.missions.join(' · ')}` : h.marqueeFigure])
 ---
 
 {
   items.length > 0 && (
-    <div class="relative overflow-hidden border-y border-line bg-ink py-5" aria-hidden="true">
-      <div class="flex w-max animate-[marquee_60s_linear_infinite] gap-12 pr-12 motion-reduce:animate-none">
-        {[0, 1].map(() =>
-          items.map(([name, figure]) => (
-            <span class="flex shrink-0 items-baseline gap-4 whitespace-nowrap">
-              <span class="text-lg font-light tracking-[-0.01em] text-bone/85">{name}</span>
-              <span class="meta text-gold">{figure}</span>
-              <span class="ml-8 h-1 w-1 rounded-full bg-bone/30" />
-            </span>
-          )),
-        )}
-      </div>
+    <div class="border-y border-line bg-ink">
+      <ul class="wrap grid grid-cols-2 gap-x-6 gap-y-5 py-6 md:grid-cols-4">
+        {items.map(([name, figure]) => (
+          <li class="flex flex-col gap-1.5">
+            <span class="text-lg font-light tracking-[-0.01em] text-bone/85">{name}</span>
+            <span class="meta text-gold">{figure}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

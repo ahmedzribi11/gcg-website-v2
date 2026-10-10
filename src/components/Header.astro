@@ -25,11 +25,15 @@ const wa = whatsappLink(t('contact.form.intro'))
 <header
   id="site-header"
   data-variant={variant}
-  class="no-print group fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[background-color,border-color,backdrop-filter,transform] duration-700 data-[scrolled]:border-line data-[scrolled]:bg-ink/70 data-[scrolled]:backdrop-blur-xl data-[variant=solid]:border-line data-[variant=solid]:bg-ink/80 data-[variant=solid]:backdrop-blur-xl data-[hidden]:-translate-y-full"
+  class="no-print group fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[background-color,border-color,transform] duration-700 data-[scrolled]:border-line data-[scrolled]:bg-ink data-[variant=solid]:border-line data-[variant=solid]:bg-ink data-[hidden]:-translate-y-full"
 >
   <nav aria-label={lang === 'fr' ? 'Navigation principale' : 'Main navigation'} class="wrap flex h-16 items-center justify-between gap-3 sm:gap-6 md:h-20">
     <a href={route('home', lang)} class="relative z-10 shrink-0" aria-label="GCG — General Constructor Group CI">
-      <img src="/brand/gcg-logo-white.png" alt="GCG — General Constructor Group CI" width="720" height="220" class="h-[28px] w-auto md:h-[32px]" />
+      <!-- Même logo, en WebP de 240 px (8 Ko au lieu de 32 Ko) ; PNG d’origine en repli (PERF-05) -->
+      <picture>
+        <source srcset="/brand/gcg-logo-white-240.webp" type="image/webp" />
+        <img src="/brand/gcg-logo-white.png" alt="GCG — General Constructor Group CI" width="240" height="73" class="logo-mono h-[28px] w-auto md:h-[32px]" />
+      </picture>
     </a>
 
     <ul class="hidden items-center gap-8 lg:flex">
@@ -69,7 +73,7 @@ const wa = whatsappLink(t('contact.form.intro'))
           <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
         </svg>
       </button>
-      <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="btn btn-gold hidden !min-h-10 !px-5 !text-[0.75rem] md:inline-flex" data-magnetic>
+      <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="btn btn-gold hidden !min-h-10 !px-5 !text-[0.75rem] md:inline-flex">
         {wa && <Icon name="whatsapp" size={15} />}
         {t('nav.cta')}
       </a>
@@ -86,7 +90,7 @@ const wa = whatsappLink(t('contact.form.intro'))
 </header>
 
 <!--
-Hors de l’en-tête : son flou d’arrière-plan (backdrop-filter) et sa translation feraient de l’en-tête le
+Hors de l’en-tête : sa translation (en-tête masqué au défilement) ferait de l’en-tête le
 bloc conteneur du menu fixe, limité à 64 px de haut pendant ~0,7 s (page visible à travers).
 Contenu défilant sous l’en-tête : en paysage, à 200 % ou en grand texte, tous les liens restent atteignables (BRW-02).
 -->
@@ -146,7 +150,7 @@ Contenu défilant sous l’en-tête : en paysage, à 200 % ou en grand texte, to
 
 <style>
   #site-header[data-menu] + #mobile-menu { visibility: visible; opacity: 1; }
-  #site-header[data-menu] { background: transparent !important; border-color: transparent !important; backdrop-filter: none !important; }
+  #site-header[data-menu] { background: transparent !important; border-color: transparent !important; }
   #site-header[data-menu] .menu-bar:first-child { transform: translateY(4px) rotate(45deg); }
   #site-header[data-menu] .menu-bar:last-child { transform: translateY(-4px) rotate(-45deg); }
   .menu-link { transform: translateY(100%); transition: transform 0.9s var(--ease-out-expo); }

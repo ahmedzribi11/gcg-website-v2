@@ -4,6 +4,7 @@ import { feature } from 'topojson-client'
 import type { Feature, FeatureCollection, Geometry } from 'geojson'
 import type { Topology, GeometryCollection } from 'topojson-specification'
 import world from 'world-atlas/countries-50m.json'
+import world110 from 'world-atlas/countries-110m.json'
 import { cities, type CityId } from '../data/geo'
 import { colon, route, useT, type Lang } from '../i18n'
 import type { Project } from '../lib/projects'
@@ -19,8 +20,11 @@ interface Props {
 const { lang, projects, tone = 'dark', inset = true, link = true } = Astro.props
 const t = useT(lang)
 
-const topo = world as unknown as Topology<{ countries: GeometryCollection }>
-const all = (feature(topo, topo.objects.countries) as FeatureCollection<Geometry>).features
+const countries = (w: unknown) => {
+  const topo = w as Topology<{ countries: GeometryCollection }>
+  return (feature(topo, topo.objects.countries) as FeatureCollection<Geometry>).features
+}
+const all = countries(world)
 const byId = (id: string) => all.find((f) => String(f.id) === id)!
 const ci = byId('384')
 const WEST_AFRICA = ['384', '430', '324', '466', '854', '288', '694', '624', '686', '270', '478', '768', '204', '562', '566']
@@ -41,17 +45,22 @@ const labelAt = (i: number) => ({ lx: x0 + i * step, ly: twoRows && i % 2 ? 816 
 const W = 800
 const H = twoRows ? 900 : 860
 const proj = geoMercator().fitExtent([[60, 40], [W - 60, 640]], ci)
-const path = geoPath(proj)
+/*
+ * Tracés au dixième d’unité (viewBox de 800) au lieu du millième : différence invisible, HTML plus léger sur les
+ * trois pages qui intègrent la carte (PERF-06). L’encart, affiché à 150 px de large, utilise le 1:110 m.
+ */
+const path = geoPath(proj).digits(1)
 const pt = (lon: number, lat: number) => proj([lon, lat]) as [number, number]
 
 
 // Encart Afrique de l’Ouest
-const waFeatures = WEST_AFRICA.map(byId)
+const all110 = countries(world110)
+const waFeatures = WEST_AFRICA.map((id) => all110.find((f) => String(f.id) === id)!)
 const waColl: FeatureCollection<Geometry> = { type: 'FeatureCollection', features: waFeatures }
 const IW = 260
 const IH = 170
 const insetProj = geoMercator().fitExtent([[6, 6], [IW - 6, IH - 6]], waColl)
-const insetPath = geoPath(insetProj)
+const insetPath = geoPath(insetProj).digits(1)
 
 const stroke = tone === 'paper' ? 'rgba(5,46,20,.55)' : 'color-mix(in srgb, var(--color-gold) 55%, transparent)'
 const fillCi = tone === 'paper' ? 'rgba(5,46,20,.08)' : 'rgba(5,46,20,.55)'
@@ -64,7 +73,7 @@ const href = (c: string) => `${route('projects', lang)}?ville=${c}`
 const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
 ---
 
-<figure class="presence-map relative" data-tone={tone} data-reveal="fade">
+<figure class="presence-map relative" data-tone={tone} data-reveal>
   <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMin slice" class="map-main h-auto w-full" role="group" aria-labelledby="map-title map-desc">
     <title id="map-title">{t('presence.title')}</title>
     <desc id="map-desc">{(Object.keys(counts) as CityId[]).map((c) => `${cities[c].name}${colon(lang)}${counts[c]} ${t(counts[c] > 1 ? 'projects.count.many' : 'projects.count.one')}`).join(', ')}</desc>
@@ -140,8 +149,6 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
   .map-halo { transform-box: fill-box; transform-origin: center; animation: halo 3.2s var(--ease-cinema) infinite; }
   .map-pin:hover .map-halo, .map-pin[data-active] .map-halo { opacity: 0.4; }
   @keyframes halo { 0%, 100% { transform: scale(0.85); } 50% { transform: scale(1.15); } }
-  .js .presence-map .map-ci { stroke-dasharray: 4000; stroke-dashoffset: 4000; transition: stroke-dashoffset 3s var(--ease-cinema); }
-  .js .presence-map.is-in .map-ci { stroke-dashoffset: 0; }
   /* Téléphone : à l’échelle 0,42 les étiquettes feraient 5 à 9 px. Points seuls, carte recadrée sous la côte
      (la liste des localités porte l’information). Étiquettes transparentes et non retirées : elles restent
      le nom accessible des épingles (un aria-label différerait du texte visible sur ordinateur). */

@@ -50,6 +50,8 @@ const onScroll = () => {
     const menuOpen = header.hasAttribute('data-menu')
     header.toggleAttribute('data-hidden', !menuOpen && y > 400 && y > lastY + 2)
     if (y < lastY - 2) header.removeAttribute('data-hidden')
+    // Pour la barre de filtres collante (global.css), sans :has() (BRW-13)
+    document.body.classList.toggle('header-hidden', header.hasAttribute('data-hidden'))
   }
   lastY = y
 }
@@ -82,6 +84,7 @@ if (header && toggle && menu) {
     behind().forEach((el) => el.toggleAttribute('inert', open))
     header.toggleAttribute('data-menu', open)
     header.removeAttribute('data-hidden')
+    document.body.classList.remove('header-hidden')
     toggle.setAttribute('aria-expanded', String(open))
     menu.setAttribute('aria-hidden', String(!open))
     toggle.querySelector('[data-label-open]')?.toggleAttribute('hidden', open)

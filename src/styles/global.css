@@ -659,12 +659,13 @@
   }
 }
 
-/* Barre de filtres collante sous l’en-tête visible */
-body:has(#site-header:not([data-hidden])) [data-filters] {
+/* Barre de filtres collante sous l’en-tête visible. Classe posée par site.ts plutôt que :has(),
+   absent de Firefox avant 121 (ESR 115) : la barre y glissait sous l’en-tête (BRW-13) */
+body:not(.header-hidden) [data-filters] {
   top: 4rem;
 }
 @media (min-width: 768px) {
-  body:has(#site-header:not([data-hidden])) [data-filters] {
+  body:not(.header-hidden) [data-filters] {
     top: 5rem;
   }
 }

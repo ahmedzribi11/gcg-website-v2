@@ -25,6 +25,8 @@ const related = all
   .sort((a, b) => Number(b.sector === p.sector) - Number(a.sector === p.sector) || Math.abs(a.number - p.number) - Math.abs(b.number - p.number))
   .slice(0, 3)
 const og = await ogImage(p.images[0].src)
+/** Photo source trop petite pour un plein écran d’ordinateur (VIS-02). */
+const narrowCover = p.images[0].src.width < 1400
 const sheet: [string, string | undefined, string?][] = [
   [t('project.location'), p.location],
   [t('project.period'), p.period],
@@ -85,7 +87,10 @@ const crumbs = breadcrumbLd(
 <Base lang={lang} alt={altPath} translated={p.hasEn} title={p.name} docTitle={docTitle} description={desc} ogTitle={p.name} ogDescription={ogDescription} image={og.src} imageWidth={og.width} imageHeight={og.height} header="overlay" jsonLd={[crumbs]}>
   <article>
     <header class="relative flex h-[86svh] min-h-[560px] items-end overflow-hidden bg-ink-3 force-dark">
-      <ProjectImage image={p.images[0]} sizes="100vw" priority class="absolute inset-0 block h-full w-full" vt={`p-${p.slug}`} lang={lang} kindClass="bottom-4 right-5" />
+      {/* Couverture plus étroite que 1 400 px : affichée au plus à sa largeur réelle, centrée sur le fond sombre, au lieu d’être étirée sur tout l’écran (VIS-02) */}
+      <div class="absolute inset-0 mx-auto w-full" style={narrowCover ? `max-width:${p.images[0].src.width}px` : undefined}>
+        <ProjectImage image={p.images[0]} sizes={narrowCover ? `(min-width: ${p.images[0].src.width}px) ${p.images[0].src.width}px, 100vw` : '100vw'} priority class="absolute inset-0 block h-full w-full" vt={`p-${p.slug}`} lang={lang} kindClass="bottom-4 right-5" />
+      </div>
       <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-ink/50"></div>
       <div class="wrap relative pb-12 md:pb-16">
         <nav class="meta flex flex-wrap items-center gap-2 text-bone/70" aria-label={lang === 'fr' ? 'Fil d’Ariane' : 'Breadcrumb'} data-reveal>

@@ -299,5 +299,7 @@ const toggleTheme = () => {
   }
   applyThemeUi()
 }
-themeBtns.forEach((b) => b.addEventListener('click', toggleTheme))
+// Sans color-mix() (iOS 16.0–16.1), le mode clair serait illisible : pas de bouton (même test que Base.astro, BRW-11)
+if (CSS.supports('color', 'color-mix(in srgb, red, red)')) themeBtns.forEach((b) => b.addEventListener('click', toggleTheme))
+else themeBtns.forEach((b) => b.remove())
 applyThemeUi()

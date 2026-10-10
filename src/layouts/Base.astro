@@ -54,9 +54,10 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <script is:inline>
-      // Mode clair choisi par le visiteur, appliqué avant l’affichage (pas de flash)
+      // Mode clair choisi par le visiteur, appliqué avant l’affichage (pas de flash).
+      // Sans color-mix() (iOS 16.0–16.1), ses couleurs semi-transparentes retomberaient sur celles du mode sombre : ignoré (BRW-11)
       try {
-        if (localStorage.getItem('gcg-theme') === 'light') document.documentElement.dataset.theme = 'light'
+        if (localStorage.getItem('gcg-theme') === 'light' && CSS.supports('color', 'color-mix(in srgb, red, red)')) document.documentElement.dataset.theme = 'light'
       } catch {
         // stockage indisponible : mode sombre par défaut
       }

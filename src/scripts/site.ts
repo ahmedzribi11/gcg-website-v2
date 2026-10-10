@@ -1,3 +1,5 @@
+import { pageName, track } from './analytics'
+
 const html = document.documentElement
 export const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -20,6 +22,33 @@ document.addEventListener('click', (e) => {
   e.preventDefault()
   scrollToEl(el)
 })
+
+/* ─── Mesure des contacts (UX-04) ─────────────────────────────────────── */
+/*
+ * Un seul écouteur pour tous les points de contact : WhatsApp, appel, e-mail, téléchargement (documents et QR codes),
+ * avec la page et la zone du clic (en-tête, menu, barre mobile, pied de page ou contenu), pour savoir quelle page
+ * amène des contacts. Sans Umami (PUBLIC_UMAMI_WEBSITE_ID vide), track() ne fait rien et rien n’est envoyé.
+ */
+const CONTACT_POINTS = 'a[href^="https://wa.me/"], a[href^="tel:"], a[href^="mailto:"], a[download], [data-qr-download]'
+const AREAS: [string, string][] = [
+  ['#mobile-bar', 'barre'],
+  ['#mobile-menu', 'menu'],
+  ['#site-header', 'en-tete'],
+  ['body > footer', 'pied'],
+]
+document.addEventListener(
+  'click',
+  (e) => {
+    // Clics réels seulement : le téléchargement d’un QR code clique lui-même un lien <a download> (scripts/qr.ts)
+    const el = e.isTrusted ? (e.target as Element | null)?.closest?.(CONTACT_POINTS) : null
+    if (!el) return
+    const href = el.getAttribute('href') ?? ''
+    const event = href.startsWith('https://wa.me/') ? 'whatsapp' : href.startsWith('tel:') ? 'phone' : href.startsWith('mailto:') ? 'email' : 'download'
+    const place = AREAS.find(([sel]) => el.closest(sel))?.[1] ?? 'page'
+    track(event, { from: pageName(), place })
+  },
+  { capture: true },
+)
 
 /* ─── En-tête, barre mobile ───────────────────────────────────────────── */
 const header = document.getElementById('site-header')

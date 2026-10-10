@@ -234,7 +234,7 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
   })} />
 <script>
   import '../scripts/qr'
-  import { track } from '../scripts/analytics'
+  import { pageName, track } from '../scripts/analytics'
 
   const form = document.getElementById('brief') as HTMLFormElement
   const data = JSON.parse(document.getElementById('brief-data')!.textContent!) as {
@@ -326,7 +326,7 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
       })
       const body = (await res.json().catch(() => ({}))) as { ok?: boolean; code?: string }
       if (!res.ok || !body.ok) throw new Error(body.code || String(res.status))
-      track('form')
+      track('form', { from: pageName(), place: 'formulaire' })
       form.hidden = true
       const ok = document.querySelector<HTMLElement>('[data-success]')!
       ok.hidden = false
@@ -373,9 +373,10 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
     ].filter(Boolean)
     const text = lines.join('\n')
     if (via === 'whatsapp' && form.dataset.wa) {
-      track('whatsapp', { from: 'form' })
+      track('whatsapp', { from: pageName(), place: 'formulaire' })
       window.open(`https://wa.me/${form.dataset.wa}?text=${encodeURIComponent(text)}`, '_blank', 'noopener')
     } else if (form.dataset.email) {
+      track('email', { from: pageName(), place: 'formulaire' })
       location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(L.subject)}&body=${encodeURIComponent(text)}`
     }
   })

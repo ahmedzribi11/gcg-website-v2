@@ -95,7 +95,7 @@ const UI = {
     'site.name': 'General Constructor Group',
     'site.tagline': 'Construction & ingénierie en Côte d’Ivoire depuis 2016',
     'site.description':
-      'General Constructor Group (GCG) conçoit et construit villas, résidences, immeubles, hôtels, usines et infrastructures en Côte d’Ivoire depuis 2016, de l’étude à la remise des clés.',
+      'General Constructor Group (GCG) conçoit et construit villas, résidences, immeubles, hôtels, usines et infrastructures en Côte d’Ivoire depuis 2016.',
 
     'nav.services': 'Expertises',
     'nav.projects': 'Réalisations',
@@ -131,7 +131,7 @@ const UI = {
     'hero.we': 'Nous construisons',
 
     'intro.label': 'GCG en bref',
-    'intro.statement': 'Une seule équipe, de la première étude à la remise des clés.',
+    'intro.statement': 'Une seule équipe, des études au chantier.',
     'intro.text':
       'General Constructor Group est une entreprise de construction et d’ingénierie installée en Côte d’Ivoire depuis 2016. Nous accompagnons nos clients sur l’ensemble de leurs projets : études de faisabilité, études architecturales et techniques, construction, aménagement.',
     'fig.since': 'Création',
@@ -172,7 +172,7 @@ const UI = {
     'audiences.title': 'Votre projet, notre métier.',
 
     'method.label': 'Méthode',
-    'method.title': 'De l’étude à la remise des clés.',
+    'method.title': 'Six étapes, un seul interlocuteur.',
 
     'final.kicker': 'Un projet à construire ?',
     'final.title': 'Parlons-en.',
@@ -254,7 +254,7 @@ const UI = {
     'invest.label': 'Investir',
     'invest.title': 'Investir en Côte d’Ivoire, construire avec GCG.',
     'invest.lead':
-      'Promoteurs, investisseurs, groupes hôteliers, particuliers de la diaspora : vous apportez le projet, GCG le conçoit et le construit, de l’étude à la remise des clés.',
+      'Promoteurs, investisseurs, groupes hôteliers, particuliers de la diaspora : vous apportez le projet, GCG le conçoit et le construit.',
     'invest.why': 'Pourquoi GCG',
     'invest.proof': 'Ils nous ont confié',
 
@@ -378,7 +378,7 @@ const UI = {
     'site.name': 'General Constructor Group',
     'site.tagline': 'Construction & engineering in Côte d’Ivoire since 2016',
     'site.description':
-      'General Constructor Group (GCG) designs and builds villas, residences, buildings, hotels, factories and infrastructure in Côte d’Ivoire since 2016, from the first study to the keys.',
+      'General Constructor Group (GCG) has designed and built villas, residences, buildings, hotels, factories and infrastructure in Côte d’Ivoire since 2016.',
 
     'nav.services': 'Services',
     'nav.projects': 'Projects',
@@ -408,13 +408,13 @@ const UI = {
     'hero.title2': 'imagine,',
     'hero.title3': 'we build.',
     'hero.lead':
-      'From the feasibility study to the keys, one team of engineers, architects and technicians for your villas, residences, hotels, buildings, factories and infrastructure.',
+      'From feasibility study to handover: one team of engineers, architects and technicians for your villas, residences, hotels, buildings, factories and infrastructure.',
     'hero.skip': 'Skip intro',
     'hero.scroll': 'Scroll',
     'hero.we': 'We build',
 
     'intro.label': 'GCG at a glance',
-    'intro.statement': 'One team, from the first study to the keys.',
+    'intro.statement': 'One team, from design to construction.',
     'intro.text':
       'General Constructor Group is a construction and engineering company based in Côte d’Ivoire since 2016. We support our clients across their whole project: feasibility studies, architectural and engineering design, construction and fit-out.',
     'fig.since': 'Founded',
@@ -454,7 +454,7 @@ const UI = {
     'audiences.title': 'Your project, our craft.',
 
     'method.label': 'Method',
-    'method.title': 'From the first study to the keys.',
+    'method.title': 'Six stages, one point of contact.',
 
     'final.kicker': 'A project to build?',
     'final.title': 'Let’s talk.',
@@ -536,7 +536,7 @@ const UI = {
     'invest.label': 'Invest',
     'invest.title': 'Invest in Côte d’Ivoire, build with GCG.',
     'invest.lead':
-      'Developers, investors, hotel groups, members of the diaspora: you bring the project, GCG designs and builds it, from the first study to the keys.',
+      'Developers, investors, hotel groups, members of the diaspora: you bring the project and GCG designs and builds it.',
     'invest.why': 'Why GCG',
     'invest.proof': 'Projects entrusted to us',
 

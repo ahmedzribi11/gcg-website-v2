@@ -48,8 +48,8 @@ export const audiences: Audience[] = [
     id: 'diaspora',
     title: { fr: 'Particuliers & diaspora', en: 'Private owners & diaspora' },
     text: {
-      fr: 'Vous vivez à Abidjan, à Paris ou ailleurs et voulez construire en Côte d’Ivoire : villa, résidence familiale, immeuble de rapport. Un seul interlocuteur, de l’étude à la remise des clés.',
-      en: 'You live in Abidjan, Paris or elsewhere and want to build in Côte d’Ivoire: a villa, a family residence, a rental building. One partner, from the first study to the keys.',
+      fr: 'Vous vivez à Abidjan, à Paris ou ailleurs et voulez construire en Côte d’Ivoire : villa, résidence familiale, immeuble de rapport. Un seul interlocuteur, de l’étude au chantier.',
+      en: 'You live in Abidjan, Paris or elsewhere and want to build in Côte d’Ivoire: a villa, a family residence, a rental building. One point of contact, from design to construction.',
     },
     points: {
       fr: ['Villas haut standing avec piscine', 'Projets clé en main', 'Plans d’architecte sur mesure'],

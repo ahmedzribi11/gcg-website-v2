@@ -175,8 +175,8 @@ export const services: Service[] = [
     slug: { fr: 'cle-en-main', en: 'turnkey' },
     title: { fr: 'Clé en main', en: 'Turnkey' },
     short: {
-      fr: 'Un seul interlocuteur, de l’étude à la remise des clés.',
-      en: 'One partner, from the first study to the keys.',
+      fr: 'Un seul interlocuteur, des études à l’ouvrage prêt à l’usage.',
+      en: 'One point of contact, from design to a building ready for use.',
     },
     intro: {
       fr: 'Hôtel, villa, immeuble, salle polyvalente : GCG prend en charge l’ensemble du projet. Études, conception, construction et aménagement sont menés par la même équipe, jusqu’à la remise d’un ouvrage prêt à l’usage.',
@@ -184,7 +184,7 @@ export const services: Service[] = [
     },
     includes: {
       fr: ['Études et conception', 'Construction', 'Aménagement et équipement', 'Remise des clés'],
-      en: ['Engineering studies and design', 'Construction', 'Fit-out and equipment', 'Handover of the keys'],
+      en: ['Engineering studies and design', 'Construction', 'Fit-out and equipment', 'Handover'],
     },
   },
 ]

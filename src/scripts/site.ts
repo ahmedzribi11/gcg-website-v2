@@ -285,9 +285,8 @@ export { gsap, ScrollTrigger }
 const themeBtns = document.querySelectorAll<HTMLElement>('[data-theme-toggle]')
 const applyThemeUi = () => {
   const light = document.documentElement.dataset.theme === 'light'
-  const fr = document.documentElement.lang === 'fr'
+  // Bouton de l’en-tête : libellé fixe « Mode clair », l’état est porté par aria-pressed (A11Y-02)
   document.getElementById('theme-toggle')?.setAttribute('aria-pressed', String(light))
-  document.getElementById('theme-toggle')?.setAttribute('aria-label', light ? (fr ? 'Mode sombre' : 'Dark mode') : fr ? 'Mode clair' : 'Light mode')
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', light ? '#f4f0e6' : '#070c09')
 }
 const toggleTheme = () => {

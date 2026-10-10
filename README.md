@@ -4,7 +4,7 @@ Site commercial de General Constructor Group (construction et ingénierie, Côte
 projets, expertises, organisation, contact, outils de partage par QR code et documents pour les appels
 d’offres. Bilingue français / anglais.
 
-Astro (site statique multipage) · React Three Fiber et GSAP (ouverture 3D de l’accueil) · Tailwind CSS v4 · Decap CMS (espace de gestion) · fonctions serveur pour le formulaire et la
+Astro (site statique multipage) · React Three Fiber et GSAP (ouverture 3D de l’accueil, sur ordinateur) · Tailwind CSS v4 · Decap CMS (espace de gestion) · fonctions serveur pour le formulaire et la
 connexion à l’espace de gestion.
 
 > **Dépôt de référence (décision du 9 octobre 2026).** `ahmedzribi11/gcg-website-v2` est le seul dépôt

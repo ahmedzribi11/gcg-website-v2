@@ -23,7 +23,7 @@ const featured = await getFeatured(lang)
 ---
 
 <Base lang={lang} alt={route('home', lang === 'fr' ? 'en' : 'fr')} header="overlay" organization docTitle={lang === 'fr' ? 'GCG · Construction & ingénierie en Côte d’Ivoire' : 'GCG · Construction & engineering in Côte d’Ivoire'}>
-  <Hero lang={lang} />
+  <Hero lang={lang} projects={projects} />
   <Marquee lang={lang} projects={projects} />
   <Intro lang={lang} projects={projects} />
   <Services lang={lang} projects={projects} />

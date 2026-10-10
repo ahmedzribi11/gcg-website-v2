@@ -207,6 +207,23 @@ export function publishedOnly(projects: Project[], slugs: string[]): Project[] {
   })
 }
 
+/**
+ * Projet réceptionné montré en photo dans l’ouverture de l’accueil sur téléphone et dans l’aperçu de lien par
+ * défaut (VIS-01, PERF-01, SHR-09) : Hôtel Calao Korhogo, seul projet au statut « réceptionné » aujourd’hui.
+ */
+export const SHOWCASE = 'hotel-calao-korhogo'
+
+/**
+ * Photo réelle (jamais une perspective ni un plan, UX-02) du projet vitrine, s’il est publié et réceptionné.
+ * Projet cité nommément (la légende donne son nom) : pas de remplacement s’il manque, l’ouverture garde alors
+ * son fond sans photo et les aperçus de liens l’image par défaut.
+ */
+export function showcasePhoto(projects: Project[]): { project: Project; image: ProjectImageData } | undefined {
+  const [project] = publishedOnly(projects, [SHOWCASE])
+  const image = project?.status === 'receptionne' ? project.images.find((im) => im.kind === 'photo') : undefined
+  return project && image ? { project, image } : undefined
+}
+
 /** Image d’illustration ([projet, rang de la photo]) : expertise, section, public, avec remplacement si besoin. */
 export function coverImage(projects: Project[], [slug, i]: [string, number]): ProjectImageData | undefined {
   const p = illustration(projects, slug)

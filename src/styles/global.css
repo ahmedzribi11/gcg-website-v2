@@ -332,14 +332,6 @@
     transform: translateY(110%);
   }
 }
-@keyframes cue {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(200%);
-  }
-}
 /* Fond de l’ouverture de l’accueil : dégradés fixes (ni flou ni mouvement) ; plus de brouillard ailleurs (SLOP-10, PERF-07) */
 .css-fog {
   position: absolute;

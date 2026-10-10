@@ -121,14 +121,12 @@ const UI = {
     'cta.share': 'Partager',
 
     'hero.kicker': 'Construction & ingénierie · Côte d’Ivoire · depuis 2016',
-    'hero.title1': 'Ce que vous',
-    'hero.title2': 'imaginez,',
-    'hero.title3': 'nous le construisons.',
-    'hero.lead':
-      'De l’étude de faisabilité à la remise des clés, une seule équipe d’ingénieurs, d’architectes et de techniciens pour vos villas, résidences, hôtels, immeubles, usines et infrastructures.',
+    // La phrase de Zouhair, montée de la section Types (SLOP-18) ; title3 est en accent
+    'hero.title1': 'Vous voulez un hôtel ?',
+    'hero.title2': 'Nous construisons',
+    'hero.title3': 'un hôtel.',
+    'hero.lead': 'Villas, résidences, hôtels, usines : une seule équipe, de l’étude à la remise des clés.',
     'hero.skip': 'Passer l’intro',
-    'hero.scroll': 'Défiler',
-    'hero.we': 'Nous construisons',
 
     'intro.label': 'GCG en bref',
     'intro.statement': 'Une seule équipe, des études au chantier.',
@@ -150,7 +148,7 @@ const UI = {
     'services.turnkey': 'Le clé en main',
 
     'types.label': 'Tout type de projet',
-    'types.title': 'Vous voulez un hôtel ? Nous construisons un hôtel.',
+    'types.title': 'Villas, hôtels, usines, routes.',
     'types.lead':
       'Villas, résidences, immeubles, hôtels, bars de plage, spas, usines, salles polyvalentes, voiries : le portfolio de GCG couvre presque tout ce qui se construit.',
 
@@ -418,14 +416,11 @@ const UI = {
     'cta.share': 'Share',
 
     'hero.kicker': 'Construction & engineering · Côte d’Ivoire · since 2016',
-    'hero.title1': 'What you',
-    'hero.title2': 'imagine,',
-    'hero.title3': 'we build.',
-    'hero.lead':
-      'From feasibility study to handover: one team of engineers, architects and technicians for your villas, residences, hotels, buildings, factories and infrastructure.',
+    'hero.title1': 'You want a hotel?',
+    'hero.title2': 'We build',
+    'hero.title3': 'a hotel.',
+    'hero.lead': 'Villas, residences, hotels, factories: one team, from design to handover.',
     'hero.skip': 'Skip intro',
-    'hero.scroll': 'Scroll',
-    'hero.we': 'We build',
 
     'intro.label': 'GCG at a glance',
     'intro.statement': 'One team, from design to construction.',
@@ -446,7 +441,7 @@ const UI = {
     'services.turnkey': 'Turnkey',
 
     'types.label': 'Every kind of project',
-    'types.title': 'You want a hotel? We build a hotel.',
+    'types.title': 'Villas, hotels, factories, roads.',
     'types.lead':
       'Villas, residences, buildings, hotels, beach bars, spas, factories, multipurpose halls, roads: GCG’s portfolio covers almost everything that gets built.',
 

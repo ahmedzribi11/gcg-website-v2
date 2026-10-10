@@ -1,7 +1,8 @@
 /**
  * Typographie française appliquée à toutes les pages construites (EDIT-04, I18N-07) :
  * - espace insécable avant « : » et espace fine insécable avant ; ! ? et à l’intérieur des guillemets « » ;
- * - apostrophe typographique ’ ; espace fine insécable entre milliers ; insécable avant les unités et après N°.
+ * - apostrophe typographique ’ ; espace fine insécable entre milliers ; insécable avant les unités et après N° ;
+ * - dans le texte, l’espace manquante est ajoutée (« Statut: » → « Statut : », « Pourquoi? » → « Pourquoi ? ») (CONT-08).
  * Seuls le texte visible et les attributs lisibles (alt, title, aria-label, placeholder, content) sont modifiés ;
  * scripts, styles et zones de saisie sont laissés intacts. L’apostrophe est aussi corrigée sur les pages anglaises.
  */
@@ -20,8 +21,18 @@ function fr(text) {
     .replace(/«[ \u00a0\u202f]*/g, `«${NBSP}`)
     .replace(/[ \u00a0\u202f]*»/g, `${NBSP}»`)
     .replace(/(\d)[ \u00a0](?=\d{3}(?!\d))/g, `$1${NNBSP}`)
-    .replace(/(\d)[ ](?=(m²|ha|km|m|FCFA|%)(?![\p{L}\d]))/gu, `$1${NBSP}`)
+    .replace(/(\d)[ ](?=(m²|hectares?|ha|km|m|kVA|kW|t|FCFA|%)(?![\p{L}\d]))/gu, `$1${NBSP}`)
     .replace(/N° /g, `N°${NBSP}`)
+}
+/**
+ * Texte visible seulement : espace ajoutée quand elle manque avant « : » (après une lettre, « » » ou « ) ») ou avant
+ * « ; ! ? » (après une lettre, un chiffre, « » » ou « ) »), la ponctuation étant suivie d’un blanc ou de la fin du texte. Les heures (17:30), les adresses (https://, ?q=) et
+ * les entités HTML (&amp;) ne sont pas touchées (CONT-08).
+ */
+function frText(text) {
+  return fr(text)
+    .replace(/(?<=[\p{L}»)])(?<!&#?[\da-z]+):(?=\s|$)/giu, `${NBSP}:`)
+    .replace(/(?<=[\p{L}\d»)])(?<!&#?[\da-z]+)([;!?])(?=\s|$)/giu, `${NNBSP}$1`)
 }
 function en(text) {
   return text.replace(/(\p{L})'(?=\p{L})/gu, '$1’')
@@ -32,10 +43,11 @@ const SKIP = /^<(script|style|textarea|pre|code)\b/i
 
 export function typeset(html, lang) {
   const fix = lang === 'fr' ? fr : en
+  const fixText = lang === 'fr' ? frText : en
   const parts = html.split(/(<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<textarea[\s\S]*?<\/textarea>|<[^>]+>)/i)
   return parts
     .map((part, i) => {
-      if (i % 2 === 0) return fix(part)
+      if (i % 2 === 0) return fixText(part)
       if (SKIP.test(part) || part.startsWith('<!')) return part
       if (/^<meta\b/i.test(part) && !/(name|property)="(description|og:title|og:description|twitter:title|twitter:description)"/.test(part)) return part
       return part.replace(ATTRS, (_, a, v, b) => a + fix(v) + b)

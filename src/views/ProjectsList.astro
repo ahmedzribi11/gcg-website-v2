@@ -166,7 +166,8 @@ const delivered = n((p) => p.status === 'receptionne')
       }
     }
     count.textContent = String(visible)
-    countLabel.textContent = visible > 1 ? many : one
+    // « 0 projet » en français, « 0 projects » en anglais (CONT-08)
+    countLabel.textContent = (lang === 'en' ? visible === 1 : visible <= 1) ? one : many
     empty.hidden = visible > 0
     document.querySelectorAll<HTMLElement>('[data-filter]').forEach((b) => {
       b.setAttribute('aria-pressed', String(state[b.dataset.filter as Key] === b.dataset.value))

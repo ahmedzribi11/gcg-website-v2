@@ -145,7 +145,6 @@ const UI = {
     'hero.lead': 'Villas, résidences, hôtels, usines : une seule équipe, de l’étude à la remise des clés.',
     'hero.skip': 'Passer l’intro',
 
-    'intro.label': 'GCG en bref',
     'intro.statement': 'Une seule équipe, des études au chantier.',
     'intro.text':
       'General Constructor Group est une entreprise de construction et d’ingénierie installée en Côte d’Ivoire depuis 2016. Études de faisabilité, études architecturales et techniques, construction, aménagement : nous prenons en charge tout le projet ou une partie.',
@@ -172,15 +171,12 @@ const UI = {
     'types.lead':
       'Villas, résidences, immeubles, hôtels, bars de plage, spas, usines, salles polyvalentes, voiries : le portfolio de GCG couvre presque tout ce qui se construit.',
 
-    'featured.label': 'Réalisations phares',
     'featured.title': 'Ce que nous construisons et concevons.',
     'featured.skip': 'Passer les projets',
 
-    'scale.label': 'À toutes les échelles',
     'scale.title': 'De la villa au grand programme.',
     'scale.lead': 'Une villa pour un particulier ou des dizaines de villas pour un programme immobilier : la même équipe d’études et de chantier.',
 
-    'presence.label': 'Présence',
     'presence.title': 'De Korhogo à Assinie.',
     'presence.lead': 'Des projets dans six localités de Côte d’Ivoire, d’Abidjan au littoral et jusqu’au nord du pays.',
     'presence.ambition': 'Siège à Abidjan, Marcory Zone 4.',
@@ -188,10 +184,8 @@ const UI = {
     'audiences.label': 'Nos clients',
     'audiences.title': 'Pour qui nous construisons.',
 
-    'method.label': 'Méthode',
     'method.title': 'Six étapes, un seul interlocuteur.',
 
-    'final.kicker': 'Un projet à construire ?',
     'final.title': 'Parlons-en.',
     'final.lead': 'Décrivez-nous votre projet : villa, résidence, hôtel, immeuble, usine. Nous revenons vers vous.',
 
@@ -243,7 +237,6 @@ const UI = {
     'project.qr': 'QR code du projet',
     'project.qrHelp': 'À imprimer sur le panneau de chantier : les passants découvrent le projet et GCG.',
     'project.poster': 'Affiche de chantier',
-    'project.similar': 'Un projet similaire ?',
     'project.similarText': 'Parlez-nous de votre projet : nous l’étudions avec vous.',
     'project.related': 'Projets similaires',
     'project.prev': 'Projet précédent',
@@ -268,15 +261,12 @@ const UI = {
     'about.quotes': 'Ce que disent nos clients',
     'about.clients': 'Clients et partenaires',
     'about.credentials': 'Assurances et agréments',
-    'about.history.label': 'Historique',
     'about.history.title': 'Dix ans de projets, année après année.',
     'about.history.lead': 'Chaque année, les projets du portfolio démarrés ou étudiés par GCG.',
-    'about.org.label': 'Organisation',
     'about.org.title': 'Plus de 20 collaborateurs, quatre pôles, un pilotage centralisé.',
     'about.org.poles': 'Pôles opérationnels',
     'about.org.skills': 'Domaines de compétences',
     'about.org.staff': 'collaborateurs',
-    'about.means.label': 'Moyens matériels',
     'about.means.title': 'Engins, équipements de chantier et véhicules.',
     'about.means.lead': 'Un parc d’engins, d’équipements de chantier et de véhicules pour maîtriser l’exécution.',
     'about.means.units': 'unités',
@@ -285,7 +275,6 @@ const UI = {
     'invest.label': 'Pour qui',
     'invest.title': 'Investir en Côte d’Ivoire, construire avec GCG.',
     'invest.lead': 'Promoteurs, investisseurs, groupes hôteliers, particuliers de la diaspora : vous apportez le projet, GCG le conçoit et le construit.',
-    'invest.why': 'Pourquoi GCG',
     'invest.proof': 'Ils nous ont confié',
     'invest.remote': 'Construire depuis l’étranger',
 
@@ -428,7 +417,6 @@ const UI = {
     'hero.lead': 'Villas, residences, hotels, factories: one team, from design to handover.',
     'hero.skip': 'Skip intro',
 
-    'intro.label': 'GCG at a glance',
     'intro.statement': 'One team, from design to construction.',
     'intro.text':
       'General Constructor Group is a construction and engineering company that has worked in Côte d’Ivoire since 2016. Feasibility studies, architectural and engineering design, construction, fit-out: we take on the whole project or any part of it.',
@@ -454,15 +442,12 @@ const UI = {
     'types.lead':
       'Villas, residences, buildings, hotels, beach bars, spas, factories, multipurpose halls, roads: GCG’s portfolio covers almost everything that gets built.',
 
-    'featured.label': 'Flagship projects',
     'featured.title': 'What we build and design.',
     'featured.skip': 'Skip projects',
 
-    'scale.label': 'At every scale',
     'scale.title': 'From single villas to large programmes.',
     'scale.lead': 'A single villa for a private owner or dozens of villas for a housing programme: the same design and site team.',
 
-    'presence.label': 'Presence',
     'presence.title': 'From Korhogo to Assinie.',
     'presence.lead': 'Projects in six locations across Côte d’Ivoire, from Abidjan to the coast and the north of the country.',
     'presence.ambition': 'Head office in Abidjan, Marcory Zone 4.',
@@ -470,10 +455,8 @@ const UI = {
     'audiences.label': 'Our clients',
     'audiences.title': 'Who we build for.',
 
-    'method.label': 'Method',
     'method.title': 'Six stages, one point of contact.',
 
-    'final.kicker': 'A project to build?',
     'final.title': 'Let’s talk.',
     'final.lead': 'Tell us about your project: villa, residence, hotel, building, factory. We will get back to you.',
 
@@ -525,7 +508,6 @@ const UI = {
     'project.qr': 'Project QR code',
     'project.qrHelp': 'Print it on the site hoarding: passers-by discover the project and GCG.',
     'project.poster': 'Site poster',
-    'project.similar': 'A similar project?',
     'project.similarText': 'Tell us about your project: we will study it with you.',
     'project.related': 'Similar projects',
     'project.prev': 'Previous project',
@@ -550,15 +532,12 @@ const UI = {
     'about.quotes': 'What our clients say',
     'about.clients': 'Clients and partners',
     'about.credentials': 'Insurance and licences',
-    'about.history.label': 'History',
     'about.history.title': 'Ten years of projects, year after year.',
     'about.history.lead': 'Each year, the portfolio projects started or designed by GCG.',
-    'about.org.label': 'Organisation',
     'about.org.title': 'More than 20 staff, four divisions, central management.',
     'about.org.poles': 'Operating divisions',
     'about.org.skills': 'Areas of expertise',
     'about.org.staff': 'staff',
-    'about.means.label': 'Equipment',
     'about.means.title': 'Machinery, site equipment and vehicles.',
     'about.means.lead': 'A fleet of machinery, site equipment and vehicles so we control the work on site.',
     'about.means.units': 'units',
@@ -567,7 +546,6 @@ const UI = {
     'invest.label': 'Who we build for',
     'invest.title': 'Invest in Côte d’Ivoire, build with GCG.',
     'invest.lead': 'Developers, investors, hotel groups, members of the diaspora: you bring the project and GCG designs and builds it.',
-    'invest.why': 'Why GCG',
     'invest.proof': 'Projects entrusted to us',
     'invest.remote': 'Building from abroad',
 

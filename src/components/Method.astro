@@ -31,7 +31,7 @@ const paper = tone === 'paper'
 
 <section class:list={['relative overflow-hidden py-24 md:py-40', paper ? 'theme-paper' : 'bg-ink']} aria-labelledby="method-title">
   <div class="wrap">
-    <SectionHead id="method-title" label={t('method.label')} title={t('method.title')} size="md" tone={paper ? 'paper' : 'dark'} />
+    <SectionHead id="method-title" title={t('method.title')} size="md" tone={paper ? 'paper' : 'dark'} />
 
     <div class="method relative mt-16 md:mt-28">
       <span class:list={['method-rail absolute bottom-2 left-[5px] top-2 w-px lg:bottom-auto lg:left-0 lg:right-0 lg:top-[5px] lg:h-px lg:w-auto', paper ? 'bg-brand/40' : 'bg-gold/50']} aria-hidden="true"></span>

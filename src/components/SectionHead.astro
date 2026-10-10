@@ -1,6 +1,5 @@
 ---
 interface Props {
-  label: string
   title: string
   lead?: string
   as?: 'h1' | 'h2'
@@ -9,7 +8,7 @@ interface Props {
   tone?: 'dark' | 'paper' | 'brand'
   id?: string
 }
-const { label, title, lead, as: Tag = 'h2', size = 'lg', align = 'split', tone = 'dark', id } = Astro.props
+const { title, lead, as: Tag = 'h2', size = 'lg', align = 'split', tone = 'dark', id } = Astro.props
 // Minimum plafonné en vw : avec un texte agrandi (taille de police du navigateur), le titre ne dépasse pas l’écran (BRW-10)
 const sizeClass = {
   xl: 'text-[clamp(min(2.8rem,14vw),8.5vw,9rem)]',
@@ -17,14 +16,12 @@ const sizeClass = {
   md: 'text-[clamp(min(2rem,10vw),4.2vw,4.2rem)]',
 }[size]
 const leadColor = tone === 'paper' ? 'text-brand/70' : 'text-bone/65'
-const labelColor = tone === 'paper' ? 'text-brand/75' : tone === 'brand' ? 'text-gold' : 'text-gold'
 ---
 
 <div class:list={['grid gap-8', align === 'split' && lead ? 'md:grid-cols-12 md:items-end' : '']}>
   <div class:list={[align === 'split' && lead ? 'md:col-span-8' : '']}>
-    <p class:list={['label', labelColor]}>{label}</p>
-    <!-- Titre en texte simple, une seule police, sans mot en italique (SLOP-02) -->
-    <Tag id={id} class:list={['display mt-7 max-w-[18ch]', sizeClass]}>{title}</Tag>
+    <!-- Titre en texte simple, une seule police, sans mot en italique (SLOP-02), sans surtitre (SLOP-03) -->
+    <Tag id={id} class:list={['display max-w-[18ch]', sizeClass]}>{title}</Tag>
   </div>
   {
     lead && (

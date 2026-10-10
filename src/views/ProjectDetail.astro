@@ -273,8 +273,7 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
     <section class="no-print theme-paper py-20 md:py-28">
       <div class="wrap flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
         <div>
-          <p class="label text-brand/75">{t('project.similar')}</p>
-          <h2 class="display mt-6 max-w-[18ch] text-[clamp(2.2rem,5vw,5rem)]">{t('project.similarText')}</h2>
+          <h2 class="display max-w-[18ch] text-[clamp(2.2rem,5vw,5rem)]">{t('project.similarText')}</h2>
         </div>
         <div class="flex flex-wrap gap-3">
           {wa && <a href={wa} target="_blank" rel="noopener" class="btn btn-dark"><Icon name="whatsapp" size={20} /> WhatsApp</a>}

@@ -1,11 +1,10 @@
 ---
 interface Props {
-  label: string
   title: string
   lead?: string
   tone?: 'dark' | 'paper' | 'brand'
 }
-const { label, title, lead, tone = 'dark' } = Astro.props
+const { title, lead, tone = 'dark' } = Astro.props
 const theme = tone === 'paper' ? 'theme-paper' : tone === 'brand' ? 'theme-brand' : 'bg-ink'
 ---
 
@@ -14,8 +13,8 @@ const theme = tone === 'paper' ? 'theme-paper' : tone === 'brand' ? 'theme-brand
   <div class="blueprint pointer-events-none absolute inset-0" aria-hidden="true"></div>
   <div class="wrap relative grid gap-10 md:grid-cols-12 md:items-end">
     <div class="md:col-span-8">
-      <p class:list={['label', tone === 'paper' ? 'text-brand/75' : 'text-gold']} data-intro style="--d:.05s">{label}</p>
-      <h1 class="display mt-8 text-[clamp(min(2.8rem,14vw),8vw,8.4rem)]" data-intro="rise" style="--d:.1s">{title}</h1>
+      <!-- Pas de surtitre : il répétait le menu (SLOP-03) -->
+      <h1 class="display text-[clamp(min(2.8rem,14vw),8vw,8.4rem)]" data-intro="rise" style="--d:.1s">{title}</h1>
     </div>
     {
       lead && (

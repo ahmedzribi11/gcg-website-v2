@@ -29,7 +29,7 @@ const delivered = n((p) => p.status === 'receptionne')
 ---
 
 <Base lang={lang} alt={route('projects', lang === 'fr' ? 'en' : 'fr')} title={t('projects.label')} description={t('projects.lead')}>
-  <PageHeader label={t('projects.label')} title={t('projects.title')} lead={t('projects.lead')}>
+  <PageHeader title={t('projects.title')} lead={t('projects.lead')}>
     <div class="flex flex-wrap items-center gap-x-8 gap-y-3 md:col-span-12" data-intro="rise" style="--d:.3s">
       <p class="meta text-bone/70"><span class="text-gold">{projects.length}</span> {t('projects.count.many')}</p>
       <p class="meta text-bone/70"><span class="text-gold">{ongoing}</span> {STATUS_LABELS.execution[lang]}</p>

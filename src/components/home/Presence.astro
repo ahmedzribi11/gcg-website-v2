@@ -18,8 +18,7 @@ const order = (Object.keys(counts) as CityId[]).sort((a, b) => counts[b] - count
 <section class="theme-paper relative overflow-hidden py-24 md:py-40" aria-labelledby="presence-title">
   <div class="wrap grid gap-16 md:grid-cols-12 md:items-center">
     <div class="md:col-span-5">
-      <p class="label text-brand/75">{t('presence.label')}</p>
-      <h2 id="presence-title" class="display mt-8 text-[clamp(2.6rem,6vw,6.4rem)]">{t('presence.title')}</h2>
+      <h2 id="presence-title" class="display text-[clamp(2.6rem,6vw,6.4rem)]">{t('presence.title')}</h2>
       <p class="mt-8 max-w-md text-lg leading-relaxed text-brand/70">{t('presence.lead')}</p>
       <ul class="mt-10 border-t border-brand/15">
         {

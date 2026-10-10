@@ -144,7 +144,8 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
           </label>
           <label class="block md:col-span-2">
             <span class="meta text-mist">{t('contact.form.message')}</span>
-            <textarea name="message" rows="4" class={`${field} resize-y`}></textarea>
+            <!-- Même limite que le serveur (server/contact.js) : le corps de la demande reste sous 20 Ko (SEC-02) -->
+            <textarea name="message" rows="4" maxlength="3000" class={`${field} resize-y`}></textarea>
           </label>
           <input type="hidden" name="ref" />
           <input type="hidden" name="lang" value={lang} />

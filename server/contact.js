@@ -6,6 +6,7 @@
  * - Champ piège + délai minimal de saisie + limite de 5 envois par adresse IP et par 10 minutes.
  * - Retours à la ligne supprimés de toute valeur utilisée dans les en-têtes (injection d’en-têtes).
  * - Aucun fichier joint accepté (SEC-06) ; rien n’est stocké : la demande est envoyée par e-mail (Resend).
+ * - Corps limité à 20 Ko et forcément un objet ; appel à Resend abandonné après 8 s (SEC-02).
  * - Sans JavaScript : redirection vers la page de remerciement ou de nouveau vers le formulaire.
  *
  * Variables d’environnement : RESEND_API_KEY, CONTACT_TO (adresses séparées par des virgules),
@@ -18,6 +19,8 @@ const PROFILES = ['particulier', 'diaspora', 'investisseur', 'hotelier', 'entrep
 const LIMIT = 5
 const WINDOW = 10 * 60 * 1000
 const MIN_FILL_MS = 3000
+const MAX_BODY = 20 * 1024
+const RESEND_TIMEOUT_MS = 8000
 const hits = new Map()
 
 const oneLine = (v, max) =>
@@ -92,6 +95,8 @@ function emailBody(d, origin) {
 async function send(d, env, origin) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
+    // Resend qui ne répond pas : la fonction s’arrête au lieu d’attendre la limite de l’hébergeur
+    signal: AbortSignal.timeout(RESEND_TIMEOUT_MS),
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json; charset=utf-8' },
     body: JSON.stringify({
       from: env.CONTACT_FROM,
@@ -126,12 +131,18 @@ export async function handleContact(request, env, ip) {
   }
 
   if (ctype.includes('multipart/form-data')) return reply(415, 'unsupported')
+  // Corps de plus de 20 Ko (annoncé ou réel) : refusé sans être interprété (SEC-02)
+  if (Number(request.headers.get('content-length')) > MAX_BODY) return reply(413, 'invalid')
   let raw
   try {
-    raw = ctype.includes('application/json') ? await request.json() : Object.fromEntries(new URLSearchParams(await request.text()))
+    const body = await request.text()
+    if (new TextEncoder().encode(body).length > MAX_BODY) return reply(413, 'invalid')
+    raw = ctype.includes('application/json') ? JSON.parse(body) : Object.fromEntries(new URLSearchParams(body))
   } catch {
     return reply(400, 'invalid')
   }
+  // JSON valide mais pas un objet (null, tableau, texte, nombre) : refusé au lieu d’une erreur 500
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return reply(400, 'invalid')
   lang = raw.lang === 'en' ? 'en' : 'fr'
 
   // Robots : champ piège rempli ou envoi trop rapide → réponse « succès » sans envoi

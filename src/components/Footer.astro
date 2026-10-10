@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro'
 import { route, useT, type Lang } from '../i18n'
-import { contact, documents, socials, whatsappLink } from '../lib/settings'
+import { contact, documents, phoneCountry, socials, whatsappLink } from '../lib/settings'
 import legal from '../data/legal.json'
 
 interface Props {
@@ -23,6 +23,8 @@ const useful = [
 ]
 const owner = legal.legalName || legal.tradeName
 const wa = whatsappLink(t('contact.form.intro'))
+/** Deux numéros : le pays de chacun, comme sur la page Contact (UX-05). */
+const country = (e164: string) => (contact.phone && contact.phone2 ? phoneCountry(e164, lang) : '')
 ---
 
 <footer class="no-print relative overflow-hidden border-t border-line bg-ink pb-[calc(7rem+env(safe-area-inset-bottom))] pt-20 md:pb-12 md:pt-28">
@@ -65,8 +67,8 @@ const wa = whatsappLink(t('contact.form.intro'))
         <p class="meta text-mist">{t('contact.direct')}</p>
         <ul class="mt-5 space-y-3 text-[0.9375rem] text-bone/75">
           {wa && <li><a href={wa} target="_blank" rel="noopener" class="link-line hover:text-bone">WhatsApp</a></li>}
-          {contact.phone && <li><a href={contact.phoneHref} class="link-line hover:text-bone">{contact.phone}</a></li>}
-          {contact.phone2 && <li><a href={contact.phone2Href} class="link-line hover:text-bone">{contact.phone2}</a></li>}
+          {contact.phone && <li><a href={contact.phoneHref} class="link-line hover:text-bone">{contact.phone}{country(contact.phoneE164) && <>{' '}<span class="whitespace-nowrap text-bone/60">· {country(contact.phoneE164)}</span></>}</a></li>}
+          {contact.phone2 && <li><a href={contact.phone2Href} class="link-line hover:text-bone">{contact.phone2}{country(contact.phone2E164) && <>{' '}<span class="whitespace-nowrap text-bone/60">· {country(contact.phone2E164)}</span></>}</a></li>}
           {contact.email && <li><a href={`mailto:${contact.email}`} class="link-line break-all hover:text-bone">{contact.email}</a></li>}
           {contact.address && <li>{contact.mapsUrl ? <a href={contact.mapsUrl} target="_blank" rel="noopener" class="link-line text-bone/60 hover:text-bone">{contact.address}</a> : <span class="text-bone/60">{contact.address}</span>}</li>}
           <li><a href={route('contact', lang)} class="link-line hover:text-bone">{t('cta.project')}</a></li>

@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro'
 import Icon from '../components/Icon.astro'
 import { qrPath, route, useT, type Lang, type UIKey } from '../i18n'
 import { getProjects } from '../lib/projects'
-import { contact, hasContact, socials, whatsappLink } from '../lib/settings'
+import { contact, hasContact, phoneCountry, socials, whatsappLink } from '../lib/settings'
 import { contactFormEnabled } from '../lib/env'
 
 interface Props {
@@ -18,8 +18,7 @@ const types = ['villa', 'residence', 'immeuble', 'hotel', 'commerce', 'industrie
 const wa = whatsappLink()
 const hours = fr ? contact.hours : contact.hours_en || contact.hours
 /** Deux numéros : le pays précise lequel appeler (« Téléphone · Côte d’Ivoire »). */
-const country = (e164: string) =>
-  e164.startsWith('+225') ? 'Côte d’Ivoire' : e164.startsWith('+216') ? (fr ? 'Tunisie' : 'Tunisia') : ''
+const country = (e164: string) => phoneCountry(e164, lang)
 const phones = [
   { label: contact.phone, href: contact.phoneHref, e164: contact.phoneE164 },
   { label: contact.phone2, href: contact.phone2Href, e164: contact.phone2E164 },

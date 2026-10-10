@@ -106,6 +106,11 @@ export function documentLabel(d: DocumentFile, lang: 'fr' | 'en') {
   return ['PDF', language, size, when].filter(Boolean).join(' · ')
 }
 
+/** Pays d’un numéro, pour distinguer les deux numéros (Contact, pied de page) : « Côte d’Ivoire », « Tunisie ». */
+export function phoneCountry(e164: string, lang: 'fr' | 'en') {
+  return e164.startsWith('+225') ? 'Côte d’Ivoire' : e164.startsWith('+216') ? (lang === 'fr' ? 'Tunisie' : 'Tunisia') : ''
+}
+
 export const hasContact = Boolean(contact.phone || contact.phone2 || contact.whatsapp || contact.email)
 
 export const whatsappLink = (text?: string) =>

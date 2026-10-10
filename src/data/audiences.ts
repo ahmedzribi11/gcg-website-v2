@@ -11,6 +11,11 @@ export interface Audience {
   proof: string[]
   /** Projet dont la photo illustre le panneau. */
   image: string
+  /**
+   * Étapes « Construire depuis l’étranger » (COPY-06), affichées sur la page Investir seulement si la liste
+   * n’est pas vide. N’y écrire que le déroulé confirmé par GCG.
+   */
+  steps?: { title: L<string>; text: L<string> }[]
 }
 
 /**
@@ -62,6 +67,10 @@ export const audiences: Audience[] = [
     more: { fr: 'Voir les villas et résidences', en: 'See villas and residences' },
     proof: ['villa-de-luxe-assouinde', 'residence-privee-beverly-hills', 'villa-palmerais', 'villa-de-maitre-beverly-hills'],
     image: 'residence-privee-beverly-hills',
+    // Vide en attendant GCG (COPY-06) : premier contact, étude et devis, suivi à distance (photos ou vidéos par étape,
+    // visites pour le client), paiement par étape, contrat et garantie après la remise des clés, décalage horaire et
+    // disponibilité sur WhatsApp. Ne rien ajouter que GCG n’ait confirmé.
+    steps: [],
   },
   {
     id: 'entreprises',

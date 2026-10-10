@@ -263,6 +263,7 @@ const UI = {
     'invest.lead': 'Promoteurs, investisseurs, groupes hôteliers, particuliers de la diaspora : vous apportez le projet, GCG le conçoit et le construit.',
     'invest.why': 'Pourquoi GCG',
     'invest.proof': 'Ils nous ont confié',
+    'invest.remote': 'Construire depuis l’étranger',
 
     'contact.label': 'Contact',
     'contact.title': 'Parlons de votre projet.',
@@ -552,6 +553,7 @@ const UI = {
     'invest.lead': 'Developers, investors, hotel groups, members of the diaspora: you bring the project and GCG designs and builds it.',
     'invest.why': 'Why GCG',
     'invest.proof': 'Projects entrusted to us',
+    'invest.remote': 'Building from abroad',
 
     'contact.label': 'Contact',
     'contact.title': 'Let’s talk about your project.',

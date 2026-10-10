@@ -23,7 +23,7 @@ const og = cover ? await ogImage(cover.src) : undefined
 const others = services.filter((x) => x.id !== s.id)
 ---
 
-<Base lang={lang} alt={servicePath(s.slug[other], other)} title={s.title[lang]} docTitle={`${s.title[lang]} · ${lang === 'fr' ? 'expertise GCG, Côte d’Ivoire' : 'GCG service, Côte d’Ivoire'}`} description={s.intro[lang]} image={og?.src} imageWidth={og?.width} imageHeight={og?.height} header="overlay" jsonLd={[breadcrumbLd([{ name: t('nav.home'), path: route('home', lang) }, { name: t('services.label'), path: route('services', lang) }, { name: s.title[lang], path: servicePath(s.slug[lang], lang) }], Astro.site)]}>
+<Base lang={lang} alt={servicePath(s.slug[other], other)} title={s.title[lang]} docTitle={`${s.title[lang]} · ${lang === 'fr' ? 'expertise GCG, Côte d’Ivoire' : 'GCG service, Côte d’Ivoire'}`} description={s.short[lang]} image={og?.src} imageWidth={og?.width} imageHeight={og?.height} header="overlay" jsonLd={[breadcrumbLd([{ name: t('nav.home'), path: route('home', lang) }, { name: t('services.label'), path: route('services', lang) }, { name: s.title[lang], path: servicePath(s.slug[lang], lang) }], Astro.site)]}>
   <header class="relative flex min-h-[78svh] items-end overflow-hidden bg-ink-3 force-dark">
     <ProjectImage image={cover} alt="" sizes="100vw" priority class="absolute inset-0 block h-full w-full" lang={lang} kindClass="bottom-4 right-5" />
     <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/45"></div>

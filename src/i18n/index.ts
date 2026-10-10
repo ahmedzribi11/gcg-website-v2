@@ -301,7 +301,7 @@ const UI = {
     'share.label': 'Partager',
     'share.title': 'GCG en un scan.',
     'share.lead':
-      'Un QR code pour chaque support : panneaux de chantier, cartes de visite, brochures, réseaux sociaux. Pour un chantier, imprimez l’affiche et fixez-la sur le panneau.',
+      'Un QR code pour chaque support : panneaux de chantier, cartes de visite, brochures. Pour un chantier, imprimez l’affiche et fixez-la sur le panneau.',
     'share.site': 'Site GCG',
     'share.siteHelp': 'Mène à la page d’accueil.',
     'share.download': 'Télécharger (SVG)',
@@ -582,8 +582,7 @@ const UI = {
 
     'share.label': 'Share',
     'share.title': 'GCG in one scan.',
-    'share.lead':
-      'A QR code for every medium: site hoardings, business cards, brochures, social media. For a building site, print the poster and fix it to the hoarding.',
+    'share.lead': 'A QR code for every medium: site hoardings, business cards, brochures. For a building site, print the poster and fix it to the hoarding.',
     'share.site': 'GCG website',
     'share.siteHelp': 'Opens the home page.',
     'share.download': 'Download (SVG)',

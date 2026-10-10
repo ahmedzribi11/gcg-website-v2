@@ -63,14 +63,14 @@ const phoneLabel = contact.phone && contact.whatsapp === contact.phone ? `${t('c
     <article id="poster" class="poster flex flex-col bg-brand text-bone" data-format="A4">
       <header class="flex items-start justify-between px-[12mm] pt-[10mm]">
         <img src="/brand/gcg-logo-gold.png" alt="GCG — General Constructor Group CI" width="720" height="218" class="h-[13mm] w-auto" />
-        <p class="text-right font-mono text-[2.6mm] uppercase leading-relaxed tracking-[0.25em] text-gold">{fr ? 'Construction & ingénierie' : 'Construction & engineering'}<br />{fr ? 'Depuis 2016' : 'Since 2016'}</p>
+        <p class="text-right tabular-nums text-[2.6mm] uppercase leading-relaxed tracking-[0.25em] text-gold">{fr ? 'Construction & ingénierie' : 'Construction & engineering'}<br />{fr ? 'Depuis 2016' : 'Since 2016'}</p>
       </header>
 
       <figure class="relative mx-[12mm] mt-[6mm] min-h-0 flex-1 overflow-hidden">
         <img id="poster-img" src={general.src} alt="" class="h-full w-full object-cover" />
         <figcaption id="poster-caption" class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-[6mm] pb-[4mm] pt-[12mm]">
           <p id="poster-name" class="text-[8mm] font-light leading-none tracking-[-0.03em]">{fr ? 'Nos réalisations' : 'Our projects'}</p>
-          <p id="poster-place" class="mt-[2mm] font-mono text-[2.6mm] uppercase tracking-[0.2em] text-gold">{fr ? 'Villas · Résidences · Hôtels · Immeubles · Usines' : 'Villas · Residences · Hotels · Buildings · Factories'}</p>
+          <p id="poster-place" class="mt-[2mm] tabular-nums text-[2.6mm] uppercase tracking-[0.2em] text-gold">{fr ? 'Villas · Résidences · Hôtels · Immeubles · Usines' : 'Villas · Residences · Hotels · Buildings · Factories'}</p>
         </figcaption>
       </figure>
 
@@ -83,7 +83,7 @@ const phoneLabel = contact.phone && contact.whatsapp === contact.phone ? `${t('c
         <div id="poster-qr" data-qr={qrPath(lang, 'panneau')} data-qr-ecc="Q"></div>
       </div>
       <!-- Adresse lisible et téléphone pour qui ne scanne pas (SHR-05, SHR-11) ; l’adresse /q reste dans le code -->
-      <p class="mt-[4mm] flex flex-wrap items-baseline justify-center gap-x-[6mm] gap-y-[1mm] px-[12mm] pb-[7mm] font-mono text-[3.4mm] tracking-[0.1em] text-bone">
+      <p class="mt-[4mm] flex flex-wrap items-baseline justify-center gap-x-[6mm] gap-y-[1mm] px-[12mm] pb-[7mm] tabular-nums text-[3.4mm] tracking-[0.1em] text-bone">
         <span id="poster-url" data-qr-text={route('home', lang)}></span>
         {
           phone && (

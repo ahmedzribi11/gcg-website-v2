@@ -18,19 +18,19 @@ const wa = whatsappLink(t('contact.form.intro'))
     <div class="mt-12 flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
       {
         wa && (
-          <a href={wa} target="_blank" rel="noopener" class="btn btn-gold !min-h-16 !px-9">
+          <a href={wa} target="_blank" rel="noopener" class="btn btn-gold !min-h-16 max-w-full whitespace-normal text-center !px-9">
             <Icon name="whatsapp" size={20} /> {t('cta.whatsapp')}
           </a>
         )
       }
       {
         contact.phoneHref && (
-          <a href={contact.phoneHref} class="btn btn-line !min-h-16 !px-9">
+          <a href={contact.phoneHref} class="btn btn-line !min-h-16 max-w-full whitespace-normal text-center !px-9">
             <Icon name="phone" size={20} /> {contact.phone}
           </a>
         )
       }
-      <a href={route('contact', lang)} class:list={['btn !min-h-16 !px-9', wa ? 'btn-line' : 'btn-gold']}>
+      <a href={route('contact', lang)} class:list={['btn !min-h-16 max-w-full whitespace-normal text-center !px-9', wa ? 'btn-line' : 'btn-gold']}>
         {t('cta.project')} <Icon name="arrow" size={20} />
       </a>
     </div>

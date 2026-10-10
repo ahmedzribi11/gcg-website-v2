@@ -1,10 +1,9 @@
 ---
-import '@fontsource-variable/geist'
-import '@fontsource-variable/geist-mono'
+// Une seule famille, Archivo, avec ses axes graisse et chasse : texte en largeur normale, titres en étroit (SLOP-01)
+import '@fontsource-variable/archivo/wdth.css'
 import '../styles/global.css'
 import { getImage } from 'astro:assets'
-import geistUrl from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url'
-import geistMonoUrl from '@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2?url'
+import archivoUrl from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import MobileBar from '../components/MobileBar.astro'
@@ -84,10 +83,9 @@ const share = image ? { src: image, width: imageWidth ?? 1200, height: imageHeig
         </>
       )
     }
-    <!-- Polices chargées en priorité : pas de saut de mise en page à leur arrivée. Les deux servent sur chaque page
-         (texte et libellés) ; plus de police d’accent en italique (SLOP-02, SLOP-21) -->
-    <link rel="preload" href={geistUrl} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={geistMonoUrl} as="font" type="font/woff2" crossorigin />
+    <!-- Police chargée en priorité : pas de saut de mise en page à son arrivée. Un seul fichier, Archivo, sert sur
+         chaque page (texte, titres, libellés) ; plus de police d’accent ni de chasse fixe (SLOP-01, SLOP-02, SLOP-21) -->
+    <link rel="preload" href={archivoUrl} as="font" type="font/woff2" crossorigin />
     <!-- Barre du navigateur sombre dans les deux thèmes : l’en-tête juste dessous reste sombre (BRW-09) -->
     <meta name="theme-color" content="#070c09" />
     <!-- Sombre sauf choix « Mode clair » du visiteur, qui passe color-scheme à light (global.css) -->

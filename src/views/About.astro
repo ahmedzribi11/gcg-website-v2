@@ -254,7 +254,7 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
                 {g.items.map((it) => (
                   <li class="flex items-baseline justify-between gap-6 border-b border-line py-3.5">
                     <span class="text-base text-bone/85">{it.name}</span>
-                    <span class="font-mono text-sm text-gold">{it.qty}</span>
+                    <span class="tabular-nums text-sm text-gold">{it.qty}</span>
                   </li>
                 ))}
               </ul>
@@ -271,7 +271,7 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
               vehicles.map((v) => (
                 <li class="flex items-baseline justify-between gap-6 border-b border-line py-3.5">
                   <span class="text-base text-bone/85">{v.name[lang]}</span>
-                  <span class="font-mono text-sm text-gold">{v.qty}</span>
+                  <span class="tabular-nums text-sm text-gold">{v.qty}</span>
                 </li>
               ))
             }

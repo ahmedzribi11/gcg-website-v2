@@ -157,7 +157,7 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
                   {p.typologies.map((ty) => (
                     <tr class="border-b border-line">
                       <td class="py-5 text-lg md:text-xl">{ty.name}</td>
-                      <td class="py-5 text-right font-mono text-sm text-gold">{ty.surface}</td>
+                      <td class="py-5 text-right tabular-nums text-sm text-gold">{ty.surface}</td>
                     </tr>
                   ))}
                 </tbody>

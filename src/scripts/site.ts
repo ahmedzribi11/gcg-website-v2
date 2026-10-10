@@ -287,7 +287,6 @@ const applyThemeUi = () => {
   const light = document.documentElement.dataset.theme === 'light'
   // Bouton de l’en-tête : libellé fixe « Mode clair », l’état est porté par aria-pressed (A11Y-02)
   document.getElementById('theme-toggle')?.setAttribute('aria-pressed', String(light))
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', light ? '#f4f0e6' : '#070c09')
 }
 const toggleTheme = () => {
   const light = document.documentElement.dataset.theme !== 'light'

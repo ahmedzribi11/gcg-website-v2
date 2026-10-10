@@ -678,6 +678,11 @@ body:has(#site-header:not([data-hidden])) [data-filters] {
    Les couleurs du site sont des variables : le mode clair les inverse. L’ouverture 3D, les grandes photos,
    l’en-tête, le menu plein écran, le pied de page et les sections vertes restent sombres (.force-dark).
    Le menu est hors de l’en-tête : sans cette liste, il deviendrait crème sous un en-tête aux couleurs claires (BRW-01). */
+/* Sombre par défaut, quelle que soit la préférence du système : contrôles natifs (listes, remplissage
+   automatique, correcteur) et couleurs système suivent le thème affiché (BRW-09) */
+:root {
+  color-scheme: dark;
+}
 :root[data-theme='light'] {
   color-scheme: light;
   --color-ink: #f4f0e6;

@@ -78,8 +78,10 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
     <link rel="preload" href={geistUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={geistMonoUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={serifItalicUrl} as="font" type="font/woff2" crossorigin />
+    <!-- Barre du navigateur sombre dans les deux thèmes : l’en-tête juste dessous reste sombre (BRW-09) -->
     <meta name="theme-color" content="#070c09" />
-    <meta name="color-scheme" content="dark light" />
+    <!-- Sombre sauf choix « Mode clair » du visiteur, qui passe color-scheme à light (global.css) -->
+    <meta name="color-scheme" content="dark" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

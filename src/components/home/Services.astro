@@ -14,6 +14,8 @@ const { lang, projects } = Astro.props
 const t = useT(lang)
 const img = (id: string) => coverImage(projects, services.find((s) => s.id === id)!.cover)
 const count = (id: string) => projects.filter((p) => p.services.includes(id as never)).length
+/** Nombre de projets affiché à partir de 5 seulement : « 2 projets » ne prouve rien (COPY-08). */
+const MIN_COUNT = 5
 ---
 
 <section id="expertises" class="relative py-24 md:py-40" aria-labelledby="services-title" data-preview-root>
@@ -35,7 +37,7 @@ const count = (id: string) => projects.filter((p) => p.services.includes(id as n
                 <span class="col-span-10 col-start-3 text-[0.875rem] leading-relaxed text-bone/55 md:col-span-4 md:col-start-auto">{s.short[lang]}</span>
                 <span class="col-span-12 flex items-center justify-between gap-3 md:col-span-2 md:justify-end">
                   <span class="meta text-mist md:hidden" />
-                  <span class="meta text-gold">{n} {n > 1 ? t('services.projects') : t('services.project')}</span>
+                  {n >= MIN_COUNT && <span class="meta text-gold">{n} {t('services.projects')}</span>}
                   <span class="flex h-10 w-10 items-center justify-center rounded-full border border-line transition-colors duration-500 group-hover:border-gold group-hover:bg-gold group-hover:text-brand"><Icon name="arrow-up-right" /></span>
                 </span>
               </a>

@@ -144,7 +144,6 @@ const UI = {
     'services.lead':
       'Un client peut venir pour une étude, un plan d’architecte ou un chantier complet : GCG intervient à chaque étape, ou sur l’ensemble du projet.',
     'services.projects': 'projets',
-    'services.project': 'projet',
     'services.includes': 'Ce que nous faisons',
     'services.related': 'Projets associés',
     'services.others': 'Nos autres expertises',
@@ -426,7 +425,6 @@ const UI = {
     'services.title': 'One stage or the whole project.',
     'services.lead': 'Clients come to us for a study, an architect’s design or a complete build: GCG works at any stage, or on the whole project.',
     'services.projects': 'projects',
-    'services.project': 'project',
     'services.includes': 'What we do',
     'services.related': 'Related projects',
     'services.others': 'Our other services',

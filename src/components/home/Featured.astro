@@ -39,7 +39,7 @@ Sans lui (animations réduites, pas de JS, téléphone) : liste verticale, tous 
               </div>
               <div data-slide-info class="flex flex-col justify-between md:col-span-4 md:py-2">
                 <div>
-                  <p class="meta text-gold">N° {pad(p.number)} · {pad(i + 1)}/{pad(featured.length)}</p>
+                  <p class="meta text-gold">{pad(i + 1)}/{pad(featured.length)}</p>
                   <h3 class:list={['display mt-4 text-balance transition-colors duration-500 group-hover:text-gold', p.name.length > 22 ? 'text-[clamp(2rem,3vw,3.4rem)]' : 'text-[clamp(2.2rem,4.2vw,4.6rem)]']}>{p.name}</h3>
                   <p class="mt-5 max-w-sm text-[0.9375rem] leading-relaxed text-bone/65">{p.composition}</p>
                 </div>

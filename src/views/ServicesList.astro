@@ -17,6 +17,8 @@ const { lang } = Astro.props
 const t = useT(lang)
 const projects = await getProjects(lang)
 const count = (id: string) => projects.filter((p) => p.services.includes(id as never)).length
+/** Nombre de projets affiché à partir de 5 seulement : « 2 projets » ne prouve rien (COPY-08). */
+const MIN_COUNT = 5
 ---
 
 <Base lang={lang} alt={route('services', lang === 'fr' ? 'en' : 'fr')} title={t('services.label')} description={t('services.lead')}>
@@ -37,7 +39,7 @@ const count = (id: string) => projects.filter((p) => p.services.includes(id as n
             </a>
             <div class:list={['flex flex-col justify-between md:col-span-6', flip ? 'md:order-1 md:col-start-1' : 'md:col-start-7']}>
               <div>
-                <p class="meta text-gold" data-reveal>{String(i + 1).padStart(2, '0')} · {n} {n > 1 ? t('services.projects') : t('services.project')}</p>
+                <p class="meta text-gold" data-reveal>{String(i + 1).padStart(2, '0')}{n >= MIN_COUNT && ` · ${n} ${t('services.projects')}`}</p>
                 <h2 class="display mt-5 text-[clamp(2.2rem,4.6vw,4.8rem)]" data-split>
                   {s.id === 'cle-en-main' ? <em class="serif text-gold">{s.title[lang]}</em> : s.title[lang]}
                 </h2>

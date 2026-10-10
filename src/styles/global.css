@@ -698,6 +698,14 @@ html {
 :root[data-theme='light'] [data-icon-moon] {
   display: block;
 }
+/* Variantes d’une image selon le thème (logo de la fiche projet, BRW-08) ; l’image masquée n’est pas chargée (loading="lazy") */
+.theme-light-only,
+:root[data-theme='light'] .theme-dark-only {
+  display: none;
+}
+:root[data-theme='light'] .theme-light-only {
+  display: block;
+}
 /* Mode clair : les textes très transparents du design sombre seraient trop pâles sur fond clair */
 :root[data-theme='light'] :is(.text-bone\/30, .text-bone\/40, .text-bone\/50, .text-bone\/55, .text-bone\/60, .text-bone\/65, .text-bone\/70) {
   color: color-mix(in srgb, var(--color-bone) 76%, transparent);

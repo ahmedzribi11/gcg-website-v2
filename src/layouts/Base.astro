@@ -75,7 +75,8 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
         </>
       )
     }
-    <!-- Polices chargées en priorité : pas de saut de mise en page à leur arrivée -->
+    <!-- Polices chargées en priorité : pas de saut de mise en page à leur arrivée. La police d’accent n’est gardée
+         que sur les pages qui l’affichent (integrations/font-preload.mjs, SLOP-21) -->
     <link rel="preload" href={geistUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={geistMonoUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={serifItalicUrl} as="font" type="font/woff2" crossorigin />

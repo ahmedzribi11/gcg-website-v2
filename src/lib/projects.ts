@@ -14,6 +14,8 @@ export interface Project {
   sector: ProjectEntry['data']['sector']
   city: ProjectEntry['data']['city']
   status?: ProjectEntry['data']['status']
+  /** Études ou conception seulement, sans travaux (CONT-12). */
+  designOnly: boolean
   location: string
   period: string
   /** Première année mentionnée dans la période (historique). */
@@ -74,6 +76,7 @@ export function localize(entry: ProjectEntry, lang: Lang): Project {
     sector: d.sector,
     city: d.city,
     status: d.status,
+    designOnly: d.designOnly,
     location: en ? (d.location_en ?? d.location) : d.location,
     period,
     year,

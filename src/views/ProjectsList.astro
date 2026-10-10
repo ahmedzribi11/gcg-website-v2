@@ -25,6 +25,7 @@ const groups = [
 ].map((g) => ({ ...g, items: g.items.filter((i) => i.n > 0) }))
 const ongoing = n((p) => p.status === 'execution')
 const studies = n((p) => p.status === 'etudes')
+const delivered = n((p) => p.status === 'receptionne')
 ---
 
 <Base lang={lang} alt={route('projects', lang === 'fr' ? 'en' : 'fr')} title={t('projects.label')} description={t('projects.lead')}>
@@ -33,6 +34,7 @@ const studies = n((p) => p.status === 'etudes')
       <p class="meta text-bone/70"><span class="text-gold">{projects.length}</span> {t('projects.count.many')}</p>
       <p class="meta text-bone/70"><span class="text-gold">{String(ongoing).padStart(2, '0')}</span> {STATUS_LABELS.execution[lang]}</p>
       <p class="meta text-bone/70"><span class="text-gold">{String(studies).padStart(2, '0')}</span> {STATUS_LABELS.etudes[lang]}</p>
+      {delivered > 0 && <p class="meta text-bone/70"><span class="text-gold">{String(delivered).padStart(2, '0')}</span> {STATUS_LABELS.receptionne[lang]}</p>}
       <a href={route('references', lang)} class="meta ml-auto inline-flex items-center gap-2 text-bone hover:text-gold"><Icon name="download" /> {t('projects.references')}</a>
     </div>
   </PageHeader>

@@ -76,7 +76,7 @@ const studies = projects.filter((p) => p.status === 'etudes').length
                     <td class="py-2.5 pr-3">{[p.surface, p.coveredSurface && `(${p.coveredSurface} ${fr ? 'couverts' : 'built'})`].filter(Boolean).join(' ')}</td>
                     <td class="py-2.5 pr-3">{p.composition}</td>
                     <td class="py-2.5 pr-3">{p.missions.join(' ; ')}</td>
-                    <td class="py-2.5">{p.status ? STATUS_LABELS[p.status][lang] : ''}</td>
+                    <td class="py-2.5">{p.status ? STATUS_LABELS[p.status][lang] : p.designOnly ? t('project.designOnly') : ''}</td>
                   </tr>
                 ))}
               </tbody>

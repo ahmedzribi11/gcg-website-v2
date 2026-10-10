@@ -47,6 +47,7 @@ années, statut) : en cas de doute, laisser vide.
 | Secteur, Ville | Listes fermées. Ville absente : demander à l’équipe de l’ajouter (elle apparaîtra sur la carte). |
 | Lieu, Période | Ce qui s’affiche : « Abidjan, Riviera Golf » ; « 2024 – 2025 ». |
 | Statut | En cours d’études, en cours d’exécution ou réceptionné. Vide si non confirmé. |
+| Mission d’études seulement | À cocher quand GCG n’a fait que des études, de la conception ou un dossier de permis, sans travaux : le projet porte la mention « Études uniquement » au lieu de passer pour un ouvrage construit par GCG. |
 | Résumé (français / anglais) | Une ou deux phrases, 300 caractères au plus. |
 | Missions GCG | Ce que GCG a réellement fait (études, gros œuvre…). Ne jamais revendiquer une conception faite par un autre. |
 | Expertises mobilisées | Le projet apparaît aussi sur la page de chaque expertise cochée. |

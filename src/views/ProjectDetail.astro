@@ -32,7 +32,7 @@ const sheet: [string, string | undefined, string?][] = [
   [t('project.terrain'), p.terrain],
   [t('project.covered'), p.coveredSurface],
   [t('project.sector'), SECTOR_LABELS[p.sector][lang], `secteur=${p.sector}`],
-  [t('project.status'), p.status ? STATUS_LABELS[p.status][lang] : undefined, p.status ? `statut=${p.status}` : undefined],
+  [t('project.status'), p.status ? STATUS_LABELS[p.status][lang] : p.designOnly ? t('project.designOnly') : undefined, p.status ? `statut=${p.status}` : undefined],
 ]
 const path = projectPath(p.slug, lang)
 /** Mise en page de la galerie : une grande image, deux petites, puis des rangées pleines. */
@@ -82,6 +82,7 @@ const crumbs = breadcrumbLd(
         <h1 class="display mt-6 max-w-[16ch] text-balance text-[clamp(min(2.8rem,14vw),8vw,8.8rem)]" data-split>{p.name}</h1>
         <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3" data-reveal style="--d:.3s">
           {p.status && <span class="pill" data-status={p.status}>{STATUS_LABELS[p.status][lang]}</span>}
+          {!p.status && p.designOnly && <span class="pill" data-scope="design">{t('project.designOnly')}</span>}
           <span class="flex items-center gap-2 text-[0.9375rem] text-bone/80"><Icon name="pin" size={16} class="text-gold" />{p.location}</span>
           <span class="flex items-center gap-2 text-[0.9375rem] text-bone/80"><Icon name="clock" size={16} class="text-gold" />{p.period}</span>
           {p.surface && <span class="text-[0.9375rem] text-bone/80">{p.surface}</span>}

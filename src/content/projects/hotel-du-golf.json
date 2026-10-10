@@ -6,6 +6,7 @@
   "city": "abidjan",
   "location": "Riviera Golf",
   "period": "2020",
+  "designOnly": true,
   "composition": "Complexe touristique.",
   "composition_en": "Tourist resort complex.",
   "missions": [

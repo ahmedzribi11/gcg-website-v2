@@ -97,6 +97,8 @@ const projects = defineCollection({
         period: z.string({ error: 'Période requise (ex. 2024 – 2025)' }),
         period_en: opt(z.string()),
         status: opt(z.enum(STATUSES, { error: 'Statut : choisir dans la liste ou laisser vide' })),
+        /** Missions d’études, de conception ou de permis seulement, sans travaux : mention « Études uniquement » (CONT-12). */
+        designOnly: z.preprocess(blank, z.boolean().default(false)),
         surface: opt(z.string()),
         terrain: opt(z.string()),
         coveredSurface: opt(z.string()),

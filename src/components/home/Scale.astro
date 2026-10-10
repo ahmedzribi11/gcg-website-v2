@@ -27,6 +27,7 @@ const shown = highlights(projects, 'scaleOrder')
                 <div class="flex items-center justify-between gap-4">
                   <span class="meta text-mist">{p.name}</span>
                   {p.status && <span class="pill" data-status={p.status}>{STATUS_SHORT[p.status][lang]}</span>}
+                  {!p.status && p.designOnly && <span class="pill" data-scope="design">{t('project.designOnly')}</span>}
                 </div>
                 <div>
                   <p class="flex flex-wrap items-baseline gap-x-3">

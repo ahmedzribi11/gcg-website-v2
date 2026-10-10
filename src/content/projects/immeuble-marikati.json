@@ -6,6 +6,7 @@
   "city": "abidjan",
   "location": "Vallon",
   "period": "2020",
+  "designOnly": true,
   "surface": "6 800 m²",
   "composition": "Bâtiment à usage bureautique et résidentiel.",
   "composition_en": "Mixed-use office and residential building.",

@@ -19,6 +19,7 @@ Elle est générée à partir du nom, en minuscules sans accents, et **ne change
 | `location`, `location_en` | texte | `location` oui | lieu affiché (quartier) |
 | `period`, `period_en` | texte | `period` oui | année ou intervalle ; l’année sert à la chronologie |
 | `status` | liste fermée | non | en cours d’exécution, en cours d’études, réceptionné — vide si non confirmé |
+| `designOnly` | booléen | non (défaut `false`) | missions d’études, de conception ou de permis seulement, sans travaux : sans statut, le projet porte la mention « Études uniquement » / « Design only » (CONT-12) |
 | `surface`, `terrain`, `coveredSurface` | texte | non | ex. « 2 500 m² » |
 | `composition`, `composition_en` | texte ≤ 300 caractères | FR oui ; EN si version anglaise validée | résumé |
 | `typologies` | liste {nom, surface} | non | |

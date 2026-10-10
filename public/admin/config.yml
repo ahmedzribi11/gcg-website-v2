@@ -114,6 +114,7 @@ collections:
           - { label: 'En cours d’exécution', value: execution }
           - { label: 'En cours d’études', value: etudes }
           - { label: 'Réceptionné', value: receptionne }
+      - { label: 'Mission d’études seulement', name: designOnly, widget: boolean, default: false, required: false, hint: 'Cocher si GCG n’a fait que des études, de la conception ou un dossier de permis, sans travaux. Le projet porte alors la mention « Études uniquement », pour ne pas passer pour un ouvrage construit par GCG.' }
       - { label: 'Surface', name: surface, widget: string, required: false, hint: 'Ex. : 2 500 m²' }
       - { label: 'Terrain', name: terrain, widget: string, required: false, hint: 'Ex. : 6 ha' }
       - { label: 'Surface couverte', name: coveredSurface, widget: string, required: false, hint: 'Ex. : 12 000 m²' }

@@ -6,6 +6,7 @@
   "city": "abidjan",
   "location": "Attoban",
   "period": "2021",
+  "designOnly": true,
   "surface": "7 800 m²",
   "composition": "Complexe de 3 bâtiments à usage bureautique et résidentiel.",
   "composition_en": "Complex of three mixed-use office and residential buildings.",

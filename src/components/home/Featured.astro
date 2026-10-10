@@ -34,6 +34,7 @@ Sans lui (animations réduites, pas de JS, téléphone) : liste verticale, tous 
                   <ProjectImage image={p.images[0]} sizes="(min-width: 768px) 55vw, 100vw" class="block h-full w-full" imgClass="h-full w-full object-cover transition-transform duration-[1.8s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" vt={`p-${p.slug}`} />
                 </div>
                 {p.status && <span class="pill absolute left-4 top-4" data-status={p.status}>{STATUS_SHORT[p.status][lang]}</span>}
+                {!p.status && p.designOnly && <span class="pill absolute left-4 top-4" data-scope="design">{t('project.designOnly')}</span>}
                 <ImageKind image={p.images[0]} lang={lang} class="bottom-4 right-4" />
               </div>
               <div data-slide-info class="flex flex-col justify-between md:col-span-4 md:py-2">

@@ -13,8 +13,10 @@ interface Props {
   transition?: boolean
   /** Masque le secteur (cartes étroites). */
   compact?: boolean
+  /** Première carte d’une liste (image principale sur téléphone) : chargée tout de suite, en priorité (PERF-04). */
+  priority?: boolean
 }
-const { project: p, lang, size = 'md', theme = 'dark', sizes = '(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw', transition = true, compact = false } = Astro.props
+const { project: p, lang, size = 'md', theme = 'dark', sizes = '(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw', transition = true, compact = false, priority = false } = Astro.props
 const href = projectPath(p.slug, lang)
 ---
 
@@ -32,6 +34,7 @@ const href = projectPath(p.slug, lang)
     <ProjectImage
       image={p.images[0]}
       sizes={sizes}
+      priority={priority}
       imgClass="h-full w-full object-cover transition-transform duration-[1.6s] ease-[var(--ease-out-expo)] group-hover:scale-[1.05]"
       class="block h-full w-full"
       vt={transition ? `p-${p.slug}` : undefined}

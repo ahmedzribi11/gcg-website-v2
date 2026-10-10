@@ -100,7 +100,7 @@ const studies = n((p) => p.status === 'etudes')
   <section class="wrap py-12 md:py-16" aria-label={t('projects.label')}>
     <h2 class="sr-only">{lang === 'fr' ? 'Liste des projets' : 'Project list'}</h2>
     <div data-panel="grid" class="grid gap-x-6 gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
-      {projects.map((p) => <ProjectCard project={p} lang={lang} />)}
+      {projects.map((p, i) => <ProjectCard project={p} lang={lang} priority={i === 0} />)}
     </div>
     <div data-empty hidden class="flex flex-col items-center gap-6 py-24 text-center">
       <p class="text-2xl font-light text-bone/70">{t('projects.empty')}</p>

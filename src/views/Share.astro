@@ -41,7 +41,7 @@ const home = route('home', lang)
     </article>
 
     <!-- Affiche -->
-    <a href={route('poster', lang)} class="group flex flex-col justify-between gap-8 border border-line bg-brand p-6 transition-colors hover:border-gold md:col-span-5 md:p-10" data-reveal style="--d:.1s">
+    <a href={route('poster', lang)} class="group flex flex-col justify-between gap-8 border border-line bg-brand p-6 transition-colors hover:border-gold md:col-span-5 md:p-10" data-reveal>
       <div class="flex items-start justify-between gap-6">
         <div>
           <p class="meta text-gold">{t('share.poster')}</p>
@@ -93,8 +93,8 @@ const home = route('home', lang)
   <!-- QR par projet -->
   <section class="wrap pb-28 md:pb-40" aria-labelledby="qr-projects">
     <div class="grid gap-6 border-t border-line pt-14 md:grid-cols-12 md:items-end">
-      <h2 id="qr-projects" class="display text-[clamp(2rem,4vw,4rem)] md:col-span-7" data-split>{t('share.projects')}</h2>
-      <p class="text-[0.9375rem] leading-relaxed text-bone/60 md:col-span-5" data-reveal>{t('share.projectsHelp')}</p>
+      <h2 id="qr-projects" class="display text-[clamp(2rem,4vw,4rem)] md:col-span-7">{t('share.projects')}</h2>
+      <p class="text-[0.9375rem] leading-relaxed text-bone/60 md:col-span-5">{t('share.projectsHelp')}</p>
     </div>
     <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {

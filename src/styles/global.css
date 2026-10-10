@@ -393,7 +393,6 @@
   .no-print,
   #site-header,
   #mobile-bar,
-  #cursor,
   footer,
   .btn,
   dialog,
@@ -417,21 +416,15 @@
     background: #fff !important;
     color: #000 !important;
   }
-  .grain::after {
-    display: none;
-  }
   body:not(.is-bare) .css-fog,
   body:not(.is-bare) [class*='bg-gradient'],
   body:not(.is-bare) [class*='bg-[radial'],
   body:not(.is-bare) canvas {
     display: none !important;
   }
-  [data-reveal],
-  [data-split],
-  [data-split] * {
+  [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
-    clip-path: none !important;
   }
   body:not(.is-bare) .border-line,
   body:not(.is-bare) [class*='border-line'],

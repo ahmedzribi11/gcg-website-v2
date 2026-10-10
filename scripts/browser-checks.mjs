@@ -70,7 +70,7 @@ for (const [mode, viewport] of [
     page.on('pageerror', onError)
     page.on('response', onResponse)
     await page.goto(BASE + path, { waitUntil: 'networkidle' })
-    await page.evaluate(() => document.querySelectorAll('[data-reveal],[data-split]').forEach((e) => e.classList.add('is-in')))
+    await page.evaluate(() => document.querySelectorAll('[data-reveal]').forEach((e) => e.classList.add('is-in')))
     await page.waitForTimeout(1200) // fin des transitions
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)
     if (overflow > 0) errs.push(`débordement horizontal de ${overflow} px`)

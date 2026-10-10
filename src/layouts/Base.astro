@@ -12,7 +12,8 @@ import Footer from '../components/Footer.astro'
 import MobileBar from '../components/MobileBar.astro'
 import { useT, type Lang } from '../i18n'
 import { isPreview, pagePath, umamiId, umamiSrc } from '../lib/env'
-import { organizationLd } from '../lib/seo'
+import { defaultOgImage, organizationLd } from '../lib/seo'
+import { getProjects, showcasePhoto } from '../lib/projects'
 
 interface Props {
   lang: Lang
@@ -22,9 +23,9 @@ interface Props {
   alt: string
   /** La page existe dans l’autre langue (sinon `alt` mène à une page voisine et aucun hreflang n’est annoncé). */
   translated?: boolean
-  /** URL (relative ou absolue) de l’image de partage. */
+  /** URL (relative ou absolue) de l’image de partage ; par défaut la photo du projet vitrine réceptionné (SHR-09). */
   image?: string
-  /** Dimensions réelles de l’image de partage (SHR-08) ; par défaut celles de /og-image.jpg. */
+  /** Dimensions réelles de l’image de partage (SHR-08), à donner avec `image`. */
   imageWidth?: number
   imageHeight?: number
   header?: 'overlay' | 'solid'
@@ -40,7 +41,7 @@ interface Props {
   ogDescription?: string
 }
 
-const { lang, title, description, alt, translated = true, image = '/og-image.jpg', imageWidth = 1200, imageHeight = 630, header = 'solid', noindex = false, bare = false, jsonLd = [], organization = false, docTitle, ogTitle, ogDescription } = Astro.props
+const { lang, title, description, alt, translated = true, image, imageWidth, imageHeight, header = 'solid', noindex = false, bare = false, jsonLd = [], organization = false, docTitle, ogTitle, ogDescription } = Astro.props
 const t = useT(lang)
 const brand = 'GCG Côte d’Ivoire'
 const fullTitle = docTitle ?? (title ? `${title} · ${brand}` : `${brand} · ${t('site.tagline')}`)
@@ -52,6 +53,7 @@ const frPath = lang === 'fr' ? path : alt
 const enPath = lang === 'en' ? path : alt
 const robots = noindex || isPreview ? 'noindex, nofollow' : ''
 const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
+const share = image ? { src: image, width: imageWidth ?? 1200, height: imageHeight ?? 630 } : defaultOgImage(showcasePhoto(await getProjects('fr')))
 ---
 
 <!doctype html>
@@ -102,9 +104,9 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
     <meta property="og:locale:alternate" content={lang === 'fr' ? 'en_GB' : 'fr_FR'} />
     <meta property="og:title" content={ogTitle ?? fullTitle} />
     <meta property="og:description" content={ogDescription ?? desc} />
-    <meta property="og:image" content={abs(image)} />
-    <meta property="og:image:width" content={String(imageWidth)} />
-    <meta property="og:image:height" content={String(imageHeight)} />
+    <meta property="og:image" content={abs(share.src)} />
+    <meta property="og:image:width" content={String(share.width)} />
+    <meta property="og:image:height" content={String(share.height)} />
     {site && <meta property="og:url" content={abs(path)} />}
     <meta name="twitter:card" content="summary_large_image" />
 

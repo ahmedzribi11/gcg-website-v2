@@ -46,7 +46,7 @@ années, statut) : en cas de doute, laisser vide.
 | Nom du projet | Nom exact, avec accents. Il sert à créer l’adresse de la page, qui ne changera plus. |
 | Secteur, Ville | Listes fermées. Ville absente : demander à l’équipe de l’ajouter (elle apparaîtra sur la carte). |
 | Lieu, Période | Ce qui s’affiche : « Abidjan, Riviera Golf » ; « 2024 – 2025 ». Pour un chantier en cours, saisir l’année de démarrage seule (« 2023 ») : le site affiche « Depuis 2023 ». |
-| Statut | En cours d’études, en cours d’exécution ou réceptionné. Vide si non confirmé. |
+| Statut | En cours d’études, en cours d’exécution ou réceptionné. Vide si non confirmé. Les chiffres clés de l’accueil comptent les projets réceptionnés et en chantier d’après ce champ. La première photo réelle de l’Hôtel Calao Korhogo (réceptionné) sert d’ouverture de l’accueil sur téléphone et d’aperçu des liens partagés : le projet à mettre en avant se change dans `SHOWCASE` (`src/lib/projects.ts`). |
 | Mission d’études seulement | À cocher quand GCG n’a fait que des études, de la conception ou un dossier de permis, sans travaux : le projet porte la mention « Études uniquement » au lieu de passer pour un ouvrage construit par GCG. |
 | Résumé (français / anglais) | Une ou deux phrases, 300 caractères au plus. |
 | Récit du projet | Facultatif. Trois paragraphes courts : « Le besoin » (la demande du client, ses contraintes), « Ce que GCG a fait », « Le résultat ». Seuls les paragraphes remplis s’affichent. N’écrire que des faits confirmés par GCG. |

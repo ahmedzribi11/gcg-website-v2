@@ -10,10 +10,24 @@ import { contact, socials } from './settings'
  * Les dimensions renvoyées sont celles du fichier produit, annoncées telles quelles dans og:image:width/height.
  */
 export async function ogImage(src: ImageMetadata) {
-  const width = Math.min(1200, src.width, Math.floor((src.height * 1200) / 630))
-  const height = Math.round((width * 630) / 1200)
+  const { width, height } = ogSize(src)
   const img = await getImage({ src, width, height, fit: 'cover', format: 'jpg', quality: 80 })
   return { src: img.src, width, height }
+}
+
+/** Taille d’une image de partage tirée de `src` : 1 200 × 630 au plus, au rapport 1,91:1, sans agrandissement. */
+export function ogSize(src: { width: number; height: number }) {
+  const width = Math.min(1200, src.width, Math.floor((src.height * 1200) / 630))
+  return { width, height: Math.round((width * 630) / 1200) }
+}
+
+/**
+ * Aperçu de lien par défaut (accueil, contact, listes…) : la photo du projet vitrine réceptionné avec le logo dans un
+ * coin (SHR-09), produite par src/pages/og/[name].jpg.ts. Projet non publié : l’ancienne carte au logo, /og-image.jpg.
+ */
+export const SHOWCASE_OG = '/og/accueil.jpg'
+export function defaultOgImage(showcase: { image: { src: ImageMetadata } } | undefined) {
+  return showcase ? { src: SHOWCASE_OG, ...ogSize(showcase.image.src) } : { src: '/og-image.jpg', width: 1200, height: 630 }
 }
 
 /**

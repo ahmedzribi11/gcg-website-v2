@@ -7,7 +7,7 @@ import { getService } from '../data/services'
 import { colon, qrPath, projectPath, route, SECTOR_LABELS, servicePath, STATUS_LABELS, useT, type Lang } from '../i18n'
 import { pad, type Project } from '../lib/projects'
 import { whatsappLink } from '../lib/settings'
-import { breadcrumbLd, ogImage } from '../lib/seo'
+import { breadcrumbLd, ogImage, webPageLd } from '../lib/seo'
 
 interface Props {
   lang: Lang
@@ -83,10 +83,12 @@ const crumbs = breadcrumbLd(
   ],
   Astro.site,
 )
+// Page du projet rattachée à l’entreprise par son identifiant (SEO-03)
+const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, image: og.src, lang }, Astro.site)] : []
 
 ---
 
-<Base lang={lang} alt={altPath} translated={p.hasEn} title={p.name} docTitle={docTitle} description={desc} ogTitle={p.name} ogDescription={ogDescription} image={og.src} imageWidth={og.width} imageHeight={og.height} header="overlay" jsonLd={[crumbs]}>
+<Base lang={lang} alt={altPath} translated={p.hasEn} title={p.name} docTitle={docTitle} description={desc} ogTitle={p.name} ogDescription={ogDescription} image={og.src} imageWidth={og.width} imageHeight={og.height} header="overlay" jsonLd={[crumbs, ...pageLd]}>
   <article>
     <header class="relative flex h-[86svh] min-h-[560px] items-end overflow-hidden bg-ink-3 force-dark">
       {/* Couverture plus étroite que 1 400 px : affichée au plus à sa largeur réelle, centrée sur le fond sombre, au lieu d’être étirée sur tout l’écran (VIS-02) */}

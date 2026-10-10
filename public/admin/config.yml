@@ -267,6 +267,24 @@ collections:
               - { label: 'Lien Google Maps', name: mapsUrl, widget: string, required: false, hint: 'Lien « Partager » de Google Maps. Ex. : https://maps.app.goo.gl/…' }
               - { label: Horaires, name: hours, widget: string, required: false, hint: 'Le fuseau (GMT, heure d’Abidjan) est ajouté automatiquement. Ex. : Lun – Ven, 8 h – 17 h' }
               - { label: 'Horaires en anglais', name: hours_en, widget: string, required: false, hint: 'Ex. : Mon – Fri, 8 am – 5 pm' }
+              - { label: 'Ouverture (pour Google)', name: opens, widget: string, required: false, pattern: ['^(([01]\d|2[0-3]):[0-5]\d)?$', 'Format 24 h : 08:30'], hint: 'Heure d’ouverture au format 24 h, identique à la fiche Google. Ex. : 08:30' }
+              - { label: 'Fermeture (pour Google)', name: closes, widget: string, required: false, pattern: ['^(([01]\d|2[0-3]):[0-5]\d)?$', 'Format 24 h : 17:30'], hint: 'Ex. : 17:30' }
+              - label: 'Jours d’ouverture (pour Google)'
+                name: days
+                widget: select
+                multiple: true
+                required: false
+                hint: 'Les horaires ne sont annoncés à Google que si les jours sont cochés, comme sur la fiche Google Business Profile.'
+                options:
+                  - { label: Lundi, value: Monday }
+                  - { label: Mardi, value: Tuesday }
+                  - { label: Mercredi, value: Wednesday }
+                  - { label: Jeudi, value: Thursday }
+                  - { label: Vendredi, value: Friday }
+                  - { label: Samedi, value: Saturday }
+                  - { label: Dimanche, value: Sunday }
+              - { label: 'Latitude du siège', name: latitude, widget: string, required: false, pattern: ['^(-?\d{1,2}[.,]\d{3,})?$', 'Nombre décimal, ex. 5.123456'], hint: 'Google Maps : clic droit sur le repère du siège, puis cliquer sur les coordonnées pour les copier ; la première valeur.' }
+              - { label: 'Longitude du siège', name: longitude, widget: string, required: false, pattern: ['^(-?\d{1,3}[.,]\d{3,})?$', 'Nombre décimal, ex. -4.123456'], hint: 'La seconde valeur des coordonnées copiées.' }
           - label: Réseaux sociaux
             name: social
             widget: object

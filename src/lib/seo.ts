@@ -30,14 +30,20 @@ export function defaultOgImage(showcase: { image: { src: ImageMetadata } } | und
   return showcase ? { src: SHOWCASE_OG, ...ogSize(showcase.image.src) } : { src: '/og-image.jpg', width: 1200, height: 630 }
 }
 
+/** Identifiant de l’entreprise dans les données structurées, le même sur toutes les pages (SEO-03). */
+export const orgId = (site: URL) => new URL('/#org', site).href
+
 /**
  * Données structurées de l’entreprise (schema.org GeneralContractor, sous-type d’Organization).
- * Seules les informations renseignées et visibles sur le site sont publiées.
+ * Seules les informations renseignées et visibles sur le site sont publiées. Elles doivent rester identiques à
+ * la fiche Google Business Profile (nom, adresse, téléphone, horaires : SEO-02, SEO-03).
+ * `extra.image` : photo réelle d’un projet livré (Base.astro).
  */
 export function organizationLd(lang: Lang, site: URL | undefined, extra: Record<string, unknown> = {}) {
   const o: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'GeneralContractor',
+    ...(site ? { '@id': orgId(site) } : {}),
     name: legal.tradeName,
     alternateName: [legal.shortName, 'General Constructor Group'],
     foundingDate: '2016',
@@ -51,6 +57,11 @@ export function organizationLd(lang: Lang, site: URL | undefined, extra: Record<
   }
   if (contact.phoneE164) o.telephone = contact.phoneE164
   if (contact.mapsUrl) o.hasMap = contact.mapsUrl
+  if (contact.geo) o.geo = { '@type': 'GeoCoordinates', ...contact.geo }
+  if (contact.openingHours) {
+    const { days, opens, closes } = contact.openingHours
+    o.openingHoursSpecification = { '@type': 'OpeningHoursSpecification', dayOfWeek: days.map((d) => `https://schema.org/${d}`), opens, closes }
+  }
   if (contact.email) o.email = contact.email
   if (contact.phoneE164 || contact.email) {
     o.contactPoint = {
@@ -64,6 +75,21 @@ export function organizationLd(lang: Lang, site: URL | undefined, extra: Record<
   }
   if (socials.length) o.sameAs = socials.map((s) => s.url)
   return { ...o, ...extra }
+}
+
+/** Page d’un projet (schema.org WebPage), publiée par l’entreprise, désignée par son identifiant (SEO-03). */
+export function webPageLd(page: { path: string; name: string; description: string; image: string; lang: Lang }, site: URL) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': new URL(page.path, site).href,
+    url: new URL(page.path, site).href,
+    name: page.name,
+    description: page.description,
+    inLanguage: page.lang,
+    image: new URL(page.image, site).href,
+    publisher: { '@type': 'GeneralContractor', '@id': orgId(site), name: legal.tradeName },
+  }
 }
 
 export function breadcrumbLd(items: { name: string; path: string }[], site: URL | undefined) {

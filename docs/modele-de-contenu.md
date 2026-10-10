@@ -47,7 +47,8 @@ Elle est générée à partir du nom, en minuscules sans accents, et **ne change
 
 ## Paramètres (`src/data/settings.json`)
 
-Coordonnées (téléphone, WhatsApp, e-mail, adresse, lien Google Maps, horaires), réseaux sociaux, vidéo de
+Coordonnées (téléphone, WhatsApp, e-mail, adresse, lien Google Maps, horaires ; pour les données structurées :
+`opens`/`closes` au format 24 h, `days` en jours anglais de schema.org, `latitude`/`longitude`), réseaux sociaux, vidéo de
 présentation, documents PDF (titre FR/EN, langue, version AAAA-MM, fichier ≤ 10 Mo ; taille calculée au build).
 Tout champ vide est masqué sur le site.
 

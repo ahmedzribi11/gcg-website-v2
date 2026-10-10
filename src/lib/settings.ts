@@ -34,6 +34,17 @@ const phone = str(c.phone)
 const phone2 = str(c.phone2)
 const whatsapp = str(c.whatsapp)
 const tz = { fr: ' (GMT, heure d’Abidjan)', en: ' (GMT, Abidjan time)' }
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+const time = (v: unknown) => (/^([01]\d|2[0-3]):[0-5]\d$/.test(str(v)) ? str(v) : '')
+const coord = (v: unknown, max: number) => {
+  const n = Number(str(v).replace(',', '.'))
+  return str(v) && Number.isFinite(n) && Math.abs(n) <= max ? n : undefined
+}
+const latitude = coord(c.latitude, 90)
+const longitude = coord(c.longitude, 180)
+const days = Array.isArray(c.days) ? DAYS.filter((d) => (c.days as unknown[]).includes(d)) : []
+const opens = time(c.opens)
+const closes = time(c.closes)
 const withTz = (h: string, lang: 'fr' | 'en') => (h && !/GMT|UTC/i.test(h) ? h + tz[lang] : h)
 
 export const contact = {
@@ -52,6 +63,10 @@ export const contact = {
   mapsUrl: str(c.mapsUrl),
   hours: withTz(str(c.hours), 'fr'),
   hours_en: withTz(str(c.hours_en) || str(c.hours), 'en'),
+  /** Repère du siège (données structurées, SEO-03) : seulement si latitude et longitude sont renseignées. */
+  geo: latitude !== undefined && longitude !== undefined ? { latitude, longitude } : undefined,
+  /** Jours et heures d’ouverture (données structurées, SEO-03) : seulement si les jours sont confirmés par GCG. */
+  openingHours: days.length && opens && closes ? { days, opens, closes } : undefined,
 }
 
 const m: Record<string, unknown> = settings.media ?? {}

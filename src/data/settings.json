@@ -7,7 +7,12 @@
     "address": "Marcory Zone 4, rue Marconi, Abidjan",
     "mapsUrl": "https://maps.app.goo.gl/y19McxxasVFe6W846",
     "hours": "8 h 30 – 17 h 30",
-    "hours_en": "8:30 am – 5:30 pm"
+    "hours_en": "8:30 am – 5:30 pm",
+    "opens": "08:30",
+    "closes": "17:30",
+    "days": [],
+    "latitude": "",
+    "longitude": ""
   },
   "social": {
     "instagram": "",

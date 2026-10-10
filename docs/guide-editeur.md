@@ -136,6 +136,9 @@ Collection **Paramètres** → **Coordonnées, réseaux et médias**.
 - **Téléphone, WhatsApp** : au format international (`+225 07 00 00 00 00`). Le numéro WhatsApp active les
   boutons WhatsApp de tout le site.
 - **E-mail, adresse, lien Google Maps, horaires** : le fuseau « GMT, heure d’Abidjan » est ajouté tout seul.
+- **Pour Google** (ouverture, fermeture, jours, latitude, longitude du siège) : non affichés sur les pages, ils
+  sont transmis à Google et doivent être identiques à la fiche Google Business Profile. Les horaires ne sont
+  transmis que si les jours sont cochés.
 - **Réseaux sociaux** : l’adresse complète de chaque page ; les QR codes de la page Partager se créent seuls.
 - **Vidéo de présentation** : lien YouTube ou Vimeo, sous-titrée en français et en anglais.
 - **Documents à télécharger** : PDF de 10 Mo au plus, avec titre, langue et version (AAAA-MM).

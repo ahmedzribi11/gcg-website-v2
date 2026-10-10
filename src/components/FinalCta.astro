@@ -14,9 +14,8 @@ const wa = whatsappLink(t('contact.form.intro'))
 <section class="relative flex min-h-svh items-center overflow-hidden bg-ink py-32" aria-labelledby="final-title">
   <div class="wrap relative flex flex-col items-center text-center">
     <p class="label text-gold">{t('final.kicker')}</p>
-    <h2 id="final-title" class="display mt-8 text-[clamp(min(4rem,20vw),16vw,15rem)]">
-      <em class="serif">{t('final.title')}</em>
-    </h2>
+    <!-- Mots gardés, à la taille d’un titre de section, en romain (SLOP-02, AUDIT-2 3.5) -->
+    <h2 id="final-title" class="display mt-8 text-[clamp(min(2.4rem,12vw),6vw,6.4rem)]">{t('final.title')}</h2>
     <p class="mt-8 max-w-lg text-[0.9375rem] leading-relaxed text-bone/65 md:text-base">{t('final.lead')}</p>
     <div class="mt-12 flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
       {

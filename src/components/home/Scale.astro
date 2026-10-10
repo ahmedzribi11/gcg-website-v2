@@ -18,15 +18,14 @@ const shown = highlights(projects, 'scaleOrder')
  */
 const small = projects.find((p) => p.slug === 'villa-de-luxe-assouinde')?.highlight
 const large = projects.find((p) => p.slug === 'villa-palmeras')?.highlight
-const accent = small && large ? `${large.value} ${large.unit}.` : undefined
-const title = small && large ? (fr ? `De la villa de ${small.value} ${small.unit} au programme de ${accent}` : `From a ${small.value} ${small.unit} villa to a programme of ${accent}`) : t('scale.title')
+const title = small && large ? (fr ? `De la villa de ${small.value} ${small.unit} au programme de ${large.value} ${large.unit}.` : `From a ${small.value} ${small.unit} villa to a programme of ${large.value} ${large.unit}.`) : t('scale.title')
 /** Projet en études ou d’études seulement : le rôle de GCG est écrit à côté du chiffre (COPY-02). */
 const studyOnly = (p: Project) => p.status === 'etudes' || p.designOnly
 ---
 
 <section class="relative overflow-hidden bg-ink-2 py-24 md:py-40" aria-labelledby="scale-title">
   <div class="wrap">
-    <SectionHead id="scale-title" label={t('scale.label')} title={title} accent={accent} lead={t('scale.lead')} size="md" />
+    <SectionHead id="scale-title" label={t('scale.label')} title={title} lead={t('scale.lead')} size="md" />
 
     <ul class="mt-16 grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-2 lg:grid-cols-3 md:mt-24">
       {

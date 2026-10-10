@@ -36,7 +36,7 @@ const reasons = fr
 ---
 
 <Base lang={lang} alt={route('invest', fr ? 'en' : 'fr')} title={t('invest.label')} description={t('invest.lead')}>
-  <PageHeader label={t('invest.label')} title={t('invest.title')} accent={fr ? 'construire avec GCG.' : 'build with GCG.'} lead={t('invest.lead')}>
+  <PageHeader label={t('invest.label')} title={t('invest.title')} lead={t('invest.lead')}>
     <nav class="flex flex-wrap gap-2 md:col-span-12" aria-label={t('audiences.label')} data-intro="rise" style="--d:.3s">
       {audiences.map((a) => <a href={`#${a.id}`} class="chip">{a.title[lang]}</a>)}
     </nav>
@@ -104,9 +104,7 @@ const reasons = fr
   <section class="theme-paper py-24 md:py-36" aria-labelledby="why-title">
     <div class="wrap">
       <p class="label text-brand/75">{t('invest.why')}</p>
-      <h2 id="why-title" class="display mt-8 max-w-[16ch] text-[clamp(2.4rem,5.6vw,6rem)]">
-        {fr ? 'Un seul partenaire,' : 'One partner,'} <em class="serif">{fr ? 'de l’étude au chantier.' : 'from design to construction.'}</em>
-      </h2>
+      <h2 id="why-title" class="display mt-8 max-w-[16ch] text-[clamp(2.4rem,5.6vw,6rem)]">{fr ? 'Un seul partenaire, de l’étude au chantier.' : 'One partner, from design to construction.'}</h2>
       <ol class="mt-16 grid gap-px overflow-hidden border border-brand/15 bg-brand/15 sm:grid-cols-2 lg:grid-cols-4 md:mt-24">
         {
           reasons.map(([title, text], i) => (

@@ -17,7 +17,6 @@
   --color-line-dark: rgba(7, 12, 9, 0.12);
 
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --ease-cinema: cubic-bezier(0.65, 0, 0.35, 1);
@@ -95,12 +94,6 @@
     font-weight: 300;
     letter-spacing: -0.045em;
     line-height: 0.95;
-  }
-  .serif {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 400;
-    letter-spacing: -0.01em;
   }
 
   .label {

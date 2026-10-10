@@ -2,12 +2,10 @@
 interface Props {
   label: string
   title: string
-  accent?: string
   lead?: string
   tone?: 'dark' | 'paper' | 'brand'
 }
-const { label, title, accent, lead, tone = 'dark' } = Astro.props
-const html = accent ? title.replace(accent, `<em class="serif">${accent}</em>`) : title
+const { label, title, lead, tone = 'dark' } = Astro.props
 const theme = tone === 'paper' ? 'theme-paper' : tone === 'brand' ? 'theme-brand' : 'bg-ink'
 ---
 
@@ -17,7 +15,7 @@ const theme = tone === 'paper' ? 'theme-paper' : tone === 'brand' ? 'theme-brand
   <div class="wrap relative grid gap-10 md:grid-cols-12 md:items-end">
     <div class="md:col-span-8">
       <p class:list={['label', tone === 'paper' ? 'text-brand/75' : 'text-gold']} data-intro style="--d:.05s">{label}</p>
-      <h1 class="display mt-8 text-[clamp(min(2.8rem,14vw),8vw,8.4rem)]" data-intro="rise" style="--d:.1s" set:html={html} />
+      <h1 class="display mt-8 text-[clamp(min(2.8rem,14vw),8vw,8.4rem)]" data-intro="rise" style="--d:.1s">{title}</h1>
     </div>
     {
       lead && (

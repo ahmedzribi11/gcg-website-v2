@@ -15,7 +15,7 @@ const count = (type: string) => projects.filter((p) => p.types.includes(type as 
 
 <section class="theme-brand relative overflow-hidden py-24 md:py-40" aria-labelledby="types-title">
   <div class="wrap">
-    <SectionHead id="types-title" label={t('types.label')} title={t('types.title')} accent={lang === 'fr' ? 'routes.' : 'roads.'} lead={t('types.lead')} tone="brand" size="md" />
+    <SectionHead id="types-title" label={t('types.label')} title={t('types.title')} lead={t('types.lead')} tone="brand" size="md" />
 
     <ul class="mt-16 flex flex-wrap items-baseline gap-x-[0.55em] gap-y-1 md:mt-24" aria-label={t('types.label')}>
       {

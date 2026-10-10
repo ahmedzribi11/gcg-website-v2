@@ -18,7 +18,7 @@ const home = route('home', lang)
 ---
 
 <Base lang={lang} alt={route('share', fr ? 'en' : 'fr')} title={t('share.label')} description={t('share.lead')}>
-  <PageHeader label={t('share.label')} title={t('share.title')} accent={fr ? 'un scan.' : 'one scan.'} lead={t('share.lead')} />
+  <PageHeader label={t('share.label')} title={t('share.title')} lead={t('share.lead')} />
 
   <section class="wrap grid gap-6 pb-20 md:grid-cols-12">
     <p data-qr-warning hidden role="note" class="border border-gold/60 p-4 text-[0.9375rem] text-gold md:col-span-12">{t('share.tempWarning')}</p>

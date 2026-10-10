@@ -29,12 +29,12 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
 ---
 
 <Base lang={lang} alt={route('about', fr ? 'en' : 'fr')} title={t('about.label')} description={t('about.lead')}>
-  <PageHeader label={t('about.label')} title={t('about.title')} accent={fr ? 'depuis 2016.' : 'since 2016.'} lead={t('about.lead')} />
+  <PageHeader label={t('about.label')} title={t('about.title')} lead={t('about.lead')} />
 
   <section class="theme-paper py-24 md:py-36" aria-label={t('about.label')}>
     <div class="wrap grid gap-16 md:grid-cols-12">
       <div class="md:col-span-6">
-        <p class="serif text-[clamp(5rem,14vw,13rem)] leading-none text-brand">2016</p>
+        <p class="display text-[clamp(5rem,14vw,13rem)] leading-none text-brand">2016</p>
         <p class="mt-10 max-w-xl text-xl font-light leading-relaxed md:text-2xl">{t('about.p2')}</p>
         <p class="mt-6 max-w-xl text-[0.9375rem] leading-relaxed text-brand/70">{t('about.team')}</p>
       </div>
@@ -58,7 +58,7 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
             )}
             <figure class:list={[director.photo ? 'md:col-span-7 md:col-start-6' : 'md:col-span-10']}>
               <h2 class="label text-gold" data-reveal>{t('about.director')}</h2>
-              <blockquote class="serif mt-8 text-[clamp(1.6rem,2.8vw,2.6rem)] leading-tight" data-reveal>
+              <blockquote class="mt-8 text-[clamp(1.6rem,2.8vw,2.6rem)] leading-tight" data-reveal>
                 <p>{director.statement[lang]}</p>
               </blockquote>
               <figcaption class="mt-8" data-reveal>
@@ -295,11 +295,9 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
     <div class="wrap grid gap-16 md:grid-cols-12 md:items-center">
       <div class="md:col-span-5">
         <p class="label text-brand/75">{t('presence.label')}</p>
-        <h2 id="where-title" class="display mt-8 text-[clamp(2.4rem,5.6vw,6rem)]">
-          {fr ? 'De Korhogo' : 'From Korhogo'} <em class="serif">{fr ? 'à Assinie.' : 'to Assinie.'}</em>
-        </h2>
+        <h2 id="where-title" class="display mt-8 text-[clamp(2.4rem,5.6vw,6rem)]">{t('presence.title')}</h2>
         <p class="mt-8 max-w-md text-lg leading-relaxed text-brand/70">{t('presence.lead')}</p>
-        <p class="serif mt-10 max-w-md text-[clamp(1.6rem,2.6vw,2.4rem)] leading-tight text-brand">{t('presence.ambition')}</p>
+        <p class="mt-10 max-w-md text-[clamp(1.6rem,2.6vw,2.4rem)] leading-tight text-brand">{t('presence.ambition')}</p>
       </div>
       <div class="md:col-span-7">
         <PresenceMap lang={lang} projects={projects} tone="paper" />

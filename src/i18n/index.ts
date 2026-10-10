@@ -245,15 +245,14 @@ const UI = {
     'about.org.skills': 'Domaines de compétences',
     'about.org.staff': 'collaborateurs',
     'about.means.label': 'Moyens matériels',
-    'about.means.title': 'Engins, équipements et véhicules de chantier.',
+    'about.means.title': 'Engins, équipements de chantier et véhicules.',
     'about.means.lead': 'Un parc d’engins, d’équipements de chantier et de véhicules pour maîtriser l’exécution.',
     'about.means.units': 'unités',
     'about.video': 'GCG en vidéo',
 
     'invest.label': 'Pour qui',
     'invest.title': 'Investir en Côte d’Ivoire, construire avec GCG.',
-    'invest.lead':
-      'Promoteurs, investisseurs, groupes hôteliers, particuliers de la diaspora : vous apportez le projet, GCG le conçoit et le construit.',
+    'invest.lead': 'Promoteurs, investisseurs, groupes hôteliers, particuliers de la diaspora : vous apportez le projet, GCG le conçoit et le construit.',
     'invest.why': 'Pourquoi GCG',
     'invest.proof': 'Ils nous ont confié',
 
@@ -300,7 +299,8 @@ const UI = {
 
     'share.label': 'Partager',
     'share.title': 'GCG en un scan.',
-    'share.lead': 'Un QR code pour chaque support : panneaux de chantier, cartes de visite, brochures, réseaux sociaux. Pour un chantier, imprimez l’affiche et fixez-la sur le panneau.',
+    'share.lead':
+      'Un QR code pour chaque support : panneaux de chantier, cartes de visite, brochures, réseaux sociaux. Pour un chantier, imprimez l’affiche et fixez-la sur le panneau.',
     'share.site': 'Site GCG',
     'share.siteHelp': 'Mène à la page d’accueil.',
     'share.download': 'Télécharger (SVG)',
@@ -533,8 +533,7 @@ const UI = {
 
     'invest.label': 'Who we build for',
     'invest.title': 'Invest in Côte d’Ivoire, build with GCG.',
-    'invest.lead':
-      'Developers, investors, hotel groups, members of the diaspora: you bring the project and GCG designs and builds it.',
+    'invest.lead': 'Developers, investors, hotel groups, members of the diaspora: you bring the project and GCG designs and builds it.',
     'invest.why': 'Why GCG',
     'invest.proof': 'Projects entrusted to us',
 
@@ -581,7 +580,8 @@ const UI = {
 
     'share.label': 'Share',
     'share.title': 'GCG in one scan.',
-    'share.lead': 'A QR code for every medium: site hoardings, business cards, brochures, social media. For a building site, print the poster and fix it to the hoarding.',
+    'share.lead':
+      'A QR code for every medium: site hoardings, business cards, brochures, social media. For a building site, print the poster and fix it to the hoarding.',
     'share.site': 'GCG website',
     'share.siteHelp': 'Opens the home page.',
     'share.download': 'Download (SVG)',

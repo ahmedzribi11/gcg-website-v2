@@ -23,7 +23,11 @@ export const poles: { name: L<string>; team: string; role: L<string> }[] = [
     role: { fr: 'Ingénierie, structure, contrôle qualité', en: 'Engineering, structure, quality control' },
   },
   { name: { fr: 'Finances', en: 'Finance' }, team: '4+', role: { fr: 'Direction financière et comptabilité', en: 'Financial management and accounting' } },
-  { name: { fr: 'Logistique', en: 'Logistics' }, team: '4+', role: { fr: 'Matériel, logistique de chantier, coordination', en: 'Equipment, site logistics, coordination' } },
+  {
+    name: { fr: 'Logistique', en: 'Logistics' },
+    team: '4+',
+    role: { fr: 'Matériel, logistique de chantier, coordination', en: 'Equipment, site logistics, coordination' },
+  },
 ]
 
 export const competences: { name: L<string>; items: L<string[]> }[] = [

@@ -100,7 +100,7 @@ const UI = {
     'nav.services': 'Expertises',
     'nav.projects': 'Réalisations',
     'nav.about': 'À propos',
-    'nav.invest': 'Investir',
+    'nav.invest': 'Pour qui',
     'nav.contact': 'Contact',
     'nav.menu': 'Menu',
     'nav.close': 'Fermer',
@@ -251,7 +251,7 @@ const UI = {
     'about.means.units': 'unités',
     'about.video': 'GCG en vidéo',
 
-    'invest.label': 'Investir',
+    'invest.label': 'Pour qui',
     'invest.title': 'Investir en Côte d’Ivoire, construire avec GCG.',
     'invest.lead':
       'Promoteurs, investisseurs, groupes hôteliers, particuliers de la diaspora : vous apportez le projet, GCG le conçoit et le construit.',
@@ -383,7 +383,7 @@ const UI = {
     'nav.services': 'Services',
     'nav.projects': 'Projects',
     'nav.about': 'About',
-    'nav.invest': 'Invest',
+    'nav.invest': 'Who we build for',
     'nav.contact': 'Contact',
     'nav.menu': 'Menu',
     'nav.close': 'Close',
@@ -533,7 +533,7 @@ const UI = {
     'about.means.units': 'units',
     'about.video': 'GCG on video',
 
-    'invest.label': 'Invest',
+    'invest.label': 'Who we build for',
     'invest.title': 'Invest in Côte d’Ivoire, build with GCG.',
     'invest.lead':
       'Developers, investors, hotel groups, members of the diaspora: you bring the project and GCG designs and builds it.',

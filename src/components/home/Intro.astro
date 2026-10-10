@@ -2,8 +2,8 @@
 import ProjectImage from '../ProjectImage.astro'
 import ImageKind from '../ImageKind.astro'
 import Icon from '../Icon.astro'
-import { route, useT, type Lang } from '../../i18n'
-import { coverImage, type Project } from '../../lib/projects'
+import { colon, route, useT, type Lang } from '../../i18n'
+import { coverImage, publishedOnly, type Project } from '../../lib/projects'
 
 interface Props {
   lang: Lang
@@ -13,12 +13,31 @@ const { lang, projects } = Astro.props
 const t = useT(lang)
 const a = coverImage(projects, ['green-city', 0])
 const b = coverImage(projects, ['villa-palmeras', 0])
-const figures = [
-  { value: 2016, label: t('fig.since'), plain: true },
+/*
+ * Chiffres clés tirés des fiches projet, chacun avec son contexte (SLOP-17, COPY-03) : année de création, projets du
+ * portfolio, projets réceptionnés (nommés tant qu’ils sont un ou deux), projets en chantier (dont le plus grand
+ * programme). Les comptes suivent le statut saisi dans chaque fiche ; un compte nul n’est pas affiché.
+ */
+const delivered = projects.filter((p) => p.status === 'receptionne')
+const building = projects.filter((p) => p.status === 'execution')
+const [biggest] = publishedOnly(projects, ['villa-palmeras']).filter((p) => p.status === 'execution' && p.highlight)
+const named = (p: Project) => (p.highlight ? `${p.name}${colon(lang)}${p.highlight.value} ${p.highlight.unit}` : p.name)
+const figures: { value: number; label: string; context?: string }[] = [
+  { value: 2016, label: t('fig.since') },
   { value: projects.length, label: t('fig.projects') },
-  { value: 20, suffix: '+', label: t('fig.staff') },
-  { value: 4, label: t('fig.poles') },
-]
+  {
+    value: delivered.length,
+    label: t(delivered.length > 1 ? 'fig.delivered.many' : 'fig.delivered.one'),
+    context: delivered.length <= 2 ? delivered.map(named).join(', ') : undefined,
+  },
+  {
+    value: building.length,
+    label: t(building.length > 1 ? 'fig.building.many' : 'fig.building.one'),
+    context: biggest?.highlight
+      ? `${t('fig.including')} ${biggest.name}, ${biggest.highlight.value} ${biggest.highlight.unit} ${lang === 'fr' ? 'à' : 'in'} ${biggest.location}`
+      : undefined,
+  },
+].filter((f) => f.value > 0)
 ---
 
 <section id="intro" class="theme-paper relative overflow-hidden py-24 md:py-40" aria-labelledby="intro-title">
@@ -49,10 +68,8 @@ const figures = [
       figures.map((f) => (
         <div class="flex flex-col border-t border-brand/15 pt-6">
           <dt class="meta order-2 mt-3 text-brand/75">{f.label}</dt>
-          <dd class="display order-1 text-[clamp(3.4rem,7vw,7.5rem)] text-brand">
-            {f.value}
-            {f.suffix}
-          </dd>
+          <dd class="display order-1 text-[clamp(3.4rem,7vw,7.5rem)] text-brand">{f.value}</dd>
+          {f.context && <dd class="order-3 mt-2 max-w-[30ch] text-[0.875rem] leading-snug text-brand/75">{f.context}</dd>}
         </div>
       ))
     }

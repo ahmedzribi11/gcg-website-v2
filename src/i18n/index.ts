@@ -26,9 +26,29 @@ export const route = (key: RouteKey, lang: Lang) => ROUTES[key][lang]
 export const projectPath = (slug: string, lang: Lang) => `${ROUTES.projects[lang]}/${slug}`
 export const servicePath = (slug: string, lang: Lang) => `${ROUTES.services[lang]}/${slug}`
 
-/** Adresse permanente encodée dans un QR code imprimé (voir src/pages/qr). */
+/**
+ * Code court d’un projet pour les QR codes de chantier (SHR-04) : 4 caractères (0-9, a-z) calculés à partir
+ * de son adresse (slug), qui ne change jamais, et non de son N° d’ordre, que l’espace de gestion peut modifier.
+ * src/pages/q vérifie au build que deux projets n’ont pas le même code.
+ */
+export const qrCode = (slug: string) => {
+  let h = 0x811c9dc5 // FNV-1a 32 bits
+  for (const ch of slug) h = Math.imul(h ^ ch.codePointAt(0)!, 0x01000193) >>> 0
+  return (h % 36 ** 4).toString(36).padStart(4, '0')
+}
+
+/**
+ * Adresse permanente encodée dans un QR code imprimé (voir src/pages/qr et src/pages/q).
+ * Panneaux de chantier (affiche, fichiers téléchargés) : adresse courte /q, /q/<code> (SHR-04) ; avec la correction
+ * d’erreur Q, le code garde 29 modules au lieu de 33 à 41. Les anciennes adresses /qr/panneau et /qr/p/<projet>
+ * restent en ligne pour les panneaux déjà imprimés.
+ */
 export type QrMedium = 'qr' | 'panneau' | 'carte' | 'brochure'
 export const qrPath = (lang: Lang, medium: QrMedium = 'qr', slug?: string) => {
+  if (medium === 'panneau') {
+    const short = lang === 'en' ? '/q/en' : '/q'
+    return slug ? `${short}/${qrCode(slug)}` : short
+  }
   const base = lang === 'en' ? '/qr/en' : '/qr'
   if (slug) return `${base}/p/${slug}`
   return medium === 'qr' ? base : `${base}/${medium}`

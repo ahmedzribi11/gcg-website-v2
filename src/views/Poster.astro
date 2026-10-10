@@ -62,7 +62,7 @@ const general = cover ? await getImage({ src: cover.images[0].src, width: 1400, 
           <p class="mt-[6mm] font-mono text-[3mm] tracking-[0.12em] text-bone/80" id="poster-url" data-qr-text={route('home', lang)}></p>
         </div>
         <div class="w-[62mm] rounded-[3mm] bg-white p-[3mm]">
-          <div id="poster-qr" data-qr={qrPath(lang, 'panneau')}></div>
+          <div id="poster-qr" data-qr={qrPath(lang, 'panneau')} data-qr-ecc="Q"></div>
         </div>
       </div>
       <div class="h-[3mm] bg-gold"></div>

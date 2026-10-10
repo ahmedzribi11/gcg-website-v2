@@ -15,14 +15,20 @@ export function qrUrl(target: string) {
   return /^https?:\/\//.test(target) ? target : new URL(target, SITE_ORIGIN || location.origin).href
 }
 
-export function qrSvg(url: string, dark = '#052e14', light = '#ffffff') {
-  return renderSVG(url, { ecc: 'M', border: 4, pixelSize: 10, blackColor: dark, whiteColor: light })
+/**
+ * Correction d’erreur : M (15 %) pour les codes affichés à l’écran ; Q (25 %) pour ce qui part à l’impression,
+ * affiche et fichiers téléchargés, car un panneau de chantier prend la poussière, la pluie et le soleil (SHR-04).
+ */
+export type QrEcc = 'M' | 'Q'
+
+export function qrSvg(url: string, dark = '#052e14', light = '#ffffff', ecc: QrEcc = 'M') {
+  return renderSVG(url, { ecc, border: 4, pixelSize: 10, blackColor: dark, whiteColor: light })
 }
 
 export function renderQrs(root: ParentNode = document) {
   root.querySelectorAll<HTMLElement>('[data-qr]').forEach((el) => {
     const url = qrUrl(el.dataset.qr!)
-    el.innerHTML = qrSvg(url, el.dataset.qrDark || '#052e14', el.dataset.qrLight || '#ffffff')
+    el.innerHTML = qrSvg(url, el.dataset.qrDark || '#052e14', el.dataset.qrLight || '#ffffff', el.dataset.qrEcc === 'Q' ? 'Q' : 'M')
     const svg = el.querySelector('svg')
     if (svg) {
       svg.setAttribute('role', 'img')
@@ -61,7 +67,7 @@ document.addEventListener('click', async (e) => {
   const url = target?.dataset.qrUrl
   if (!url) return
   const name = btn.dataset.qrName || 'gcg-qr'
-  const svg = qrSvg(url, '#052e14', '#ffffff')
+  const svg = qrSvg(url, '#052e14', '#ffffff', 'Q')
   const blob = new Blob([svg], { type: 'image/svg+xml' })
   if (btn.dataset.format === 'png') {
     const img = new Image()

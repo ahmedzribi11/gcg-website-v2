@@ -11,7 +11,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
 
 const DIST = join(import.meta.dirname, '..', 'dist')
-const SKIP = /^(admin|qr\/|qr\.html|404\.html|contact\/(merci|erreur)|en\/contact\/(thanks|error)|partager\/affiche|en\/share\/poster)/
+const SKIP = /^(admin|qr\/|qr\.html|q\/|q\.html|404\.html|contact\/(merci|erreur)|en\/contact\/(thanks|error)|partager\/affiche|en\/share\/poster)/
 const errors = []
 const warnings = []
 

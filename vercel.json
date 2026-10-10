@@ -22,6 +22,8 @@
     {
       "source": "/(admin|api|qr|contact/merci|contact/erreur|en/contact/thanks|en/contact/error)(.*)",
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
-    }
+    },
+    { "source": "/q", "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] },
+    { "source": "/q/(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] }
   ]
 }

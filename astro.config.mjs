@@ -47,7 +47,7 @@ export default defineConfig({
       ? [
           sitemap({
             filter: (page) =>
-              !/\/(admin|partager\/affiche|en\/share\/poster|contact\/merci|contact\/erreur|en\/contact\/thanks|en\/contact\/error|qr)(\/|$)/.test(page),
+              !/\/(admin|partager\/affiche|en\/share\/poster|contact\/merci|contact\/erreur|en\/contact\/thanks|en\/contact\/error|qr|q)(\/|$)/.test(page),
             i18n: { defaultLocale: 'fr', locales: { fr: 'fr-CI', en: 'en' } },
           }),
         ]

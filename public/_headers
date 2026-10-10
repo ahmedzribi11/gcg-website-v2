@@ -16,6 +16,10 @@
   X-Robots-Tag: noindex
 /qr*
   X-Robots-Tag: noindex
+/q
+  X-Robots-Tag: noindex
+/q/*
+  X-Robots-Tag: noindex
 /contact/merci*
   X-Robots-Tag: noindex
 /contact/erreur*

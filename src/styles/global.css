@@ -63,16 +63,6 @@
     scrollbar-color: #24302a var(--color-ink);
     scroll-padding-top: 6rem;
   }
-  html.lenis,
-  html.lenis body {
-    height: auto;
-  }
-  .lenis.lenis-smooth {
-    scroll-behavior: auto !important;
-  }
-  .lenis.lenis-stopped {
-    overflow: hidden;
-  }
 
   body {
     background: var(--color-ink);

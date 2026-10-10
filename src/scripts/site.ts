@@ -1,6 +1,5 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Lenis from 'lenis'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -8,25 +7,13 @@ const html = document.documentElement
 export const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches
 export const touch = matchMedia('(hover: none), (pointer: coarse)').matches
 
-/* ─── Défilement fluide (desktop) ─────────────────────────────────────── */
-let lenis: Lenis | null = null
-if (!reducedMotion && !touch) {
-  lenis = new Lenis({ duration: 1.15, easing: (t) => 1 - Math.pow(1 - t, 4) })
-  lenis.on('scroll', ScrollTrigger.update)
-  gsap.ticker.add((time) => lenis?.raf(time * 1000))
-  gsap.ticker.lagSmoothing(0)
-}
-;(window as unknown as { __lenis?: Lenis | null }).__lenis = lenis
-
+/* Défilement natif du navigateur (molette, clavier, ancres) : plus de défilement fluide simulé (SLOP-12) */
 export function scrollToEl(target: Element | number) {
-  if (lenis) lenis.scrollTo(target as HTMLElement, { duration: 1.6, offset: typeof target === 'number' ? 0 : -80 })
-  else if (typeof target === 'number') scrollTo({ top: target, behavior: reducedMotion ? 'auto' : 'smooth' })
+  if (typeof target === 'number') scrollTo({ top: target, behavior: reducedMotion ? 'auto' : 'smooth' })
   else target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' })
 }
 
 export function lockScroll(locked: boolean) {
-  if (locked) lenis?.stop()
-  else lenis?.start()
   html.style.overflow = locked ? 'hidden' : ''
 }
 

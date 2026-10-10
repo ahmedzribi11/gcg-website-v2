@@ -3,7 +3,10 @@
  * Utilisé par api/contact.js (Vercel) et functions/api/contact.js (Cloudflare Pages).
  *
  * - Validation côté serveur (SEC-05) ; nom + au moins un moyen de contact (CONV-05).
- * - Champ piège + délai minimal de saisie + limite de 5 envois par adresse IP et par 10 minutes.
+ * - Champ piège + délai minimal de saisie (obligatoire pour l’envoi par JavaScript) + limite de 5 envois par
+ *   adresse IP et par 10 minutes et par instance ; la limite globale est une règle de l’hébergeur (SEC-01,
+ *   docs/exploitation.md).
+ * - Envois d’un autre site refusés : en-tête Origin ou Sec-Fetch-Site obligatoire et de la même origine (SEC-01).
  * - Retours à la ligne supprimés de toute valeur utilisée dans les en-têtes (injection d’en-têtes).
  * - Aucun fichier joint accepté (SEC-06) ; rien n’est stocké : la demande est envoyée par e-mail (Resend).
  * - Corps limité à 20 Ko et forcément un objet ; appel à Resend abandonné après 8 s (SEC-02).
@@ -35,6 +38,24 @@ const multiLine = (v, max) =>
     .replace(/\n{3,}/g, '\n\n')
     .trim()
     .slice(0, max)
+
+/**
+ * Envoi depuis une page du site : Sec-Fetch-Site, s’il est présent, vaut same-origin, et Origin, s’il est présent,
+ * est l’origine de la requête ou celle de SITE_URL (domaine public). Une requête sans aucun des deux en-têtes,
+ * que tout navigateur actuel envoie avec un POST, vient d’un script : refusée (SEC-01).
+ */
+function sameOrigin(request, env) {
+  const own = [new URL(request.url).origin]
+  try {
+    if (env.SITE_URL) own.push(new URL(env.SITE_URL).origin)
+  } catch {
+    /* SITE_URL mal formée : seule l’origine de la requête compte */
+  }
+  const site = request.headers.get('sec-fetch-site')
+  const origin = request.headers.get('origin')
+  if (site && site !== 'same-origin') return false
+  return origin ? own.includes(origin) : site === 'same-origin'
+}
 
 function rateLimited(ip) {
   const now = Date.now()
@@ -130,14 +151,16 @@ export async function handleContact(request, env, ip) {
     return new Response(null, { status: 303, headers: secure({ Location: to, 'Cache-Control': 'no-store' }) })
   }
 
+  if (!sameOrigin(request, env)) return reply(403, 'forbidden')
   if (ctype.includes('multipart/form-data')) return reply(415, 'unsupported')
   // Corps de plus de 20 Ko (annoncé ou réel) : refusé sans être interprété (SEC-02)
   if (Number(request.headers.get('content-length')) > MAX_BODY) return reply(413, 'invalid')
+  const json = ctype.includes('application/json')
   let raw
   try {
     const body = await request.text()
     if (new TextEncoder().encode(body).length > MAX_BODY) return reply(413, 'invalid')
-    raw = ctype.includes('application/json') ? JSON.parse(body) : Object.fromEntries(new URLSearchParams(body))
+    raw = json ? JSON.parse(body) : Object.fromEntries(new URLSearchParams(body))
   } catch {
     return reply(400, 'invalid')
   }
@@ -145,9 +168,11 @@ export async function handleContact(request, env, ip) {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return reply(400, 'invalid')
   lang = raw.lang === 'en' ? 'en' : 'fr'
 
-  // Robots : champ piège rempli ou envoi trop rapide → réponse « succès » sans envoi
+  // Robots : champ piège rempli, envoi trop rapide, ou envoi JSON sans heure d’ouverture du formulaire (la page la
+  // pose toujours ; sans JavaScript, le champ t reste vide) → réponse « succès » sans envoi (SEC-01)
   const started = Number(raw.t)
-  if (raw.website || (started && Date.now() - started < MIN_FILL_MS)) return reply(200, 'ok')
+  const tooFast = started > 0 ? Date.now() - started < MIN_FILL_MS : json
+  if (raw.website || tooFast) return reply(200, 'ok')
   if (rateLimited(ip || 'unknown')) return reply(429, 'rate')
 
   const { data, errors } = validate(raw)

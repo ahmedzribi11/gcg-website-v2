@@ -708,3 +708,8 @@ html {
 :root[data-theme='light'] .pill {
   background: rgba(7, 12, 9, 0.86);
 }
+/* Dernier appel en mode clair : le halo vert du mode sombre ferait une tache grise derrière les boutons
+   et passerait le texte sous 4,5:1 ; halo or léger à la place (BRW-03) */
+:root[data-theme='light'] .final-glow {
+  background: radial-gradient(ellipse at 50% 55%, rgba(232, 222, 159, 0.35), transparent 65%);
+}

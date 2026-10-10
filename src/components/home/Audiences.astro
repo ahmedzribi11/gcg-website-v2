@@ -16,9 +16,9 @@ const t = useT(lang)
 
 <section class="relative py-24 md:py-40" aria-labelledby="audiences-title">
   <div class="wrap">
-    <SectionHead id="audiences-title" title={t('audiences.title')} />
+    <SectionHead id="audiences-title" kind="proof" title={t('audiences.title')} />
 
-    <div class="mt-16 flex flex-col gap-3 md:mt-24 lg:min-h-[78vh] lg:flex-row">
+    <div class="mt-8 flex flex-col gap-3 md:mt-10 lg:min-h-[78vh] lg:flex-row">
       {
         audiences.map((a) => (
           <a

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro'
 import PageHeader from '../components/PageHeader.astro'
+import SectionHead from '../components/SectionHead.astro'
 import ProjectImage from '../components/ProjectImage.astro'
 import PresenceMap from '../components/PresenceMap.astro'
 import FinalCta from '../components/FinalCta.astro'
@@ -144,10 +145,7 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
   <!-- Historique -->
   <section class="py-24 md:py-40" aria-labelledby="history-title">
     <div class="wrap">
-      <div class="grid gap-8 md:grid-cols-12 md:items-end">
-        <h2 id="history-title" class="display text-3xl md:col-span-8">{t('about.history.title')}</h2>
-        <p class="max-w-md text-base leading-relaxed text-bone/60 md:col-span-4">{t('about.history.lead')}</p>
-      </div>
+      <SectionHead id="history-title" title={t('about.history.title')} lead={t('about.history.lead')} />
 
       <ol class="mt-16 border-t border-line md:mt-24">
         {
@@ -243,10 +241,7 @@ const projectName = (slug?: string) => projects.find((p) => p.slug === slug)
   <!-- Moyens matériels -->
   <section class="py-24 md:py-40" aria-labelledby="means-title">
     <div class="wrap">
-      <div class="grid gap-8 md:grid-cols-12 md:items-end">
-        <h2 id="means-title" class="display text-3xl md:col-span-8">{t('about.means.title')}</h2>
-        <p class="max-w-md text-base leading-relaxed text-bone/60 md:col-span-4">{t('about.means.lead')}</p>
-      </div>
+      <SectionHead id="means-title" title={t('about.means.title')} lead={t('about.means.lead')} />
       <div class="mt-16 grid gap-14 md:mt-24 md:grid-cols-3 md:gap-10">
         {
           equipment.map((g) => (

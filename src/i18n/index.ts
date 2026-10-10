@@ -187,7 +187,6 @@ const UI = {
     'method.title': 'Six étapes, un seul interlocuteur.',
 
     'final.title': 'Parlons-en.',
-    'final.lead': 'Décrivez-nous votre projet : villa, résidence, hôtel, immeuble, usine. Nous revenons vers vous.',
 
     'projects.label': 'Réalisations',
     'projects.title': 'Le patrimoine GCG.',
@@ -458,7 +457,6 @@ const UI = {
     'method.title': 'Six stages, one point of contact.',
 
     'final.title': 'Let’s talk.',
-    'final.lead': 'Tell us about your project: villa, residence, hotel, building, factory. We will get back to you.',
 
     'projects.label': 'Projects',
     'projects.title': 'GCG’s track record.',

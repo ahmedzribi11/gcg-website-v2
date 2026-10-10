@@ -13,9 +13,8 @@ const wa = whatsappLink(t('contact.form.intro'))
 
 <section class="relative flex min-h-svh items-center overflow-hidden bg-ink py-32" aria-labelledby="final-title">
   <div class="wrap relative flex flex-col items-center text-center">
-    <!-- Mots gardés, à la taille d’un titre de section, en romain (SLOP-02, AUDIT-2 3.5) -->
+    <!-- Section « action » : titre puis boutons, WhatsApp et téléphone d’abord (SLOP-16, AUDIT-2 3.5) ; mots gardés, en romain (SLOP-02) -->
     <h2 id="final-title" class="display text-3xl">{t('final.title')}</h2>
-    <p class="mt-8 max-w-lg text-base leading-relaxed text-bone/65 md:text-base">{t('final.lead')}</p>
     <div class="mt-12 flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
       {
         wa && (
@@ -24,9 +23,6 @@ const wa = whatsappLink(t('contact.form.intro'))
           </a>
         )
       }
-      <a href={route('contact', lang)} class:list={['btn !min-h-16 !px-9', wa ? 'btn-line' : 'btn-gold']}>
-        {t('cta.project')} <Icon name="arrow" size={20} />
-      </a>
       {
         contact.phoneHref && (
           <a href={contact.phoneHref} class="btn btn-line !min-h-16 !px-9">
@@ -34,6 +30,9 @@ const wa = whatsappLink(t('contact.form.intro'))
           </a>
         )
       }
+      <a href={route('contact', lang)} class:list={['btn !min-h-16 !px-9', wa ? 'btn-line' : 'btn-gold']}>
+        {t('cta.project')} <Icon name="arrow" size={20} />
+      </a>
     </div>
 
     <a href={route('share', lang)} class="group mt-20 flex items-center gap-5 rounded-2xl border border-line bg-ink p-3 pr-6 text-left transition-colors hover:border-gold/60" data-reveal>

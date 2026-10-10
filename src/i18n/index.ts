@@ -72,7 +72,7 @@ export const STATUS_LABELS: Record<string, L> = {
 }
 
 export const STATUS_SHORT: Record<string, L> = {
-  execution: { fr: 'En chantier', en: 'On site' },
+  execution: { fr: 'En chantier', en: 'Under construction' },
   etudes: { fr: 'En études', en: 'In design' },
   receptionne: { fr: 'Réceptionné', en: 'Handed over' },
 }
@@ -481,12 +481,12 @@ const UI = {
     'project.designOnly': 'Design only',
     'project.sector': 'Sector',
     'project.surface': 'Area',
-    'project.terrain': 'Site',
+    'project.terrain': 'Plot',
     'project.covered': 'Built area',
     'project.composition': 'Programme',
     'project.missions': 'GCG’s scope',
     'project.typologies': 'House types',
-    'project.typology': 'Typology',
+    'project.typology': 'Layout',
     'project.services': 'Services involved',
     'project.gallery': 'Gallery',
     'project.photo': 'Photo',
@@ -635,7 +635,7 @@ const UI = {
     'profile.diaspora': 'Member of the diaspora',
     'profile.investisseur': 'Investor / developer',
     'profile.hotelier': 'Hotel / tourism operator',
-    'profile.entreprise': 'Company / industrial',
+    'profile.entreprise': 'Company / manufacturer',
     'profile.autre': 'Other',
 
     'ptype.villa': 'Villa',

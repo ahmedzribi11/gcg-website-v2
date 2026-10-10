@@ -48,7 +48,7 @@ export const services: Service[] = [
     },
     intro: {
       fr: 'Nos architectes conçoivent des villas et des résidences haut standing, des immeubles de bureaux et de logements, des hôtels, des complexes touristiques et des équipements. De la conception architecturale aux études détaillées, le projet est pensé avec ceux qui le construiront.',
-      en: 'Our architects design high-end villas and residences, office and apartment buildings, hotels, resorts and public-facing facilities. From architectural concept to detailed design, each project is drawn up together with the people who will build it.',
+      en: 'Our architects design high-end villas and residences, office and apartment buildings, hotels, resorts and community facilities. From architectural concept to detailed design, each project is drawn up together with the people who will build it.',
     },
     includes: {
       fr: ['Conception architecturale', 'Études architecturales', 'Prototypes et typologies de villas', 'Aménagements architecturaux et décoratifs'],
@@ -62,11 +62,11 @@ export const services: Service[] = [
     title: { fr: 'Ingénierie', en: 'Engineering' },
     short: {
       fr: 'Structure, fluides, électricité, BIM et contrôle qualité : le projet dimensionné et sécurisé.',
-      en: 'Structure, plumbing, electrical, BIM and quality control: every project sized and secured.',
+      en: 'Structure, plumbing, electrical, BIM and quality control: structures designed to be sound and safe.',
     },
     intro: {
       fr: 'Le pôle Études & contrôle qualité de GCG dimensionne les ouvrages, du béton armé à la structure métallique, et coordonne les études fluides et électricité. Le contrôle qualité accompagne le chantier jusqu’à la réception.',
-      en: 'GCG’s engineering studies and quality control division sizes each structure, from reinforced concrete to steel frames, and coordinates plumbing and electrical engineering. Quality control follows the site all the way to handover.',
+      en: 'GCG’s engineering studies and quality control division designs each structure, from reinforced concrete to steel frames, and coordinates plumbing and electrical engineering. Quality control follows the site all the way to handover.',
     },
     includes: {
       fr: [
@@ -92,7 +92,7 @@ export const services: Service[] = [
     title: { fr: 'Construction', en: 'Construction' },
     short: {
       fr: 'Gros œuvre, second œuvre et finitions, avec nos équipes et un parc d’engins de chantier.',
-      en: 'Structural works, finishing works and finishes, with our own teams and a fleet of site machinery.',
+      en: 'Structural works, finishing works and final finishes, with our own teams and a fleet of site machinery.',
     },
     intro: {
       fr: 'Le pôle Construction pilote les chantiers, du gros œuvre aux finitions : villas, cités résidentielles, immeubles, hôtels, usines en structure métallique. GCG mobilise un parc d’engins et d’équipements de chantier, et assure le suivi jusqu’à la réception.',
@@ -100,7 +100,7 @@ export const services: Service[] = [
     },
     includes: {
       fr: ['Gros œuvre', 'Second œuvre', 'Finitions', 'Structures métalliques', 'Suivi de chantier et réception', 'Planning et coordination'],
-      en: ['Structural works', 'Secondary works', 'Finishing', 'Steel structures', 'Site supervision and handover', 'Planning and coordination'],
+      en: ['Structural works', 'Finishing works', 'Final finishes', 'Steel structures', 'Site supervision and handover', 'Planning and coordination'],
     },
   },
   {
@@ -166,7 +166,7 @@ export const services: Service[] = [
     },
     includes: {
       fr: ['Voirie', 'Assainissement', 'Réseaux divers', 'Aménagement de quartiers résidentiels', 'Infrastructures et équipements'],
-      en: ['Roads', 'Drainage and sanitation', 'Utility networks', 'Residential estate development', 'Infrastructure and equipment'],
+      en: ['Roads', 'Drainage and sanitation', 'Utility networks', 'Site works for residential estates', 'Infrastructure and equipment'],
     },
   },
   {

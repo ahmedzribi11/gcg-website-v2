@@ -33,7 +33,7 @@ export const poles: { name: L<string>; team: string; role: L<string> }[] = [
 export const competences: { name: L<string>; items: L<string[]> }[] = [
   {
     name: { fr: 'Construction', en: 'Construction' },
-    items: { fr: ['Gros œuvre', 'Second œuvre', 'Finitions'], en: ['Structural works', 'Finishing works', 'Finishes'] },
+    items: { fr: ['Gros œuvre', 'Second œuvre', 'Finitions'], en: ['Structural works', 'Finishing works', 'Final finishes'] },
   },
   { name: { fr: 'Études', en: 'Engineering studies' }, items: { fr: ['Architecture', 'Structure', 'BIM'], en: ['Architecture', 'Structure', 'BIM'] } },
   {

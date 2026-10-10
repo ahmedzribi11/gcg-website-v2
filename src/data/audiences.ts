@@ -23,7 +23,7 @@ export const audiences: Audience[] = [
     title: { fr: 'Investisseurs & promoteurs', en: 'Investors & developers' },
     text: {
       fr: 'Lotissements, cités résidentielles, tours, immeubles de rapport : GCG conçoit et construit à l’échelle de votre programme immobilier.',
-      en: 'Estates, gated communities, towers, rental buildings: GCG designs and builds at the scale of your real-estate programme.',
+      en: 'Land subdivisions, residential estates, towers, rental buildings: GCG designs and builds at the scale of your real-estate programme.',
     },
     points: {
       fr: ['Études de faisabilité et conception', 'Programmes de plusieurs dizaines de villas', 'Voirie et réseaux du site (VRD)'],

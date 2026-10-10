@@ -117,8 +117,10 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
           <div>
             <label class="block">
               <span class="meta text-mist">{t('contact.form.phone')} *</span>
-              <input name="phone" type="tel" required autocomplete="tel" inputmode="tel" class={field} />
+              <input name="phone" type="tel" required autocomplete="tel" inputmode="tel" aria-describedby="hint-phone" class={field} />
             </label>
+            <!-- Pourquoi le téléphone est obligatoire (UX-03) -->
+            <p id="hint-phone" class="mt-2 text-[0.8125rem] text-bone/60">{t('contact.form.phoneHint')}</p>
             <p id="err-phone" data-err="phone" hidden class={err}></p>
           </div>
           <div>
@@ -130,13 +132,16 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
           </div>
           <label class="block">
             <span class="meta text-mist">{t('contact.form.profile')}</span>
+            <!-- Aucun choix par défaut : un visiteur qui passe ce champ n’est pas compté comme « Particulier » (UX-03) -->
             <select name="profile" class={`${field} cursor-pointer`}>
+              <option value="" class="bg-ink">{t('contact.form.choose')}</option>
               {profiles.map(([code, label]) => <option value={code} class="bg-ink">{label[lang]}</option>)}
             </select>
           </label>
           <label class="block">
             <span class="meta text-mist">{t('contact.form.type')}</span>
             <select name="type" class={`${field} cursor-pointer`}>
+              <option value="" class="bg-ink">{t('contact.form.choose')}</option>
               {types.map(([code, label]) => <option value={code} class="bg-ink">{label[lang]}</option>)}
             </select>
           </label>
@@ -277,6 +282,8 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
    * Mêmes règles qu’avant (attributs required et type="email"), vérifiées par checkValidity().
    */
   const checked = ['name', 'phone', 'email'].map((n) => form.elements.namedItem(n) as HTMLInputElement)
+  // Aide permanente du champ (téléphone, UX-03), gardée à côté du message d’erreur
+  const hints = new Map(checked.map((el) => [el, el.getAttribute('aria-describedby') ?? '']))
   const message = (el: HTMLInputElement) => {
     if (el.validity.valueMissing) return el.name === 'name' ? L.errName : L.required
     if (el.validity.typeMismatch && el.type === 'email') return L.errEmail
@@ -287,13 +294,11 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
     const msg = form.querySelector<HTMLElement>(`[data-err="${el.name}"]`)!
     msg.textContent = ok ? '' : message(el)
     msg.hidden = ok
-    if (ok) {
-      el.removeAttribute('aria-invalid')
-      el.removeAttribute('aria-describedby')
-    } else {
-      el.setAttribute('aria-invalid', 'true')
-      el.setAttribute('aria-describedby', msg.id)
-    }
+    const describedBy = [ok ? '' : msg.id, hints.get(el)].filter(Boolean).join(' ')
+    if (ok) el.removeAttribute('aria-invalid')
+    else el.setAttribute('aria-invalid', 'true')
+    if (describedBy) el.setAttribute('aria-describedby', describedBy)
+    else el.removeAttribute('aria-describedby')
     return ok
   }
   const validate = () => {
@@ -348,9 +353,10 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
     }
     if (!validate()) return
     const f = new FormData(form)
+    // Choix laissé vide : pas de ligne dans le message (UX-03)
     const sel = (name: string) => {
       const el = form.elements.namedItem(name) as HTMLSelectElement
-      return el.options[el.selectedIndex]?.text ?? ''
+      return el.value ? (el.options[el.selectedIndex]?.text ?? '') : ''
     }
     const refSlug = String(f.get('ref') || '')
     const lines = [
@@ -359,8 +365,8 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
       `${L.name}${L.colon}${f.get('name')}`,
       `${L.phone}${L.colon}${f.get('phone')}`,
       f.get('email') ? `${L.email}${L.colon}${f.get('email')}` : '',
-      `${L.profile}${L.colon}${sel('profile')}`,
-      `${L.type}${L.colon}${sel('type')}`,
+      sel('profile') ? `${L.profile}${L.colon}${sel('profile')}` : '',
+      sel('type') ? `${L.type}${L.colon}${sel('type')}` : '',
       f.get('location') ? `${L.location}${L.colon}${f.get('location')}` : '',
       refSlug ? `${L.ref}${L.colon}${data.projects[refSlug]} (${location.origin}${location.pathname.replace(/\/contact$/, '')}${document.body.dataset.lang === 'en' ? '/projects/' : '/realisations/'}${refSlug})` : '',
       f.get('message') ? `\n${L.message}${L.colon.trimEnd()}\n${f.get('message')}` : '',

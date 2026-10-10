@@ -128,8 +128,9 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
       )
     }
     {!bare && <Header lang={lang} alt={alt} variant={header} />}
+    <!-- Logo d’impression : loading="lazy" dans un bloc masqué à l’écran, il n’est téléchargé que pour imprimer (PERF-05) -->
     <div class="print-only mb-6 border-b border-black pb-3">
-      <img src="/brand/gcg-logo-green.png" alt="GCG — General Constructor Group CI" width="720" height="218" class="h-12 w-auto" />
+      <img src="/brand/gcg-logo-green.png" alt="GCG — General Constructor Group CI" width="720" height="218" loading="lazy" class="h-12 w-auto" />
       <p class="mt-2 text-xs">{site ? abs(path) : path}</p>
     </div>
     <main id="main" tabindex="-1">

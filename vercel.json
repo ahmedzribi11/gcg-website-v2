@@ -19,6 +19,7 @@
       ]
     },
     { "source": "/_astro/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] },
+    { "source": "/brand/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }] },
     {
       "source": "/(admin|api|qr|contact/merci|contact/erreur|en/contact/thanks|en/contact/error)(.*)",
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]

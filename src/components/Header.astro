@@ -29,7 +29,11 @@ const wa = whatsappLink(t('contact.form.intro'))
 >
   <nav aria-label={lang === 'fr' ? 'Navigation principale' : 'Main navigation'} class="wrap flex h-16 items-center justify-between gap-3 sm:gap-6 md:h-20">
     <a href={route('home', lang)} class="relative z-10 shrink-0" aria-label="GCG — General Constructor Group CI">
-      <img src="/brand/gcg-logo-white.png" alt="GCG — General Constructor Group CI" width="720" height="220" class="logo-mono h-[28px] w-auto md:h-[32px]" />
+      <!-- Même logo, en WebP de 240 px (8 Ko au lieu de 32 Ko) ; PNG d’origine en repli (PERF-05) -->
+      <picture>
+        <source srcset="/brand/gcg-logo-white-240.webp" type="image/webp" />
+        <img src="/brand/gcg-logo-white.png" alt="GCG — General Constructor Group CI" width="240" height="73" class="logo-mono h-[28px] w-auto md:h-[32px]" />
+      </picture>
     </a>
 
     <ul class="hidden items-center gap-8 lg:flex">

@@ -17,7 +17,7 @@ Elle est générée à partir du nom, en minuscules sans accents, et **ne change
 | `sector` | liste fermée | oui | résidentiel, hôtellerie, équipements, industrie |
 | `city` | liste fermée | oui | 19 localités (carte et filtres) ; nouvelle ville = ajout par l’équipe dans `src/data/geo.ts` |
 | `location`, `location_en` | texte | `location` oui | lieu affiché (quartier) |
-| `period`, `period_en` | texte | `period` oui | année ou intervalle ; l’année sert à la chronologie |
+| `period`, `period_en` | texte | `period` oui | année ou intervalle ; l’année sert à la chronologie ; un projet en cours d’exécution avec la seule année affiche « Depuis 2023 » / « Since 2023 » (CONT-11) |
 | `status` | liste fermée | non | en cours d’exécution, en cours d’études, réceptionné — vide si non confirmé |
 | `designOnly` | booléen | non (défaut `false`) | missions d’études, de conception ou de permis seulement, sans travaux : sans statut, le projet porte la mention « Études uniquement » / « Design only » (CONT-12) |
 | `surface`, `terrain`, `coveredSurface` | texte | non | ex. « 2 500 m² » |

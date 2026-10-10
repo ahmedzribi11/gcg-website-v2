@@ -45,7 +45,7 @@ années, statut) : en cas de doute, laisser vide.
 | N° d’ordre | Position du projet sur le site. Nouveau projet : le numéro qui suit le dernier. |
 | Nom du projet | Nom exact, avec accents. Il sert à créer l’adresse de la page, qui ne changera plus. |
 | Secteur, Ville | Listes fermées. Ville absente : demander à l’équipe de l’ajouter (elle apparaîtra sur la carte). |
-| Lieu, Période | Ce qui s’affiche : « Abidjan, Riviera Golf » ; « 2024 – 2025 ». |
+| Lieu, Période | Ce qui s’affiche : « Abidjan, Riviera Golf » ; « 2024 – 2025 ». Pour un chantier en cours, saisir l’année de démarrage seule (« 2023 ») : le site affiche « Depuis 2023 ». |
 | Statut | En cours d’études, en cours d’exécution ou réceptionné. Vide si non confirmé. |
 | Mission d’études seulement | À cocher quand GCG n’a fait que des études, de la conception ou un dossier de permis, sans travaux : le projet porte la mention « Études uniquement » au lieu de passer pour un ouvrage construit par GCG. |
 | Résumé (français / anglais) | Une ou deux phrases, 300 caractères au plus. |

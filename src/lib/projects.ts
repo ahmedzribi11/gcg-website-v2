@@ -64,7 +64,9 @@ const num = (lang: Lang, s?: string) => (s ? (lang === 'en' ? enNumber(s) : frNu
 export function localize(entry: ProjectEntry, lang: Lang): Project {
   const d = entry.data
   const en = lang === 'en'
-  const period = en ? (d.period_en ?? d.period) : d.period
+  const raw = en ? (d.period_en ?? d.period) : d.period
+  // Chantier en cours avec la seule année de démarrage : « Depuis 2023 », pour que l’année ne se lise pas comme une livraison (CONT-11)
+  const period = d.status === 'execution' && /^\d{4}$/.test(raw) ? `${en ? 'Since' : 'Depuis'} ${raw}` : raw
   const year = Number(/\d{4}/.exec(d.period)?.[0] ?? 0)
   const name = en ? (d.name_en ?? d.name) : d.name
   return {

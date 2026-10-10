@@ -324,6 +324,11 @@ const UI = {
     'poster.print': 'Imprimer l’affiche',
     'poster.choose': 'Projet affiché',
     'poster.general': 'Affiche générale',
+    'poster.format': 'Format',
+    'poster.office': 'imprimante de bureau',
+    'poster.printShop': 'imprimeur',
+    'poster.formatHelp':
+      'Marge blanche de 5 mm. Le QR code se scanne jusqu’à environ 1 m en A4, 1,4 m en A3, 2 m en A2 et 2,9 m en A1 : faites scanner une épreuve à la distance du panneau avant de commander.',
 
     'refs.label': 'Références',
     'refs.title': 'Liste de références',
@@ -599,6 +604,11 @@ const UI = {
     'poster.print': 'Print the poster',
     'poster.choose': 'Project shown',
     'poster.general': 'General poster',
+    'poster.format': 'Paper size',
+    'poster.office': 'office printer',
+    'poster.printShop': 'print shop',
+    'poster.formatHelp':
+      'With a 5 mm white margin. The QR code scans from up to about 1 m on A4, 1.4 m on A3, 2 m on A2 and 2.9 m on A1: have a proof scanned at the board’s distance before ordering.',
 
     'refs.label': 'References',
     'refs.title': 'Reference list',

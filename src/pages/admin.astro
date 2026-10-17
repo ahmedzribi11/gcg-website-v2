@@ -71,6 +71,8 @@ Astro.csp?.insertDirective('img-src https://avatars.githubusercontent.com https:
             branch: 'main',
             base_url: location.origin,
             auth_endpoint: 'api/auth',
+            // Dépôt public : accès aux seuls dépôts publics de l’éditeur, pas à ses dépôts privés (SEC-03)
+            auth_scope: 'public_repo',
           },
           site_url: location.origin,
           display_url: location.origin,

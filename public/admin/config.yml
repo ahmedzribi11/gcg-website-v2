@@ -8,6 +8,8 @@ backend:
   repo: ahmedzribi11/gcg-website-v2
   branch: main
   auth_endpoint: api/auth
+  # Dépôt public : accès aux seuls dépôts publics de l’éditeur (SEC-03). À passer à « repo » si le dépôt devient privé.
+  auth_scope: public_repo
   # preview_context volontairement absent (OPS-04) : Decap lit l’adresse d’aperçu dans le statut de commit GitHub,
   # et celui de Vercel (contexte « Vercel ») pointe vers le tableau de bord vercel.com, pas vers l’aperçu ; Decap y
   # ajouterait le chemin de la fiche, d’où un lien cassé. À activer seulement avec un hébergeur dont le statut porte

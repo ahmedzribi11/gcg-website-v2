@@ -6,6 +6,7 @@
  */
 import { secure } from './headers.js'
 
+// public_repo suffit tant que le dépôt est public (SEC-03) ; repo seulement s’il devient privé (README)
 const SCOPES = new Set(['repo', 'public_repo', 'repo,user', 'public_repo,user'])
 const COOKIE = 'gcg_oauth_state'
 
@@ -17,7 +18,7 @@ export function authStart(request, env) {
       headers: secure({ 'Content-Type': 'text/plain; charset=utf-8' }),
     })
   const url = new URL(request.url)
-  const scope = SCOPES.has(url.searchParams.get('scope') ?? '') ? url.searchParams.get('scope') : 'repo'
+  const scope = SCOPES.has(url.searchParams.get('scope') ?? '') ? url.searchParams.get('scope') : 'public_repo'
   const state = crypto.randomUUID().replace(/-/g, '')
   const params = new URLSearchParams({ client_id: env.GITHUB_OAUTH_ID, redirect_uri: `${url.origin}/api/callback`, scope, state })
   return new Response(null, {

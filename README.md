@@ -82,6 +82,9 @@ Chaque publication redéploie le site en 2 à 5 minutes. Guide : `docs/guide-edi
    - Authorization callback URL : `https://<domaine>/api/callback`
 2. Hébergeur → variables d’environnement `GITHUB_OAUTH_ID` et `GITHUB_OAUTH_SECRET`, puis redéployer.
 3. Chaque éditeur a un compte GitHub (avec double authentification) ajouté comme collaborateur du dépôt.
+   La connexion demande l’accès `public_repo` (dépôts publics seulement), suffisant tant que le dépôt est
+   public. **Si le dépôt devient privé**, remplacer `public_repo` par `repo` dans `src/pages/admin.astro`
+   (`auth_scope`), `public/admin/config.yml` (`auth_scope`) et `server/oauth.js` (valeur par défaut).
 4. Facultatif : `preview_context` dans `public/admin/config.yml` (nom exact du statut de déploiement de
    l’hébergeur) pour afficher le lien d’aperçu des brouillons.
 

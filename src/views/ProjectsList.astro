@@ -47,7 +47,27 @@ const delivered = n((p) => p.status === 'receptionne')
           <span class="meta text-gold" data-active-count></span>
         </summary>
       </details>
-      <div class="hidden flex-1 flex-wrap items-center gap-2 md:flex" data-groups-desktop></div>
+      <!-- Filtres rendus au build, pas clonés par le script : la barre ne bouge plus à son arrivée (CODE-07) -->
+      <div class="hidden flex-1 flex-wrap items-center gap-2 md:flex" data-groups-desktop>
+        {
+          groups.map((g) => (
+            <details class="dd relative" data-dd={g.key}>
+              <summary class="chip list-none !h-9 !pr-3">
+                <span class="text-mist">{g.label}</span>
+                <span class="text-bone" data-dd-value></span>
+                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" class="transition-transform"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
+              </summary>
+              <div class="absolute left-0 top-full z-20 mt-2 flex min-w-60 flex-col gap-1 rounded-2xl border border-line bg-ink-2 p-2 shadow-2xl">
+                {g.items.map((it) => (
+                  <button type="button" class="dd-item flex items-center justify-between gap-6 rounded-xl px-3 py-2.5 text-left text-sm text-bone/80 hover:bg-ink-3 hover:text-bone aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="false" data-filter={g.key} data-value={it.v} data-label={it.label}>
+                    {it.label} <small class="meta opacity-60">{it.n}</small>
+                  </button>
+                ))}
+              </div>
+            </details>
+          ))
+        }
+      </div>
       <button type="button" class="meta hidden text-mist hover:text-gold md:inline" data-reset>{t('projects.filter.reset')}</button>
       <p class="meta text-bone/70" aria-live="polite"><span data-results class="text-gold">{projects.length}</span> <span data-count-label data-one={t('projects.count.one')} data-many={t('projects.count.many')}>{t('projects.count.many')}</span></p>
       <div class="flex shrink-0 rounded-full border border-line" role="group" aria-label={t('projects.view.label')}>
@@ -55,49 +75,23 @@ const delivered = n((p) => p.status === 'receptionne')
         <button type="button" class="flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-xs aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="false" data-view="map" aria-label={t('projects.view.map')}><Icon name="map" /><span class="hidden sm:inline">{t('projects.view.map')}</span></button>
       </div>
     </div>
-    <div class="wrap hidden pb-4" data-groups-mobile></div>
-  </div>
-
-  <template id="filter-groups">
-    {
-      groups.map((g) => (
-        <div class="flex min-w-0 items-center gap-2" data-group={g.key}>
-          <span class="meta shrink-0 text-mist">{g.label}</span>
-          <div class="no-scrollbar flex gap-1.5 overflow-x-auto">
-            {g.items
-              .filter((it) => it.n > 0)
-              .map((it) => (
+    <div class="wrap hidden pb-4" data-groups-mobile>
+      {
+        groups.map((g) => (
+          <div class="flex min-w-0 items-center gap-2 py-1.5" data-group={g.key}>
+            <span class="meta shrink-0 text-mist">{g.label}</span>
+            <div class="no-scrollbar flex gap-1.5 overflow-x-auto">
+              {g.items.map((it) => (
                 <button type="button" class="chip !h-8 !px-3 !text-xs" aria-pressed="false" data-filter={g.key} data-value={it.v}>
                   {it.label} <small>{it.n}</small>
                 </button>
               ))}
+            </div>
           </div>
-        </div>
-      ))
-    }
-  </template>
-  <template id="filter-dropdowns">
-    {
-      groups.map((g) => (
-        <details class="dd relative" data-dd={g.key}>
-          <summary class="chip list-none !h-9 !pr-3">
-            <span class="text-mist">{g.label}</span>
-            <span class="text-bone" data-dd-value></span>
-            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" class="transition-transform"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
-          </summary>
-          <div class="absolute left-0 top-full z-20 mt-2 flex min-w-60 flex-col gap-1 rounded-2xl border border-line bg-ink-2 p-2 shadow-2xl">
-            {g.items
-              .filter((it) => it.n > 0)
-              .map((it) => (
-                <button type="button" class="dd-item flex items-center justify-between gap-6 rounded-xl px-3 py-2.5 text-left text-sm text-bone/80 hover:bg-ink-3 hover:text-bone aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="false" data-filter={g.key} data-value={it.v} data-label={it.label}>
-                  {it.label} <small class="meta opacity-60">{it.n}</small>
-                </button>
-              ))}
-          </div>
-        </details>
-      ))
-    }
-  </template>
+        ))
+      }
+    </div>
+  </div>
 
   <section class="wrap py-12 md:py-16" aria-label={t('projects.label')}>
     <h2 class="sr-only">{t('projects.list')}</h2>
@@ -119,11 +113,8 @@ const delivered = n((p) => p.status === 'receptionne')
   type Key = (typeof KEYS)[number]
   const state: Record<Key, string> = { secteur: '', statut: '', ville: '', type: '' }
 
-  const tpl = document.getElementById('filter-groups') as HTMLTemplateElement
   const desktop = document.querySelector<HTMLElement>('[data-groups-desktop]')!
   const mobile = document.querySelector<HTMLElement>('[data-groups-mobile]')!
-  desktop.append((document.getElementById('filter-dropdowns') as HTMLTemplateElement).content.cloneNode(true))
-  const mob = tpl.content.cloneNode(true) as DocumentFragment
   const dropdowns = Array.from(desktop.querySelectorAll<HTMLDetailsElement>('details.dd'))
   dropdowns.forEach((d) =>
     d.addEventListener('toggle', () => {
@@ -133,8 +124,6 @@ const delivered = n((p) => p.status === 'receptionne')
   document.addEventListener('click', (e) => {
     if (!(e.target as Element).closest('details.dd')) dropdowns.forEach((d) => (d.open = false))
   })
-  mob.querySelectorAll<HTMLElement>('[data-group]').forEach((g) => g.classList.add('py-1.5'))
-  mobile.append(mob)
 
   const panel = document.querySelector<HTMLDetailsElement>('.filters-panel')!
   panel.addEventListener('toggle', () => mobile.classList.toggle('hidden', !panel.open))
@@ -147,8 +136,14 @@ const delivered = n((p) => p.status === 'receptionne')
   // Libellés et règle du pluriel de la langue de la page, comme plural() au build (CODE-05)
   const rule = new Intl.PluralRules(document.documentElement.lang === 'en' ? 'en-GB' : 'fr')
 
+  // Valeurs de l’adresse acceptées seulement si un filtre affiché les porte : un lien abîmé (« ?secteur=" »)
+  // ou une valeur inconnue montre toute la liste au lieu de casser le script ou de tout masquer (CODE-07)
+  const allowed = (k: Key) => new Set(Array.from(document.querySelectorAll<HTMLElement>(`[data-filter="${k}"]`), (b) => b.dataset.value))
   const params = new URLSearchParams(location.search)
-  KEYS.forEach((k) => (state[k] = params.get(k) ?? ''))
+  KEYS.forEach((k) => {
+    const v = params.get(k) ?? ''
+    state[k] = allowed(k).has(v) ? v : ''
+  })
 
   function apply(push = true) {
     let visible = 0
@@ -173,7 +168,7 @@ const delivered = n((p) => p.status === 'receptionne')
     })
     dropdowns.forEach((d) => {
       const k = d.dataset.dd as Key
-      const btn = d.querySelector<HTMLElement>(`[data-value="${state[k]}"]`)
+      const btn = state[k] ? d.querySelector<HTMLElement>(`[data-value="${CSS.escape(state[k])}"]`) : null
       d.querySelector<HTMLElement>('[data-dd-value]')!.textContent = state[k] && btn ? `· ${btn.dataset.label}` : ''
       d.classList.toggle('is-active', Boolean(state[k]))
       if (state[k]) d.open = false

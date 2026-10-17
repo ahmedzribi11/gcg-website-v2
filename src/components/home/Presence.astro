@@ -37,7 +37,8 @@ const order = (Object.keys(counts) as CityId[]).sort((a, b) => counts[b] - count
         {t('presence.ambition')}
       </p>
     </div>
-    <div class="md:col-span-7">
+    <!-- Téléphone : la liste des localités suffit, la carte reste sur la page À propos (MOB-04) -->
+    <div class="max-md:hidden md:col-span-7">
       <PresenceMap lang={lang} projects={projects} tone="paper" />
     </div>
   </div>

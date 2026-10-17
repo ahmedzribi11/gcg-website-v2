@@ -21,10 +21,11 @@ d’écran, sans défilement horizontal épinglé ni script.
   <div class="wrap pb-24 pt-24 md:pt-40">
     <SectionHead id="featured-title" kind="proof" title={t('featured.title')} />
 
+    <!-- Téléphone : les 4 premiers projets, puis « Toutes les réalisations » ; les suivants dès 768 px (MOB-04) -->
     <ul class="mt-8 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 md:mt-10">
       {
-        featured.map((p) => (
-          <li data-slide>
+        featured.map((p, i) => (
+          <li data-slide class:list={[i >= 4 && 'max-md:hidden']}>
             <ProjectCard project={p} lang={lang} />
           </li>
         ))

@@ -1,28 +1,25 @@
 ---
 import Icon from './Icon.astro'
 import { route, useT, type Lang } from '../i18n'
-import { contact, documents, phoneCountry, socials, whatsappLink } from '../lib/settings'
+import { mainNav } from '../lib/nav'
+import { contact, documents, pageWhatsApp, phoneCountry, socials } from '../lib/settings'
 import legal from '../data/legal.json'
 
 interface Props {
   lang: Lang
+  /** Titre de la page, nommé dans le message WhatsApp (CODE-06). */
+  page?: string
 }
-const { lang } = Astro.props
+const { lang, page } = Astro.props
 const t = useT(lang)
 const year = new Date().getFullYear()
-const nav = [
-  { href: route('services', lang), label: t('nav.services') },
-  { href: route('projects', lang), label: t('nav.projects') },
-  { href: route('about', lang), label: t('nav.about') },
-  { href: route('invest', lang), label: t('nav.invest') },
-  { href: route('contact', lang), label: t('nav.contact') },
-]
+const nav = mainNav(lang)
 const useful = [
   { href: route('references', lang), label: t('refs.title') },
   { href: route('share', lang), label: t('contact.share') },
 ]
 const owner = legal.legalName || legal.tradeName
-const wa = whatsappLink(t('contact.form.intro'))
+const wa = pageWhatsApp(lang, page)
 /** Deux numéros : le pays de chacun, comme sur la page Contact (UX-05). */
 const country = (e164: string) => (contact.phone && contact.phone2 ? phoneCountry(e164, lang) : '')
 ---

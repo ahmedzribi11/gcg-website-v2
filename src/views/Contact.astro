@@ -4,7 +4,7 @@ import Icon from '../components/Icon.astro'
 import { qrPath, route, useT, type Lang } from '../i18n'
 import { PROFILES, PROJECT_TYPES } from '../data/contact-options.js'
 import { getProjects } from '../lib/projects'
-import { contact, hasContact, phoneCountry, socials, whatsappLink } from '../lib/settings'
+import { contact, hasContact, pageWhatsApp, phoneCountry, socials } from '../lib/settings'
 import { contactFormEnabled } from '../lib/env'
 
 interface Props {
@@ -17,7 +17,7 @@ const projects = await getProjects(lang)
 // Codes et libellés partagés avec le serveur, qui les écrit en clair dans l’e-mail (OPS-06)
 const profiles = Object.entries(PROFILES)
 const types = Object.entries(PROJECT_TYPES)
-const wa = whatsappLink()
+const wa = pageWhatsApp(lang, t('contact.docTitle'))
 const hours = fr ? contact.hours : contact.hours_en || contact.hours
 /** Deux numéros : le pays précise lequel appeler (« Téléphone · Côte d’Ivoire »). */
 const country = (e164: string) => phoneCountry(e164, lang)
@@ -41,7 +41,7 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
         <div class="mt-12 space-y-3">
           {
             wa && (
-              <a href={whatsappLink(t('contact.form.intro'))} target="_blank" rel="noopener" class="group flex items-center justify-between gap-4 border-b border-line py-4">
+              <a href={wa} target="_blank" rel="noopener" class="group flex items-center justify-between gap-4 border-b border-line py-4">
                 <span class="flex items-center gap-4"><Icon name="whatsapp" size={20} class="text-gold" /><span><span class="meta block text-mist">{t('contact.whatsapp')}</span><span class="text-lg">{contact.whatsapp}</span></span></span>
                 <Icon name="arrow-up-right" class="opacity-50 group-hover:opacity-100" />
               </a>

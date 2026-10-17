@@ -1,25 +1,23 @@
 ---
 import Icon from './Icon.astro'
+import ContactCta from './ContactCta.astro'
 import { route, useT, type Lang } from '../i18n'
-import { contact, whatsappLink } from '../lib/settings'
+import { mainNav } from '../lib/nav'
+import { contact, pageWhatsApp } from '../lib/settings'
 
 interface Props {
   lang: Lang
   alt: string
   variant: 'overlay' | 'solid'
+  /** Titre de la page, nommé dans le message WhatsApp (CODE-06). */
+  page?: string
 }
-const { lang, alt, variant } = Astro.props
+const { lang, alt, variant, page } = Astro.props
 const t = useT(lang)
 const path = Astro.url.pathname.replace(/\/$/, '') || '/'
-const nav = [
-  { href: route('services', lang), label: t('nav.services') },
-  { href: route('projects', lang), label: t('nav.projects') },
-  { href: route('about', lang), label: t('nav.about') },
-  { href: route('invest', lang), label: t('nav.invest') },
-  { href: route('contact', lang), label: t('nav.contact') },
-]
+const nav = mainNav(lang)
 const isActive = (href: string) => path === href || path.startsWith(href + '/')
-const wa = whatsappLink(t('contact.form.intro'))
+const wa = pageWhatsApp(lang, page)
 ---
 
 <header
@@ -73,10 +71,10 @@ const wa = whatsappLink(t('contact.form.intro'))
           <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
         </svg>
       </button>
-      <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="btn btn-gold hidden !min-h-10 !px-5 !text-xs md:inline-flex">
-        {wa && <Icon name="whatsapp" size={20} />}
+      <ContactCta lang={lang} page={page} class="btn btn-gold hidden !min-h-10 !px-5 !text-xs md:inline-flex">
+        <Fragment slot="whatsapp"><Icon name="whatsapp" size={20} /> {t('nav.cta')}</Fragment>
         {t('nav.cta')}
-      </a>
+      </ContactCta>
       <button type="button" id="menu-toggle" class="meta flex h-11 items-center gap-3 rounded-full border border-line px-4 text-bone lg:hidden" aria-expanded="false" aria-controls="mobile-menu">
         <span data-label-open>{t('nav.menu')}</span><span data-label-close hidden>{t('nav.close')}</span>
         <span class="relative block h-2.5 w-4" aria-hidden="true">

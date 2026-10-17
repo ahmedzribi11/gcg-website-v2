@@ -1,14 +1,16 @@
 ---
 import Icon from './Icon.astro'
+import ContactCta from './ContactCta.astro'
 import { route, useT, type Lang } from '../i18n'
-import { contact, whatsappLink } from '../lib/settings'
+import { contact } from '../lib/settings'
 
 interface Props {
   lang: Lang
+  /** Titre de la page, nommé dans le message WhatsApp (CODE-06). */
+  page?: string
 }
-const { lang } = Astro.props
+const { lang, page } = Astro.props
 const t = useT(lang)
-const wa = whatsappLink(t('contact.form.intro'))
 ---
 
 <nav id="mobile-bar" aria-label={lang === 'fr' ? 'Actions rapides' : 'Quick actions'} class="no-print fixed inset-x-3 bottom-3 z-40 transition-transform duration-700 ease-[var(--ease-out-expo)] md:hidden [@media(max-height:480px)]:hidden" style="padding-bottom: env(safe-area-inset-bottom)">
@@ -23,9 +25,9 @@ const wa = whatsappLink(t('contact.form.intro'))
         </a>
       )
     }
-    <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-gold text-sm font-medium tracking-wide text-brand">
-      {wa ? <Icon name="whatsapp" size={20} /> : <Icon name="arrow" size={20} />}
-      {wa ? 'WhatsApp' : t('nav.cta')}
-    </a>
+    <ContactCta lang={lang} page={page} class="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-gold text-sm font-medium tracking-wide text-brand">
+      <Fragment slot="whatsapp"><Icon name="whatsapp" size={20} /> WhatsApp</Fragment>
+      <Icon name="arrow" size={20} /> {t('nav.cta')}
+    </ContactCta>
   </div>
 </nav>

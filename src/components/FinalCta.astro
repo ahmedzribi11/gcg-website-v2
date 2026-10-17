@@ -1,14 +1,16 @@
 ---
 import Icon from './Icon.astro'
 import { qrPath, route, useT, type Lang } from '../i18n'
-import { contact, whatsappLink } from '../lib/settings'
+import { contact, pageWhatsApp } from '../lib/settings'
 
 interface Props {
   lang: Lang
+  /** Titre de la page, nommé dans le message WhatsApp (CODE-06) ; défaut : Accueil. */
+  page?: string
 }
-const { lang } = Astro.props
+const { lang, page } = Astro.props
 const t = useT(lang)
-const wa = whatsappLink(t('contact.form.intro'))
+const wa = pageWhatsApp(lang, page)
 ---
 
 <section class="relative flex min-h-svh items-center overflow-hidden bg-ink py-32" aria-labelledby="final-title">

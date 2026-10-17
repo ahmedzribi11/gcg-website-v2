@@ -8,7 +8,7 @@ import Icon from '../components/Icon.astro'
 import { audiences } from '../data/audiences'
 import { route, useT, type Lang } from '../i18n'
 import { coverImage, getProjects, publishedOnly } from '../lib/projects'
-import { whatsappLink } from '../lib/settings'
+import { pageWhatsApp } from '../lib/settings'
 
 interface Props {
   lang: Lang
@@ -17,7 +17,7 @@ const { lang } = Astro.props
 const t = useT(lang)
 const fr = lang === 'fr'
 const projects = await getProjects(lang)
-const wa = whatsappLink(t('contact.form.intro'))
+const wa = pageWhatsApp(lang, t('invest.label'))
 
 /** Arguments factuels (portfolio et réunion de cadrage). */
 const reasons = fr
@@ -117,5 +117,5 @@ const reasons = fr
     </div>
   </section>
 
-  <FinalCta lang={lang} />
+  <FinalCta lang={lang} page={t('invest.label')} />
 </Base>

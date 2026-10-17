@@ -6,7 +6,7 @@ import Icon from '../components/Icon.astro'
 import { getService } from '../data/services'
 import { colon, plural, qrPath, projectPath, route, SECTOR_LABELS, servicePath, STATUS_LABELS, useT, type Lang } from '../i18n'
 import { pad, type Project } from '../lib/projects'
-import { whatsappLink } from '../lib/settings'
+import { pageWhatsApp } from '../lib/settings'
 import { breadcrumbLd, ogImage, webPageLd } from '../lib/seo'
 
 interface Props {
@@ -48,7 +48,7 @@ function galleryClass(i: number, n: number) {
   return rest % 2 === 1 && i === n - 1 ? 'md:col-span-6' : 'md:col-span-3'
 }
 const shareText = `${p.name} — GCG`
-const wa = whatsappLink(`${t('contact.form.intro')} (${p.name})`)
+const wa = pageWhatsApp(lang, p.name)
 // Titre et description Google saisis dans l’espace de gestion, sinon construits (CODE-04)
 // « Depuis 2025 » prend une minuscule après la virgule
 const base = `${p.composition} ${p.location}, ${p.period.replace(/^(Depuis|Since) /, (m) => m.toLowerCase())}.`

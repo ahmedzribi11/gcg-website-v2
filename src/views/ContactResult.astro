@@ -20,7 +20,7 @@ const text = { thanks: t('contact.form.okText'), formError: t('contact.result.in
 const wa = pageWhatsApp(lang, t('contact.label'))
 ---
 
-<Base lang={lang} alt={route(kind, lang === 'fr' ? 'en' : 'fr')} title={ok ? t('contact.form.okTitle') : t('contact.form.failTitle')} noindex>
+<Base lang={lang} alt={route(kind, lang === 'fr' ? 'en' : 'fr')} title={ok ? t('contact.form.okTitle') : t('contact.form.failTitle')} page={t('contact.label')} noindex>
   <section class="wrap max-w-3xl pb-28 pt-36 md:pt-48">
     <h1 class="display text-4xl">{ok ? t('contact.form.okTitle') : t('contact.form.failTitle')}</h1>
     <p class="mt-8 text-lg text-bone/85">{text}</p>

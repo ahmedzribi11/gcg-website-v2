@@ -107,7 +107,7 @@ const delivered = n((p) => p.status === 'receptionne')
     </div>
   </section>
 
-  <FinalCta lang={lang} />
+  <FinalCta lang={lang} page={t('projects.label')} />
 <script>
   const KEYS = ['secteur', 'statut', 'ville', 'type'] as const
   type Key = (typeof KEYS)[number]

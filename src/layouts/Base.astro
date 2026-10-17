@@ -33,12 +33,14 @@ interface Props {
   organization?: boolean
   /** Titre complet de l’onglet, si le modèle par défaut ne suffit pas à le rendre unique. */
   docTitle?: string
+  /** Nom de la page dans les messages WhatsApp de l’en-tête, de la barre mobile et du pied de page, si différent de `title` (CODE-06). */
+  page?: string
   /** Titre et description des aperçus de liens (WhatsApp, Facebook, LinkedIn), si différents de l’onglet (SHR-13). */
   ogTitle?: string
   ogDescription?: string
 }
 
-const { lang, title, description, alt, translated = true, image, imageWidth, imageHeight, header = 'solid', noindex = false, bare = false, jsonLd = [], organization = false, docTitle, ogTitle, ogDescription } = Astro.props
+const { lang, title, description, alt, translated = true, image, imageWidth, imageHeight, header = 'solid', noindex = false, bare = false, jsonLd = [], organization = false, docTitle, page = title, ogTitle, ogDescription } = Astro.props
 const t = useT(lang)
 const brand = 'GCG Côte d’Ivoire'
 const fullTitle = docTitle ?? (title ? `${title} — ${brand}` : `${brand} — ${t('site.tagline')}`)
@@ -133,7 +135,7 @@ const share = image ? { src: image, width: imageWidth ?? 1200, height: imageHeig
         </a>
       )
     }
-    {!bare && <Header lang={lang} alt={alt} variant={header} />}
+    {!bare && <Header lang={lang} alt={alt} variant={header} page={page} />}
     <!-- Logo d’impression : loading="lazy" dans un bloc masqué à l’écran, il n’est téléchargé que pour imprimer (PERF-05) -->
     <div class="print-only mb-6 border-b border-black pb-3">
       <img src="/brand/gcg-logo-green.png" alt="GCG — General Constructor Group CI" width="720" height="218" loading="lazy" class="h-12 w-auto" />
@@ -142,8 +144,8 @@ const share = image ? { src: image, width: imageWidth ?? 1200, height: imageHeig
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    {!bare && <Footer lang={lang} />}
-    {!bare && <MobileBar lang={lang} />}
+    {!bare && <Footer lang={lang} page={page} />}
+    {!bare && <MobileBar lang={lang} page={page} />}
     <script>
       import '../scripts/site'
     </script>

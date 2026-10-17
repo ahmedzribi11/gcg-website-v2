@@ -1,8 +1,8 @@
 ---
 import { getImage } from 'astro:assets'
 import Icon from '../Icon.astro'
+import ContactCta from '../ContactCta.astro'
 import { projectPath, route, STATUS_SHORT, useT, type Lang } from '../../i18n'
-import { whatsappLink } from '../../lib/settings'
 import { publishedOnly, showcasePhoto, SHOWCASE, type Project } from '../../lib/projects'
 import { DESKTOP_3D } from '../../scenes/device'
 
@@ -13,7 +13,6 @@ interface Props {
 const { lang, projects } = Astro.props
 const t = useT(lang)
 const fr = lang === 'fr'
-const wa = whatsappLink(t('contact.form.intro'))
 
 /** Mots du titre, découpés au build : l’animation démarre au premier affichage, sans attendre le JS.
  *  Le point d’interrogation reste collé au mot qui le précède (espace fine insécable), jamais seul en début de ligne (CONT-07). */
@@ -157,10 +156,10 @@ const proofs = [
           <a href={route('projects', lang)} class="btn btn-gold">
             {t('cta.projects')} <Icon name="arrow" size={20} />
           </a>
-          <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="btn btn-line">
-            {wa && <Icon name="whatsapp" size={20} />}
+          <ContactCta lang={lang} class="btn btn-line">
+            <Fragment slot="whatsapp"><Icon name="whatsapp" size={20} /> {t('cta.project')}</Fragment>
             {t('cta.project')}
-          </a>
+          </ContactCta>
         </div>
       </div>
     </div>

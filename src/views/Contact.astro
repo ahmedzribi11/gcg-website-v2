@@ -26,7 +26,7 @@ const phones = [
   { label: contact.phone2, href: contact.phone2Href, e164: contact.phone2E164 },
 ].filter((p) => p.label)
 const phoneLabel = (e164: string) => [t('contact.phone'), phones.length > 1 && country(e164)].filter(Boolean).join(' · ')
-const err = 'mt-2 border-l border-[#ff9b8a] pl-3 text-sm text-bone/80'
+const err = 'mt-2 border-l border-danger pl-3 text-sm text-bone/80'
 // Trait des champs à 50 % : au moins 3:1 sur le panneau dans les deux thèmes (BRW-07, WCAG 1.4.11)
 const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-transparent px-0 py-3 text-lg text-bone placeholder:text-bone/30 focus:border-gold focus:outline-none focus:ring-0'
 ---
@@ -191,7 +191,7 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
             }
           </div>
           <p id="brief-pending" data-pending hidden class="md:col-span-2 border-l border-gold/60 pl-4 text-sm text-bone/70">{t('contact.form.pending')}</p>
-          <div data-fail hidden role="alert" class="md:col-span-2 border-l border-[#ff9b8a] pl-4 text-sm text-bone/80">
+          <div data-fail hidden role="alert" class="md:col-span-2 border-l border-danger pl-4 text-sm text-bone/80">
             <p class="font-medium text-bone">{t('contact.form.failTitle')}</p>
             <p class="mt-1" data-fail-text>{t('contact.form.failText')}</p>
           </div>

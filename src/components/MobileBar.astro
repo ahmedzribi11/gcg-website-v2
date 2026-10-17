@@ -13,7 +13,7 @@ const { lang, page } = Astro.props
 const t = useT(lang)
 ---
 
-<nav id="mobile-bar" aria-label={lang === 'fr' ? 'Actions rapides' : 'Quick actions'} class="no-print fixed inset-x-3 bottom-3 z-40 transition-transform duration-700 ease-[var(--ease-out-expo)] md:hidden [@media(max-height:480px)]:hidden" style="padding-bottom: env(safe-area-inset-bottom)">
+<nav id="mobile-bar" aria-label={lang === 'fr' ? 'Actions rapides' : 'Quick actions'} class="no-print fixed inset-x-3 bottom-3 z-mobile-bar transition-transform duration-700 ease-[var(--ease-out-expo)] md:hidden [@media(max-height:480px)]:hidden" style="padding-bottom: env(safe-area-inset-bottom)">
   <div class="flex gap-2 rounded-full border border-line bg-ink p-1.5 shadow-2xl">
     <a href={route('projects', lang)} class="flex h-12 flex-1 items-center justify-center gap-2 rounded-full text-sm tracking-wide text-bone">
       <Icon name="grid" size={20} /> {t('nav.projects')}

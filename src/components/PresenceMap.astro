@@ -62,13 +62,14 @@ const IH = 170
 const insetProj = geoMercator().fitExtent([[6, 6], [IW - 6, IH - 6]], waColl)
 const insetPath = geoPath(insetProj).digits(1)
 
-const stroke = tone === 'paper' ? 'rgba(5,46,20,.55)' : 'color-mix(in srgb, var(--color-gold) 55%, transparent)'
-const fillCi = tone === 'paper' ? 'rgba(5,46,20,.08)' : 'rgba(5,46,20,.55)'
+const brand = (pct: number) => `color-mix(in srgb, var(--color-brand) ${pct}%, transparent)`
+const stroke = tone === 'paper' ? brand(55) : 'color-mix(in srgb, var(--color-gold) 55%, transparent)'
+const fillCi = tone === 'paper' ? brand(8) : brand(55)
 // Version sombre : couleurs du thème (variables), lisibles en mode clair comme en mode sombre
-const fillN = tone === 'paper' ? 'rgba(5,46,20,.03)' : 'color-mix(in srgb, var(--color-bone) 3%, transparent)'
-const strokeN = tone === 'paper' ? 'rgba(5,46,20,.15)' : 'color-mix(in srgb, var(--color-bone) 14%, transparent)'
-const ink = tone === 'paper' ? '#052e14' : 'var(--color-bone)'
-const gold = tone === 'paper' ? '#8a7a2e' : 'var(--color-gold)'
+const fillN = tone === 'paper' ? brand(3) : 'color-mix(in srgb, var(--color-bone) 3%, transparent)'
+const strokeN = tone === 'paper' ? brand(15) : 'color-mix(in srgb, var(--color-bone) 14%, transparent)'
+const ink = tone === 'paper' ? 'var(--color-brand)' : 'var(--color-bone)'
+const gold = tone === 'paper' ? 'var(--color-gold-deep)' : 'var(--color-gold)'
 // Étiquette des épingles de l’intérieur : seules les localités avec projets sont dessinées (n ≥ 1), la règle « n > 1 »
 // y donne le même résultat que plural() ; la ligne reste celle du commit Archivo pour qu’il se retire seul (SLOP-01)
 const href = (c: string) => `${route('projects', lang)}?ville=${c}`
@@ -88,7 +89,7 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
     <rect width={W} height={H} fill="url(#map-grid)" opacity="0.6" />
     <g clip-path="url(#map-clip)">
       {neighbours.map((f) => <path style={`fill:${fillN};stroke:${strokeN}`} d={pathStr(f)} stroke-width="1" />)}
-      <path style={`stroke:${stroke}`} d={pathStr(ci)} fill={fillCi} stroke-width="1.4" class="map-ci" />
+      <path style={`fill:${fillCi};stroke:${stroke}`} d={pathStr(ci)} stroke-width="1.4" class="map-ci" />
     </g>
 
     {/* Villes de l’intérieur : étiquette directe */}

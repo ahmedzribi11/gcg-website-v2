@@ -9,10 +9,13 @@
   --color-brand-2: #0a3d1e;
   --color-gold: #e8de9f;
   --color-gold-deep: #8a7a2e;
+  --color-gold-hover: #f3ecc6;
   --color-bone: #f2efe6;
   --color-paper: #f6f3eb;
   --color-paper-2: #ece7da;
   --color-mist: #9aa098;
+  /* Erreurs de formulaire, sur fond sombre */
+  --color-danger: #ff9b8a;
   --color-line: rgba(242, 239, 230, 0.12);
   --color-line-dark: rgba(7, 12, 9, 0.12);
 
@@ -40,6 +43,17 @@
 
   --ease-cinema: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Hauteur de l’en-tête fixe (h-header, top-header) : 64 px, 80 px dès 768 px (bloc @layer base) ; la barre de
+     filtres collante et le décalage des ancres s’en déduisent (CODE-09) */
+  --spacing-header: 4rem;
+
+  /* Plans superposés de la page (z-sticky, z-mobile-bar…) ; les z-10 / z-20 restants sont locaux à leur bloc (CODE-09) */
+  --z-index-sticky: 30;
+  --z-index-mobile-bar: 40;
+  --z-index-menu: 49;
+  --z-index-header: 50;
+  --z-index-skip: 100;
 }
 
 /* ─── Transitions entre pages (navigateurs compatibles) ─────────────── */
@@ -61,7 +75,12 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     scrollbar-color: #24302a var(--color-ink);
-    scroll-padding-top: 6rem;
+    scroll-padding-top: calc(var(--spacing-header) + 2rem);
+  }
+  @media (min-width: 768px) {
+    :root {
+      --spacing-header: 5rem;
+    }
   }
 
   body {
@@ -163,7 +182,7 @@
     color: var(--color-brand);
   }
   .btn-gold:hover {
-    background: #f3ecc6;
+    background: var(--color-gold-hover);
   }
   .btn-line {
     border: 1px solid color-mix(in srgb, var(--color-bone) 32%, transparent);
@@ -181,12 +200,12 @@
     background: var(--color-brand-2);
   }
   .btn-line-dark {
-    border: 1px solid rgba(5, 46, 20, 0.35);
+    border: 1px solid color-mix(in srgb, var(--color-brand) 35%, transparent);
     color: var(--color-brand);
   }
   .btn-line-dark:hover {
     border-color: var(--color-brand);
-    background: rgba(5, 46, 20, 0.06);
+    background: color-mix(in srgb, var(--color-brand) 6%, transparent);
   }
   .btn svg {
     transition: transform 0.5s var(--ease-out-expo);
@@ -310,7 +329,7 @@
   }
   .theme-paper .chip {
     border-color: var(--color-line-dark);
-    color: rgba(5, 46, 20, 0.8);
+    color: color-mix(in srgb, var(--color-brand) 80%, transparent);
   }
   .theme-brand {
     background: var(--color-brand);
@@ -525,12 +544,7 @@
 /* Barre de filtres collante sous l’en-tête visible. Classe posée par site.ts plutôt que :has(),
    absent de Firefox avant 121 (ESR 115) : la barre y glissait sous l’en-tête (BRW-13) */
 body:not(.header-hidden) [data-filters] {
-  top: 4rem;
-}
-@media (min-width: 768px) {
-  body:not(.header-hidden) [data-filters] {
-    top: 5rem;
-  }
+  top: var(--spacing-header);
 }
 
 /* ─── Mode clair (choisi par le visiteur ; le mode sombre reste celui par défaut) ───

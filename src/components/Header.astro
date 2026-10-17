@@ -23,9 +23,9 @@ const wa = pageWhatsApp(lang, page)
 <header
   id="site-header"
   data-variant={variant}
-  class="no-print group fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[background-color,border-color,transform] duration-700 data-[scrolled]:border-line data-[scrolled]:bg-ink data-[variant=solid]:border-line data-[variant=solid]:bg-ink data-[hidden]:-translate-y-full"
+  class="no-print group fixed inset-x-0 top-0 z-header border-b border-transparent transition-[background-color,border-color,transform] duration-700 data-[scrolled]:border-line data-[scrolled]:bg-ink data-[variant=solid]:border-line data-[variant=solid]:bg-ink data-[hidden]:-translate-y-full"
 >
-  <nav aria-label={lang === 'fr' ? 'Navigation principale' : 'Main navigation'} class="wrap flex h-16 items-center justify-between gap-3 sm:gap-6 md:h-20">
+  <nav aria-label={lang === 'fr' ? 'Navigation principale' : 'Main navigation'} class="wrap flex h-header items-center justify-between gap-3 sm:gap-6">
     <a href={route('home', lang)} class="relative z-10 shrink-0" aria-label="GCG — General Constructor Group CI">
       <!-- Même logo, en WebP de 240 px (8 Ko au lieu de 32 Ko) ; PNG d’origine en repli (PERF-05) -->
       <picture>
@@ -92,8 +92,8 @@ Hors de l’en-tête : sa translation (en-tête masqué au défilement) ferait d
 bloc conteneur du menu fixe, limité à 64 px de haut pendant ~0,7 s (page visible à travers).
 Contenu défilant sous l’en-tête : en paysage, à 200 % ou en grand texte, tous les liens restent atteignables (BRW-02).
 -->
-<div id="mobile-menu" class="invisible fixed inset-0 z-[49] bg-ink opacity-0 transition-[opacity,visibility] duration-300 lg:hidden" aria-hidden="true">
-  <div class="absolute inset-x-0 bottom-0 top-16 overflow-y-auto overscroll-contain md:top-20">
+<div id="mobile-menu" class="invisible fixed inset-0 z-menu bg-ink opacity-0 transition-[opacity,visibility] duration-300 lg:hidden" aria-hidden="true">
+  <div class="absolute inset-x-0 bottom-0 top-header overflow-y-auto overscroll-contain">
   <div class="wrap flex min-h-full flex-col justify-between gap-8 pb-8 pt-8">
     <ul class="flex flex-col">
       {

@@ -37,7 +37,7 @@ fonctions serveur (formulaire de contact, connexion à l’espace de gestion) et
 | Configuration de l’espace de gestion | `public/admin/config.yml` | l’équipe |
 | En-têtes de sécurité, redirections | `vercel.json` (Vercel) ; `public/_headers`, `public/_redirects` (Cloudflare Pages) | l’équipe |
 | Fonctions serveur | `server/*.js` (logique) ; `api/*.js` (Vercel) ; `functions/api/*.js` (Cloudflare) | l’équipe |
-| Polices | `src/fonts/` (générées par `scripts/fonts.py`) | l’équipe |
+| Polices | paquets `@fontsource-variable/*` (`package.json`), importés et préchargés dans `src/layouts/Base.astro` | l’équipe |
 
 ## Choix techniques et raisons
 

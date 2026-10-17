@@ -125,8 +125,7 @@ console et débordements dans Chromium (`scripts/browser-checks.mjs`), budgets L
 (`lighthouserc.json`) et secrets (gitleaks). Dependabot propose les mises à jour chaque mois.
 
 Autres scripts : `npm run content:register` (enregistre les adresses des nouveaux projets),
-`node scripts/export-registers.mjs` (régénère les registres CSV de `docs/`), `npm run fonts`
-(sous-ensembles des polices, Python + fontTools).
+`node scripts/export-registers.mjs` (régénère les registres CSV de `docs/`).
 
 ## Structure
 
@@ -137,12 +136,11 @@ server/              logique serveur commune (contact.js, oauth.js)
 integrations/        typographie française appliquée au build
 public/admin/        configuration de l’espace de gestion (config.yml)
 public/brand/        logos GCG
-scripts/             contrôle du contenu, audits, registres, polices
+scripts/             contrôle du contenu, audits, registres
 src/assets/projects/ photos des projets
 src/components/      en-tête, pied de page, cartes projet, carte de présence, sections de l’accueil
 src/content/         projets (JSON)
 src/data/            paramètres, identité légale, expertises, organisation, publics, géographie
-src/fonts/           polices auto-hébergées (sous-ensembles)
 src/i18n/            routes et textes FR/EN
 src/layouts/         gabarit HTML (SEO, Open Graph, hreflang, données structurées)
 src/lib/             accès aux projets, paramètres, SEO, environnement

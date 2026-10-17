@@ -1,5 +1,4 @@
 ---
-import ProjectImage from '../ProjectImage.astro'
 import SectionHead from '../SectionHead.astro'
 import { route, TYPE_LABELS, useT, type Lang } from '../../i18n'
 import type { Project } from '../../lib/projects'
@@ -11,54 +10,24 @@ interface Props {
 }
 const { lang, projects } = Astro.props
 const t = useT(lang)
-const pick: Record<string, string> = {
-  villas: 'villa-de-luxe-assouinde',
-  residences: 'villa-palmeras',
-  immeubles: 'residence-abatta',
-  hotels: 'palm-resort-movenpick',
-  loisirs: 'beach-bar-assinie',
-  industrie: 'saif-ivoire',
-  equipements: 'ecole-green-city',
-  infrastructures: 'vrd-cite-baobab',
-}
-const img = (type: string) => projects.find((p) => p.slug === pick[type])!.images[0]
 const count = (type: string) => projects.filter((p) => p.types.includes(type as never)).length
 ---
 
-<section class="theme-brand relative overflow-hidden py-24 md:py-40" aria-labelledby="types-title" data-preview-root>
+<section class="theme-brand relative overflow-hidden py-24 md:py-40" aria-labelledby="types-title">
   <div class="wrap">
-    <SectionHead id="types-title" label={t('types.label')} title={t('types.title')} accent={lang === 'fr' ? 'un hôtel.' : 'a hotel.'} lead={t('types.lead')} tone="brand" size="md" />
+    <SectionHead id="types-title" title={t('types.title')} lead={t('types.lead')} tone="brand" size="md" />
 
     <ul class="mt-16 flex flex-wrap items-baseline gap-x-[0.55em] gap-y-1 md:mt-24" aria-label={t('types.label')}>
       {
-        TYPES.map((type, i) => (
-          <li data-reveal style={`--d:${i * 0.05}s`}>
-            <a href={`${route('projects', lang)}?type=${type}`} data-preview={type} class="type-word group inline-flex items-start gap-1 text-[clamp(2.6rem,8.4vw,8.8rem)] font-light leading-[1.02] tracking-[-0.05em] text-bone/55 transition-colors duration-500 hover:text-gold">
+        TYPES.map((type) => (
+          <li>
+            <a href={`${route('projects', lang)}?type=${type}`} class="type-word group inline-flex items-start gap-1 text-4xl font-light leading-[1.02] tracking-[-0.05em] text-bone/55 transition-colors duration-500 hover:text-gold">
               <span>{TYPE_LABELS[type][lang]}</span>
-              <sup class="meta mt-[0.6em] text-gold opacity-80">{String(count(type)).padStart(2, '0')}</sup>
+              <sup class="meta mt-[0.6em] text-gold opacity-80">{count(type)}</sup>
             </a>
           </li>
         ))
       }
     </ul>
   </div>
-
-  <div data-preview-stage class="pointer-events-none absolute left-0 top-0 z-10 hidden md:block" aria-hidden="true">
-    {
-      TYPES.map((type) => (
-        <div data-preview-for={type} class="preview-item absolute left-0 top-0 h-[16rem] w-[22rem] -translate-x-1/2 -translate-y-[110%] overflow-hidden">
-          <ProjectImage image={img(type)} alt="" sizes="22rem" class="block h-full w-full" />
-        </div>
-      ))
-    }
-  </div>
 </section>
-
-<script>
-  import '../../scripts/preview'
-</script>
-
-<style>
-  .preview-item { opacity: 0; clip-path: inset(50% 50% 50% 50%); transition: opacity 0.5s, clip-path 0.9s var(--ease-out-expo); }
-  .preview-item[data-on] { opacity: 1; clip-path: inset(0 0 0 0); }
-</style>

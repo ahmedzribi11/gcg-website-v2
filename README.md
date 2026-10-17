@@ -4,15 +4,18 @@ Site commercial de General Constructor Group (construction et ingénierie, Côte
 projets, expertises, organisation, contact, outils de partage par QR code et documents pour les appels
 d’offres. Bilingue français / anglais.
 
-Astro (site statique multipage) · React Three Fiber (ouverture 3D de l’accueil) · GSAP + Lenis (animations,
-défilement) · Tailwind CSS v4 · Decap CMS (espace de gestion) · fonctions serveur pour le formulaire et la
+Astro (site statique multipage) · React Three Fiber et GSAP (ouverture 3D de l’accueil, sur ordinateur) · Tailwind CSS v4 · Decap CMS (espace de gestion) · fonctions serveur pour le formulaire et la
 connexion à l’espace de gestion.
 
-> **Site séparé.** Ce dépôt reprend à l’identique l’apparence et le comportement du site en ligne (dépôt
-> `My-web`, qui n’est pas modifié), avec en plus la sécurité, le référencement, l’accessibilité, les pages
-> légales, l’envoi du formulaire par e-mail et l’espace de gestion amélioré.
+> **Dépôt de référence (décision du 9 octobre 2026).** `ahmedzribi11/gcg-website-v2` est le seul dépôt
+> du site : l’espace de gestion y enregistre les modifications (`public/admin/config.yml`,
+> `src/pages/admin.astro`) et le projet d’hébergement de production doit être construit à partir de lui
+> (Vercel → Settings → Git). Tout autre dépôt ou projet Vercel du site est une ancienne copie, à archiver
+> en lecture seule.
 
-Prérequis : **Node.js 22** (voir `.nvmrc` ; 20.19+ accepté) et npm.
+Prérequis : **Node.js 22.23.3** (voir `.nvmrc` ; 22.22.3+ ou 24.16+ accepté, comme les outils d’analyse) et npm.
+Les outils de contrôle (Playwright, axe-core, Nu Html Checker) sont des dépendances de développement à
+version exacte, installées par `npm ci`.
 
 ```bash
 git clone https://github.com/ahmedzribi11/gcg-website-v2.git
@@ -79,6 +82,9 @@ Chaque publication redéploie le site en 2 à 5 minutes. Guide : `docs/guide-edi
    - Authorization callback URL : `https://<domaine>/api/callback`
 2. Hébergeur → variables d’environnement `GITHUB_OAUTH_ID` et `GITHUB_OAUTH_SECRET`, puis redéployer.
 3. Chaque éditeur a un compte GitHub (avec double authentification) ajouté comme collaborateur du dépôt.
+   La connexion demande l’accès `public_repo` (dépôts publics seulement), suffisant tant que le dépôt est
+   public. **Si le dépôt devient privé**, remplacer `public_repo` par `repo` dans `src/pages/admin.astro`
+   (`auth_scope`), `public/admin/config.yml` (`auth_scope`) et `server/oauth.js` (valeur par défaut).
 4. Facultatif : `preview_context` dans `public/admin/config.yml` (nom exact du statut de déploiement de
    l’hébergeur) pour afficher le lien d’aperçu des brouillons.
 
@@ -101,11 +107,11 @@ Le même dépôt se déploie sur **Vercel** (`vercel.json`, fonctions `api/`) ou
 > site de GCG : **Vercel Pro**, ou **Cloudflare Pages** (offre gratuite, usage commercial autorisé).
 > Procédure : `docs/exploitation.md`, section 6.
 
-Build : `npm run build`, dossier `dist`, Node 22. Variables d’environnement :
+Build : `npm run build`, dossier `dist`, Node 22 (`.nvmrc`). Variables d’environnement :
 
 | Variable | Rôle |
 | --- | --- |
-| `SITE_URL` | Domaine définitif (canoniques, sitemap, QR codes) |
+| `SITE_URL` | Domaine définitif (canoniques, sitemap, QR codes, domaine compté par Umami). Sans lui, un build en CI ou sur la branche de production Cloudflare s’arrête ; Vercel se replie sur son domaine de production |
 | `RESEND_API_KEY`, `CONTACT_TO`, `CONTACT_FROM` | Envoi du formulaire de contact par e-mail |
 | `GITHUB_OAUTH_ID`, `GITHUB_OAUTH_SECRET` | Connexion à l’espace de gestion |
 | `GCG_LAUNCH=1` | Masque les projets sans autorisation de publication du client |
@@ -122,8 +128,7 @@ console et débordements dans Chromium (`scripts/browser-checks.mjs`), budgets L
 (`lighthouserc.json`) et secrets (gitleaks). Dependabot propose les mises à jour chaque mois.
 
 Autres scripts : `npm run content:register` (enregistre les adresses des nouveaux projets),
-`node scripts/export-registers.mjs` (régénère les registres CSV de `docs/`), `npm run fonts`
-(sous-ensembles des polices, Python + fontTools).
+`node scripts/export-registers.mjs` (régénère les registres CSV de `docs/`).
 
 ## Structure
 
@@ -132,19 +137,18 @@ api/                 fonctions Vercel (formulaire, connexion /admin)
 functions/api/       mêmes fonctions pour Cloudflare Pages
 server/              logique serveur commune (contact.js, oauth.js)
 integrations/        typographie française appliquée au build
-public/admin/        configuration de l’espace de gestion (config.yml)
+public/admin/        espace de gestion : config.yml, scripts de la page ; decap/ copié au build (non versionné, scripts/copy-decap.mjs)
 public/brand/        logos GCG
-scripts/             contrôle du contenu, audits, registres, polices
+scripts/             contrôle du contenu, audits, registres
 src/assets/projects/ photos des projets
 src/components/      en-tête, pied de page, cartes projet, carte de présence, sections de l’accueil
 src/content/         projets (JSON)
 src/data/            paramètres, identité légale, expertises, organisation, publics, géographie
-src/fonts/           polices auto-hébergées (sous-ensembles)
 src/i18n/            routes et textes FR/EN
 src/layouts/         gabarit HTML (SEO, Open Graph, hreflang, données structurées)
 src/lib/             accès aux projets, paramètres, SEO, environnement
 src/pages/           routes FR et EN
-src/scripts/         navigation, animation d’ouverture, QR codes, aperçus, mesure d’audience
+src/scripts/         navigation, apparitions au défilement, QR codes, mesure d’audience
 src/styles/          jetons de design, composants, impression
 src/views/           pages partagées entre FR et EN
 docs/                dossier de remise (FR)

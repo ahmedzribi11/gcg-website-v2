@@ -1,9 +1,10 @@
 ---
 import Base from '../layouts/Base.astro'
 import Icon from '../components/Icon.astro'
-import { qrPath, route, useT, type Lang, type UIKey } from '../i18n'
+import { qrPath, route, useT, type Lang } from '../i18n'
+import { PROFILES, PROJECT_TYPES } from '../data/contact-options.js'
 import { getProjects } from '../lib/projects'
-import { contact, hasContact, socials, whatsappLink } from '../lib/settings'
+import { contact, hasContact, pageWhatsApp, phoneCountry, socials } from '../lib/settings'
 import { contactFormEnabled } from '../lib/env'
 
 interface Props {
@@ -13,38 +14,34 @@ const { lang } = Astro.props
 const t = useT(lang)
 const fr = lang === 'fr'
 const projects = await getProjects(lang)
-const profiles = ['particulier', 'diaspora', 'investisseur', 'hotelier', 'entreprise', 'autre'] as const
-const types = ['villa', 'residence', 'immeuble', 'hotel', 'commerce', 'industrie', 'equipement', 'vrd', 'renovation', 'etude', 'autre'] as const
-const wa = whatsappLink()
+// Codes et libellés partagés avec le serveur, qui les écrit en clair dans l’e-mail (OPS-06)
+const profiles = Object.entries(PROFILES)
+const types = Object.entries(PROJECT_TYPES)
+const wa = pageWhatsApp(lang, t('contact.docTitle'))
 const hours = fr ? contact.hours : contact.hours_en || contact.hours
 /** Deux numéros : le pays précise lequel appeler (« Téléphone · Côte d’Ivoire »). */
-const country = (e164: string) =>
-  e164.startsWith('+225') ? 'Côte d’Ivoire' : e164.startsWith('+216') ? (fr ? 'Tunisie' : 'Tunisia') : ''
+const country = (e164: string) => phoneCountry(e164, lang)
 const phones = [
   { label: contact.phone, href: contact.phoneHref, e164: contact.phoneE164 },
   { label: contact.phone2, href: contact.phone2Href, e164: contact.phone2E164 },
 ].filter((p) => p.label)
 const phoneLabel = (e164: string) => [t('contact.phone'), phones.length > 1 && country(e164)].filter(Boolean).join(' · ')
-const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transparent px-0 py-3 text-lg font-light text-bone placeholder:text-bone/30 focus:border-gold focus:outline-none focus:ring-0'
+const err = 'mt-2 border-l border-danger pl-3 text-sm text-bone/80'
+// Trait des champs à 50 % : au moins 3:1 sur le panneau dans les deux thèmes (BRW-07, WCAG 1.4.11)
+const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-transparent px-0 py-3 text-lg text-bone placeholder:text-bone/30 focus:border-gold focus:outline-none focus:ring-0'
 ---
 
-<Base lang={lang} alt={route('contact', fr ? 'en' : 'fr')} title={fr ? 'Contact' : 'Contact us'} description={t('contact.lead')}>
+<Base lang={lang} alt={route('contact', fr ? 'en' : 'fr')} title={t('contact.docTitle')} description={t('contact.lead')}>
   <section class="relative overflow-hidden pb-24 pt-32 md:pb-36 md:pt-48">
-    <div class="absolute inset-0" aria-hidden="true">
-      <div class="css-fog opacity-60"><span></span><span></span><span></span></div>
-    </div>
-    <div class="wrap relative grid gap-16 md:grid-cols-12">
-      <div class="md:col-span-5">
-        <p class="label text-gold" data-reveal>{t('contact.label')}</p>
-        <h1 class="display mt-8 text-[clamp(2.8rem,7vw,7rem)]" data-split>
-          {fr ? 'Parlons de' : 'Let’s talk about'} <em class="serif text-gold">{fr ? 'votre projet.' : 'your project.'}</em>
-        </h1>
-        <p class="mt-8 max-w-md text-lg leading-relaxed text-bone/70" data-reveal>{t('contact.lead')}</p>
+    <div class="wrap relative grid grid-cols-[minmax(0,1fr)] gap-16 md:grid-cols-12">
+      <div class="min-w-0 md:col-span-5">
+        <h1 class="display text-4xl" data-intro="rise" style="--d:.1s">{t('contact.title')}</h1>
+        <p class="mt-8 max-w-md text-lg leading-relaxed text-bone/70" data-intro="rise" style="--d:.2s">{t('contact.lead')}</p>
 
-        <div class="mt-12 space-y-3" data-reveal>
+        <div class="mt-12 space-y-3">
           {
             wa && (
-              <a href={whatsappLink(t('contact.form.intro'))} target="_blank" rel="noopener" class="group flex items-center justify-between gap-4 border-b border-line py-4">
+              <a href={wa} target="_blank" rel="noopener" class="group flex items-center justify-between gap-4 border-b border-line py-4">
                 <span class="flex items-center gap-4"><Icon name="whatsapp" size={20} class="text-gold" /><span><span class="meta block text-mist">{t('contact.whatsapp')}</span><span class="text-lg">{contact.whatsapp}</span></span></span>
                 <Icon name="arrow-up-right" class="opacity-50 group-hover:opacity-100" />
               </a>
@@ -79,116 +76,133 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
               <p class="flex items-center gap-4 border-b border-line py-4"><Icon name="clock" size={20} class="text-gold" /><span><span class="meta block text-mist">{t('contact.hours')}</span><span class="text-lg">{hours}</span></span></p>
             )
           }
-          {!hasContact && <p class="max-w-md border-l border-gold/60 pl-4 text-[15px] leading-relaxed text-bone/60">{t('contact.form.pending')}</p>}
+          {!hasContact && <p class="max-w-md border-l border-gold/60 pl-4 text-base leading-relaxed text-bone/60">{t('contact.form.pending')}</p>}
         </div>
 
         {
           socials.length > 0 && (
-            <div class="mt-10" data-reveal>
+            <div class="mt-10">
               <p class="meta text-mist">{t('contact.social')}</p>
               <ul class="mt-4 flex gap-2">
                 {socials.map((s) => (
-                  <li><a href={s.url} target="_blank" rel="noopener" aria-label={s.name} class="flex h-12 w-12 items-center justify-center rounded-full border border-line hover:border-gold hover:text-gold"><Icon name={s.key} size={18} /></a></li>
+                  <li><a href={s.url} target="_blank" rel="noopener" aria-label={s.name} class="flex h-12 w-12 items-center justify-center rounded-full border border-line hover:border-gold hover:text-gold"><Icon name={s.key} size={24} /></a></li>
                 ))}
               </ul>
             </div>
           )
         }
 
-        <a href={route('share', lang)} class="mt-12 flex max-w-sm items-center gap-5 rounded-2xl border border-line p-3 pr-6 transition-colors hover:border-gold/60" data-reveal>
+        <a href={route('share', lang)} class="mt-12 flex max-w-sm items-center gap-5 rounded-2xl border border-line p-3 pr-6 transition-colors hover:border-gold/60">
           <span class="block w-20 shrink-0 rounded-lg bg-white p-1" data-qr={qrPath(lang, 'carte')} aria-hidden="true"></span>
           <span>
             <span class="meta block text-gold">{t('contact.share')}</span>
-            <span class="mt-1 block text-[13px] text-bone/60" data-qr-text="/"></span>
+            <span class="mt-1 block text-sm text-bone/60" data-qr-text="/"></span>
           </span>
         </a>
       </div>
 
-      <form id="brief" action="/api/contact" method="post" class="md:col-span-6 md:col-start-7" novalidate data-wa={contact.whatsappNumber} data-email={contact.email} data-enabled={contactFormEnabled ? '' : undefined} data-reveal>
-        <div class="grid gap-x-8 gap-y-8 border border-line bg-ink/70 p-6 backdrop-blur-xl md:grid-cols-2 md:p-10">
-          <label class="block md:col-span-2">
-            <span class="meta text-mist">{t('contact.form.name')} *</span>
-            <input name="name" required autocomplete="name" class={field} />
-          </label>
-          <label class="block">
-            <span class="meta text-mist">{t('contact.form.phone')} *</span>
-            <input name="phone" type="tel" required autocomplete="tel" inputmode="tel" class={field} />
-          </label>
-          <label class="block">
-            <span class="meta text-mist">{t('contact.form.email')}</span>
-            <input name="email" type="email" autocomplete="email" class={field} />
-          </label>
+      <form id="brief" action="/api/contact" method="post" class="md:col-span-6 md:col-start-7" novalidate data-wa={contact.whatsappNumber} data-email={contact.email}>
+        <div class="grid grid-cols-[minmax(0,1fr)] gap-x-8 gap-y-8 border border-line bg-ink p-6 md:grid-cols-2 md:p-10">
+          <!-- Message d’erreur sous le champ, relié par aria-describedby (A11Y-03) ; hors du label pour ne pas entrer dans son nom -->
+          <div class="md:col-span-2">
+            <label class="block">
+              <span class="meta text-mist">{t('contact.form.name')} *</span>
+              <input name="name" required autocomplete="name" class={field} />
+            </label>
+            <p id="err-name" data-err="name" hidden class={err}></p>
+          </div>
+          <div>
+            <label class="block">
+              <span class="meta text-mist">{t('contact.form.phone')} *</span>
+              <input name="phone" type="tel" required autocomplete="tel" inputmode="tel" aria-describedby="hint-phone" class={field} />
+            </label>
+            <!-- Pourquoi le téléphone est obligatoire (UX-03) -->
+            <p id="hint-phone" class="mt-2 text-sm text-bone/60">{t('contact.form.phoneHint')}</p>
+            <p id="err-phone" data-err="phone" hidden class={err}></p>
+          </div>
+          <div>
+            <label class="block">
+              <span class="meta text-mist">{t('contact.form.email')}</span>
+              <input name="email" type="email" autocomplete="email" class={field} />
+            </label>
+            <p id="err-email" data-err="email" hidden class={err}></p>
+          </div>
           <label class="block">
             <span class="meta text-mist">{t('contact.form.profile')}</span>
+            <!-- Aucun choix par défaut : un visiteur qui passe ce champ n’est pas compté comme « Particulier » (UX-03) -->
             <select name="profile" class={`${field} cursor-pointer`}>
-              {profiles.map((p) => <option value={p} class="bg-ink">{t(`profile.${p}` as UIKey)}</option>)}
+              <option value="" class="bg-ink">{t('contact.form.choose')}</option>
+              {profiles.map(([code, label]) => <option value={code} class="bg-ink">{label[lang]}</option>)}
             </select>
           </label>
           <label class="block">
             <span class="meta text-mist">{t('contact.form.type')}</span>
             <select name="type" class={`${field} cursor-pointer`}>
-              {types.map((p) => <option value={p} class="bg-ink">{t(`ptype.${p}` as UIKey)}</option>)}
+              <option value="" class="bg-ink">{t('contact.form.choose')}</option>
+              {types.map(([code, label]) => <option value={code} class="bg-ink">{label[lang]}</option>)}
             </select>
           </label>
           <label class="block md:col-span-2">
             <span class="meta text-mist">{t('contact.form.location')}</span>
-            <input name="location" autocomplete="address-level2" placeholder={fr ? 'Abidjan, Grand-Bassam, Assinie…' : 'Abidjan, Grand-Bassam, Assinie…'} class={field} />
+            <input name="location" autocomplete="address-level2" placeholder="Abidjan, Grand-Bassam, Assinie…" class={field} />
           </label>
           <label class="block md:col-span-2">
             <span class="meta text-mist">{t('contact.form.message')}</span>
-            <textarea name="message" rows="4" class={`${field} resize-y`}></textarea>
+            <!-- Même limite que le serveur (server/contact.js) : le corps de la demande reste sous 20 Ko (SEC-02) -->
+            <textarea name="message" rows="4" maxlength="3000" class={`${field} resize-y`}></textarea>
           </label>
           <input type="hidden" name="ref" />
+          <input type="hidden" name="src" />
           <input type="hidden" name="lang" value={lang} />
           <input type="hidden" name="t" value="" />
           <div class="sr-only" aria-hidden="true">
             <label>{t('contact.form.honeypot')} <input name="website" tabindex="-1" autocomplete="off" /></label>
           </div>
-          <p data-ref-chip hidden class="md:col-span-2 text-[14px] text-bone/70"></p>
+          <p data-ref-chip hidden class="md:col-span-2 text-sm text-bone/70"></p>
 
           <div class="flex flex-col gap-3 sm:flex-row md:col-span-2">
             {
               contactFormEnabled && (
                 <button type="submit" value="send" class="btn btn-gold flex-1" data-send>
-                  <span data-send-label>{t('contact.form.send')}</span> <Icon name="arrow" />
+                  <span data-send-label>{t('contact.form.send')}</span> <Icon name="arrow" size={20} />
                 </button>
               )
             }
             {
               contact.whatsappNumber && (
                 <button type="submit" value="whatsapp" class:list={['btn flex-1', contactFormEnabled ? 'btn-line' : 'btn-gold']}>
-                  <Icon name="whatsapp" size={18} /> {t('contact.form.sendWhatsapp')}
+                  <Icon name="whatsapp" size={20} /> {t('contact.form.sendWhatsapp')}
                 </button>
               )
             }
             {
               contact.email && (
                 <button type="submit" value="email" class:list={['btn flex-1', contact.whatsappNumber || contactFormEnabled ? 'btn-line' : 'btn-gold']}>
-                  <Icon name="mail" size={16} /> {t('contact.form.sendEmail')}
+                  <Icon name="mail" size={20} /> {t('contact.form.sendEmail')}
                 </button>
               )
             }
             {
               !contactFormEnabled && !contact.whatsappNumber && !contact.email && (
                 <button type="submit" value="none" class="btn btn-gold flex-1 opacity-60" aria-describedby="brief-pending">
-                  {t('cta.project')} <Icon name="arrow" />
+                  {t('cta.project')} <Icon name="arrow" size={20} />
                 </button>
               )
             }
           </div>
-          <p id="brief-pending" data-pending hidden class="md:col-span-2 border-l border-gold/60 pl-4 text-[14px] text-bone/70">{t('contact.form.pending')}</p>
-          <div data-fail hidden role="alert" class="md:col-span-2 border-l border-[#ff9b8a] pl-4 text-[14px] text-bone/80">
+          <p id="brief-pending" data-pending hidden class="md:col-span-2 border-l border-gold/60 pl-4 text-sm text-bone/70">{t('contact.form.pending')}</p>
+          <div data-fail hidden role="alert" class="md:col-span-2 border-l border-danger pl-4 text-sm text-bone/80">
             <p class="font-medium text-bone">{t('contact.form.failTitle')}</p>
             <p class="mt-1" data-fail-text>{t('contact.form.failText')}</p>
           </div>
-          <p class="md:col-span-2 text-[13px] text-bone/50">
+          <p class="md:col-span-2 text-sm text-bone/50">
             {t('contact.form.notice')} <a href={route('privacy', lang)} class="link-line text-bone/70 hover:text-bone">{t('contact.form.noticeLink')}</a>
           </p>
         </div>
       </form>
       <div data-success hidden role="status" tabindex="-1" class="md:col-span-6 md:col-start-7 border border-gold/60 bg-ink/80 p-6 md:p-10">
-        <p class="display text-3xl">{t('contact.form.okTitle')}</p>
-        <p class="mt-4 text-[15px] text-bone/70">{t('contact.form.okText')}</p>
+        <p class="display text-2xl">{t('contact.form.okTitle')}</p>
+        <p class="mt-4 text-base text-bone/70">{t('contact.form.okText')}</p>
       </div>
     </div>
   </section>
@@ -204,15 +218,20 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
       type: t('contact.form.type'),
       location: t('contact.form.location'),
       message: t('contact.form.message'),
-      ref: fr ? 'Projet de référence' : 'Reference project',
-      subject: fr ? 'Demande de projet — site GCG' : 'Project enquiry — GCG website',
+      ref: t('contact.form.ref'),
+      subject: t('contact.form.subject'),
       sending: t('contact.form.sending'),
       rate: t('contact.form.rate'),
+      required: t('contact.form.required'),
+      errName: t('contact.form.err.name'),
+      errEmail: t('contact.form.err.email'),
+      // Deux-points du message composé dans le navigateur, hors de la passe typographique du build (CONT-06, CONT-08)
+      colon: fr ? '\u00a0: ' : ': ',
     },
   })} />
 <script>
   import '../scripts/qr'
-  import { track } from '../scripts/analytics'
+  import { pageName, track } from '../scripts/analytics'
 
   const form = document.getElementById('brief') as HTMLFormElement
   const data = JSON.parse(document.getElementById('brief-data')!.textContent!) as {
@@ -231,11 +250,61 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
     ;(form.elements.namedItem('ref') as HTMLInputElement).value = ref
     const chip = form.querySelector<HTMLElement>('[data-ref-chip]')!
     chip.hidden = false
-    chip.textContent = `${L.ref} : ${data.projects[ref]}`
+    chip.textContent = `${L.ref}${L.colon}${data.projects[ref]}`
   }
+
+  /*
+   * Origine de la demande, écrite dans l’e-mail reçu par GCG (OPS-06) : marquage de campagne (QR code imprimé :
+   * utm_source / utm_medium / utm_campaign) de cette page ou de la page précédente du site, puis le chemin de cette
+   * page précédente, ou le domaine du site d’où vient le visiteur. Rien n’est conservé d’une page à l’autre.
+   */
+  const campaign = (q: URLSearchParams) => ['utm_source', 'utm_medium', 'utm_campaign'].map((k) => q.get(k)).filter(Boolean).join(' / ')
+  let prev: URL | null = null
+  try {
+    prev = new URL(document.referrer)
+  } catch {
+    /* arrivée directe : pas de page précédente */
+  }
+  const back = prev?.origin === location.origin ? prev : null
+  ;(form.elements.namedItem('src') as HTMLInputElement).value = [campaign(params) || (back ? campaign(back.searchParams) : ''), back ? back.pathname : (prev?.hostname ?? '')]
+    .filter(Boolean)
+    .join(' · ')
 
   // Délai minimal de saisie (anti-robots), vérifié par le serveur
   ;(form.elements.namedItem('t') as HTMLInputElement).value = String(Date.now())
+
+  /*
+   * Erreurs dans la langue de la page, sous chaque champ (A11Y-03), au lieu de la bulle du navigateur :
+   * aria-invalid, message relié par aria-describedby, focus sur le premier champ à corriger.
+   * Mêmes règles qu’avant (attributs required et type="email"), vérifiées par checkValidity().
+   */
+  const checked = ['name', 'phone', 'email'].map((n) => form.elements.namedItem(n) as HTMLInputElement)
+  // Aide permanente du champ (téléphone, UX-03), gardée à côté du message d’erreur
+  const hints = new Map(checked.map((el) => [el, el.getAttribute('aria-describedby') ?? '']))
+  const message = (el: HTMLInputElement) => {
+    if (el.validity.valueMissing) return el.name === 'name' ? L.errName : L.required
+    if (el.validity.typeMismatch && el.type === 'email') return L.errEmail
+    return el.validationMessage
+  }
+  const mark = (el: HTMLInputElement) => {
+    const ok = el.checkValidity()
+    const msg = form.querySelector<HTMLElement>(`[data-err="${el.name}"]`)!
+    msg.textContent = ok ? '' : message(el)
+    msg.hidden = ok
+    const describedBy = [ok ? '' : msg.id, hints.get(el)].filter(Boolean).join(' ')
+    if (ok) el.removeAttribute('aria-invalid')
+    else el.setAttribute('aria-invalid', 'true')
+    if (describedBy) el.setAttribute('aria-describedby', describedBy)
+    else el.removeAttribute('aria-describedby')
+    return ok
+  }
+  const validate = () => {
+    const bad = checked.filter((el) => !mark(el))
+    bad[0]?.focus()
+    return bad.length === 0
+  }
+  // Le message disparaît dès que le champ est corrigé
+  checked.forEach((el) => el.addEventListener('input', () => el.hasAttribute('aria-invalid') && mark(el)))
 
   async function send() {
     const btn = form.querySelector<HTMLButtonElement>('[data-send]')
@@ -254,7 +323,7 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
       })
       const body = (await res.json().catch(() => ({}))) as { ok?: boolean; code?: string }
       if (!res.ok || !body.ok) throw new Error(body.code || String(res.status))
-      track('form')
+      track('form', { from: pageName(), place: 'formulaire' })
       form.hidden = true
       const ok = document.querySelector<HTMLElement>('[data-success]')!
       ok.hidden = false
@@ -272,37 +341,39 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-line bg-transpa
     e.preventDefault()
     const via = (e.submitter as HTMLButtonElement | null)?.value
     if (via === 'send') {
-      if (form.reportValidity()) send()
+      if (validate()) send()
       return
     }
     if (via === 'none') {
       form.querySelector<HTMLElement>('[data-pending]')!.hidden = false
       return
     }
-    if (!form.reportValidity()) return
+    if (!validate()) return
     const f = new FormData(form)
+    // Choix laissé vide : pas de ligne dans le message (UX-03)
     const sel = (name: string) => {
       const el = form.elements.namedItem(name) as HTMLSelectElement
-      return el.options[el.selectedIndex]?.text ?? ''
+      return el.value ? (el.options[el.selectedIndex]?.text ?? '') : ''
     }
     const refSlug = String(f.get('ref') || '')
     const lines = [
       L.intro,
       '',
-      `${L.name} : ${f.get('name')}`,
-      `${L.phone} : ${f.get('phone')}`,
-      f.get('email') ? `${L.email} : ${f.get('email')}` : '',
-      `${L.profile} : ${sel('profile')}`,
-      `${L.type} : ${sel('type')}`,
-      f.get('location') ? `${L.location} : ${f.get('location')}` : '',
-      refSlug ? `${L.ref} : ${data.projects[refSlug]} (${location.origin}${location.pathname.replace(/\/contact$/, '')}${document.body.dataset.lang === 'en' ? '/projects/' : '/realisations/'}${refSlug})` : '',
-      f.get('message') ? `\n${L.message} :\n${f.get('message')}` : '',
+      `${L.name}${L.colon}${f.get('name')}`,
+      `${L.phone}${L.colon}${f.get('phone')}`,
+      f.get('email') ? `${L.email}${L.colon}${f.get('email')}` : '',
+      sel('profile') ? `${L.profile}${L.colon}${sel('profile')}` : '',
+      sel('type') ? `${L.type}${L.colon}${sel('type')}` : '',
+      f.get('location') ? `${L.location}${L.colon}${f.get('location')}` : '',
+      refSlug ? `${L.ref}${L.colon}${data.projects[refSlug]} (${location.origin}${location.pathname.replace(/\/contact$/, '')}${document.body.dataset.lang === 'en' ? '/projects/' : '/realisations/'}${refSlug})` : '',
+      f.get('message') ? `\n${L.message}${L.colon.trimEnd()}\n${f.get('message')}` : '',
     ].filter(Boolean)
     const text = lines.join('\n')
     if (via === 'whatsapp' && form.dataset.wa) {
-      track('whatsapp', { from: 'form' })
+      track('whatsapp', { from: pageName(), place: 'formulaire' })
       window.open(`https://wa.me/${form.dataset.wa}?text=${encodeURIComponent(text)}`, '_blank', 'noopener')
     } else if (form.dataset.email) {
+      track('email', { from: pageName(), place: 'formulaire' })
       location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(L.subject)}&body=${encodeURIComponent(text)}`
     }
   })

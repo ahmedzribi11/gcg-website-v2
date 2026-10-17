@@ -1,106 +1,189 @@
 ---
+import { getImage } from 'astro:assets'
 import Icon from '../Icon.astro'
-import { route, useT, type Lang } from '../../i18n'
-import { whatsappLink } from '../../lib/settings'
+import ContactCta from '../ContactCta.astro'
+import { projectPath, route, STATUS_SHORT, useT, type Lang } from '../../i18n'
+import { publishedOnly, showcasePhoto, SHOWCASE, type Project } from '../../lib/projects'
+import { DESKTOP_3D } from '../../scenes/device'
 
 interface Props {
   lang: Lang
+  projects: Project[]
 }
-const { lang } = Astro.props
+const { lang, projects } = Astro.props
 const t = useT(lang)
-const words =
-  lang === 'fr'
-    ? ['des villas', 'des résidences', 'des hôtels', 'des immeubles', 'des usines', 'des écoles', 'des restaurants', 'des routes']
-    : ['villas', 'residences', 'hotels', 'buildings', 'factories', 'schools', 'restaurants', 'roads']
-const wa = whatsappLink(t('contact.form.intro'))
-/** Mots du titre, découpés au build : l’animation démarre au premier affichage, sans attendre le JS. */
-const split = (text: string, from = 0) => text.split(' ').map((w, k) => ({ w, i: from + k }))
+const fr = lang === 'fr'
+
+/** Mots du titre, découpés au build : l’animation démarre au premier affichage, sans attendre le JS.
+ *  Le point d’interrogation reste collé au mot qui le précède (espace fine insécable), jamais seul en début de ligne (CONT-07). */
+const split = (text: string, from = 0) =>
+  (fr ? text.replace(/ (?=[?!;])/g, ' ') : text).split(' ').map((w, k) => ({ w, i: from + k }))
 const title1 = split(t('hero.title1'))
 const title2 = split(t('hero.title2'), title1.length)
-const title3 = split(t('hero.title3'))
+const title3 = split(t('hero.title3'), title1.length + title2.length)
+
+/*
+ * Photo d’un projet réceptionné, sur téléphone seulement (PERF-01, VIS-01) : la 3D reste sur ordinateur.
+ * Sur ordinateur (DESKTOP_3D), la première source est une image vide intégrée : la photo n’y est jamais téléchargée.
+ */
+const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+const showcase = showcasePhoto(projects)
+const photo = showcase
+  ? await (async () => {
+      const src = showcase.image.src
+      const widths = [...new Set([400, 560, Math.min(720, src.width), src.width].filter((w) => w <= src.width))]
+      const [webp, jpg] = await Promise.all([
+        getImage({ src, widths, format: 'webp', quality: 78 }),
+        getImage({ src, widths, format: 'jpg', quality: 78 }),
+      ])
+      return { webp: webp.srcSet.attribute, jpg: jpg.srcSet.attribute, src: jpg.src, width: src.width, height: src.height }
+    })()
+  : undefined
+
+/*
+ * Preuves sous l’accroche (COPY-01) : tirées des fiches projet, chacune affichée seulement si le projet est publié et
+ * si son statut correspond à ce que dit la phrase (en chantier, réceptionné).
+ */
+const [palmeras] = publishedOnly(projects, ['villa-palmeras'])
+const [calao] = publishedOnly(projects, [SHOWCASE])
+const pharma = publishedOnly(projects, ['saif-ivoire', 'usine-pharmanova'])
+const proofs = [
+  palmeras?.status === 'execution' && palmeras.highlight
+    ? fr
+      ? `${palmeras.highlight.value} ${palmeras.highlight.unit} en chantier à ${palmeras.location}`
+      : `${palmeras.highlight.value} ${palmeras.highlight.unit} under construction in ${palmeras.location}`
+    : undefined,
+  calao?.status === 'receptionne' && calao.highlight
+    ? fr
+      ? `Hôtel de ${calao.highlight.value} chambres réceptionné à ${calao.location}`
+      : `${calao.highlight.value}-room hotel handed over in ${calao.location}`
+    : undefined,
+  pharma.length > 0
+    ? fr
+      ? `${pharma.length} ${pharma.length > 1 ? 'usines pharmaceutiques' : 'usine pharmaceutique'}`
+      : `${pharma.length} pharmaceutical ${pharma.length > 1 ? 'factories' : 'factory'}`
+    : undefined,
+].filter(Boolean)
 ---
 
 <section id="hero" class="relative flex min-h-[max(100svh,640px)] flex-col overflow-hidden bg-ink" aria-labelledby="hero-title">
   <div class="absolute inset-0" aria-hidden="true">
     <div class="css-fog opacity-80"><span></span><span></span><span></span></div>
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_68%_38%,rgba(5,46,20,0.55),transparent_60%)]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_68%_38%,color-mix(in_srgb,var(--color-brand)_55%,transparent),transparent_60%)]"></div>
   </div>
 
   <div id="hero-3d" class="absolute inset-0" aria-hidden="true"></div>
 
-  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_45%,transparent_35%,rgba(7,12,9,0.85)_100%)]"></div>
+  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_45%,transparent_35%,color-mix(in_srgb,var(--color-ink)_85%,transparent)_100%)]"></div>
   <div class="pointer-events-none absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t from-ink via-ink/75 to-transparent md:h-1/2 md:via-ink/40"></div>
 
-  <div class="wrap relative flex flex-1 flex-col pb-24 pt-24 md:pb-16 md:pt-32">
+  {
+    showcase && photo && (
+      <figure class="hero-photo relative pt-16 md:pt-20" data-hero-photo>
+        <div class="relative aspect-[16/10] max-h-[50svh] w-full overflow-hidden bg-ink-3">
+          <picture>
+            <source media={DESKTOP_3D} srcset={BLANK} />
+            <source type="image/webp" srcset={photo.webp} sizes="100vw" />
+            <img
+              src={photo.src}
+              srcset={photo.jpg}
+              sizes="100vw"
+              width={photo.width}
+              height={photo.height}
+              alt={showcase.image.alt}
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+              class="absolute inset-0 h-full w-full object-cover"
+              style={showcase.image.focus ? `object-position:${showcase.image.focus}` : undefined}
+            />
+          </picture>
+          <div class="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink/80 to-transparent"></div>
+        </div>
+        <figcaption class="wrap relative -mt-14">
+          <a
+            href={projectPath(showcase.project.slug, lang)}
+            class="inline-flex min-h-11 max-w-full items-center gap-2.5 rounded-[1.375rem] bg-ink py-1.5 pl-1.5 pr-4 text-sm leading-snug text-bone hover:text-gold"
+          >
+            <span class="pill shrink-0" data-status="receptionne">{STATUS_SHORT.receptionne[lang]}</span>
+            <span>
+              {showcase.project.name}
+              <span class="text-bone/60">
+                {' · '}
+                <span class="whitespace-nowrap">{showcase.project.period}</span>
+              </span>
+            </span>
+            <Icon name="arrow" class="shrink-0" />
+          </a>
+        </figcaption>
+      </figure>
+    )
+  }
+
+  <div class="hero-content wrap relative flex flex-1 flex-col pb-24 pt-24 md:pb-16 md:pt-32">
     <!-- Accroche dans le flux : le titre ne peut plus passer dessous ; si le contenu dépasse l’écran, le hero s’allonge -->
     <p class="label text-gold" data-intro style="--d:.2s">{t('hero.kicker')}</p>
 
-    <div class="mt-auto grid items-end gap-10 pt-10 md:grid-cols-12">
-      <h1 id="hero-title" class="display text-[clamp(2.9rem,10.5vw,5rem)] md:col-span-8 md:text-[clamp(4rem,min(7.6vw,14svh),9.4rem)]">
+    <div class="hero-main mt-auto grid items-end gap-10 pt-10 lg:grid-cols-12">
+      <h1 id="hero-title" class="display text-3xl md:text-4xl lg:col-span-8">
         <span class="block" data-intro-split style="--d:.25s">
           {
-            title1.map(({ w, i }) => (
-              <>
-                <span class="w"><span style={`--i:${i}`}>{w}</span></span>{' '}
-              </>
-            ))
-          }<em class="serif text-gold">{title2.map(({ w, i }, k) => (
-              <>
-                {k > 0 && ' '}<span class="w"><span style={`--i:${i}`}>{w}</span></span>
-              </>
-            ))}</em>
-        </span>
-        <span class="block" data-intro-split style="--d:.45s">
-          {
-            title3.map(({ w, i }, k) => (
+            title1.map(({ w, i }, k) => (
               <>
                 {k > 0 && ' '}<span class="w"><span style={`--i:${i}`}>{w}</span></span>
               </>
             ))
           }
         </span>
+        <span class="block" data-intro-split style="--d:.45s">
+          {
+            title2.map(({ w, i }) => (
+              <>
+                <span class="w"><span style={`--i:${i}`}>{w}</span></span>{' '}
+              </>
+            ))
+          }<strong class="font-black text-gold">{title3.map(({ w, i }, k) => (
+              <>
+                {k > 0 && ' '}<span class="w"><span style={`--i:${i}`}>{w}</span></span>
+              </>
+            ))}</strong>
+        </span>
       </h1>
 
-      <div class="flex flex-col gap-7 md:col-span-4 md:pb-3">
-        <p class="max-w-md text-[15px] leading-relaxed text-bone/75 md:text-base" data-intro="rise" style="--d:.7s">{t('hero.lead')}</p>
-        <div class="flex flex-wrap gap-3" data-intro style="--d:.85s">
-          <a href={route('projects', lang)} class="btn btn-gold" data-magnetic>
-            {t('cta.projects')} <Icon name="arrow" />
+      <div class="hero-side flex flex-col gap-7 lg:col-span-4 lg:pb-3">
+        <p class="max-w-md text-base leading-relaxed text-bone/75" data-intro="rise" style="--d:.7s">{t('hero.lead')}</p>
+        <div class="flex flex-wrap gap-3" data-intro data-bar-after style="--d:.85s">
+          <a href={route('projects', lang)} class="btn btn-gold">
+            {t('cta.projects')} <Icon name="arrow" size={20} />
           </a>
-          <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="btn btn-line" data-magnetic>
-            {wa && <Icon name="whatsapp" size={16} />}
+          <ContactCta lang={lang} class="btn btn-line">
+            <Fragment slot="whatsapp"><Icon name="whatsapp" size={20} /> {t('cta.project')}</Fragment>
             {t('cta.project')}
-          </a>
+          </ContactCta>
         </div>
       </div>
     </div>
 
-    <div class="mt-12 flex items-end justify-between gap-6 border-t border-line pt-5" data-intro style="--d:1s">
-      <p class="flex items-baseline gap-3 text-[15px] text-bone/60">
-        <span class="meta text-mist">{t('hero.we')}</span>
-        <span class="sr-only">{words.join(', ')}</span>
-        <span class="word-rotator relative inline-block h-[1.4em] overflow-hidden align-bottom text-bone" aria-hidden="true">
-          <span class="block">
-            {words.map((w) => <span class="block h-[1.4em]">{w}</span>)}
-            <span class="block h-[1.4em]">{words[0]}</span>
-          </span>
-        </span>
-      </p>
-      <a href="#intro" class="meta hidden items-center gap-3 text-mist hover:text-bone md:flex">
-        {t('hero.scroll')}
-        <span class="relative block h-8 w-px overflow-hidden bg-bone/20"><span class="absolute inset-x-0 top-0 h-1/2 animate-[cue_2.4s_var(--ease-cinema)_infinite] bg-gold"></span></span>
-      </a>
-    </div>
+    {
+      proofs.length > 0 && (
+        <ul class="mt-12 flex flex-col gap-x-8 gap-y-2 border-t border-line pt-5 text-base text-bone/75 md:flex-row md:flex-wrap" data-intro style="--d:1s">
+          {proofs.map((x) => (
+            <li>{x}</li>
+          ))}
+        </ul>
+      )
+    }
   </div>
 </section>
 
 <script>
-  import { detectTier, isTouch, prefersReducedMotion } from '../../scenes/device'
+  import { DESKTOP_3D, detectTier, prefersReducedMotion } from '../../scenes/device'
 
   /*
-   * Scène 3D du hero, démarrée sans retarder la page : sur téléphone et tablette après le
-   * chargement complet puis un temps libre du fil principal, sur ordinateur dès un temps libre.
-   * Rien n’est téléchargé sans WebGL ni avec « réduire les animations » : le fond CSS reste.
+   * Scène 3D du hero, sur ordinateur seulement (DESKTOP_3D), démarrée dès un temps libre du fil principal.
+   * Téléphone ou tablette tactile (PERF-01) : jamais démarrée, donc ni three.js, ni React, ni GSAP téléchargés ;
+   * la photo du projet réceptionné tient lieu de visuel. Rien non plus sans WebGL ni avec « réduire les animations » :
+   * le fond CSS reste.
    */
   const host = document.getElementById('hero-3d')
   const idle = (fn: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 3000 }) : setTimeout(fn, 200))
@@ -114,37 +197,31 @@ const title3 = split(t('hero.title3'))
       () => {},
     )
   }
-  if (host && !prefersReducedMotion()) {
-    if (!(isTouch() || innerWidth < 768) || document.readyState === 'complete') idle(start)
-    else addEventListener('load', () => idle(start), { once: true })
-  }
+  if (host && matchMedia(DESKTOP_3D).matches && !prefersReducedMotion()) idle(start)
 </script>
 
 <style>
-  /* Entrée du hero jouée en CSS dès le premier affichage, sans attendre le JS.
-     Le paragraphe d’introduction n’est jamais transparent : lisible dès qu’il est peint. */
-  [data-intro] { animation: intro-in 1.2s var(--ease-out-expo) var(--d, 0s) both; }
-  [data-intro='rise'] { animation-name: intro-rise; }
-  [data-intro-split] .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.12em; margin-bottom: -0.12em; }
-  [data-intro-split] .w > span { display: inline-block; animation: intro-word 1.2s var(--ease-out-expo) calc(var(--d, 0s) + var(--i, 0) * 0.045s) both; }
-  @keyframes intro-in { from { opacity: 0; transform: translateY(28px); } }
-  @keyframes intro-rise { from { transform: translateY(28px); } }
-  @keyframes intro-word { from { transform: translateY(110%); } }
-  @media (prefers-reduced-motion: reduce), print {
-    [data-intro], [data-intro-split] .w > span { animation: none; }
-  }
+  /* Entrée du hero (data-intro, data-intro-split) : règles communes dans global.css, reprises par les en-têtes de page (PERF-03) */
 
-  /* translateY (et non margin-top) : la ligne de base du mot ne bouge pas, il reste aligné sur « nous construisons » */
-  .word-rotator > span { animation: rotate-words 16s var(--ease-cinema) infinite; }
-  @keyframes rotate-words {
-    0%, 9% { transform: none; }
-    12.5%, 21.5% { transform: translateY(-1.4em); }
-    25%, 34% { transform: translateY(-2.8em); }
-    37.5%, 46.5% { transform: translateY(-4.2em); }
-    50%, 59% { transform: translateY(-5.6em); }
-    62.5%, 71.5% { transform: translateY(-7em); }
-    75%, 84% { transform: translateY(-8.4em); }
-    87.5%, 96.5% { transform: translateY(-9.8em); }
-    100% { transform: translateY(-11.2em); }
+  /* Photo du hero : affichée exactement là où la 3D ne démarre pas (même requête que DESKTOP_3D, scenes/device.ts).
+     Sous la photo, le texte remonte : l’en-tête est déjà compté dans la marge de la photo. */
+  .hero-photo {
+    display: none;
+  }
+  @media not all and (min-width: 768px) and (hover: hover) and (pointer: fine) {
+    .hero-photo {
+      display: block;
+    }
+    /* Espacements resserrés : sur un téléphone de 375 × 667, photo, titre, texte et premier bouton tiennent dans l’écran */
+    .hero-photo + .hero-content {
+      padding-top: 1.25rem;
+    }
+    .hero-photo + .hero-content .hero-main {
+      padding-top: 1rem;
+      row-gap: 1.5rem;
+    }
+    .hero-photo + .hero-content .hero-side {
+      gap: 1.25rem;
+    }
   }
 </style>

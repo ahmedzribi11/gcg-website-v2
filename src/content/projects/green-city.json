@@ -6,9 +6,8 @@
   "location": "Grand-Bassam",
   "period": "2025",
   "status": "execution",
-  "surface": "2 500 m²",
   "composition": "Projet de construction d’une cité de 45 villas haut standing.",
-  "composition_en": "A gated community of 45 high-end villas.",
+  "composition_en": "Construction of an estate of 45 high-end villas.",
   "typologies": [
     {
       "name": "Villa Minan",
@@ -74,5 +73,10 @@
   "featured": true,
   "featuredOrder": 1,
   "permission": "en-attente",
-  "en_status": "valide"
+  "en_status": "valide",
+  "highlight": {
+    "value": "45",
+    "unit": "villas",
+    "marqueeOrder": 2
+  }
 }

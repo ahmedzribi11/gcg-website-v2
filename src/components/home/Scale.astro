@@ -1,7 +1,7 @@
 ---
 import SectionHead from '../SectionHead.astro'
-import { projectPath, STATUS_SHORT, useT, type Lang } from '../../i18n'
-import type { Project } from '../../lib/projects'
+import { colon, projectPath, STATUS_SHORT, useT, type Lang } from '../../i18n'
+import { highlights, type Project } from '../../lib/projects'
 
 interface Props {
   lang: Lang
@@ -10,39 +10,41 @@ interface Props {
 const { lang, projects } = Astro.props
 const t = useT(lang)
 const fr = lang === 'fr'
-/** Chiffres issus du portfolio (composition et surfaces des projets). */
-const items = [
-  { slug: 'projet-elan', value: '28', unit: fr ? 'tours R+16' : 'R+16 towers', note: fr ? '600 000 m² couverts sur 14 ha' : '600,000 m² built area on 14 ha' },
-  { slug: 'villa-palmeras', value: '116', unit: 'villas', note: fr ? 'R+1 haut standing sur 6 ha' : 'high-end R+1 villas on 6 ha' },
-  { slug: 'palm-resort-movenpick', value: '94', unit: fr ? 'bungalows & villas' : 'bungalows & villas', note: fr ? '64 bungalows et 30 villas sur 5 ha' : '64 bungalows and 30 villas on 5 ha' },
-  { slug: 'usine-de-cajou', value: fr ? '55 000' : '55,000', unit: 'm²', note: fr ? 'usine de stockage de cajou' : 'cashew storage plant' },
-  { slug: 'hotel-calao-korhogo', value: '42', unit: fr ? 'chambres' : 'rooms', note: fr ? 'hôtel R+3 clé en main' : 'turnkey R+3 hotel' },
-  { slug: 'villa-de-luxe-assouinde', value: '260', unit: 'm²', note: fr ? 'villa haut standing avec piscine' : 'high-end villa with pool' },
-]
-const by = (slug: string) => projects.find((p) => p.slug === slug)!
+/** Chiffres clés saisis dans les fiches projet (champ « Chiffre clé », rang dans la grille) ; un projet non publié en est absent (CODE-03, OPS-02). */
+const shown = highlights(projects, 'scaleOrder')
+/**
+ * Titre bâti sur deux projets avec travaux (COPY-02), et non sur une étude : la villa de luxe d’Assouindé et les
+ * 116 villas de Villa Palmeras, chiffres lus dans leur fiche. Si l’un n’est pas publié, titre sans chiffre.
+ */
+const small = projects.find((p) => p.slug === 'villa-de-luxe-assouinde')?.highlight
+const large = projects.find((p) => p.slug === 'villa-palmeras')?.highlight
+const title = small && large ? (fr ? `De la villa de ${small.value} ${small.unit} au programme de ${large.value} ${large.unit}.` : `From a ${small.value} ${small.unit} villa to a programme of ${large.value} ${large.unit}.`) : t('scale.title')
+/** Projet en études ou d’études seulement : le rôle de GCG est écrit à côté du chiffre (COPY-02). */
+const studyOnly = (p: Project) => p.status === 'etudes' || p.designOnly
 ---
 
 <section class="relative overflow-hidden bg-ink-2 py-24 md:py-40" aria-labelledby="scale-title">
   <div class="wrap">
-    <SectionHead id="scale-title" label={t('scale.label')} title={t('scale.title')} accent={fr ? '600 000 m².' : '600,000 m² development.'} lead={t('scale.lead')} size="md" />
+    <SectionHead id="scale-title" title={title} lead={t('scale.lead')} size="md" />
 
     <ul class="mt-16 grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-2 lg:grid-cols-3 md:mt-24">
       {
-        items.map((it, i) => {
-          const p = by(it.slug)
+        shown.map(({ p, h: it }) => {
           return (
-            <li class="bg-ink-2" data-reveal style={`--d:${(i % 3) * 0.08}s`}>
+            <li class="bg-ink-2" data-reveal>
               <a href={projectPath(p.slug, lang)} class="group flex h-full flex-col justify-between gap-10 p-7 transition-colors duration-500 hover:bg-ink-3 md:p-10">
                 <div class="flex items-center justify-between gap-4">
                   <span class="meta text-mist">{p.name}</span>
                   {p.status && <span class="pill" data-status={p.status}>{STATUS_SHORT[p.status][lang]}</span>}
+                  {!p.status && p.designOnly && <span class="pill" data-scope="design">{t('project.designOnly')}</span>}
                 </div>
                 <div>
                   <p class="flex flex-wrap items-baseline gap-x-3">
-                    <span class="display whitespace-nowrap text-[clamp(3.6rem,6.4vw,6.6rem)] text-gold">{it.value}</span>
-                    <span class="text-xl font-light text-bone/80 md:text-2xl">{it.unit}</span>
+                    <span class="display whitespace-nowrap text-4xl text-gold">{it.value}</span>
+                    <span class="text-lg text-bone/80 md:text-xl">{it.unit}</span>
                   </p>
-                  <p class="mt-3 text-[14px] text-bone/55">{it.note} · {p.location}</p>
+                  <p class="mt-3 text-sm text-bone/55">{it.note ? `${it.note} · ${p.location}` : p.location}</p>
+                  {studyOnly(p) && <p class="mt-1 text-sm text-bone/55">{`${t('project.missions')}${colon(lang)}${p.missions.join(', ')}`}</p>}
                 </div>
               </a>
             </li>

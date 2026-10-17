@@ -52,5 +52,12 @@
     }
   ],
   "permission": "en-attente",
-  "en_status": "valide"
+  "en_status": "valide",
+  "highlight": {
+    "value": "260",
+    "unit": "m²",
+    "note": "villa haut standing avec piscine",
+    "note_en": "high-end villa with pool",
+    "scaleOrder": 6
+  }
 }

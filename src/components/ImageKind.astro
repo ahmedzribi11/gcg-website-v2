@@ -1,0 +1,17 @@
+---
+import { useT, type Lang } from '../i18n'
+import type { ProjectImageData } from '../lib/projects'
+
+interface Props {
+  image?: ProjectImageData
+  lang: Lang
+  /** Position de la mention, dans le premier parent positionné (relative, absolute). */
+  class?: string
+}
+const { image, lang, class: cls = 'bottom-3 right-3' } = Astro.props
+const t = useT(lang)
+// Une perspective 3D ou un plan ne doit jamais passer pour une photo réelle (UX-02, charte rédactionnelle)
+const label = image && image.kind !== 'photo' ? t(image.kind === 'plan' ? 'project.plan' : 'project.render') : undefined
+---
+
+{label && <span class:list={['pill pointer-events-none absolute z-[1]', cls]} data-kind={image!.kind}>{label}</span>}

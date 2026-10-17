@@ -1,35 +1,37 @@
 ---
 import Icon from './Icon.astro'
+import ContactCta from './ContactCta.astro'
 import { route, useT, type Lang } from '../i18n'
-import { contact, whatsappLink } from '../lib/settings'
+import { mainNav } from '../lib/nav'
+import { contact, pageWhatsApp } from '../lib/settings'
 
 interface Props {
   lang: Lang
   alt: string
   variant: 'overlay' | 'solid'
+  /** Titre de la page, nommé dans le message WhatsApp (CODE-06). */
+  page?: string
 }
-const { lang, alt, variant } = Astro.props
+const { lang, alt, variant, page } = Astro.props
 const t = useT(lang)
 const path = Astro.url.pathname.replace(/\/$/, '') || '/'
-const nav = [
-  { href: route('services', lang), label: t('nav.services') },
-  { href: route('projects', lang), label: t('nav.projects') },
-  { href: route('about', lang), label: t('nav.about') },
-  { href: route('invest', lang), label: t('nav.invest') },
-  { href: route('contact', lang), label: t('nav.contact') },
-]
+const nav = mainNav(lang)
 const isActive = (href: string) => path === href || path.startsWith(href + '/')
-const wa = whatsappLink(t('contact.form.intro'))
+const wa = pageWhatsApp(lang, page)
 ---
 
 <header
   id="site-header"
   data-variant={variant}
-  class="no-print group fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[background-color,border-color,backdrop-filter,transform] duration-700 data-[scrolled]:border-line data-[scrolled]:bg-ink/70 data-[scrolled]:backdrop-blur-xl data-[variant=solid]:border-line data-[variant=solid]:bg-ink/80 data-[variant=solid]:backdrop-blur-xl data-[hidden]:-translate-y-full"
+  class="no-print group fixed inset-x-0 top-0 z-header border-b border-transparent transition-[background-color,border-color,transform] duration-700 data-[scrolled]:border-line data-[scrolled]:bg-ink data-[variant=solid]:border-line data-[variant=solid]:bg-ink data-[hidden]:-translate-y-full"
 >
-  <nav aria-label={lang === 'fr' ? 'Navigation principale' : 'Main navigation'} class="wrap flex h-16 items-center justify-between gap-6 md:h-20">
+  <nav aria-label={lang === 'fr' ? 'Navigation principale' : 'Main navigation'} class="wrap flex h-header items-center justify-between gap-3 sm:gap-6">
     <a href={route('home', lang)} class="relative z-10 shrink-0" aria-label="GCG — General Constructor Group CI">
-      <img src="/brand/gcg-logo-white.png" alt="GCG — General Constructor Group CI" width="720" height="220" class="h-7 w-auto md:h-8" />
+      <!-- Même logo, en WebP de 240 px (8 Ko au lieu de 32 Ko) ; PNG d’origine en repli (PERF-05) -->
+      <picture>
+        <source srcset="/brand/gcg-logo-white-240.webp" type="image/webp" />
+        <img src="/brand/gcg-logo-white.png" alt="GCG — General Constructor Group CI" width="240" height="73" class="logo-mono h-[28px] w-auto md:h-[32px]" />
+      </picture>
     </a>
 
     <ul class="hidden items-center gap-8 lg:flex">
@@ -38,7 +40,7 @@ const wa = whatsappLink(t('contact.form.intro'))
           <li>
             <a
               href={item.href}
-              class:list={['link-line pb-1 text-[13px] tracking-[0.05em] transition-colors duration-500 hover:text-bone', isActive(item.href) ? 'text-gold' : 'text-bone/70']}
+              class:list={['link-line pb-1 text-sm tracking-[0.05em] transition-colors duration-500 hover:text-bone', isActive(item.href) ? 'text-gold' : 'text-bone/70']}
               aria-current={isActive(item.href) ? 'page' : undefined}
             >
               {item.label}
@@ -49,30 +51,31 @@ const wa = whatsappLink(t('contact.form.intro'))
     </ul>
 
     <div class="relative z-10 flex items-center gap-2 md:gap-3">
-      <a href={alt} hreflang={lang === 'fr' ? 'en' : 'fr'} lang={lang === 'fr' ? 'en' : 'fr'} class="meta flex h-10 min-w-10 items-center justify-center rounded-full border border-line px-3 text-bone/80 transition-colors hover:border-bone/50 hover:text-bone" data-lang-switch>
+      <a href={alt} hreflang={lang === 'fr' ? 'en' : 'fr'} lang={lang === 'fr' ? 'en' : 'fr'} class="meta flex h-11 min-w-11 items-center justify-center rounded-full border border-line px-3 text-bone/80 transition-colors hover:border-bone/50 hover:text-bone" data-lang-switch>
         {t('nav.langShort')}<span class="sr-only"> {t('nav.lang')}</span>
       </a>
       <button
         type="button"
         id="theme-toggle"
-        class="flex h-10 w-10 items-center justify-center rounded-full border border-line text-bone/80 transition-colors hover:border-bone/50 hover:text-bone"
+        data-theme-toggle
+        class="hidden h-11 w-11 items-center justify-center rounded-full border border-line text-bone/80 transition-colors hover:border-bone/50 hover:text-bone sm:flex"
         aria-pressed="false"
         aria-label={lang === 'fr' ? 'Mode clair' : 'Light mode'}
         title={lang === 'fr' ? 'Mode clair / sombre' : 'Light / dark mode'}
       >
-        <svg data-icon-sun width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <svg data-icon-sun width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
           <circle cx="12" cy="12" r="4" />
           <path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4" />
         </svg>
-        <svg data-icon-moon width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+        <svg data-icon-moon width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
           <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
         </svg>
       </button>
-      <a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class="btn btn-gold hidden !min-h-10 !px-5 !text-[12px] md:inline-flex" data-magnetic>
-        {wa && <Icon name="whatsapp" size={15} />}
+      <ContactCta lang={lang} page={page} class="btn btn-gold hidden !min-h-10 !px-5 !text-xs md:inline-flex">
+        <Fragment slot="whatsapp"><Icon name="whatsapp" size={20} /> {t('nav.cta')}</Fragment>
         {t('nav.cta')}
-      </a>
-      <button type="button" id="menu-toggle" class="meta flex h-10 items-center gap-3 rounded-full border border-line px-4 text-bone lg:hidden" aria-expanded="false" aria-controls="mobile-menu">
+      </ContactCta>
+      <button type="button" id="menu-toggle" class="meta flex h-11 items-center gap-3 rounded-full border border-line px-4 text-bone lg:hidden" aria-expanded="false" aria-controls="mobile-menu">
         <span data-label-open>{t('nav.menu')}</span><span data-label-close hidden>{t('nav.close')}</span>
         <span class="relative block h-2.5 w-4" aria-hidden="true">
           <span class="menu-bar absolute left-0 top-0 h-px w-full bg-bone transition-transform duration-500"></span>
@@ -85,18 +88,19 @@ const wa = whatsappLink(t('contact.form.intro'))
 </header>
 
 <!--
-Hors de l’en-tête : son flou d’arrière-plan (backdrop-filter) et sa translation feraient de l’en-tête le
+Hors de l’en-tête : sa translation (en-tête masqué au défilement) ferait de l’en-tête le
 bloc conteneur du menu fixe, limité à 64 px de haut pendant ~0,7 s (page visible à travers).
+Contenu défilant sous l’en-tête : en paysage, à 200 % ou en grand texte, tous les liens restent atteignables (BRW-02).
 -->
-<div id="mobile-menu" class="invisible fixed inset-0 z-[49] bg-ink opacity-0 transition-[opacity,visibility] duration-300 lg:hidden" aria-hidden="true">
-  <div class="wrap flex h-full flex-col justify-between pb-8 pt-24">
+<div id="mobile-menu" class="invisible fixed inset-0 z-menu bg-ink opacity-0 transition-[opacity,visibility] duration-300 lg:hidden" aria-hidden="true">
+  <div class="absolute inset-x-0 bottom-0 top-header overflow-y-auto overscroll-contain">
+  <div class="wrap flex min-h-full flex-col justify-between gap-8 pb-8 pt-8">
     <ul class="flex flex-col">
       {
         nav.map((item, i) => (
           <li class="overflow-hidden border-b border-line">
             <a href={item.href} tabindex="-1" class="menu-link flex items-baseline justify-between py-4" style={`--i:${i}`}>
-              <span class:list={['display text-[2.6rem]', isActive(item.href) && 'text-gold']}>{item.label}</span>
-              <span class="meta text-mist">0{i + 1}</span>
+              <span class:list={['display text-3xl', isActive(item.href) && 'text-gold']}>{item.label}</span>
             </a>
           </li>
         ))
@@ -106,14 +110,14 @@ bloc conteneur du menu fixe, limité à 64 px de haut pendant ~0,7 s (page visib
       {
         wa && (
           <a href={wa} target="_blank" rel="noopener" tabindex="-1" class="btn btn-gold w-full">
-            <Icon name="whatsapp" size={18} /> {t('cta.whatsapp')}
+            <Icon name="whatsapp" size={20} /> {t('cta.whatsapp')}
           </a>
         )
       }
       {
         contact.phoneHref && (
           <a href={contact.phoneHref} tabindex="-1" class="btn btn-line w-full">
-            <Icon name="phone" size={16} /> {contact.phone}
+            <Icon name="phone" size={20} /> {contact.phone}
           </a>
         )
       }
@@ -124,15 +128,29 @@ bloc conteneur du menu fixe, limité à 64 px de haut pendant ~0,7 s (page visib
           </a>
         )
       }
+      <!-- Sur téléphone, le bouton du thème quitte l’en-tête (place pour le logo et le menu à 320 px) et vient ici -->
+      <button type="button" tabindex="-1" class="btn btn-line w-full sm:hidden" data-theme-toggle>
+        <svg data-icon-sun width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4" />
+        </svg>
+        <svg data-icon-moon width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+          <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
+        </svg>
+        <!-- Libellé de l’action, comme l’aria-label du bouton de l’en-tête (affichage selon le thème) -->
+        <span data-icon-sun>{lang === 'fr' ? 'Mode clair' : 'Light mode'}</span><span data-icon-moon>{lang === 'fr' ? 'Mode sombre' : 'Dark mode'}</span>
+      </button>
     </div>
+  </div>
   </div>
 </div>
 
 <style>
   #site-header[data-menu] + #mobile-menu { visibility: visible; opacity: 1; }
-  #site-header[data-menu] { background: transparent !important; border-color: transparent !important; backdrop-filter: none !important; }
+  #site-header[data-menu] { background: transparent !important; border-color: transparent !important; }
   #site-header[data-menu] .menu-bar:first-child { transform: translateY(4px) rotate(45deg); }
   #site-header[data-menu] .menu-bar:last-child { transform: translateY(-4px) rotate(-45deg); }
   .menu-link { transform: translateY(100%); transition: transform 0.9s var(--ease-out-expo); }
+  @media (max-height: 500px) { .menu-link span:first-child { font-size: var(--text-xl); } }
   #site-header[data-menu] + #mobile-menu .menu-link { transform: none; transition-delay: calc(0.08s + var(--i) * 0.06s); }
 </style>

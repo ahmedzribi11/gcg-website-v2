@@ -2,11 +2,12 @@
 import Base from '../layouts/Base.astro'
 import PageHeader from '../components/PageHeader.astro'
 import ProjectImage from '../components/ProjectImage.astro'
+import ImageKind from '../components/ImageKind.astro'
 import Method from '../components/Method.astro'
 import FinalCta from '../components/FinalCta.astro'
 import Icon from '../components/Icon.astro'
 import { services } from '../data/services'
-import { route, servicePath, useT, type Lang } from '../i18n'
+import { colon, route, servicePath, useT, type Lang } from '../i18n'
 import { coverImage, getProjects } from '../lib/projects'
 
 interface Props {
@@ -16,42 +17,48 @@ const { lang } = Astro.props
 const t = useT(lang)
 const projects = await getProjects(lang)
 const count = (id: string) => projects.filter((p) => p.services.includes(id as never)).length
+/** Nombre de projets affiché à partir de 5 seulement : « 2 projets » ne prouve rien (COPY-08). */
+const MIN_COUNT = 5
 ---
 
 <Base lang={lang} alt={route('services', lang === 'fr' ? 'en' : 'fr')} title={t('services.label')} description={t('services.lead')}>
-  <PageHeader label={t('services.label')} title={t('services.title')} accent={lang === 'fr' ? 'même toit.' : 'one roof.'} lead={t('services.lead')} />
+  <PageHeader title={t('services.title')} lead={t('services.lead')} />
 
   <section class="wrap pb-24 md:pb-40">
     {
       services.map((s, i) => {
         const n = count(s.id)
         const flip = i % 2 === 1
+        const cover = coverImage(projects, s.cover)
+        // Le nom du lien reprend la mention visible « Perspective » ou « Plan » (WCAG 2.5.3, nom accessible et texte visible)
+        const kind = cover && cover.kind !== 'photo' ? t(cover.kind === 'plan' ? 'project.plan' : 'project.render').toLowerCase() : undefined
         return (
           <article id={s.slug[lang]} class="grid gap-8 border-t border-line py-14 md:grid-cols-12 md:gap-12 md:py-20">
-            <a href={servicePath(s.slug[lang], lang)} class:list={['group relative block overflow-hidden md:col-span-5', flip && 'md:order-2 md:col-start-8']} data-reveal="clip" data-cursor="view" aria-label={s.title[lang]}>
-              <div data-parallax="6">
-                <ProjectImage image={coverImage(projects, s.cover)} alt="" sizes="(min-width: 768px) 40vw, 100vw" class="block aspect-[4/3] md:aspect-[5/4]" imgClass="h-full w-full object-cover transition-transform duration-[1.6s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" />
-              </div>
+            <a href={servicePath(s.slug[lang], lang)} class:list={['group relative block overflow-hidden md:col-span-5', flip && 'md:order-2 md:col-start-8']} data-reveal aria-label={kind ? `${s.title[lang]}, ${kind}` : s.title[lang]}>
+              <ProjectImage image={cover} alt="" sizes="(min-width: 768px) 40vw, 100vw" priority={i === 0} class="block aspect-[4/3] md:aspect-[5/4]" imgClass="h-full w-full object-cover transition-transform duration-[1.6s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" />
+              <ImageKind image={cover} lang={lang} />
             </a>
             <div class:list={['flex flex-col justify-between md:col-span-6', flip ? 'md:order-1 md:col-start-1' : 'md:col-start-7']}>
               <div>
-                <p class="meta text-gold" data-reveal>{String(i + 1).padStart(2, '0')} · {n} {n > 1 ? t('services.projects') : t('services.project')}</p>
-                <h2 class="display mt-5 text-[clamp(2.2rem,4.6vw,4.8rem)]" data-split>
-                  {s.id === 'cle-en-main' ? <em class="serif text-gold">{s.title[lang]}</em> : s.title[lang]}
+                {n >= MIN_COUNT && <p class="meta text-gold">{n} {t('services.projects')}</p>}
+                <h2 class:list={['display text-3xl', n >= MIN_COUNT && 'mt-5']}>
+                  {s.title[lang]}
                 </h2>
-                <p class="mt-6 max-w-xl text-lg leading-relaxed text-bone/70" data-reveal>{s.intro[lang]}</p>
+                <p class="mt-6 max-w-xl text-lg leading-relaxed text-bone/70">{s.intro[lang]}</p>
               </div>
               <div class="mt-10">
-                <ul class="grid gap-x-6 border-t border-line sm:grid-cols-2" data-reveal>
+                <ul class="grid gap-x-6 border-t border-line sm:grid-cols-2">
                   {s.includes[lang].map((it) => (
-                    <li class="flex items-center gap-3 border-b border-line py-3 text-[15px] text-bone/80">
+                    <li class="flex items-center gap-3 border-b border-line py-3 text-base text-bone/80">
                       <span class="h-1 w-1 rounded-full bg-gold" aria-hidden="true" />
                       {it}
                     </li>
                   ))}
                 </ul>
-                <a href={servicePath(s.slug[lang], lang)} class="btn btn-line mt-8" data-magnetic>
-                  {t('cta.more')} <Icon name="arrow" />
+                <a href={servicePath(s.slug[lang], lang)} class="btn btn-line mt-8">
+                  {t('cta.service')}
+                  <span class="sr-only">{`${colon(lang)}${s.title[lang]}`}</span>
+                  <Icon name="arrow" size={20} />
                 </a>
               </div>
             </div>
@@ -62,5 +69,5 @@ const count = (id: string) => projects.filter((p) => p.services.includes(id as n
   </section>
 
   <Method lang={lang} tone="paper" />
-  <FinalCta lang={lang} />
+  <FinalCta lang={lang} page={t('services.label')} />
 </Base>

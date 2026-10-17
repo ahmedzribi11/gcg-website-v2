@@ -1,43 +1,46 @@
 ---
 import Icon from './Icon.astro'
 import { route, useT, type Lang } from '../i18n'
-import { contact, documents, socials, whatsappLink } from '../lib/settings'
+import { mainNav } from '../lib/nav'
+import { contact, documents, pageWhatsApp, phoneCountry, socials } from '../lib/settings'
 import legal from '../data/legal.json'
 
 interface Props {
   lang: Lang
+  /** Titre de la page, nommé dans le message WhatsApp (CODE-06). */
+  page?: string
 }
-const { lang } = Astro.props
+const { lang, page } = Astro.props
 const t = useT(lang)
 const year = new Date().getFullYear()
-const nav = [
-  { href: route('services', lang), label: t('nav.services') },
-  { href: route('projects', lang), label: t('nav.projects') },
-  { href: route('about', lang), label: t('nav.about') },
-  { href: route('invest', lang), label: t('nav.invest') },
-  { href: route('contact', lang), label: t('nav.contact') },
-]
+const nav = mainNav(lang)
 const useful = [
   { href: route('references', lang), label: t('refs.title') },
   { href: route('share', lang), label: t('contact.share') },
 ]
 const owner = legal.legalName || legal.tradeName
-const wa = whatsappLink(t('contact.form.intro'))
+const wa = pageWhatsApp(lang, page)
+/** Deux numéros : le pays de chacun, comme sur la page Contact (UX-05). */
+const country = (e164: string) => (contact.phone && contact.phone2 ? phoneCountry(e164, lang) : '')
 ---
 
-<footer class="no-print relative overflow-hidden border-t border-line bg-ink pb-28 pt-20 md:pb-12 md:pt-28">
+<footer class="no-print relative overflow-hidden border-t border-line bg-ink pb-[calc(7rem+env(safe-area-inset-bottom))] pt-20 md:pb-12 md:pt-28">
   <div class="wrap">
-    <div class="grid gap-14 md:grid-cols-12">
-      <div class="md:col-span-5">
-        <img src="/brand/gcg-logo-gold.png" alt="GCG — General Constructor Group CI" width="720" height="218" loading="lazy" decoding="async" class="h-14 w-auto md:h-16" />
-        <p class="mt-6 max-w-sm text-[15px] leading-relaxed text-bone/60">{t('site.description')}</p>
+    <div class="grid gap-14 sm:grid-cols-2 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <!-- Même logo, en WebP de 440 px (25 Ko au lieu de 50 Ko) ; PNG d’origine en repli (PERF-05, OPS-03) -->
+        <picture>
+          <source srcset="/brand/gcg-logo-gold-440.webp" type="image/webp" />
+          <img src="/brand/gcg-logo-gold.png" alt="GCG — General Constructor Group CI" width="440" height="133" loading="lazy" decoding="async" class="logo-mono h-14 w-auto md:h-16" />
+        </picture>
+        <p class="mt-6 max-w-sm text-base leading-relaxed text-bone/60">{t('site.description')}</p>
         {
           socials.length > 0 && (
             <ul class="mt-8 flex gap-2" aria-label={t('contact.social')}>
               {socials.map((s) => (
                 <li>
                   <a href={s.url} target="_blank" rel="noopener" aria-label={s.name} class="flex h-11 w-11 items-center justify-center rounded-full border border-line text-bone/80 transition-colors hover:border-gold hover:text-gold">
-                    <Icon name={s.key} size={18} />
+                    <Icon name={s.key} size={24} />
                   </a>
                 </li>
               ))}
@@ -46,27 +49,27 @@ const wa = whatsappLink(t('contact.form.intro'))
         }
       </div>
 
-      <nav class="md:col-span-2 md:col-start-7" aria-label={lang === 'fr' ? 'Pied de page' : 'Footer'}>
+      <nav class="lg:col-span-2 lg:col-start-6" aria-label={lang === 'fr' ? 'Pied de page' : 'Footer'}>
         <p class="meta text-mist">GCG</p>
         <ul class="mt-5 space-y-3">
-          {nav.map((n) => <li><a href={n.href} class="link-line text-[15px] text-bone/75 hover:text-bone">{n.label}</a></li>)}
+          {nav.map((n) => <li><a href={n.href} class="link-line text-base text-bone/75 hover:text-bone">{n.label}</a></li>)}
         </ul>
       </nav>
 
-      <div class="md:col-span-2">
+      <div class="lg:col-span-2">
         <p class="meta text-mist">{t('footer.links')}</p>
         <ul class="mt-5 space-y-3">
-          {useful.map((n) => <li><a href={n.href} class="link-line text-[15px] text-bone/75 hover:text-bone">{n.label}</a></li>)}
-          {documents.map((d) => <li><a href={d.href} download={d.downloadName} class="link-line text-[15px] text-bone/75 hover:text-bone">{lang === 'fr' ? d.title : d.title_en}</a></li>)}
+          {useful.map((n) => <li><a href={n.href} class="link-line text-base text-bone/75 hover:text-bone">{n.label}</a></li>)}
+          {documents.map((d) => <li><a href={d.href} download={d.downloadName} class="link-line text-base text-bone/75 hover:text-bone">{lang === 'fr' ? d.title : d.title_en}</a></li>)}
         </ul>
       </div>
 
-      <div class="md:col-span-2">
+      <div class="lg:col-span-3">
         <p class="meta text-mist">{t('contact.direct')}</p>
-        <ul class="mt-5 space-y-3 text-[15px] text-bone/75">
+        <ul class="mt-5 space-y-3 text-base text-bone/75">
           {wa && <li><a href={wa} target="_blank" rel="noopener" class="link-line hover:text-bone">WhatsApp</a></li>}
-          {contact.phone && <li><a href={contact.phoneHref} class="link-line hover:text-bone">{contact.phone}</a></li>}
-          {contact.phone2 && <li><a href={contact.phone2Href} class="link-line hover:text-bone">{contact.phone2}</a></li>}
+          {contact.phone && <li><a href={contact.phoneHref} class="link-line hover:text-bone">{contact.phone}{country(contact.phoneE164) && <>{' '}<span class="whitespace-nowrap text-bone/60">· {country(contact.phoneE164)}</span></>}</a></li>}
+          {contact.phone2 && <li><a href={contact.phone2Href} class="link-line hover:text-bone">{contact.phone2}{country(contact.phone2E164) && <>{' '}<span class="whitespace-nowrap text-bone/60">· {country(contact.phone2E164)}</span></>}</a></li>}
           {contact.email && <li><a href={`mailto:${contact.email}`} class="link-line break-all hover:text-bone">{contact.email}</a></li>}
           {contact.address && <li>{contact.mapsUrl ? <a href={contact.mapsUrl} target="_blank" rel="noopener" class="link-line text-bone/60 hover:text-bone">{contact.address}</a> : <span class="text-bone/60">{contact.address}</span>}</li>}
           <li><a href={route('contact', lang)} class="link-line hover:text-bone">{t('cta.project')}</a></li>
@@ -76,8 +79,7 @@ const wa = whatsappLink(t('contact.form.intro'))
 
     <div class="mt-20 flex flex-col justify-between gap-3 border-t border-line pt-6 md:flex-row">
       <p class="meta text-mist">© {year} {owner} · {t('footer.rights')} · <a href={route('legal', lang)} class="hover:text-bone">{t('legal.title')}</a> · <a href={route('privacy', lang)} class="hover:text-bone">{t('privacy.title')}</a></p>
-      <p class="meta text-mist">{t('footer.since')} · {t('footer.country')}</p>
+      <p class="meta text-mist">{t('site.tagline')}</p>
     </div>
   </div>
-  <p aria-hidden="true" class="watermark display pointer-events-none absolute -bottom-[0.18em] left-1/2 -translate-x-1/2 select-none whitespace-nowrap text-[26vw] font-medium leading-none text-bone/[0.025]" data-text="GCG CI"></p>
 </footer>

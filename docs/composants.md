@@ -25,9 +25,9 @@ définis dans le même fichier (`@theme`).
 | Bouton WhatsApp | `.btn.btn-gold` + icône WhatsApp | ouvre `wa.me` avec un message prérempli (nom de la page) | idem bouton principal | idem | idem | remplacé par « Contact » si aucun numéro WhatsApp |
 | Bouton sombre | `.btn.btn-dark` (sections claires) | fond vert, texte clair | vert plus clair | contour vert | −1 px | idem |
 | Lien souligné | `.link-line` | sans soulignement | soulignement qui se trace (300 ms) | contour or | — | — |
-| Carte projet | `components/ProjectCard.astro` | photo 4/3, statut, nom, lieu, période | photo agrandie de 2 %, nom en or | contour or autour de la carte entière (un seul lien) | — | — |
+| Carte projet | `components/ProjectCard.astro` | photo 4/3 (la première vraie photo du projet s’il en a une), statut, nom, lieu, période | photo agrandie de 2 %, nom en or | contour or autour de la carte entière (un seul lien) | — | — |
 | Barre de filtres | `views/ProjectsList.astro` (`.chip`) | pastilles à contour, compteur ; collante sous l’en-tête | contour plus visible | contour or | sélectionnée : fond clair, `aria-pressed="true"` ; résultat annoncé (`aria-live`) | — |
-| Galerie | `views/ProjectDetail.astro` | grande image + 2 petites, puis rangées ; légende sous chaque photo ; mention « Perspective » sur les rendus | photo agrandie de 2 % | contour or | ouvre la visionneuse | — |
+| Galerie | `views/ProjectDetail.astro` | grande image + 2 petites, puis rangées ; description lue par les lecteurs d’écran ; mention « Perspective » ou « Plan » sur les images qui ne sont pas des photos | photo agrandie de 2 % | contour or | ouvre la visionneuse | — |
 | Visionneuse (lightbox) | `views/ProjectDetail.astro` (`<dialog>`) | photo entière, légende, « 3 / 8 » annoncé | boutons : contour or | contour or ; le focus reste dans la visionneuse | flèches ← → du clavier, balayage, Échap ferme et rend le focus | précédent/suivant absents s’il n’y a qu’une photo |
 | Tableau de faits | `views/ProjectDetail.astro` (`<dl>`) | libellé en petites capitales, valeur ; ligne absente si la donnée est vide | — | — | — | — |
 | Bandeau d’appel à l’action | `components/FinalCta.astro` | titre, phrase, bouton principal + secondaire | voir boutons | voir boutons | — | WhatsApp absent si pas de numéro |
@@ -36,6 +36,7 @@ définis dans le même fichier (`@theme`).
 | Fil d’Ariane | `components/Breadcrumb.astro` | Accueil › Rubrique › Page | lien en or | contour or | page courante sans lien, `aria-current="page"` | — |
 | Sélecteur de langue | `components/Header.astro` (`[data-lang-switch]`) | pastille « EN » / « FR », `hreflang` et `lang` corrects | contour et texte plus clairs | contour or | mène à la même page dans l’autre langue ; si elle n’existe pas, à la liste avec un message | — |
 | Lien d’évitement | `.skip-link` | hors écran | — | apparaît en haut à gauche | mène au contenu (`#main`) | — |
+| Mention de nature d’image | `components/ImageKind.astro` (`.pill[data-kind]`) | « Perspective » / « Rendering » ou « Plan » / « Drawing » en bas à droite des images `render` et `plan` : cartes, couvertures, galerie, visionneuse, illustrations (UX-02) | — | — | — | absente sur une photo réelle |
 | Pastille de statut | `.pill[data-status]` | point coloré + statut (or : exécution ; vert pâle : études ; blanc : réceptionné) | — | — | — | absente si le statut n’est pas confirmé |
 | Vidéo | `components/VideoFacade.astro` | image + bouton lecture ; rien n’est chargé chez YouTube/Vimeo | bouton plus visible | contour or | clic : charge la vidéo (youtube-nocookie) | absente sans lien vidéo |
 

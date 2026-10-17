@@ -1,18 +1,16 @@
 ---
-import '@fontsource-variable/geist'
-import '@fontsource-variable/geist-mono'
-import '@fontsource/instrument-serif/400-italic.css'
-import '@fontsource/instrument-serif/400.css'
+// Une seule famille, Archivo, avec ses axes graisse et chasse : texte en largeur normale, titres en étroit (SLOP-01)
+import '@fontsource-variable/archivo/wdth.css'
 import '../styles/global.css'
-import geistUrl from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url'
-import geistMonoUrl from '@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2?url'
-import serifItalicUrl from '@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2?url'
+import { getImage } from 'astro:assets'
+import archivoUrl from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import MobileBar from '../components/MobileBar.astro'
 import { useT, type Lang } from '../i18n'
 import { isPreview, pagePath, umamiId, umamiSrc } from '../lib/env'
-import { organizationLd } from '../lib/seo'
+import { defaultOgImage, organizationLd } from '../lib/seo'
+import { getProjects, showcasePhoto } from '../lib/projects'
 
 interface Props {
   lang: Lang
@@ -20,8 +18,13 @@ interface Props {
   description?: string
   /** Chemin de la page équivalente dans l’autre langue. */
   alt: string
-  /** URL (relative ou absolue) de l’image de partage. */
+  /** La page existe dans l’autre langue (sinon `alt` mène à une page voisine et aucun hreflang n’est annoncé). */
+  translated?: boolean
+  /** URL (relative ou absolue) de l’image de partage ; par défaut la photo du projet vitrine réceptionné (SHR-09). */
   image?: string
+  /** Dimensions réelles de l’image de partage (SHR-08), à donner avec `image`. */
+  imageWidth?: number
+  imageHeight?: number
   header?: 'overlay' | 'solid'
   noindex?: boolean
   bare?: boolean
@@ -30,12 +33,17 @@ interface Props {
   organization?: boolean
   /** Titre complet de l’onglet, si le modèle par défaut ne suffit pas à le rendre unique. */
   docTitle?: string
+  /** Nom de la page dans les messages WhatsApp de l’en-tête, de la barre mobile et du pied de page, si différent de `title` (CODE-06). */
+  page?: string
+  /** Titre et description des aperçus de liens (WhatsApp, Facebook, LinkedIn), si différents de l’onglet (SHR-13). */
+  ogTitle?: string
+  ogDescription?: string
 }
 
-const { lang, title, description, alt, image = '/og-image.jpg', header = 'solid', noindex = false, bare = false, jsonLd = [], organization = false, docTitle } = Astro.props
+const { lang, title, description, alt, translated = true, image, imageWidth, imageHeight, header = 'solid', noindex = false, bare = false, jsonLd = [], organization = false, docTitle, page = title, ogTitle, ogDescription } = Astro.props
 const t = useT(lang)
 const brand = 'GCG Côte d’Ivoire'
-const fullTitle = docTitle ?? (title ? `${title} · ${brand}` : `${brand} · ${t('site.tagline')}`)
+const fullTitle = docTitle ?? (title ? `${title} — ${brand}` : `${brand} — ${t('site.tagline')}`)
 const desc = description ?? t('site.description')
 const site = Astro.site
 const abs = (p: string) => (site ? new URL(p, site).href : p)
@@ -43,7 +51,11 @@ const path = pagePath(Astro.url.pathname)
 const frPath = lang === 'fr' ? path : alt
 const enPath = lang === 'en' ? path : alt
 const robots = noindex || isPreview ? 'noindex, nofollow' : ''
-const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
+const showcase = showcasePhoto(await getProjects('fr'))
+// Image de l’entreprise pour Google : la photo réelle du projet vitrine livré, sans le logo des aperçus (SEO-03)
+const orgImage = organization && showcase && site ? await getImage({ src: showcase.image.src, format: 'jpg', width: Math.min(1200, showcase.image.src.width) }) : undefined
+const ld = [...(organization ? [organizationLd(lang, site, orgImage ? { image: abs(orgImage.src) } : {})] : []), ...jsonLd]
+const share = image ? { src: image, width: imageWidth ?? 1200, height: imageHeight ?? 630 } : defaultOgImage(showcase)
 ---
 
 <!doctype html>
@@ -51,10 +63,17 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    {
+      /* La politique de sécurité (CSP) est ajoutée par Astro en <meta> à la fin de <head>, après ces scripts : elle ne
+         les couvre pas. Ils doivent donc rester statiques, écrits ici, sans contenu venu de l’espace de gestion ou de
+         l’adresse. Umami, s’il est activé, charge aussi un script tiers avant la politique, sans empreinte SRI possible
+         (le script du service change sans préavis) (SEC-05). */
+    }
     <script is:inline>
-      // Mode clair choisi par le visiteur, appliqué avant l’affichage (pas de flash)
+      // Mode clair choisi par le visiteur, appliqué avant l’affichage (pas de flash).
+      // Sans color-mix() (iOS 16.0–16.1), ses couleurs semi-transparentes retomberaient sur celles du mode sombre : ignoré (BRW-11)
       try {
-        if (localStorage.getItem('gcg-theme') === 'light') document.documentElement.dataset.theme = 'light'
+        if (localStorage.getItem('gcg-theme') === 'light' && CSS.supports('color', 'color-mix(in srgb, red, red)')) document.documentElement.dataset.theme = 'light'
       } catch {
         // stockage indisponible : mode sombre par défaut
       }
@@ -64,7 +83,7 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
     {robots && <meta name="robots" content={robots} />}
     {site && <link rel="canonical" href={abs(path)} />}
     {
-      site && !noindex && (
+      site && !noindex && translated && (
         <>
           <link rel="alternate" hreflang="fr" href={abs(frPath)} />
           <link rel="alternate" hreflang="en" href={abs(enPath)} />
@@ -72,12 +91,13 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
         </>
       )
     }
-    <!-- Polices chargées en priorité : pas de saut de mise en page à leur arrivée -->
-    <link rel="preload" href={geistUrl} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={geistMonoUrl} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={serifItalicUrl} as="font" type="font/woff2" crossorigin />
+    <!-- Police chargée en priorité : pas de saut de mise en page à son arrivée. Un seul fichier, Archivo, sert sur
+         chaque page (texte, titres, libellés) ; plus de police d’accent ni de chasse fixe (SLOP-01, SLOP-02, SLOP-21) -->
+    <link rel="preload" href={archivoUrl} as="font" type="font/woff2" crossorigin />
+    <!-- Barre du navigateur sombre dans les deux thèmes : l’en-tête juste dessous reste sombre (BRW-09) -->
     <meta name="theme-color" content="#070c09" />
-    <meta name="color-scheme" content="dark light" />
+    <!-- Sombre sauf choix « Mode clair » du visiteur, qui passe color-scheme à light (global.css) -->
+    <meta name="color-scheme" content="dark" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -88,45 +108,52 @@ const ld = [...(organization ? [organizationLd(lang, site)] : []), ...jsonLd]
     <meta property="og:site_name" content="General Constructor Group CI" />
     <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_GB'} />
     <meta property="og:locale:alternate" content={lang === 'fr' ? 'en_GB' : 'fr_FR'} />
-    <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={desc} />
-    <meta property="og:image" content={abs(image)} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:title" content={ogTitle ?? fullTitle} />
+    <meta property="og:description" content={ogDescription ?? desc} />
+    <meta property="og:image" content={abs(share.src)} />
+    <meta property="og:image:width" content={String(share.width)} />
+    <meta property="og:image:height" content={String(share.height)} />
     {site && <meta property="og:url" content={abs(path)} />}
     <meta name="twitter:card" content="summary_large_image" />
 
     <script is:inline>
       document.documentElement.classList.replace('no-js', 'js')
+      // Script principal absent après 3 s (réseau coupé, bloqueur, erreur au démarrage) : la classe js est retirée,
+      // rien ne reste masqué en l’attendant et la barre mobile s’affiche (CODE-01). site.ts pose __gcgReady à la fin.
+      setTimeout(() => {
+        if (!window.__gcgReady) document.documentElement.classList.remove('js')
+      }, 3000)
     </script>
     {ld.length > 0 && <script type="application/ld+json" set:html={JSON.stringify(ld.length === 1 ? ld[0] : ld)} />}
-    {umamiId && !isPreview && <script is:inline defer src={umamiSrc} data-website-id={umamiId} data-do-not-track="true" />}
+    {
+      /* Mesure limitée au domaine public (OPS-09) : les copies du site (*.vercel.app, autres projets) ne sont pas comptées */
+      umamiId && !isPreview && <script is:inline defer src={umamiSrc} data-website-id={umamiId} data-domains={site?.hostname} data-do-not-track="true" />
+    }
   </head>
-  <body class:list={['grain min-h-svh', { 'is-bare': bare }]} data-lang={lang}>
+  <body class:list={['min-h-svh', { 'is-bare': bare }]} data-lang={lang}>
     {
       !bare && (
         <a
           href="#main"
-          class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-gold focus:px-4 focus:py-2 focus:text-brand"
+          class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-skip focus:rounded focus:bg-gold focus:px-4 focus:py-2 focus:text-brand"
         >
           {t('nav.skip')}
         </a>
       )
     }
-    {!bare && <Header lang={lang} alt={alt} variant={header} />}
+    {!bare && <Header lang={lang} alt={alt} variant={header} page={page} />}
+    <!-- Logo d’impression : loading="lazy" dans un bloc masqué à l’écran, il n’est téléchargé que pour imprimer (PERF-05) -->
     <div class="print-only mb-6 border-b border-black pb-3">
-      <img src="/brand/gcg-logo-green.png" alt="GCG — General Constructor Group CI" width="720" height="218" class="h-12 w-auto" />
+      <img src="/brand/gcg-logo-green.png" alt="GCG — General Constructor Group CI" width="720" height="218" loading="lazy" class="h-12 w-auto" />
       <p class="mt-2 text-xs">{site ? abs(path) : path}</p>
     </div>
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    {!bare && <Footer lang={lang} />}
-    {!bare && <MobileBar lang={lang} />}
-    {!bare && <div id="cursor" aria-hidden="true" class="pointer-events-none fixed inset-0 z-[95] hidden" />}
+    {!bare && <Footer lang={lang} page={page} />}
+    {!bare && <MobileBar lang={lang} page={page} />}
     <script>
       import '../scripts/site'
-      import '../scripts/analytics'
     </script>
   </body>
 </html>

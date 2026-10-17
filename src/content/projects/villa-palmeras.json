@@ -7,7 +7,7 @@
   "period": "2023",
   "status": "execution",
   "surface": "33 000 m²",
-  "terrain": "6 hectares",
+  "terrain": "6 ha",
   "composition": "Travaux de construction de 116 villas R+1 haut standing.",
   "composition_en": "Construction of 116 two-storey (R+1) high-end villas.",
   "missions": [
@@ -52,5 +52,13 @@
   "featured": true,
   "featuredOrder": 2,
   "permission": "en-attente",
-  "en_status": "valide"
+  "en_status": "valide",
+  "highlight": {
+    "value": "116",
+    "unit": "villas",
+    "note": "R+1 haut standing sur 6 ha",
+    "note_en": "high-end two-storey villas on 6 ha",
+    "scaleOrder": 2,
+    "marqueeOrder": 1
+  }
 }

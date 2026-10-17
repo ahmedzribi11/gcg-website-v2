@@ -1,0 +1,20 @@
+---
+/** Page de redirection d’une adresse de QR code imprimé (src/pages/qr, src/pages/q). */
+interface Props {
+  to: string
+}
+const { to } = Astro.props
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content={`0; url=${to}`} />
+    <title>GCG Côte d’Ivoire</title>
+  </head>
+  <body>
+    <p><a href={to}>General Constructor Group CI</a></p>
+  </body>
+</html>

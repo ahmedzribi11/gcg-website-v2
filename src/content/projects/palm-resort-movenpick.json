@@ -7,7 +7,7 @@
   "location": "Assouindé",
   "period": "2025",
   "status": "etudes",
-  "surface": "5 hectares",
+  "surface": "5 ha",
   "composition": "64 bungalows, 30 villas haut standing, 1 salle de conférence et 1 bâtiment principal.",
   "composition_en": "64 bungalows, 30 high-end villas, a conference hall and a main building.",
   "missions": [
@@ -53,5 +53,15 @@
   "featured": true,
   "featuredOrder": 9,
   "permission": "en-attente",
-  "en_status": "valide"
+  "en_status": "valide",
+  "highlight": {
+    "value": "94",
+    "unit": "bungalows & villas",
+    "note": "64 bungalows et 30 villas sur 5 ha",
+    "note_en": "64 bungalows and 30 villas on 5 ha",
+    "scaleOrder": 3,
+    "marqueeOrder": 5,
+    "marqueeFigure": "64 bungalows & 30 villas",
+    "marqueeFigure_en": "64 bungalows & 30 villas"
+  }
 }

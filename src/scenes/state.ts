@@ -10,12 +10,6 @@ export const heroState = {
   solid: 0, // 0 → 1 apparition des volumes
   dolly: 0, // 0 → 1 avance caméra (intro)
   scroll: 0, // 0 → 1 progression du scroll dans le hero
-  scrollVelocity: 0,
   pointerX: 0,
   pointerY: 0,
 }
-
-export type HeroState = typeof heroState
-
-/** État de l’atmosphère de fin (section contact). */
-export const outroState = { fog: 0, particles: 0, pointerX: 0, pointerY: 0 }

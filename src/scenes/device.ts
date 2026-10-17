@@ -4,6 +4,14 @@ export const prefersReducedMotion = (): boolean => typeof window !== 'undefined'
 
 export const isTouch = (): boolean => typeof window !== 'undefined' && window.matchMedia('(hover: none), (pointer: coarse)').matches
 
+/**
+ * Seul appareil qui reçoit la scène 3D de l’accueil : un ordinateur à souris d’au moins 768 px de large.
+ * Tout le reste est traité en téléphone (PERF-01 : écran tactile ou de moins de 768 px) : pas de 3D, rien de
+ * la scène n’est téléchargé, et le hero montre une photo réelle d’un projet réceptionné (VIS-01).
+ * La même requête choisit l’image du hero (Hero.astro, <source media>) et l’affiche (règle CSS du hero).
+ */
+export const DESKTOP_3D = '(min-width: 768px) and (hover: hover) and (pointer: fine)'
+
 function hasWebGL(): boolean {
   try {
     const c = document.createElement('canvas')
@@ -27,8 +35,9 @@ export function detectTier(): Tier {
   return 'high'
 }
 
-export const TIER_CONFIG: Record<Exclude<Tier, 'none'>, { particles: number; dpr: [number, number]; fogLayers: number }> = {
-  high: { particles: 9000, dpr: [1, 1.75], fogLayers: 7 },
-  medium: { particles: 5000, dpr: [1, 1.5], fogLayers: 5 },
-  low: { particles: 2200, dpr: [1, 1.25], fogLayers: 3 },
+/** Densité de pixels maximale par niveau ; le minimum (0,75) est fixé par AdaptiveQuality dans HeroScene. */
+export const TIER_CONFIG: Record<Exclude<Tier, 'none'>, { particles: number; maxDpr: number; fogLayers: number }> = {
+  high: { particles: 9000, maxDpr: 1.75, fogLayers: 7 },
+  medium: { particles: 5000, maxDpr: 1.5, fogLayers: 5 },
+  low: { particles: 2200, maxDpr: 1.25, fogLayers: 3 },
 }

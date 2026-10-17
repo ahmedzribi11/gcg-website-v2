@@ -6,6 +6,7 @@
   "city": "abidjan",
   "location": "Attoban",
   "period": "2021",
+  "designOnly": true,
   "surface": "5 000 m²",
   "composition": "Immeuble R+4 de 18 appartements.",
   "composition_en": "Five-storey (R+4) building with 18 apartments.",

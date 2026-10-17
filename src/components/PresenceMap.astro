@@ -4,8 +4,9 @@ import { feature } from 'topojson-client'
 import type { Feature, FeatureCollection, Geometry } from 'geojson'
 import type { Topology, GeometryCollection } from 'topojson-specification'
 import world from 'world-atlas/countries-50m.json'
+import world110 from 'world-atlas/countries-110m.json'
 import { cities, type CityId } from '../data/geo'
-import { route, useT, type Lang } from '../i18n'
+import { colon, plural, route, useT, type Lang } from '../i18n'
 import type { Project } from '../lib/projects'
 
 interface Props {
@@ -19,8 +20,11 @@ interface Props {
 const { lang, projects, tone = 'dark', inset = true, link = true } = Astro.props
 const t = useT(lang)
 
-const topo = world as unknown as Topology<{ countries: GeometryCollection }>
-const all = (feature(topo, topo.objects.countries) as FeatureCollection<Geometry>).features
+const countries = (w: unknown) => {
+  const topo = w as Topology<{ countries: GeometryCollection }>
+  return (feature(topo, topo.objects.countries) as FeatureCollection<Geometry>).features
+}
+const all = countries(world)
 const byId = (id: string) => all.find((f) => String(f.id) === id)!
 const ci = byId('384')
 const WEST_AFRICA = ['384', '430', '324', '466', '854', '288', '694', '624', '686', '270', '478', '768', '204', '562', '566']
@@ -41,33 +45,41 @@ const labelAt = (i: number) => ({ lx: x0 + i * step, ly: twoRows && i % 2 ? 816 
 const W = 800
 const H = twoRows ? 900 : 860
 const proj = geoMercator().fitExtent([[60, 40], [W - 60, 640]], ci)
-const path = geoPath(proj)
+/*
+ * Tracés au dixième d’unité (viewBox de 800) au lieu du millième : différence invisible, HTML plus léger sur les
+ * trois pages qui intègrent la carte (PERF-06). L’encart, affiché à 150 px de large, utilise le 1:110 m.
+ */
+const path = geoPath(proj).digits(1)
 const pt = (lon: number, lat: number) => proj([lon, lat]) as [number, number]
 
 
 // Encart Afrique de l’Ouest
-const waFeatures = WEST_AFRICA.map(byId)
+const all110 = countries(world110)
+const waFeatures = WEST_AFRICA.map((id) => all110.find((f) => String(f.id) === id)!)
 const waColl: FeatureCollection<Geometry> = { type: 'FeatureCollection', features: waFeatures }
 const IW = 260
 const IH = 170
 const insetProj = geoMercator().fitExtent([[6, 6], [IW - 6, IH - 6]], waColl)
-const insetPath = geoPath(insetProj)
+const insetPath = geoPath(insetProj).digits(1)
 
-const stroke = tone === 'paper' ? 'rgba(5,46,20,.55)' : 'color-mix(in srgb, var(--color-gold) 55%, transparent)'
-const fillCi = tone === 'paper' ? 'rgba(5,46,20,.08)' : 'rgba(5,46,20,.55)'
+const brand = (pct: number) => `color-mix(in srgb, var(--color-brand) ${pct}%, transparent)`
+const stroke = tone === 'paper' ? brand(55) : 'color-mix(in srgb, var(--color-gold) 55%, transparent)'
+const fillCi = tone === 'paper' ? brand(8) : brand(55)
 // Version sombre : couleurs du thème (variables), lisibles en mode clair comme en mode sombre
-const fillN = tone === 'paper' ? 'rgba(5,46,20,.03)' : 'color-mix(in srgb, var(--color-bone) 3%, transparent)'
-const strokeN = tone === 'paper' ? 'rgba(5,46,20,.15)' : 'color-mix(in srgb, var(--color-bone) 14%, transparent)'
-const ink = tone === 'paper' ? '#052e14' : 'var(--color-bone)'
-const gold = tone === 'paper' ? '#8a7a2e' : 'var(--color-gold)'
+const fillN = tone === 'paper' ? brand(3) : 'color-mix(in srgb, var(--color-bone) 3%, transparent)'
+const strokeN = tone === 'paper' ? brand(15) : 'color-mix(in srgb, var(--color-bone) 14%, transparent)'
+const ink = tone === 'paper' ? 'var(--color-brand)' : 'var(--color-bone)'
+const gold = tone === 'paper' ? 'var(--color-gold-deep)' : 'var(--color-gold)'
+// Étiquette des épingles de l’intérieur : seules les localités avec projets sont dessinées (n ≥ 1), la règle « n > 1 »
+// y donne le même résultat que plural() ; la ligne reste celle du commit Archivo pour qu’il se retire seul (SLOP-01)
 const href = (c: string) => `${route('projects', lang)}?ville=${c}`
 const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
 ---
 
-<figure class="presence-map relative" data-tone={tone} data-reveal="fade">
-  <svg viewBox={`0 0 ${W} ${H}`} class="h-auto w-full" role="group" aria-labelledby="map-title map-desc">
+<figure class="presence-map relative" data-tone={tone} data-reveal>
+  <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMin slice" class="map-main h-auto w-full" role="group" aria-labelledby="map-title map-desc">
     <title id="map-title">{t('presence.title')}</title>
-    <desc id="map-desc">{(Object.keys(counts) as CityId[]).map((c) => `${cities[c].name} : ${counts[c]}`).join(', ')}</desc>
+    <desc id="map-desc">{(Object.keys(counts) as CityId[]).map((c) => `${cities[c].name}${colon(lang)}${counts[c]} ${plural(lang, counts[c], 'projects.count.one', 'projects.count.many')}`).join(', ')}</desc>
     <defs>
       <clipPath id="map-clip"><rect x="0" y="0" width={W} height={H} /></clipPath>
       <pattern id="map-grid" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -77,7 +89,7 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
     <rect width={W} height={H} fill="url(#map-grid)" opacity="0.6" />
     <g clip-path="url(#map-clip)">
       {neighbours.map((f) => <path style={`fill:${fillN};stroke:${strokeN}`} d={pathStr(f)} stroke-width="1" />)}
-      <path style={`stroke:${stroke}`} d={pathStr(ci)} fill={fillCi} stroke-width="1.4" class="map-ci" />
+      <path style={`fill:${fillCi};stroke:${stroke}`} d={pathStr(ci)} stroke-width="1.4" class="map-ci" />
     </g>
 
     {/* Villes de l’intérieur : étiquette directe */}
@@ -92,8 +104,8 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
           <a href={link ? href(c) : undefined} data-city-pin={c} class="map-pin">
             <circle style={`fill:${gold}`} cx={x} cy={y} r={10 + n * 2.5} opacity="0.16" class="map-halo" />
             <circle style={`fill:${gold}`} cx={x} cy={y} r="5" />
-            <text style={`fill:${ink}`} x={tx} y={y - 4} font-size="22" font-weight="300" text-anchor={anchor}>{cities[c].name}</text>
-            <text style={`fill:${gold}`} x={tx} y={y + 20} font-size="13" text-anchor={anchor} font-family="Geist Mono Variable, monospace" letter-spacing="2">{n} {n > 1 ? t('projects.count.many').toUpperCase() : t('projects.count.one').toUpperCase()}</text>
+            <text style={`fill:${ink}`} x={tx} y={y - 4} font-size="22" text-anchor={anchor}>{cities[c].name}</text>
+            <text style={`fill:${gold}`} x={tx} y={y + 20} font-size="13" text-anchor={anchor} font-weight="600">{n} {n > 1 ? t('projects.count.many').toUpperCase() : t('projects.count.one').toUpperCase()}</text>
           </a>
         )
       })
@@ -107,16 +119,16 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
         const { lx, ly } = labelAt(i)
         return (
           <a href={link ? href(c) : undefined} data-city-pin={c} class="map-pin">
-            <polyline style={`stroke:${stroke}`} points={`${x},${y} ${x},${y + 26} ${lx},${ly - 58} ${lx},${ly - 40}`} fill="none" stroke-width="0.8" stroke-dasharray="2 4" />
+            <polyline class="map-leader" style={`stroke:${stroke}`} points={`${x},${y} ${x},${y + 26} ${lx},${ly - 58} ${lx},${ly - 40}`} fill="none" stroke-width="0.8" stroke-dasharray="2 4" />
             <circle style={`fill:${gold}`} cx={x} cy={y} r={7 + n * 1.6} opacity="0.16" class="map-halo" />
             <circle style={`fill:${gold}`} cx={x} cy={y} r="4" />
-            <text style={`fill:${ink}`} x={lx} y={ly} font-size="20" font-weight="300" text-anchor="middle">{cities[c].name}</text>
-            <text style={`fill:${gold}`} x={lx} y={ly + 26} font-size="13" text-anchor="middle" font-family="Geist Mono Variable, monospace" letter-spacing="2">{String(n).padStart(2, '0')}</text>
+            <text style={`fill:${ink}`} x={lx} y={ly} font-size="20" text-anchor="middle">{cities[c].name}</text>
+            <text style={`fill:${gold}`} x={lx} y={ly + 26} font-size="13" text-anchor="middle" font-weight="600">{n}</text>
           </a>
         )
       })
     }
-    <text style={`fill:${ink}`} x={W - 60} y={H - 22} opacity="0.35" font-size="11" text-anchor="end" font-family="Geist Mono Variable, monospace" letter-spacing="3">CÔTE D’IVOIRE · OCÉAN ATLANTIQUE</text>
+    <text style={`fill:${ink}`} x={W - 60} y={H - 22} opacity="0.35" font-size="11" text-anchor="end" font-weight="600">CÔTE D’IVOIRE · OCÉAN ATLANTIQUE</text>
   </svg>
 
   {
@@ -128,7 +140,7 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
           ))}
         </svg>
         </span>
-        <p class:list={['meta pb-2 text-right', tone === 'paper' ? 'text-brand' : 'text-mist']}>{lang === 'fr' ? 'Afrique de l’Ouest' : 'West Africa'}</p>
+        <p class:list={['meta pb-2 text-right', tone === 'paper' ? 'text-brand' : 'text-mist']}>{t('presence.westAfrica')}</p>
       </figcaption>
     )
   }
@@ -140,6 +152,12 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
   .map-halo { transform-box: fill-box; transform-origin: center; animation: halo 3.2s var(--ease-cinema) infinite; }
   .map-pin:hover .map-halo, .map-pin[data-active] .map-halo { opacity: 0.4; }
   @keyframes halo { 0%, 100% { transform: scale(0.85); } 50% { transform: scale(1.15); } }
-  .js .presence-map .map-ci { stroke-dasharray: 4000; stroke-dashoffset: 4000; transition: stroke-dashoffset 3s var(--ease-cinema); }
-  .js .presence-map.is-in .map-ci { stroke-dashoffset: 0; }
+  /* Téléphone : à l’échelle 0,42 les étiquettes feraient 5 à 9 px. Points seuls, carte recadrée sous la côte
+     (la liste des localités porte l’information). Étiquettes transparentes et non retirées : elles restent
+     le nom accessible des épingles (un aria-label différerait du texte visible sur ordinateur). */
+  @media (max-width: 767px) {
+    .map-main text { opacity: 0; }
+    .map-main .map-leader { display: none; }
+    .map-main { aspect-ratio: 800 / 660; }
+  }
 </style>

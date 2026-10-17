@@ -1,37 +1,32 @@
 ---
+/**
+ * Titre de section, choisi selon le contenu qui suit (SLOP-16) :
+ * - « list » : titre simple, phrase d’introduction en dessous, puis des rangées (expertises, types, étapes, chiffres) ;
+ * - « proof » : titre court, puis directement les photos légendées des projets, sans phrase d’introduction ;
+ * - « action » : titre puis boutons, sans phrase d’introduction (appel final, FinalCta.astro, et « Un projet similaire ? »
+ *   de la fiche projet, qui gardent leur propre mise en page).
+ */
 interface Props {
-  label: string
   title: string
-  /** Mot(s) du titre à mettre en italique serif. */
-  accent?: string
   lead?: string
+  kind?: 'list' | 'proof'
   as?: 'h1' | 'h2'
   size?: 'xl' | 'lg' | 'md'
-  align?: 'split' | 'stack'
   tone?: 'dark' | 'paper' | 'brand'
   id?: string
 }
-const { label, title, accent, lead, as: Tag = 'h2', size = 'lg', align = 'split', tone = 'dark', id } = Astro.props
+const { title, lead, kind = 'list', as: Tag = 'h2', size = kind === 'proof' ? 'md' : 'lg', tone = 'dark', id } = Astro.props
+// Tailles de l’échelle de global.css (SLOP-05), plancher en vw intégré pour le texte agrandi (BRW-10)
 const sizeClass = {
-  xl: 'text-[clamp(2.8rem,8.5vw,9rem)]',
-  lg: 'text-[clamp(2.4rem,6vw,6.4rem)]',
-  md: 'text-[clamp(2rem,4.2vw,4.2rem)]',
+  xl: 'text-4xl',
+  lg: 'text-3xl',
+  md: 'text-2xl',
 }[size]
-const html = accent ? title.replace(accent, `<em class="serif">${accent}</em>`) : title
 const leadColor = tone === 'paper' ? 'text-brand/70' : 'text-bone/65'
-const labelColor = tone === 'paper' ? 'text-brand/75' : tone === 'brand' ? 'text-gold' : 'text-gold'
 ---
 
-<div class:list={['grid gap-8', align === 'split' && lead ? 'md:grid-cols-12 md:items-end' : '']}>
-  <div class:list={[align === 'split' && lead ? 'md:col-span-8' : '']}>
-    <p class:list={['label', labelColor]} data-reveal>{label}</p>
-    <Tag id={id} class:list={['display mt-7 max-w-[18ch]', sizeClass]} data-split set:html={html} />
-  </div>
-  {
-    lead && (
-      <p class:list={['max-w-md text-[15px] leading-relaxed md:text-base', leadColor, align === 'split' ? 'md:col-span-4 md:pb-3' : '']} data-reveal style="--d:.15s">
-        {lead}
-      </p>
-    )
-  }
+<div>
+  <!-- Titre en texte simple, une seule police, sans mot en italique (SLOP-02), sans surtitre (SLOP-03) -->
+  <Tag id={id} class:list={['display max-w-[18ch]', sizeClass]}>{title}</Tag>
+  {kind === 'list' && lead && <p class:list={['mt-6 max-w-xl text-base leading-relaxed', leadColor]}>{lead}</p>}
 </div>

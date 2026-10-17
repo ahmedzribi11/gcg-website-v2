@@ -1,8 +1,9 @@
 ---
 import ProjectImage from '../ProjectImage.astro'
+import ImageKind from '../ImageKind.astro'
 import Icon from '../Icon.astro'
-import { route, useT, type Lang } from '../../i18n'
-import type { Project } from '../../lib/projects'
+import { colon, plural, route, useT, type Lang } from '../../i18n'
+import { coverImage, publishedOnly, type Project } from '../../lib/projects'
 
 interface Props {
   lang: Lang
@@ -10,48 +11,62 @@ interface Props {
 }
 const { lang, projects } = Astro.props
 const t = useT(lang)
-const by = (slug: string) => projects.find((p) => p.slug === slug)!
-const a = by('green-city')
-const b = by('villa-palmeras')
-const figures = [
-  { value: 2016, label: t('fig.since'), plain: true },
+const a = coverImage(projects, ['green-city', 0])
+const b = coverImage(projects, ['villa-palmeras', 0])
+/*
+ * Chiffres clés tirés des fiches projet, chacun avec son contexte (SLOP-17, COPY-03) : année de création, projets du
+ * portfolio, projets réceptionnés (nommés tant qu’ils sont un ou deux), projets en chantier (dont le plus grand
+ * programme). Les comptes suivent le statut saisi dans chaque fiche ; un compte nul n’est pas affiché.
+ */
+const delivered = projects.filter((p) => p.status === 'receptionne')
+const building = projects.filter((p) => p.status === 'execution')
+const [biggest] = publishedOnly(projects, ['villa-palmeras']).filter((p) => p.status === 'execution' && p.highlight)
+const named = (p: Project) => (p.highlight ? `${p.name}${colon(lang)}${p.highlight.value} ${p.highlight.unit}` : p.name)
+const figures: { value: number; label: string; context?: string }[] = [
+  { value: 2016, label: t('fig.since') },
   { value: projects.length, label: t('fig.projects') },
-  { value: 20, suffix: '+', label: t('fig.staff') },
-  { value: 4, label: t('fig.poles') },
-]
+  {
+    value: delivered.length,
+    label: plural(lang, delivered.length, 'fig.delivered.one', 'fig.delivered.many'),
+    context: delivered.length <= 2 ? delivered.map(named).join(', ') : undefined,
+  },
+  {
+    value: building.length,
+    label: plural(lang, building.length, 'fig.building.one', 'fig.building.many'),
+    context: biggest?.highlight
+      ? `${t('fig.including')} ${biggest.name}, ${biggest.highlight.value} ${biggest.highlight.unit} ${t('fig.in')} ${biggest.location}`
+      : undefined,
+  },
+].filter((f) => f.value > 0)
 ---
 
 <section id="intro" class="theme-paper relative overflow-hidden py-24 md:py-40" aria-labelledby="intro-title">
   <div class="wrap grid gap-16 md:grid-cols-12">
     <div class="md:col-span-7">
-      <p class="label text-brand/75" data-reveal>{t('intro.label')}</p>
-      <h2 id="intro-title" class="display mt-8 text-[clamp(2.4rem,5.6vw,6rem)]" data-split>
-        {lang === 'fr' ? 'Une seule équipe, de la première étude à la' : 'One team, from the first study to the'}
-        <em class="serif">{lang === 'fr' ? 'remise des clés.' : 'keys.'}</em>
-      </h2>
-      <p class="mt-10 max-w-xl text-lg leading-relaxed text-brand/75 md:text-xl" data-reveal>{t('intro.text')}</p>
-      <a href={route('about', lang)} class="btn btn-line-dark mt-10" data-reveal data-magnetic>{t('cta.discover')} GCG <Icon name="arrow" /></a>
+      <h2 id="intro-title" class="display text-3xl">{t('intro.statement')}</h2>
+      <p class="mt-10 max-w-xl text-lg leading-relaxed text-brand/75 md:text-lg">{t('intro.text')}</p>
+      <a href={route('about', lang)} class="btn btn-line-dark mt-10">{t('cta.discover')} GCG <Icon name="arrow" size={20} /></a>
     </div>
 
     <div class="relative hidden md:col-span-5 md:block" aria-hidden="true">
-      <div class="absolute right-0 top-0 w-[78%] overflow-hidden" data-reveal="clip">
-        <div data-parallax="6"><ProjectImage image={a.images[0]} alt="" sizes="35vw" class="block aspect-[4/5]" /></div>
+      <div class="absolute right-0 top-0 w-[78%] overflow-hidden" data-reveal>
+        <ProjectImage image={a} alt="" sizes="35vw" class="block aspect-[4/5]" />
+        <ImageKind image={a} lang={lang} />
       </div>
-      <div class="absolute bottom-[-6%] left-0 w-[52%] overflow-hidden border-8 border-paper" data-reveal="clip" style="--d:.2s">
-        <div data-parallax="10"><ProjectImage image={b.images[0]} alt="" sizes="25vw" class="block aspect-square" /></div>
+      <div class="absolute bottom-[-6%] left-0 w-[52%] overflow-hidden border-8 border-paper" data-reveal>
+        <ProjectImage image={b} alt="" sizes="25vw" class="block aspect-square" />
+        <ImageKind image={b} lang={lang} />
       </div>
     </div>
   </div>
 
   <dl class="wrap mt-24 grid grid-cols-2 gap-x-6 gap-y-12 md:mt-36 md:grid-cols-4">
     {
-      figures.map((f, i) => (
-        <div class="flex flex-col border-t border-brand/15 pt-6" data-reveal style={`--d:${i * 0.08}s`}>
+      figures.map((f) => (
+        <div class="flex flex-col border-t border-brand/15 pt-6">
           <dt class="meta order-2 mt-3 text-brand/75">{f.label}</dt>
-          <dd class="display order-1 text-[clamp(3.4rem,7vw,7.5rem)] text-brand">
-            {f.plain ? f.value : <span data-count={f.value}>{f.value}</span>}
-            {f.suffix}
-          </dd>
+          <dd class="display order-1 text-4xl text-brand">{f.value}</dd>
+          {f.context && <dd class="order-3 mt-2 max-w-[30ch] text-sm leading-snug text-brand/75">{f.context}</dd>}
         </div>
       ))
     }

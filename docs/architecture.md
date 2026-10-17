@@ -7,13 +7,14 @@ fonctions serveur (formulaire de contact, connexion à l’espace de gestion) et
 (Decap CMS) qui enregistre le contenu directement dans le dépôt GitHub.
 
 ```
- Éditeur GCG ──► /admin (Decap CMS) ──► GitHub (dépôt My-web, branche main)
+ Éditeur GCG ──► /admin (Decap CMS) ──► GitHub (dépôt gcg-website-v2, branche main)
                                               │  chaque publication
                                               ▼
                                    Build automatique (npm run build)
                                    1. contrôle du contenu (scripts/check-content.mjs)
-                                   2. génération des pages FR/EN (Astro)
-                                   3. typographie française (integrations/typography.mjs)
+                                   2. Decap CMS, version et empreinte figées, copié dans /admin/decap (scripts/copy-decap.mjs)
+                                   3. génération des pages FR/EN (Astro)
+                                   4. typographie française (integrations/typography.mjs)
                                               │
                                               ▼
  Visiteur ◄── CDN (Vercel ou Cloudflare Pages) : pages, images optimisées, polices
@@ -37,13 +38,12 @@ fonctions serveur (formulaire de contact, connexion à l’espace de gestion) et
 | Configuration de l’espace de gestion | `public/admin/config.yml` | l’équipe |
 | En-têtes de sécurité, redirections | `vercel.json` (Vercel) ; `public/_headers`, `public/_redirects` (Cloudflare Pages) | l’équipe |
 | Fonctions serveur | `server/*.js` (logique) ; `api/*.js` (Vercel) ; `functions/api/*.js` (Cloudflare) | l’équipe |
-| Polices | `src/fonts/` (générées par `scripts/fonts.py`) | l’équipe |
+| Polices | paquets `@fontsource-variable/*` (`package.json`), importés et préchargés dans `src/layouts/Base.astro` | l’équipe |
 
 ## Choix techniques et raisons
 
 - **Astro, sortie statique** : pages lisibles sans JavaScript ; aucune base de données à maintenir ni à
-  sécuriser. L’accueil garde son ouverture 3D (three.js, chargée après l’affichage de la page) et les
-  animations GSAP ; les autres pages s’affichent en 2 à 3 secondes sur mobile.
+  sécuriser. L’accueil garde son ouverture 3D sur ordinateur à souris seulement (three.js et GSAP, chargés après l’affichage de la page) ; sur téléphone et tablette tactile, rien de la scène n’est téléchargé et l’ouverture montre la photo réelle d’un projet réceptionné (`SHOWCASE` dans `src/lib/projects.ts`, PERF-01, VIS-01) ; les autres pages s’affichent en 2 à 3 secondes sur mobile.
 - **Aucun cookie, aucun traceur** : pas de bandeau cookies nécessaire. La mesure d’audience (Umami, sans
   cookie) ne s’active que si la variable `PUBLIC_UMAMI_WEBSITE_ID` est définie.
 - **Images** : converties au build en WebP (repli JPEG), 15 tailles, métadonnées (GPS) supprimées.

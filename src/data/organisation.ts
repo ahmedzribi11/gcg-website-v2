@@ -1,7 +1,9 @@
 /**
  * Organisation et moyens matériels — « Portfolio GCG_CI.pdf », pages 4 et 5.
- * Les noms et photos des collaborateurs ne sont volontairement pas publiés.
+ * Les noms et photos des collaborateurs ne sont publiés qu’avec l’accord écrit de GCG (voir « Confiance » plus bas).
  */
+import type { ImageMetadata } from 'astro'
+
 type L<T> = { fr: T; en: T }
 
 export const keyFigures: { value: number; suffix?: string; label: L<string> }[] = [
@@ -23,13 +25,17 @@ export const poles: { name: L<string>; team: string; role: L<string> }[] = [
     role: { fr: 'Ingénierie, structure, contrôle qualité', en: 'Engineering, structure, quality control' },
   },
   { name: { fr: 'Finances', en: 'Finance' }, team: '4+', role: { fr: 'Direction financière et comptabilité', en: 'Financial management and accounting' } },
-  { name: { fr: 'Logistique', en: 'Logistics' }, team: '4+', role: { fr: 'Matériel, approvisionnement, coordination', en: 'Equipment, supply, coordination' } },
+  {
+    name: { fr: 'Logistique', en: 'Logistics' },
+    team: '4+',
+    role: { fr: 'Matériel, logistique de chantier, coordination', en: 'Equipment, site logistics, coordination' },
+  },
 ]
 
 export const competences: { name: L<string>; items: L<string[]> }[] = [
   {
     name: { fr: 'Construction', en: 'Construction' },
-    items: { fr: ['Gros œuvre', 'Second œuvre', 'Finitions'], en: ['Structural works', 'Finishing works', 'Finishes'] },
+    items: { fr: ['Gros œuvre', 'Second œuvre', 'Finitions'], en: ['Structural works', 'Finishing works', 'Final finishes'] },
   },
   { name: { fr: 'Études', en: 'Engineering studies' }, items: { fr: ['Architecture', 'Structure', 'BIM'], en: ['Architecture', 'Structure', 'BIM'] } },
   {
@@ -69,3 +75,22 @@ export const vehicles: { name: L<string>; qty: number }[] = [
 ]
 
 export const totalQty = (items: { qty: number }[]) => items.reduce((n, i) => n + i.qty, 0)
+
+/*
+ * Confiance (UX-01) : directeur général, avis de clients, logos et assurances ou agréments, affichés sur la page
+ * À propos seulement s’ils sont remplis. Vides en attendant GCG : n’y mettre que des contenus fournis par GCG,
+ * avec l’accord écrit de chaque personne ou client nommé ; une assurance ou un agrément seulement s’il est en cours
+ * de validité.
+ */
+
+/** Directeur général : nom, fonction, photo et déclaration signée de deux phrases. */
+export const director: { name: string; role: L<string>; statement: L<string>; photo?: ImageMetadata } | undefined = undefined
+
+/** Avis de clients, avec leur accord : citation, nom, fonction ou société, projet concerné (identifiant de fichier). */
+export const testimonials: { quote: L<string>; name: string; role?: L<string>; project?: string }[] = []
+
+/** Logos de clients institutionnels ou de partenaires, avec leur autorisation. */
+export const clientLogos: { name: string; logo: ImageMetadata }[] = []
+
+/** Assurances et agréments effectivement détenus (ex. assurance décennale) : intitulé et précision (assureur, numéro). */
+export const credentials: { name: L<string>; detail?: L<string> }[] = []

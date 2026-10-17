@@ -7,7 +7,7 @@
   "location": "Grand-Bassam",
   "period": "Juin – nov. 2023",
   "period_en": "Jun. – Nov. 2023",
-  "surface": "5 hectares",
+  "surface": "5 ha",
   "composition": "Aménagement et voirie d’un quartier résidentiel : la cité BAOBAB de SIDI.",
   "composition_en": "Roads and utilities for a residential estate: the SIDI Baobab estate.",
   "missions": [
@@ -41,5 +41,11 @@
     }
   ],
   "permission": "en-attente",
-  "en_status": "valide"
+  "en_status": "valide",
+  "highlight": {
+    "value": "5",
+    "unit": "ha de VRD",
+    "unit_en": "ha of roads & utilities",
+    "marqueeOrder": 8
+  }
 }

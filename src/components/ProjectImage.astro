@@ -1,10 +1,12 @@
 ---
 import { Picture } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
+import ImageKind from './ImageKind.astro'
+import type { Lang } from '../i18n'
 import type { ProjectImageData } from '../lib/projects'
 
 interface Props {
-  /** Image de projet (source, texte alternatif localisé, nature, point focal). */
+  /** Image de projet (source, texte alternatif localisé, nature, point focal). Absente : rien n’est affiché (aucun projet publié). */
   image?: ProjectImageData
   src?: ImageMetadata
   /** Remplace le texte alternatif ; "" pour une image décorative. */
@@ -17,28 +19,37 @@ interface Props {
   priority?: boolean
   /** Nom de transition de vue (morphing carte → page projet). */
   vt?: string
+  /** Avec la langue : mention « Perspective » ou « Plan » sur l’image si ce n’est pas une photo (UX-02). Le parent doit être positionné. */
+  lang?: Lang
+  /** Position de cette mention (classes Tailwind). */
+  kindClass?: string
 }
-const { image, sizes = '(min-width: 1024px) 50vw, 100vw', class: cls, imgClass = 'h-full w-full object-cover', loading = 'lazy', priority = false, vt } = Astro.props
-const src = (Astro.props.src ?? image?.src)!
+const { image, sizes = '(min-width: 1024px) 50vw, 100vw', class: cls, imgClass = 'h-full w-full object-cover', loading = 'lazy', priority = false, vt, lang, kindClass } = Astro.props
+const src = Astro.props.src ?? image?.src
 const alt = Astro.props.alt ?? image?.alt ?? ''
 // Paliers d’environ 12 % : chaque écran reçoit une image proche de sa taille réelle (PERF-07)
 const STEPS = [320, 360, 400, 450, 500, 560, 630, 700, 790, 880, 990, 1110, 1240, 1390, 1600]
-const widths = STEPS.filter((w) => w <= src.width)
-if (!widths.includes(src.width) && src.width < 1600) widths.push(src.width)
+const widths = src ? STEPS.filter((w) => w <= src.width) : []
+if (src && !widths.includes(src.width) && src.width < 1600) widths.push(src.width)
 ---
 
-<Picture
-  src={src}
-  alt={alt}
-  widths={widths}
-  sizes={sizes}
-  formats={['webp']}
-  fallbackFormat="jpg"
-  quality={78}
-  loading={priority ? 'eager' : loading}
-  fetchpriority={priority ? 'high' : undefined}
-  decoding={priority ? 'sync' : 'async'}
-  class={imgClass}
-  style={image?.focus ? `object-position:${image.focus}` : undefined}
-  pictureAttributes={{ class: cls, style: vt ? `view-transition-name:${vt}` : undefined }}
-/>
+{
+  src && (
+    <Picture
+      src={src}
+      alt={alt}
+      widths={widths}
+      sizes={sizes}
+      formats={['webp']}
+      fallbackFormat="jpg"
+      quality={78}
+      loading={priority ? 'eager' : loading}
+      fetchpriority={priority ? 'high' : undefined}
+      decoding={priority ? 'sync' : 'async'}
+      class={imgClass}
+      style={image?.focus ? `object-position:${image.focus}` : undefined}
+      pictureAttributes={{ class: cls, style: vt ? `view-transition-name:${vt}` : undefined }}
+    />
+  )
+}
+{src && lang && <ImageKind image={image} lang={lang} class={kindClass} />}

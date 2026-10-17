@@ -7,12 +7,13 @@
 | Hébergeur (Vercel ou Cloudflare) | diffusion du site, fonctions | toutes les pages | adresse IP, journaux techniques | États-Unis / réseau mondial | GCG | `'self'` |
 | Resend | envoi par e-mail des demandes du formulaire | `/api/contact` (côté serveur) | nom, téléphone, e-mail, type, lieu, message | États-Unis | GCG | — (côté serveur) |
 | GitHub | dépôt, connexion à l’espace de gestion | `/admin` uniquement | identifiant GitHub de l’éditeur | États-Unis | GCG | `connect-src https://api.github.com` (admin) |
-| unpkg (Decap CMS 3.16.3, empreinte SRI) | interface de l’espace de gestion | `/admin` uniquement | adresse IP | réseau mondial | — | `script-src https://unpkg.com/decap-cms@3.16.3/` (admin) |
 | YouTube (nocookie) ou Vimeo | vidéo de présentation | page À propos, **après clic** | adresse IP | États-Unis | GCG | `frame-src` |
 | WhatsApp (wa.me) | conversation choisie par le visiteur | lien sortant | rien avant le clic | — | GCG | — (lien) |
 | Umami (facultatif) | mesure d’audience sans cookie | toutes les pages si activé | pages vues, pays, appareil (sans IP stockée) | UE (cloud.umami.is) | GCG | ajouté automatiquement si activé |
 
 Aucune police, carte, vidéo ou bibliothèque tierce n’est chargée avant une action du visiteur.
+L’interface de l’espace de gestion (Decap CMS 3.16.3) est servie par le site lui-même depuis `/admin/decap/` (SEC-04) :
+plus aucun CDN.
 Les conditions de traitement des données (DPA) de chaque prestataire sont à archiver dans le coffre de GCG.
 
 ## Inventaire des cookies et du stockage (par modèle de page)

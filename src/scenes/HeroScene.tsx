@@ -67,14 +67,14 @@ interface Props {
 
 export default function HeroScene({ tier, active, onFallback }: Props) {
   const cfg = TIER_CONFIG[tier]
-  const [dpr, setDpr] = useState(cfg.dpr[1])
+  const [dpr, setDpr] = useState(cfg.maxDpr)
   const arch = useMemo(() => buildArchitecture(), [])
   const formed = Math.floor(cfg.particles * 0.68)
   const targets = useMemo(() => sampleEdges(arch.edges, formed), [arch, formed])
 
   const readParticles = () => ({ opacity: heroState.particles, form: heroState.form, scatter: heroState.scroll })
   const readFog = () => ({
-    density: heroState.fog * (1 + Math.min(Math.abs(heroState.scrollVelocity) * 0.01, 0.3)),
+    density: heroState.fog,
     scroll: heroState.scroll,
     pointerX: heroState.pointerX,
     pointerY: heroState.pointerY,
@@ -95,7 +95,7 @@ export default function HeroScene({ tier, active, onFallback }: Props) {
       }}
       aria-hidden
     >
-      <AdaptiveQuality dpr={dpr} min={0.75} max={cfg.dpr[1]} setDpr={setDpr} onFallback={onFallback} />
+      <AdaptiveQuality dpr={dpr} min={0.75} max={cfg.maxDpr} setDpr={setDpr} onFallback={onFallback} />
       <CameraRig />
       <Lights />
       <Ground read={() => heroState.ambient * 0.14 * (1 - heroState.scroll * 0.5)} />

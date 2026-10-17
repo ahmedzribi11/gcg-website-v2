@@ -3,7 +3,8 @@
  * SEO-01 titres et descriptions uniques, A11Y-03 un seul h1, SEO-04/05 canonique et hreflang réciproques,
  * I18N-03 bouton de langue vers une page existante, I18N-05 pas de français sur les pages anglaises,
  * EDIT-01 aucun texte de remplissage, A11Y-02 attribut alt sur toutes les images, liens internes valides,
- * SEO-02 sitemap identique aux pages indexables (ni brouillon, ni redirection, ni 404).
+ * SEO-02 sitemap identique aux pages indexables (ni brouillon, ni redirection, ni 404),
+ * CODE-10 mode clair cohérent avec les couleurs de @theme.
  *
  *   node scripts/audit-dist.mjs        (après npm run build ; avec SITE_URL pour tester hreflang/canonique)
  */
@@ -11,7 +12,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
 
 const DIST = join(import.meta.dirname, '..', 'dist')
-const SKIP = /^(admin|qr\/|qr\.html|404\.html|contact\/(merci|erreur)|en\/contact\/(thanks|error)|partager\/affiche|en\/share\/poster)/
+const SKIP = /^(admin|qr\/|qr\.html|q\/|q\.html|404\.html|contact\/(merci|erreur)|en\/contact\/(thanks|error)|partager\/affiche|en\/share\/poster)/
 const errors = []
 const warnings = []
 
@@ -114,6 +115,24 @@ if (!maps.length) {
   for (const u of indexable) if (!listed.has(u)) errors.push(`sitemap : page indexable absente du sitemap ${u}`)
   if (!readFileSync(join(DIST, 'robots.txt'), 'utf8').includes('sitemap-index.xml')) errors.push('robots.txt ne mentionne pas le sitemap')
 }
+
+/* CODE-10 : mode clair. Les zones restées sombres reprennent exactement les couleurs de @theme (seconde et
+   seule copie), et chaque texte très transparent du site (text-bone/N, text-brand/N, N < 75) y est rattrapé */
+const css = readFileSync(join(import.meta.dirname, '..', 'src', 'styles', 'global.css'), 'utf8')
+const tokens = (re) => Object.fromEntries([...(re.exec(css)?.[1] ?? '').matchAll(/(--color-[a-z0-9-]+):\s*([^;]+);/g)].map(([, k, v]) => [k, v.trim()]))
+const theme = tokens(/@theme \{([\s\S]*?)\n\}/)
+const light = tokens(/:root\[data-theme='light'\] \{([\s\S]*?)\n\}/)
+const dark = tokens(/:root\[data-theme='light'\] :is\(\.force-dark[^{]*\{([\s\S]*?)\n\}/)
+if (!Object.keys(light).length || !Object.keys(dark).length) errors.push('global.css : blocs du mode clair introuvables')
+for (const [k, v] of Object.entries(dark))
+  if (theme[k] !== v) errors.push(`global.css : ${k} vaut ${v} dans les zones sombres du mode clair, ${theme[k] ?? 'absent'} dans @theme`)
+for (const k of Object.keys(light)) if (!(k in dark)) errors.push(`global.css : ${k} change en mode clair sans être rétabli dans les zones sombres`)
+const faint = new Set()
+for (const file of pages)
+  for (const [, cls] of readFileSync(file, 'utf8').matchAll(/\sclass="([^"]*)"/g))
+    for (const c of cls.split(/\s+/)) if (/^(placeholder:)?text-(bone|brand)\/([0-6]\d|70)$/.test(c)) faint.add(c)
+for (const c of faint)
+  if (!css.includes('.' + c.replace(/[:/]/g, '\\$&'))) errors.push(`global.css : ${c} n’est pas rattrapée par le mode clair (textes très transparents)`)
 
 for (const w of warnings) console.warn(`  avertissement : ${w}`)
 if (errors.length) {

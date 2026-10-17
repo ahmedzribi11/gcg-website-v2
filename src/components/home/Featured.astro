@@ -1,9 +1,9 @@
 ---
-import ProjectImage from '../ProjectImage.astro'
+import ProjectCard from '../ProjectCard.astro'
 import SectionHead from '../SectionHead.astro'
 import Icon from '../Icon.astro'
-import { projectPath, route, STATUS_SHORT, useT, type Lang } from '../../i18n'
-import { pad, type Project } from '../../lib/projects'
+import { route, useT, type Lang } from '../../i18n'
+import type { Project } from '../../lib/projects'
 
 interface Props {
   lang: Lang
@@ -13,105 +13,27 @@ const { lang, featured } = Astro.props
 const t = useT(lang)
 ---
 
+<!--
+Grille de photos légendées (SLOP-14) : tous les projets à la une sont visibles d’emblée, sur toutes les tailles
+d’écran, sans défilement horizontal épinglé ni script.
+-->
 <section id="featured" class="relative bg-ink" aria-labelledby="featured-title">
-  <div class="wrap pb-14 pt-24 md:pb-6 md:pt-40">
-    <SectionHead id="featured-title" label={t('featured.label')} title={t('featured.title')} accent={lang === 'fr' ? 'pour nous.' : 'for us.'} />
-  </div>
+  <div class="wrap pb-24 pt-24 md:pt-40">
+    <SectionHead id="featured-title" kind="proof" title={t('featured.title')} />
 
-  <div data-hpin class="relative md:h-svh md:overflow-hidden">
-    <div data-htrack class="flex flex-col gap-20 px-5 md:h-full md:flex-row md:items-center md:gap-[5vw] md:pl-[6vw] md:pr-[12vw]">
+    <!-- Téléphone : les 4 premiers projets, puis « Toutes les réalisations » ; les suivants dès 768 px (MOB-04) -->
+    <ul class="mt-8 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 md:mt-10">
       {
         featured.map((p, i) => (
-          <article data-slide class="relative w-full shrink-0 md:h-[72vh] md:w-[78vw] lg:w-[70vw]">
-            <a href={projectPath(p.slug, lang)} class="group grid h-full gap-6 md:grid-cols-12 md:gap-10" data-cursor="view">
-              <div data-slide-frame class="relative aspect-[4/3] overflow-hidden bg-ink-3 md:col-span-8 md:aspect-auto md:h-full">
-                <div data-slide-media class="absolute -inset-x-[6%] inset-y-0">
-                  <ProjectImage image={p.images[0]} sizes="(min-width: 768px) 55vw, 100vw" class="block h-full w-full" imgClass="h-full w-full object-cover transition-transform duration-[1.8s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" vt={`p-${p.slug}`} />
-                </div>
-                {p.status && <span class="pill absolute left-4 top-4" data-status={p.status}>{STATUS_SHORT[p.status][lang]}</span>}
-              </div>
-              <div data-slide-info class="flex flex-col justify-between md:col-span-4 md:py-2">
-                <div>
-                  <p class="meta text-gold">N° {pad(p.number)} · {pad(i + 1)}/{pad(featured.length)}</p>
-                  <h3 class:list={['display mt-4 text-balance transition-colors duration-500 group-hover:text-gold', p.name.length > 22 ? 'text-[clamp(2rem,3vw,3.4rem)]' : 'text-[clamp(2.2rem,4.2vw,4.6rem)]']}>{p.name}</h3>
-                  <p class="mt-5 max-w-sm text-[15px] leading-relaxed text-bone/65">{p.composition}</p>
-                </div>
-                <dl class="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-line pt-5">
-                  <div>
-                    <dt class="meta text-mist">{t('project.location')}</dt>
-                    <dd class="mt-1 text-[15px]">{p.location}</dd>
-                  </div>
-                  <div>
-                    <dt class="meta text-mist">{t('project.period')}</dt>
-                    <dd class="mt-1 text-[15px]">{p.period}</dd>
-                  </div>
-                  {p.surface && (
-                    <div>
-                      <dt class="meta text-mist">{t('project.surface')}</dt>
-                      <dd class="mt-1 text-[15px]">{p.surface}</dd>
-                    </div>
-                  )}
-                  <div class="flex items-end">
-                    <dt class="sr-only">{t('projects.label')}</dt>
-                    <dd class="meta inline-flex items-center gap-2 text-bone">
-                      {t('cta.discover')} <Icon name="arrow" />
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </a>
-          </article>
+          <li data-slide class:list={[i >= 4 && 'max-md:hidden']}>
+            <ProjectCard project={p} lang={lang} />
+          </li>
         ))
       }
-    </div>
-    <div class="absolute inset-x-10 bottom-8 hidden items-center gap-6 md:flex">
-      <span class="meta text-mist" aria-hidden="true">{t('featured.label')}</span>
-      <div class="h-px flex-1 bg-line" aria-hidden="true"><div data-hprogress class="h-px origin-left scale-x-0 bg-gold"></div></div>
-      <a href={route('projects', lang)} class="meta pointer-events-auto text-bone hover:text-gold">{t('cta.allProjects')} →</a>
-      <!-- Sortie du défilement horizontal sans faire défiler tous les projets -->
-      <button type="button" data-hskip class="meta pointer-events-auto inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-bone transition-colors hover:border-gold hover:text-gold">
-        {t('featured.skip')} <Icon name="arrow" class="rotate-90" />
-      </button>
-    </div>
-  </div>
+    </ul>
 
-  <div class="wrap pb-24 pt-14 md:hidden">
-    <a href={route('projects', lang)} class="btn btn-line w-full">{t('cta.allProjects')} <Icon name="arrow" /></a>
+    <div class="pt-14">
+      <a href={route('projects', lang)} class="btn btn-line w-full">{t('cta.allProjects')} <Icon name="arrow" size={20} /></a>
+    </div>
   </div>
 </section>
-
-<script>
-  import { gsap, reducedMotion, scrollToEl } from '../../scripts/site'
-
-  const pin = document.querySelector<HTMLElement>('[data-hpin]')
-  const track = document.querySelector<HTMLElement>('[data-htrack]')
-  const progress = document.querySelector<HTMLElement>('[data-hprogress]')
-  // « Passer les projets » : va directement à la section suivante, après tout le défilement horizontal
-  const next = document.querySelector('#featured ~ section')
-  document.querySelector('[data-hskip]')?.addEventListener('click', () => next && scrollToEl(next))
-  if (pin && track && !reducedMotion) {
-    const mm = gsap.matchMedia()
-    mm.add('(min-width: 768px)', () => {
-      const distance = () => track.scrollWidth - innerWidth
-      const tween = gsap.to(track, {
-        x: () => -distance(),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: pin,
-          start: 'top top',
-          end: () => `+=${distance()}`,
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => progress && (progress.style.transform = `scaleX(${self.progress})`),
-        },
-      })
-      track.querySelectorAll<HTMLElement>('[data-slide]').forEach((slide) => {
-        const base = { trigger: slide, containerAnimation: tween, scrub: true }
-        gsap.fromTo(slide.querySelector('[data-slide-frame]'), { clipPath: 'inset(10% 18% 10% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'none', scrollTrigger: { ...base, start: 'left 95%', end: 'left 40%' } })
-        gsap.fromTo(slide.querySelector('[data-slide-media]'), { xPercent: -5 }, { xPercent: 5, ease: 'none', scrollTrigger: { ...base, start: 'left right', end: 'right left' } })
-        gsap.fromTo(slide.querySelector('[data-slide-info]'), { opacity: 0, x: 60 }, { opacity: 1, x: 0, ease: 'none', scrollTrigger: { ...base, start: 'left 80%', end: 'left 35%' } })
-      })
-    })
-  }
-</script>

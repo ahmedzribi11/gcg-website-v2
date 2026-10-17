@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { particleFragment, particleVertex } from './shaders'
@@ -14,7 +14,6 @@ interface Props {
 }
 
 export default function Particles({ count, targets, volume = [14, 7, 4, 10], size = 1, read }: Props) {
-  const ref = useRef<THREE.Points>(null)
   const dpr = useThree((s) => s.viewport.dpr)
 
   const geometry = useMemo(() => {
@@ -81,5 +80,5 @@ export default function Particles({ count, targets, volume = [14, 7, 4, 10], siz
     u.uScatter.value = s.scatter
   })
 
-  return <points ref={ref} geometry={geometry} material={material} frustumCulled={false} />
+  return <points geometry={geometry} material={material} frustumCulled={false} />
 }

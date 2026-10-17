@@ -1,7 +1,7 @@
 ---
 import ProjectImage from './ProjectImage.astro'
-import { projectPath, SECTOR_LABELS, STATUS_SHORT, type Lang } from '../i18n'
-import { pad, type Project } from '../lib/projects'
+import { projectPath, SECTOR_LABELS, STATUS_SHORT, useT, type Lang } from '../i18n'
+import type { Project } from '../lib/projects'
 
 interface Props {
   project: Project
@@ -9,44 +9,54 @@ interface Props {
   size?: 'md' | 'lg'
   theme?: 'dark' | 'paper'
   sizes?: string
-  index?: number
   /** Morphing vers la page projet (un seul par projet et par page). */
   transition?: boolean
   /** Masque le secteur (cartes étroites). */
   compact?: boolean
+  /** Première carte d’une liste (image principale sur téléphone) : chargée tout de suite, en priorité (PERF-04). */
+  priority?: boolean
+  /** Téléphone (< 640 px) : ligne compacte, vignette à gauche, statut et nature de l’image en texte (MOB-04). */
+  row?: boolean
 }
-const { project: p, lang, size = 'md', theme = 'dark', sizes = '(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw', index = 0, transition = true, compact = false } = Astro.props
+const { project: p, lang, size = 'md', theme = 'dark', sizes = '(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw', transition = true, compact = false, priority = false, row = false } = Astro.props
+const t = useT(lang)
 const href = projectPath(p.slug, lang)
+// Une vraie photo en couverture de la carte quand le projet en a une (UX-02)
+const cover = p.images.find((im) => im.kind === 'photo') ?? p.images[0]
+// Ligne compacte : les pastilles posées sur l’image deviendraient plus grandes que la vignette, elles passent en texte
+const tags = row ? [p.status ? STATUS_SHORT[p.status][lang] : p.designOnly ? t('project.designOnly') : '', cover && cover.kind !== 'photo' ? t(cover.kind === 'plan' ? 'project.plan' : 'project.render') : ''].filter(Boolean) : []
 ---
 
 <a
   href={href}
-  class="group block"
-  data-cursor="view"
+  class:list={['group block', row && 'max-sm:flex max-sm:items-center max-sm:gap-4']}
   data-project
   data-sector={p.sector}
   data-status={p.status ?? ''}
   data-city={p.city}
   data-types={p.types.join(' ')}
   data-reveal
-  style={`--d:${(index % 3) * 0.08}s`}
 >
-  <div class:list={['relative overflow-hidden', size === 'lg' ? 'aspect-[4/5] md:aspect-[5/4]' : 'aspect-[4/3]', theme === 'paper' ? 'bg-paper-2' : 'bg-ink-3']}>
+  <div class:list={['relative overflow-hidden', size === 'lg' ? 'aspect-[4/5] md:aspect-[5/4]' : 'aspect-[4/3]', theme === 'paper' ? 'bg-paper-2' : 'bg-ink-3', row && 'max-sm:w-28 max-sm:shrink-0']}>
     <ProjectImage
-      image={p.images[0]}
+      image={cover}
+      lang={lang}
       sizes={sizes}
+      priority={priority}
       imgClass="h-full w-full object-cover transition-transform duration-[1.6s] ease-[var(--ease-out-expo)] group-hover:scale-[1.05]"
       class="block h-full w-full"
       vt={transition ? `p-${p.slug}` : undefined}
+      kindClass={row ? 'bottom-3 right-3 max-sm:hidden' : undefined}
     />
     <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent opacity-80 transition-opacity duration-700 group-hover:opacity-50"></div>
-    <span class="meta absolute left-3 top-3 rounded-full bg-ink/60 px-2.5 py-1.5 text-bone backdrop-blur-md">N° {pad(p.number)}</span>
-    {p.status && <span class="pill absolute right-3 top-3" data-status={p.status}>{STATUS_SHORT[p.status][lang]}</span>}
+    {p.status && <span class:list={['pill absolute right-3 top-3', row && 'max-sm:hidden']} data-status={p.status}>{STATUS_SHORT[p.status][lang]}</span>}
+    {!p.status && p.designOnly && <span class:list={['pill absolute right-3 top-3', row && 'max-sm:hidden']} data-scope="design">{t('project.designOnly')}</span>}
   </div>
-  <div class="mt-4 flex items-start justify-between gap-4">
+  <div class:list={['mt-4 flex items-start justify-between gap-4', row && 'max-sm:mt-0 max-sm:min-w-0 max-sm:flex-1']}>
     <div class="min-w-0">
-      <h3 class:list={['text-balance text-xl font-light tracking-[-0.02em] transition-colors duration-500 md:text-2xl', theme === 'paper' ? 'group-hover:text-brand-2' : 'group-hover:text-gold']}>{p.name}</h3>
-      <p class:list={['mt-1 text-[13px]', theme === 'paper' ? 'text-brand/75' : 'text-bone/55']}>{p.location} · {p.period}</p>
+      <h3 class:list={['text-balance text-lg tracking-[-0.02em] transition-colors duration-500 md:text-xl', theme === 'paper' ? 'group-hover:text-brand-2' : 'group-hover:text-gold']}>{p.name}</h3>
+      <p class:list={['mt-1 text-sm', theme === 'paper' ? 'text-brand/75' : 'text-bone/55']}>{p.location} · {p.period}</p>
+      {tags.length > 0 && <p class:list={['meta mt-1.5 sm:hidden', theme === 'paper' ? 'text-brand/75' : 'text-gold']}>{tags.join(' · ')}</p>}
     </div>
     <p class:list={['meta mt-1.5 hidden shrink-0 text-right', !compact && 'sm:block', theme === 'paper' ? 'text-brand/45' : 'text-mist']}>{SECTOR_LABELS[p.sector][lang]}</p>
   </div>

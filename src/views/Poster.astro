@@ -1,9 +1,11 @@
 ---
 import { getImage } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
 import Base from '../layouts/Base.astro'
 import Icon from '../components/Icon.astro'
 import { qrPath, route, useT, type Lang } from '../i18n'
-import { getProjects } from '../lib/projects'
+import { getProjects, illustration } from '../lib/projects'
+import { contact } from '../lib/settings'
 
 interface Props {
   lang: Lang
@@ -12,15 +14,27 @@ const { lang } = Astro.props
 const t = useT(lang)
 const fr = lang === 'fr'
 const projects = await getProjects(lang)
+// Photo jusqu’à 2 000 px de large pour les grands formats ; une source plus petite n’est pas agrandie (VIS-02)
+const photo = (src: ImageMetadata) => getImage({ src, width: 2000, format: 'jpg', quality: 82 })
 const data = Object.fromEntries(
   await Promise.all(
     projects.map(async (p) => {
-      const img = await getImage({ src: p.images[0].src, width: 1400, format: 'jpg', quality: 82 })
+      const img = await photo(p.images[0].src)
       return [p.slug, { name: p.name, place: `${p.location} · ${p.period}`, img: img.src, path: qrPath(lang, 'panneau', p.slug) }] as const
     }),
   ),
 )
-const general = await getImage({ src: projects.find((p) => p.slug === 'villa-palmeras')!.images[0].src, width: 1400, format: 'jpg', quality: 82 })
+// Photo de l’affiche générale ; sans aucun projet publié, l’image de partage de la marque
+const cover = illustration(projects, 'villa-palmeras')
+const general = cover ? await photo(cover.images[0].src) : { src: '/og-image.jpg' }
+/**
+ * Formats d’impression (SHR-01, SHR-11) : l’affiche est dessinée en A4 (210 × 297 mm) puis agrandie, avec une marge
+ * blanche de 5 mm que toutes les imprimantes savent respecter. QR code : 156 mm de côté en A4 avant agrandissement.
+ */
+const FORMATS = ['A4', 'A3', 'A2', 'A1'] as const
+// Numéro lisible pour qui ne scanne pas (SHR-05) : téléphone ivoirien, WhatsApp s’il s’agit du même numéro
+const phone = contact.phone || contact.whatsapp
+const phoneLabel = contact.phone && contact.whatsapp === contact.phone ? `${t('contact.phone')} / ${t('contact.whatsapp')}` : contact.phone ? t('contact.phone') : t('contact.whatsapp')
 ---
 
 <Base lang={lang} alt={route('poster', fr ? 'en' : 'fr')} title={t('share.poster')} noindex bare>
@@ -34,35 +48,52 @@ const general = await getImage({ src: projects.find((p) => p.slug === 'villa-pal
         {projects.map((p) => <option value={p.slug}>{p.name}</option>)}
       </select>
     </label>
-    <button type="button" class="btn btn-gold !min-h-10" data-print><Icon name="print" /> {t('poster.print')}</button>
+    <label class="flex items-center gap-3">
+      <span class="meta text-mist">{t('poster.format')}</span>
+      <select id="poster-format" class="h-10 rounded-full border border-line bg-ink px-4 text-[13px] text-bone">
+        {FORMATS.map((f) => <option value={f}>{f === 'A4' ? `A4 · ${t('poster.office')}` : `${f} · ${t('poster.printShop')}`}</option>)}
+      </select>
+    </label>
+    <button type="button" class="btn btn-gold !min-h-10" data-print><Icon name="print" size={20} /> {t('poster.print')}</button>
+    <p data-qr-warning hidden role="note" class="w-full border border-gold/60 px-3 py-2 text-[13px] text-gold">{t('share.tempWarning')}</p>
   </div>
+  <p class="no-print mx-auto max-w-[210mm] px-4 pt-6 text-[13px] leading-relaxed text-bone/70">{t('poster.formatHelp')}</p>
 
-  <div class="poster-stage flex justify-center px-4 py-10">
-    <article class="poster flex flex-col bg-brand text-bone">
-      <header class="flex items-start justify-between px-[12mm] pt-[12mm]">
-        <img src="/brand/gcg-logo-gold.png" alt="GCG — General Constructor Group CI" width="720" height="218" class="h-[16mm] w-auto" />
-        <p class="text-right font-mono text-[2.6mm] uppercase leading-relaxed tracking-[0.25em] text-gold">{fr ? 'Construction & ingénierie' : 'Construction & engineering'}<br />{fr ? 'Depuis 2016' : 'Since 2016'}</p>
+  <div class="poster-stage flex justify-center px-4 pb-10 pt-6">
+    <article id="poster" class="poster flex flex-col bg-brand text-bone" data-format="A4">
+      <header class="flex items-start justify-between px-[12mm] pt-[10mm]">
+        <img src="/brand/gcg-logo-gold.png" alt="GCG — General Constructor Group CI" width="720" height="218" class="h-[13mm] w-auto" />
+        <p class="text-right tabular-nums text-[2.6mm] uppercase leading-relaxed tracking-[0.25em] text-gold">{fr ? 'Construction & ingénierie' : 'Construction & engineering'}<br />{fr ? 'Depuis 2016' : 'Since 2016'}</p>
       </header>
 
-      <figure class="relative mx-[12mm] mt-[9mm] h-[112mm] overflow-hidden">
+      <figure class="relative mx-[12mm] mt-[6mm] min-h-0 flex-1 overflow-hidden">
         <img id="poster-img" src={general.src} alt="" class="h-full w-full object-cover" />
-        <figcaption id="poster-caption" class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-[6mm] pb-[5mm] pt-[14mm]">
-          <p id="poster-name" class="text-[9mm] font-light leading-none tracking-[-0.03em]">{fr ? 'Nos réalisations' : 'Our projects'}</p>
-          <p id="poster-place" class="mt-[2mm] font-mono text-[2.6mm] uppercase tracking-[0.2em] text-gold">{fr ? 'Villas · Résidences · Hôtels · Immeubles · Usines' : 'Villas · Residences · Hotels · Buildings · Factories'}</p>
+        <figcaption id="poster-caption" class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-[6mm] pb-[4mm] pt-[12mm]">
+          <p id="poster-name" class="text-[8mm] font-light leading-none tracking-[-0.03em]">{fr ? 'Nos réalisations' : 'Our projects'}</p>
+          <p id="poster-place" class="mt-[2mm] tabular-nums text-[2.6mm] uppercase tracking-[0.2em] text-gold">{fr ? 'Villas · Résidences · Hôtels · Immeubles · Usines' : 'Villas · Residences · Hotels · Buildings · Factories'}</p>
         </figcaption>
       </figure>
 
-      <div class="mt-auto grid grid-cols-[1fr_auto] items-end gap-[8mm] px-[12mm] pb-[12mm]">
-        <div>
-          <p class="font-serif text-[15mm] italic leading-[0.95] text-gold">{t('poster.scan')}</p>
-          <p id="poster-what" class="mt-[2mm] text-[11mm] font-light leading-none tracking-[-0.03em]">{t('poster.projects')}</p>
-          <p class="mt-[6mm] font-mono text-[3mm] tracking-[0.12em] text-bone/80" id="poster-url" data-qr-text={route('home', lang)}></p>
-        </div>
-        <div class="w-[62mm] rounded-[3mm] bg-white p-[3mm]">
-          <div id="poster-qr" data-qr={qrPath(lang, 'panneau')}></div>
-        </div>
+      <!-- QR code centré, aussi grand que la page le permet : lisible de plus loin (SHR-01) -->
+      <p class="mt-[6mm] px-[12mm] text-center leading-none">
+        <span class="text-[9.5mm] font-medium text-gold">{t('poster.scan')}</span>{' '}
+        <span id="poster-what" class="text-[8mm] font-light tracking-[-0.03em]" data-general={t('poster.projects')} data-project={t('poster.project')}>{t('poster.projects')}</span>
+      </p>
+      <div class="mx-auto mt-[5mm] w-[156mm] shrink-0 overflow-hidden rounded-[3mm] bg-white">
+        <div id="poster-qr" data-qr={qrPath(lang, 'panneau')} data-qr-ecc="Q"></div>
       </div>
-      <div class="h-[3mm] bg-gold"></div>
+      <!-- Adresse lisible et téléphone pour qui ne scanne pas (SHR-05, SHR-11) ; l’adresse /q reste dans le code -->
+      <p class="mt-[4mm] flex flex-wrap items-baseline justify-center gap-x-[6mm] gap-y-[1mm] px-[12mm] pb-[7mm] tabular-nums text-[3.4mm] tracking-[0.1em] text-bone">
+        <span id="poster-url" data-qr-text={route('home', lang)}></span>
+        {
+          phone && (
+            <span>
+              <span class="text-[2.6mm] uppercase tracking-[0.2em] text-gold">{phoneLabel}</span> {phone}
+            </span>
+          )
+        }
+      </p>
+      <div class="h-[3mm] shrink-0 bg-gold"></div>
     </article>
   </div>
 
@@ -76,35 +107,47 @@ const general = await getImage({ src: projects.find((p) => p.slug === 'villa-pal
     general: string
   }
   const select = document.getElementById('poster-select') as HTMLSelectElement
+  const format = document.getElementById('poster-format') as HTMLSelectElement
+  const poster = document.getElementById('poster')!
   const qr = document.getElementById('poster-qr')!
-  const url = document.getElementById('poster-url')!
   const img = document.getElementById('poster-img') as HTMLImageElement
   const name = document.getElementById('poster-name')!
   const place = document.getElementById('poster-place')!
   const what = document.getElementById('poster-what')!
-  const defaults = { name: name.textContent, place: place.textContent, what: what.textContent }
-  const en = document.body.dataset.lang === 'en'
+  const defaults = { name: name.textContent, place: place.textContent }
 
-  function show(slug: string) {
-    const p = d.projects[slug]
-    const target = p ? p.path : d.home
-    qr.dataset.qr = target
-    url.dataset.qrText = target
-    img.src = p ? p.img : d.general
-    name.textContent = p ? p.name : defaults.name
-    place.textContent = p ? p.place : defaults.place
-    what.textContent = p ? (en ? 'this project' : 'ce projet') : defaults.what
-    renderQrs(document)
+  function remember(key: string, value: string, keep: boolean) {
     const q = new URLSearchParams(location.search)
-    if (slug) q.set('p', slug)
-    else q.delete('p')
+    if (keep) q.set(key, value)
+    else q.delete(key)
     history.replaceState(null, '', q.toString() ? `?${q}` : location.pathname)
   }
 
-  const initial = new URLSearchParams(location.search).get('p') ?? ''
+  function show(slug: string) {
+    const p = d.projects[slug]
+    qr.dataset.qr = p ? p.path : d.home
+    img.src = p ? p.img : d.general
+    name.textContent = p ? p.name : defaults.name
+    place.textContent = p ? p.place : defaults.place
+    what.textContent = (p ? what.dataset.project : what.dataset.general) ?? ''
+    renderQrs(document)
+    remember('p', slug, Boolean(slug))
+  }
+
+  function setFormat(f: string) {
+    poster.dataset.format = f
+    remember('format', f, f !== 'A4')
+  }
+
+  const params = new URLSearchParams(location.search)
+  const initial = params.get('p') ?? ''
   if (d.projects[initial]) select.value = initial
   show(select.value)
   select.addEventListener('change', () => show(select.value))
+  const f = params.get('format') ?? ''
+  if ([...format.options].some((o) => o.value === f)) format.value = f
+  setFormat(format.value)
+  format.addEventListener('change', () => setFormat(format.value))
 </script>
 
 <style is:global>
@@ -114,10 +157,17 @@ const general = await getImage({ src: projects.find((p) => p.slug === 'villa-pal
     .poster { zoom: 0.45; }
   }
   @media print {
-    @page { size: A4 portrait; margin: 0; }
-    html, body { background: #052e14 !important; }
+    /* Marge blanche de 5 mm sur chaque format ; l’affiche dessinée en A4 est mise à l’échelle de la page (SHR-11) */
+    @page { size: A4 portrait; margin: 5mm; }
+    @page poster-a3 { size: A3 portrait; margin: 5mm; }
+    @page poster-a2 { size: 420mm 594mm; margin: 5mm; } /* A2 et A1 : pas de mot-clé CSS */
+    @page poster-a1 { size: 594mm 841mm; margin: 5mm; }
+    html, body { background: #fff !important; }
     .poster-stage { padding: 0 !important; display: block; }
-    .poster { box-shadow: none; zoom: 1; }
+    .poster { box-shadow: none; zoom: 0.95238; }
+    .poster[data-format='A3'] { page: poster-a3; zoom: 1.36667; }
+    .poster[data-format='A2'] { page: poster-a2; zoom: 1.95238; }
+    .poster[data-format='A1'] { page: poster-a1; zoom: 2.78095; }
     .poster * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 </style>

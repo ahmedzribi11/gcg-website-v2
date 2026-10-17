@@ -8,7 +8,7 @@
   "period": "2020 – 2024",
   "status": "receptionne",
   "surface": "4 000 m²",
-  "composition": "Projet clé en main d’un hôtel R+3 — 42 chambres haut standing.",
+  "composition": "Projet clé en main d’un hôtel R+3, 42 chambres haut standing.",
   "composition_en": "Turnkey four-storey (R+3) hotel with 42 high-end rooms.",
   "missions": [
     "Études",
@@ -50,5 +50,14 @@
   "featured": true,
   "featuredOrder": 3,
   "permission": "en-attente",
-  "en_status": "valide"
+  "en_status": "valide",
+  "highlight": {
+    "value": "42",
+    "unit": "chambres",
+    "unit_en": "rooms",
+    "note": "hôtel R+3 clé en main",
+    "note_en": "turnkey four-storey hotel",
+    "scaleOrder": 5,
+    "marqueeOrder": 3
+  }
 }

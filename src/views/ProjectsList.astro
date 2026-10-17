@@ -21,89 +21,86 @@ const groups = [
   { key: 'secteur', label: t('projects.filter.sector'), items: SECTORS.map((v) => ({ v, label: SECTOR_LABELS[v][lang], n: n((p) => p.sector === v) })) },
   { key: 'statut', label: t('projects.filter.status'), items: STATUSES.map((v) => ({ v, label: STATUS_LABELS[v][lang], n: n((p) => p.status === v) })) },
   { key: 'ville', label: t('projects.filter.city'), items: CITIES.map((v) => ({ v, label: cities[v].name, n: n((p) => p.city === v) })).sort((a, b) => b.n - a.n) },
-  { key: 'type', label: lang === 'fr' ? 'Typologie' : 'Building type', items: TYPES.map((v) => ({ v, label: TYPE_LABELS[v][lang], n: n((p) => p.types.includes(v)) })) },
+  { key: 'type', label: t('projects.filter.type'), items: TYPES.map((v) => ({ v, label: TYPE_LABELS[v][lang], n: n((p) => p.types.includes(v)) })) },
 ].map((g) => ({ ...g, items: g.items.filter((i) => i.n > 0) }))
 const ongoing = n((p) => p.status === 'execution')
 const studies = n((p) => p.status === 'etudes')
+const delivered = n((p) => p.status === 'receptionne')
 ---
 
 <Base lang={lang} alt={route('projects', lang === 'fr' ? 'en' : 'fr')} title={t('projects.label')} description={t('projects.lead')}>
-  <PageHeader label={t('projects.label')} title={t('projects.title')} accent={lang === 'fr' ? 'GCG.' : 'track record.'} lead={t('projects.lead')}>
-    <div class="flex flex-wrap items-center gap-x-8 gap-y-3 md:col-span-12" data-reveal style="--d:.3s">
+  <PageHeader title={t('projects.title')} lead={t('projects.lead')}>
+    <div class="flex flex-wrap items-center gap-x-8 gap-y-3 md:col-span-12" data-intro="rise" style="--d:.3s">
       <p class="meta text-bone/70"><span class="text-gold">{projects.length}</span> {t('projects.count.many')}</p>
-      <p class="meta text-bone/70"><span class="text-gold">{String(ongoing).padStart(2, '0')}</span> {STATUS_LABELS.execution[lang]}</p>
-      <p class="meta text-bone/70"><span class="text-gold">{String(studies).padStart(2, '0')}</span> {STATUS_LABELS.etudes[lang]}</p>
+      <p class="meta text-bone/70"><span class="text-gold">{ongoing}</span> {STATUS_LABELS.execution[lang]}</p>
+      <p class="meta text-bone/70"><span class="text-gold">{studies}</span> {STATUS_LABELS.etudes[lang]}</p>
+      {delivered > 0 && <p class="meta text-bone/70"><span class="text-gold">{delivered}</span> {delivered > 1 ? t('projects.delivered.many') : STATUS_LABELS.receptionne[lang]}</p>}
       <a href={route('references', lang)} class="meta ml-auto inline-flex items-center gap-2 text-bone hover:text-gold"><Icon name="download" /> {t('projects.references')}</a>
     </div>
   </PageHeader>
 
-  <div id="filters" class="sticky top-0 z-30 border-y border-line bg-ink/85 backdrop-blur-xl transition-[top] duration-700" data-filters>
-    <div class="wrap flex items-center gap-3 py-3">
+  <div id="filters" class="sticky top-0 z-sticky border-y border-line bg-ink transition-[top] duration-700" data-filters>
+    <div class="wrap flex items-center gap-2 py-3 sm:gap-3">
       <details class="filters-panel group relative flex-1 md:hidden">
         <summary class="chip w-full justify-between list-none">
-          <span class="flex items-center gap-2"><Icon name="plus" size={14} class="transition-transform group-open:rotate-45" /> {lang === 'fr' ? 'Filtrer' : 'Filter'}</span>
+          <span class="flex items-center gap-2"><Icon name="plus" class="transition-transform group-open:rotate-45" /> {t('projects.filter.open')}</span>
           <span class="meta text-gold" data-active-count></span>
         </summary>
       </details>
-      <div class="hidden flex-1 flex-wrap items-center gap-2 md:flex" data-groups-desktop></div>
+      <!-- Filtres rendus au build, pas clonés par le script : la barre ne bouge plus à son arrivée (CODE-07) -->
+      <div class="hidden flex-1 flex-wrap items-center gap-2 md:flex" data-groups-desktop>
+        {
+          groups.map((g) => (
+            <details class="dd relative" data-dd={g.key}>
+              <summary class="chip list-none !h-9 !pr-3">
+                <span class="text-mist">{g.label}</span>
+                <span class="text-bone" data-dd-value></span>
+                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" class="transition-transform"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
+              </summary>
+              <div class="absolute left-0 top-full z-20 mt-2 flex min-w-60 flex-col gap-1 rounded-2xl border border-line bg-ink-2 p-2 shadow-2xl">
+                {g.items.map((it) => (
+                  <button type="button" class="dd-item flex items-center justify-between gap-6 rounded-xl px-3 py-2.5 text-left text-sm text-bone/80 hover:bg-ink-3 hover:text-bone aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="false" data-filter={g.key} data-value={it.v} data-label={it.label}>
+                    {it.label} <small class="meta opacity-60">{it.n}</small>
+                  </button>
+                ))}
+              </div>
+            </details>
+          ))
+        }
+      </div>
       <button type="button" class="meta hidden text-mist hover:text-gold md:inline" data-reset>{t('projects.filter.reset')}</button>
-      <p class="meta shrink-0 text-bone/70" aria-live="polite"><span data-results class="text-gold">{projects.length}</span> <span data-count-label>{t('projects.count.many')}</span></p>
-      <div class="flex shrink-0 rounded-full border border-line p-1" role="group" aria-label={lang === 'fr' ? 'Affichage' : 'View'}>
-        <button type="button" class="flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="true" data-view="grid" aria-label={t('projects.view.grid')}><Icon name="grid" size={14} /><span class="hidden sm:inline">{t('projects.view.grid')}</span></button>
-        <button type="button" class="flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="false" data-view="map" aria-label={t('projects.view.map')}><Icon name="map" size={14} /><span class="hidden sm:inline">{t('projects.view.map')}</span></button>
+      <p class="meta text-bone/70" aria-live="polite"><span data-results class="text-gold">{projects.length}</span> <span data-count-label data-one={t('projects.count.one')} data-many={t('projects.count.many')}>{t('projects.count.many')}</span></p>
+      <div class="flex shrink-0 rounded-full border border-line" role="group" aria-label={t('projects.view.label')}>
+        <button type="button" class="flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-xs aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="true" data-view="grid" aria-label={t('projects.view.grid')}><Icon name="grid" /><span class="hidden sm:inline">{t('projects.view.grid')}</span></button>
+        <button type="button" class="flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-xs aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="false" data-view="map" aria-label={t('projects.view.map')}><Icon name="map" /><span class="hidden sm:inline">{t('projects.view.map')}</span></button>
       </div>
     </div>
-    <div class="wrap hidden pb-4" data-groups-mobile></div>
-  </div>
-
-  <template id="filter-groups">
-    {
-      groups.map((g) => (
-        <div class="flex min-w-0 items-center gap-2" data-group={g.key}>
-          <span class="meta shrink-0 text-mist">{g.label}</span>
-          <div class="no-scrollbar flex gap-1.5 overflow-x-auto">
-            {g.items
-              .filter((it) => it.n > 0)
-              .map((it) => (
-                <button type="button" class="chip !h-8 !px-3 !text-[12px]" aria-pressed="false" data-filter={g.key} data-value={it.v}>
+    <div class="wrap hidden pb-4" data-groups-mobile>
+      {
+        groups.map((g) => (
+          <div class="flex min-w-0 items-center gap-2 py-1.5" data-group={g.key}>
+            <span class="meta shrink-0 text-mist">{g.label}</span>
+            <div class="no-scrollbar flex gap-1.5 overflow-x-auto">
+              {g.items.map((it) => (
+                <button type="button" class="chip !h-8 !px-3 !text-xs" aria-pressed="false" data-filter={g.key} data-value={it.v}>
                   {it.label} <small>{it.n}</small>
                 </button>
               ))}
+            </div>
           </div>
-        </div>
-      ))
-    }
-  </template>
-  <template id="filter-dropdowns">
-    {
-      groups.map((g) => (
-        <details class="dd relative" data-dd={g.key}>
-          <summary class="chip list-none !h-9 !pr-3">
-            <span class="text-mist">{g.label}</span>
-            <span class="text-bone" data-dd-value></span>
-            <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" class="transition-transform"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
-          </summary>
-          <div class="absolute left-0 top-full z-20 mt-2 flex min-w-60 flex-col gap-1 rounded-2xl border border-line bg-ink-2/95 p-2 shadow-2xl backdrop-blur-xl">
-            {g.items
-              .filter((it) => it.n > 0)
-              .map((it) => (
-                <button type="button" class="dd-item flex items-center justify-between gap-6 rounded-xl px-3 py-2.5 text-left text-[13px] text-bone/80 hover:bg-ink-3 hover:text-bone aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="false" data-filter={g.key} data-value={it.v} data-label={it.label}>
-                  {it.label} <small class="meta opacity-60">{it.n}</small>
-                </button>
-              ))}
-          </div>
-        </details>
-      ))
-    }
-  </template>
+        ))
+      }
+    </div>
+  </div>
 
   <section class="wrap py-12 md:py-16" aria-label={t('projects.label')}>
-    <h2 class="sr-only">{lang === 'fr' ? 'Liste des projets' : 'Project list'}</h2>
-    <div data-panel="grid" class="grid gap-x-6 gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
-      {projects.map((p, i) => <ProjectCard project={p} lang={lang} index={i} />)}
+    <h2 class="sr-only">{t('projects.list')}</h2>
+    <!-- Téléphone : une ligne compacte par projet au lieu de 34 grandes cartes (MOB-04) -->
+    <div data-panel="grid" class="grid gap-x-6 gap-y-5 sm:grid-cols-2 sm:gap-y-14 xl:grid-cols-3">
+      {projects.map((p, i) => <ProjectCard project={p} lang={lang} priority={i === 0} row sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, (min-width: 640px) 100vw, 7rem" />)}
     </div>
     <div data-empty hidden class="flex flex-col items-center gap-6 py-24 text-center">
-      <p class="text-2xl font-light text-bone/70">{t('projects.empty')}</p>
+      <p class="text-xl font-light text-bone/70">{t('projects.empty')}</p>
       <button type="button" class="btn btn-line" data-reset>{t('projects.filter.reset')}</button>
     </div>
     <div data-panel="map" hidden class="mx-auto max-w-4xl py-8">
@@ -111,17 +108,14 @@ const studies = n((p) => p.status === 'etudes')
     </div>
   </section>
 
-  <FinalCta lang={lang} />
+  <FinalCta lang={lang} page={t('projects.label')} />
 <script>
   const KEYS = ['secteur', 'statut', 'ville', 'type'] as const
   type Key = (typeof KEYS)[number]
   const state: Record<Key, string> = { secteur: '', statut: '', ville: '', type: '' }
 
-  const tpl = document.getElementById('filter-groups') as HTMLTemplateElement
   const desktop = document.querySelector<HTMLElement>('[data-groups-desktop]')!
   const mobile = document.querySelector<HTMLElement>('[data-groups-mobile]')!
-  desktop.append((document.getElementById('filter-dropdowns') as HTMLTemplateElement).content.cloneNode(true))
-  const mob = tpl.content.cloneNode(true) as DocumentFragment
   const dropdowns = Array.from(desktop.querySelectorAll<HTMLDetailsElement>('details.dd'))
   dropdowns.forEach((d) =>
     d.addEventListener('toggle', () => {
@@ -131,8 +125,6 @@ const studies = n((p) => p.status === 'etudes')
   document.addEventListener('click', (e) => {
     if (!(e.target as Element).closest('details.dd')) dropdowns.forEach((d) => (d.open = false))
   })
-  mob.querySelectorAll<HTMLElement>('[data-group]').forEach((g) => g.classList.add('py-1.5'))
-  mobile.append(mob)
 
   const panel = document.querySelector<HTMLDetailsElement>('.filters-panel')!
   panel.addEventListener('toggle', () => mobile.classList.toggle('hidden', !panel.open))
@@ -142,12 +134,17 @@ const studies = n((p) => p.status === 'etudes')
   const countLabel = document.querySelector<HTMLElement>('[data-count-label]')!
   const empty = document.querySelector<HTMLElement>('[data-empty]')!
   const activeCount = document.querySelector<HTMLElement>('[data-active-count]')!
-  const lang = document.body.dataset.lang
-  const one = lang === 'en' ? 'project' : 'projet'
-  const many = lang === 'en' ? 'projects' : 'projets'
+  // Libellés et règle du pluriel de la langue de la page, comme plural() au build (CODE-05)
+  const rule = new Intl.PluralRules(document.documentElement.lang === 'en' ? 'en-GB' : 'fr')
 
+  // Valeurs de l’adresse acceptées seulement si un filtre affiché les porte : un lien abîmé (« ?secteur=" »)
+  // ou une valeur inconnue montre toute la liste au lieu de casser le script ou de tout masquer (CODE-07)
+  const allowed = (k: Key) => new Set(Array.from(document.querySelectorAll<HTMLElement>(`[data-filter="${k}"]`), (b) => b.dataset.value))
   const params = new URLSearchParams(location.search)
-  KEYS.forEach((k) => (state[k] = params.get(k) ?? ''))
+  KEYS.forEach((k) => {
+    const v = params.get(k) ?? ''
+    state[k] = allowed(k).has(v) ? v : ''
+  })
 
   function apply(push = true) {
     let visible = 0
@@ -164,14 +161,15 @@ const studies = n((p) => p.status === 'etudes')
       }
     }
     count.textContent = String(visible)
-    countLabel.textContent = visible > 1 ? many : one
+    // « 0 projet » en français, « 0 projects » en anglais (CONT-08)
+    countLabel.textContent = (rule.select(visible) === 'one' ? countLabel.dataset.one : countLabel.dataset.many) ?? ''
     empty.hidden = visible > 0
     document.querySelectorAll<HTMLElement>('[data-filter]').forEach((b) => {
       b.setAttribute('aria-pressed', String(state[b.dataset.filter as Key] === b.dataset.value))
     })
     dropdowns.forEach((d) => {
       const k = d.dataset.dd as Key
-      const btn = d.querySelector<HTMLElement>(`[data-value="${state[k]}"]`)
+      const btn = state[k] ? d.querySelector<HTMLElement>(`[data-value="${CSS.escape(state[k])}"]`) : null
       d.querySelector<HTMLElement>('[data-dd-value]')!.textContent = state[k] && btn ? `· ${btn.dataset.label}` : ''
       d.classList.toggle('is-active', Boolean(state[k]))
       if (state[k]) d.open = false

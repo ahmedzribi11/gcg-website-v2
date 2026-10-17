@@ -1,26 +1,24 @@
 ---
 interface Props {
-  label: string
   title: string
-  accent?: string
   lead?: string
   tone?: 'dark' | 'paper' | 'brand'
 }
-const { label, title, accent, lead, tone = 'dark' } = Astro.props
-const html = accent ? title.replace(accent, `<em class="serif">${accent}</em>`) : title
+const { title, lead, tone = 'dark' } = Astro.props
 const theme = tone === 'paper' ? 'theme-paper' : tone === 'brand' ? 'theme-brand' : 'bg-ink'
 ---
 
+<!-- Premier écran : entrée en CSS (data-intro), jamais masquée en attendant le script principal (PERF-03) -->
 <header class:list={['relative overflow-hidden pb-14 pt-32 md:pb-20 md:pt-48', theme]}>
   <div class="blueprint pointer-events-none absolute inset-0" aria-hidden="true"></div>
   <div class="wrap relative grid gap-10 md:grid-cols-12 md:items-end">
     <div class="md:col-span-8">
-      <p class:list={['label', tone === 'paper' ? 'text-brand/75' : 'text-gold']} data-reveal>{label}</p>
-      <h1 class="display mt-8 text-[clamp(2.8rem,8vw,8.4rem)]" data-split set:html={html} />
+      <!-- Pas de surtitre : il répétait le menu (SLOP-03) -->
+      <h1 class="display text-4xl" data-intro="rise" style="--d:.1s">{title}</h1>
     </div>
     {
       lead && (
-        <p class:list={['max-w-md text-[15px] leading-relaxed md:col-span-4 md:pb-4 md:text-base', tone === 'paper' ? 'text-brand/70' : 'text-bone/65']} data-reveal style="--d:.2s">
+        <p class:list={['max-w-md text-base leading-relaxed md:col-span-4 md:pb-4', tone === 'paper' ? 'text-brand/70' : 'text-bone/65']} data-intro="rise" style="--d:.2s">
           {lead}
         </p>
       )

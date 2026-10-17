@@ -4,7 +4,7 @@ import SectionHead from '../SectionHead.astro'
 import Icon from '../Icon.astro'
 import { audiences } from '../../data/audiences'
 import { route, useT, type Lang } from '../../i18n'
-import type { Project } from '../../lib/projects'
+import { coverImage, publishedOnly, type Project } from '../../lib/projects'
 
 interface Props {
   lang: Lang
@@ -12,40 +12,33 @@ interface Props {
 }
 const { lang, projects } = Astro.props
 const t = useT(lang)
-const by = (slug: string) => projects.find((p) => p.slug === slug)!
 ---
 
 <section class="relative py-24 md:py-40" aria-labelledby="audiences-title">
   <div class="wrap">
-    <SectionHead id="audiences-title" label={t('audiences.label')} title={t('audiences.title')} accent={lang === 'fr' ? 'notre métier.' : 'our craft.'} />
+    <SectionHead id="audiences-title" kind="proof" title={t('audiences.title')} />
 
-    <div class="audiences mt-16 flex flex-col gap-3 md:mt-24 md:h-[78vh] md:min-h-[560px] md:flex-row">
+    <div class="mt-8 flex flex-col gap-3 md:mt-10 lg:min-h-[78vh] lg:flex-row">
       {
-        audiences.map((a, i) => (
+        audiences.map((a) => (
           <a
             href={`${route('invest', lang)}#${a.id}`}
-            class="audience force-dark group relative flex min-h-[420px] flex-1 overflow-hidden bg-ink-3 md:min-h-0"
+            class="force-dark group relative flex min-h-[420px] flex-1 overflow-hidden bg-ink-3"
             data-reveal
-            style={`--d:${i * 0.08}s`}
           >
-            <ProjectImage image={by(a.image).images[0]} alt="" sizes="(min-width: 768px) 50vw, 100vw" class="absolute inset-0 block h-full w-full" imgClass="h-full w-full object-cover opacity-55 transition-[transform,opacity] duration-[1.6s] ease-[var(--ease-out-expo)] group-hover:scale-105 group-hover:opacity-40" />
+            <ProjectImage image={coverImage(projects, [a.image, 0])} alt="" sizes="(min-width: 768px) 50vw, 100vw" lang={lang} kindClass="right-4 top-4" class="absolute inset-0 block h-full w-full" imgClass="h-full w-full object-cover opacity-55 transition-[transform,opacity] duration-[1.6s] ease-[var(--ease-out-expo)] group-hover:scale-105 group-hover:opacity-40" />
             <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/10" />
             <div class="relative mt-auto flex w-full flex-col p-6 md:p-8">
-              <span class="meta text-gold">0{i + 1}</span>
-              <h3 class="mt-3 text-[1.9rem] font-light leading-[1.05] tracking-[-0.03em] md:text-[clamp(1.6rem,2.3vw,2.6rem)]">{a.title[lang]}</h3>
-              <div class="audience-body">
-                <div class="overflow-hidden">
-                  <p class="mt-5 max-w-md text-[15px] leading-relaxed text-bone/75">{a.text[lang]}</p>
-                  <ul class="mt-5 flex flex-wrap gap-2">
-                    {a.proof.slice(0, 3).map((s) => (
-                      <li class="rounded-full border border-line bg-ink/40 px-3 py-1.5 text-[12px] text-bone/80 backdrop-blur">{by(s).name}</li>
-                    ))}
-                  </ul>
-                  <span class="meta mt-6 inline-flex items-center gap-2 text-bone">
-                    {t('cta.more')} <Icon name="arrow" />
-                  </span>
-                </div>
-              </div>
+              <h3 class="text-2xl font-light leading-[1.05] tracking-[-0.03em]">{a.title[lang]}</h3>
+              <p class="mt-5 max-w-md text-base leading-relaxed text-bone/75">{a.text[lang]}</p>
+              <ul class="mt-5 flex flex-wrap gap-2">
+                {publishedOnly(projects, a.proof).slice(0, 3).map((p) => (
+                  <li class="rounded-full border border-line bg-ink px-3 py-1.5 text-xs text-bone/80">{p.name}</li>
+                ))}
+              </ul>
+              <span class="meta mt-6 inline-flex items-center gap-2 text-bone">
+                {a.more[lang]} <Icon name="arrow" />
+              </span>
             </div>
           </a>
         ))
@@ -53,13 +46,3 @@ const by = (slug: string) => projects.find((p) => p.slug === slug)!
     </div>
   </div>
 </section>
-
-<style>
-  @media (min-width: 768px) {
-    .audience { transition: flex-grow 1s var(--ease-out-expo); }
-    .audiences:hover .audience { flex-grow: 0.75; }
-    .audiences:hover .audience:hover { flex-grow: 2.2; }
-    .audience-body { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.9s var(--ease-out-expo), opacity 0.6s; }
-    .audience:hover .audience-body, .audience:focus-visible .audience-body { grid-template-rows: 1fr; opacity: 1; }
-  }
-</style>

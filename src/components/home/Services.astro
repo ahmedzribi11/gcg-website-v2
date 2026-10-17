@@ -1,5 +1,4 @@
 ---
-import ProjectImage from '../ProjectImage.astro'
 import SectionHead from '../SectionHead.astro'
 import Icon from '../Icon.astro'
 import { services } from '../../data/services'
@@ -12,35 +11,31 @@ interface Props {
 }
 const { lang, projects } = Astro.props
 const t = useT(lang)
-const img = (id: string) => {
-  const [slug, i] = services.find((s) => s.id === id)!.cover
-  const p = projects.find((x) => x.slug === slug)!
-  return p.images[Math.min(i, p.images.length - 1)]
-}
 const count = (id: string) => projects.filter((p) => p.services.includes(id as never)).length
+/** Nombre de projets affiché à partir de 5 seulement : « 2 projets » ne prouve rien (COPY-08). */
+const MIN_COUNT = 5
 ---
 
-<section id="expertises" class="relative py-24 md:py-40" aria-labelledby="services-title" data-preview-root>
+<section id="expertises" class="relative py-24 md:py-40" aria-labelledby="services-title">
   <div class="wrap">
-    <SectionHead id="services-title" label={t('services.label')} title={t('services.title')} accent={lang === 'fr' ? 'même toit.' : 'one roof.'} lead={t('services.lead')} />
+    <SectionHead id="services-title" title={t('services.title')} lead={t('services.lead')} />
 
     <ol class="mt-16 border-t border-line md:mt-24">
       {
-        services.map((s, i) => {
+        services.map((s) => {
           const n = count(s.id)
           const turnkey = s.id === 'cle-en-main'
           return (
-            <li class="border-b border-line" data-reveal style={`--d:${i * 0.04}s`}>
-              <a href={servicePath(s.slug[lang], lang)} class="group grid grid-cols-12 items-baseline gap-x-4 gap-y-2 py-6 md:py-8" data-preview={s.id}>
-                <span class="meta col-span-2 text-mist md:col-span-1">{String(i + 1).padStart(2, '0')}</span>
-                <span class:list={['col-span-10 text-[1.7rem] font-light leading-tight tracking-[-0.03em] transition-[color,transform] duration-700 ease-[var(--ease-out-expo)] group-hover:translate-x-2 md:col-span-5 md:text-[clamp(1.8rem,3.2vw,3.4rem)]', turnkey ? 'text-gold' : 'text-bone/90 group-hover:text-bone']}>
-                  {turnkey ? <em class="serif">{s.title[lang]}</em> : s.title[lang]}
+            <li class="border-b border-line">
+              <a href={servicePath(s.slug[lang], lang)} class="group grid grid-cols-12 items-baseline gap-x-4 gap-y-2 py-6 md:py-8">
+                <span class:list={['col-span-12 text-2xl font-light leading-tight tracking-[-0.03em] transition-[color,transform] duration-700 ease-[var(--ease-out-expo)] group-hover:translate-x-2 md:col-span-6', turnkey ? 'text-gold' : 'text-bone/90 group-hover:text-bone']}>
+                  {s.title[lang]}
                 </span>
-                <span class="col-span-10 col-start-3 text-[14px] leading-relaxed text-bone/55 md:col-span-4 md:col-start-auto">{s.short[lang]}</span>
+                <span class="col-span-12 text-sm leading-relaxed text-bone/55 md:col-span-4">{s.short[lang]}</span>
                 <span class="col-span-12 flex items-center justify-between gap-3 md:col-span-2 md:justify-end">
                   <span class="meta text-mist md:hidden" />
-                  <span class="meta text-gold">{n} {n > 1 ? t('services.projects') : t('services.project')}</span>
-                  <span class="flex h-10 w-10 items-center justify-center rounded-full border border-line transition-colors duration-500 group-hover:border-gold group-hover:bg-gold group-hover:text-brand"><Icon name="arrow-up-right" /></span>
+                  {n >= MIN_COUNT && <span class="meta text-gold">{n} {t('services.projects')}</span>}
+                  <span class="flex h-10 w-10 items-center justify-center rounded-full border border-line transition-colors duration-500 group-hover:border-gold group-hover:bg-gold group-hover:text-brand"><Icon name="arrow-up-right" size={24} /></span>
                 </span>
               </a>
             </li>
@@ -49,26 +44,7 @@ const count = (id: string) => projects.filter((p) => p.services.includes(id as n
       }
     </ol>
     <div class="mt-10 flex justify-end">
-      <a href={route('services', lang)} class="btn btn-line" data-magnetic>{t('nav.services')} <Icon name="arrow" /></a>
+      <a href={route('services', lang)} class="btn btn-line">{t('nav.services')} <Icon name="arrow" size={20} /></a>
     </div>
   </div>
-
-  <div data-preview-stage class="preview-stage pointer-events-none absolute left-0 top-0 z-10 hidden md:block" aria-hidden="true">
-    {
-      services.map((s) => (
-        <div data-preview-for={s.id} class="preview-item absolute left-0 top-0 h-[17rem] w-[13rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden">
-          <ProjectImage image={img(s.id)} alt="" sizes="13rem" class="block h-full w-full" />
-        </div>
-      ))
-    }
-  </div>
 </section>
-
-<script>
-  import '../../scripts/preview'
-</script>
-
-<style>
-  .preview-item { opacity: 0; clip-path: inset(50% 50% 50% 50%); transition: opacity 0.5s, clip-path 0.9s var(--ease-out-expo); }
-  .preview-item[data-on] { opacity: 1; clip-path: inset(0 0 0 0); }
-</style>

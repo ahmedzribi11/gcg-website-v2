@@ -1,0 +1,21 @@
+---
+/**
+ * Bouton « nous contacter » (CODE-06) : WhatsApp quand un numéro est publié, avec un message qui nomme la page
+ * d’où vient le visiteur (pageWhatsApp), sinon la page Contact. Contenu du lien : le slot « whatsapp » quand le
+ * lien ouvre WhatsApp, s’il est fourni ; sinon le slot par défaut, dans les deux cas.
+ */
+import { route, type Lang } from '../i18n'
+import { pageWhatsApp } from '../lib/settings'
+
+interface Props {
+  lang: Lang
+  /** Titre de la page, repris dans le message WhatsApp (défaut : Accueil). */
+  page?: string
+  class?: string
+}
+const { lang, page, class: cls } = Astro.props
+const wa = pageWhatsApp(lang, page)
+const content = wa && Astro.slots.has('whatsapp') ? await Astro.slots.render('whatsapp') : await Astro.slots.render('default')
+---
+
+<a href={wa || route('contact', lang)} target={wa ? '_blank' : undefined} rel={wa ? 'noopener' : undefined} class={cls}><Fragment set:html={content} /></a>

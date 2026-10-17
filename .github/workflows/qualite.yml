@@ -1,4 +1,5 @@
-# Contrôles qualité à chaque modification (ENG-04) : un échec bloque la fusion dans main.
+# Contrôles qualité à chaque modification (ENG-04). Un échec ne bloque la fusion dans main que si la branche
+# est protégée avec ces contrôles requis (GATE-03, docs/exploitation.md section 9).
 name: Qualité
 
 on:
@@ -16,10 +17,10 @@ jobs:
     env:
       SITE_URL: https://www.gcg-ci.example
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -40,29 +41,46 @@ jobs:
       - name: 'SEO, liens, langues, h1, textes de remplissage (SEO-01/05, I18N-03/05, EDIT-01)'
         run: node scripts/audit-dist.mjs
 
+      # Outils de contrôle aux versions exactes de package.json (OPS-10), installés par npm ci
       - name: 'Validation HTML (Nu Html Checker)'
         run: |
-          npm i --no-save vnu-jar@24
           java -jar node_modules/vnu-jar/build/dist/vnu.jar --errors-only --filterpattern '.*(view-transition-name|transition-delay|safe-area-inset|element in .body. must be the first child).*' \
             $(find dist -name '*.html' -not -path 'dist/qr/*' -not -name 'qr.html')
 
       - name: 'Navigateur : console, accessibilité axe, débordements (ENG-09, A11Y-01, UX-05)'
         run: |
-          npm i --no-save playwright@1 axe-core@4
           npx playwright install --with-deps chromium
           (npx astro preview --host 127.0.0.1 --port 4321 &) && sleep 4
           node scripts/browser-checks.mjs
 
       - name: 'Lighthouse : budgets de performance et d’accessibilité (PERF-01/02/03/05/06/09)'
-        run: npx --yes @lhci/cli@0.14 autorun
+        run: npx --yes @lhci/cli@0.14.0 autorun
+
+  lancement:
+    # Build du mode lancement (GCG_LAUNCH=1, CODE-02 / OPS-02) : seuls les projets autorisés sont publiés,
+    # les illustrations se replient sur un autre projet et les QR codes imprimés restent valables.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SITE_URL: https://www.gcg-ci.example
+      GCG_LAUNCH: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: 'Build en mode lancement, puis contrôle du site'
+        run: npm run build && node scripts/audit-dist.mjs
 
   secrets:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
       - name: 'Aucun secret dans l’historique (SEC-10)'
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2.3.9
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

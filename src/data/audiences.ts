@@ -5,10 +5,17 @@ export interface Audience {
   title: L<string>
   text: L<string>
   points: L<string[]>
+  /** Texte du lien vers la section de la page Investir : il nomme ce qu’on y trouve. */
+  more: L<string>
   /** Projets cités en preuve (identifiants de fichiers). */
   proof: string[]
   /** Projet dont la photo illustre le panneau. */
   image: string
+  /**
+   * Étapes « Construire depuis l’étranger » (COPY-06), affichées sur la page Investir seulement si la liste
+   * n’est pas vide. N’y écrire que le déroulé confirmé par GCG.
+   */
+  steps?: { title: L<string>; text: L<string> }[]
 }
 
 /**
@@ -21,12 +28,13 @@ export const audiences: Audience[] = [
     title: { fr: 'Investisseurs & promoteurs', en: 'Investors & developers' },
     text: {
       fr: 'Lotissements, cités résidentielles, tours, immeubles de rapport : GCG conçoit et construit à l’échelle de votre programme immobilier.',
-      en: 'Estates, gated communities, towers, rental buildings: GCG designs and builds at the scale of your real-estate programme.',
+      en: 'Land subdivisions, residential estates, towers, rental buildings: GCG designs and builds at the scale of your real-estate programme.',
     },
     points: {
       fr: ['Études de faisabilité et conception', 'Programmes de plusieurs dizaines de villas', 'Voirie et réseaux du site (VRD)'],
       en: ['Feasibility studies and design', 'Programmes of dozens of villas', 'Site roads and utilities'],
     },
+    more: { fr: 'Voir les programmes immobiliers', en: 'See residential programmes' },
     proof: ['villa-palmeras', 'green-city', 'projet-elan', 'residence-abatta'],
     image: 'villa-palmeras',
   },
@@ -41,6 +49,7 @@ export const audiences: Audience[] = [
       fr: ['Hôtels clé en main', 'Rénovation et modernisation', 'Mise en conformité technique et incendie'],
       en: ['Turnkey hotels', 'Renovation and modernisation', 'Technical and fire-safety compliance'],
     },
+    more: { fr: 'Voir les projets hôteliers', en: 'See hospitality projects' },
     proof: ['hotel-calao-korhogo', 'palm-resort-movenpick', 'hotel-akwabeach', 'royal-palm'],
     image: 'hotel-calao-korhogo',
   },
@@ -48,15 +57,20 @@ export const audiences: Audience[] = [
     id: 'diaspora',
     title: { fr: 'Particuliers & diaspora', en: 'Private owners & diaspora' },
     text: {
-      fr: 'Vous vivez à Abidjan, à Paris ou ailleurs et voulez construire en Côte d’Ivoire : villa, résidence familiale, immeuble de rapport. Un seul interlocuteur, de l’étude à la remise des clés.',
-      en: 'You live in Abidjan, Paris or elsewhere and want to build in Côte d’Ivoire: a villa, a family residence, a rental building. One partner, from the first study to the keys.',
+      fr: 'Vous vivez à Abidjan, à Paris ou ailleurs et voulez construire en Côte d’Ivoire : villa, résidence familiale, immeuble de rapport. Un seul interlocuteur, de l’étude au chantier.',
+      en: 'You live in Abidjan, Paris or elsewhere and want to build in Côte d’Ivoire: a villa, a family residence, a rental building. One point of contact, from design to construction.',
     },
     points: {
       fr: ['Villas haut standing avec piscine', 'Projets clé en main', 'Plans d’architecte sur mesure'],
       en: ['High-end villas with pools', 'Turnkey projects', 'Bespoke architectural design'],
     },
+    more: { fr: 'Voir les villas et résidences', en: 'See villas and residences' },
     proof: ['villa-de-luxe-assouinde', 'residence-privee-beverly-hills', 'villa-palmerais', 'villa-de-maitre-beverly-hills'],
     image: 'residence-privee-beverly-hills',
+    // Vide en attendant GCG (COPY-06) : premier contact, étude et devis, suivi à distance (photos ou vidéos par étape,
+    // visites pour le client), paiement par étape, contrat et garantie après la remise des clés, décalage horaire et
+    // disponibilité sur WhatsApp. Ne rien ajouter que GCG n’ait confirmé.
+    steps: [],
   },
   {
     id: 'entreprises',
@@ -69,6 +83,7 @@ export const audiences: Audience[] = [
       fr: ['Usines en structure métallique', 'Bureaux clé en main', 'Études techniques d’installations'],
       en: ['Steel-frame factories', 'Turnkey offices', 'Engineering studies for installations'],
     },
+    more: { fr: 'Voir les projets d’entreprises', en: 'See company and industrial projects' },
     proof: ['saif-ivoire', 'usine-pharmanova', 'usine-de-cajou', 'immeuble-bureautique-kone'],
     image: 'usine-de-cajou',
   },

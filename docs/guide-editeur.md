@@ -45,11 +45,16 @@ années, statut) : en cas de doute, laisser vide.
 | N° d’ordre | Position du projet sur le site. Nouveau projet : le numéro qui suit le dernier. |
 | Nom du projet | Nom exact, avec accents. Il sert à créer l’adresse de la page, qui ne changera plus. |
 | Secteur, Ville | Listes fermées. Ville absente : demander à l’équipe de l’ajouter (elle apparaîtra sur la carte). |
-| Lieu, Période | Ce qui s’affiche : « Abidjan, Riviera Golf » ; « 2024 – 2025 ». |
-| Statut | En cours d’études, en cours d’exécution ou réceptionné. Vide si non confirmé. |
+| Lieu, Période | Ce qui s’affiche : « Abidjan, Riviera Golf » ; « 2024 – 2025 ». Pour un chantier en cours, saisir l’année de démarrage seule (« 2023 ») : le site affiche « Depuis 2023 ». |
+| Statut | En cours d’études, en cours d’exécution ou réceptionné. Vide si non confirmé. Les chiffres clés de l’accueil comptent les projets réceptionnés et en chantier d’après ce champ. La première photo réelle de l’Hôtel Calao Korhogo (réceptionné) sert d’ouverture de l’accueil sur téléphone et d’aperçu des liens partagés : le projet à mettre en avant se change dans `SHOWCASE` (`src/lib/projects.ts`). |
+| Mission d’études seulement | À cocher quand GCG n’a fait que des études, de la conception ou un dossier de permis, sans travaux : le projet porte la mention « Études uniquement » au lieu de passer pour un ouvrage construit par GCG. |
 | Résumé (français / anglais) | Une ou deux phrases, 300 caractères au plus. |
+| Récit du projet | Facultatif. Trois paragraphes courts : « Le besoin » (la demande du client, ses contraintes), « Ce que GCG a fait », « Le résultat ». Seuls les paragraphes remplis s’affichent. N’écrire que des faits confirmés par GCG. |
+| Durée du chantier, Effectif au plus fort | Facultatifs. Ajoutés à la fiche du projet s’ils sont remplis (« 18 mois », « 45 personnes »). |
 | Missions GCG | Ce que GCG a réellement fait (études, gros œuvre…). Ne jamais revendiquer une conception faite par un autre. |
 | Expertises mobilisées | Le projet apparaît aussi sur la page de chaque expertise cochée. |
+| Chiffre clé sur l’accueil | Facultatif. Un chiffre de la fiche (« 116 villas ») montré dans la grille « À toutes les échelles » et/ou le bandeau des chiffres clés sous l’ouverture de l’accueil (les 4 premiers rangs), selon le rang indiqué. Il disparaît si le projet n’est pas publié. |
+| Titre et description Google | Facultatifs. S’ils sont remplis, ils remplacent le titre de l’onglet et la description du résultat Google (70 et 170 caractères au plus). |
 
 Les règles d’écriture (espaces, nombres, termes anglais) sont dans `charte-redactionnelle.md`.
 Le site place lui-même les espaces insécables avant `: ; ! ?`.
@@ -61,14 +66,16 @@ Le site place lui-même les espaces insécables avant `: ; ! ?`.
 1. **Ajouter photo** → **Choisir une image** → **Téléverser** ; on peut sélectionner plusieurs fichiers.
 2. Pour chaque photo, écrire une **description** en français et en anglais : ce que montre l’image
    (« Villa Palmeras, façade principale et piscine »). Elle est lue par les personnes malvoyantes et par Google.
-3. Indiquer la **nature** : photo réelle, perspective 3D (le site affiche alors « Perspective ») ou plan.
+3. Indiquer la **nature** : photo réelle, perspective 3D ou plan. Le site affiche la mention « Perspective »
+   (« Rendering » en anglais) ou « Plan » sur l’image, partout où elle apparaît. Une image de synthèse ne doit
+   donc jamais être enregistrée comme « Photo réelle ».
 4. **La première photo est la couverture.** Glisser les photos par la poignée `═` pour changer l’ordre.
 5. Facultatif : **point focal** (« 50% 30% ») si le recadrage coupe une partie importante.
 
 Formats acceptés : JPG, PNG, WebP ou HEIC (iPhone), 20 Mo au plus, de préférence la photo d’origine
-(2 400 px de large ou plus). Le site convertit les photos HEIC en JPG, crée lui-même les versions légères et
-retire les données de localisation (GPS). Un autre format (vidéo, PDF, capture renommée) est refusé avec un
-message.
+(2 400 px de large ou plus). Le site convertit les photos HEIC en JPG, crée lui-même les versions légères,
+retire des fichiers publiés les données de localisation (GPS) et de l’appareil, et ramène les très grandes
+photos à 3 000 px. Un autre format (vidéo, PDF, capture renommée) est refusé avec un message.
 
 - **Photos reçues par WhatsApp** : elles sont fortement compressées ; demander l’original (envoi en
   « Document » ou par e-mail en taille réelle).
@@ -90,9 +97,9 @@ message.
 **Publier en production** (circuit de relecture) :
 
 1. **Enregistrer** : la modification devient un **brouillon**, invisible des visiteurs.
-2. **Aperçu** : après 2 à 5 minutes, le lien « Voir l’aperçu » ouvre la vraie page sur une adresse de test
-   (en français, puis en anglais avec le bouton EN), à regarder sur ordinateur et sur téléphone avant toute
-   mise en ligne. *Réglage à faire une fois par l’équipe : `preview_context` dans `public/admin/config.yml`.*
+2. **Aperçu** : l’espace de gestion n’affiche pas de lien d’aperçu avec l’hébergeur actuel (Vercel ne
+   transmet pas l’adresse de test à l’espace de gestion). Pour voir la page avant la mise en ligne, demander
+   à l’équipe l’adresse de test du brouillon.
 3. Statut **En cours de révision**, puis **Prêt**.
 4. **Publier** → **Publier maintenant** : le site est à jour en **2 à 5 minutes**, sans intervention de l’équipe.
 
@@ -100,8 +107,11 @@ L’onglet **Flux éditorial** (en haut) montre les brouillons en cours dans tro
 
 ## 6. Quand la publication est refusée
 
-Un projet incomplet ne peut pas être publié : le champ manquant est signalé en rouge, avec son nom.
-Compléter puis publier à nouveau.
+Un projet incomplet ne peut pas être publié : le champ manquant ou trop long est signalé en rouge, avec son
+nom. Compléter puis publier à nouveau. Deux règles ne sont vérifiées qu’après la publication, par la
+vérification automatique décrite plus bas : une version anglaise « validée » exige le résumé et au moins une
+mission en anglais ; un chiffre clé exige une valeur et une unité, et, si la version anglaise est validée, la
+traduction de sa précision et de son texte de bandeau.
 
 ![Champs obligatoires signalés](images/cms-06-erreurs.png)
 
@@ -126,6 +136,9 @@ Collection **Paramètres** → **Coordonnées, réseaux et médias**.
 - **Téléphone, WhatsApp** : au format international (`+225 07 00 00 00 00`). Le numéro WhatsApp active les
   boutons WhatsApp de tout le site.
 - **E-mail, adresse, lien Google Maps, horaires** : le fuseau « GMT, heure d’Abidjan » est ajouté tout seul.
+- **Pour Google** (ouverture, fermeture, jours, latitude, longitude du siège) : non affichés sur les pages, ils
+  sont transmis à Google et doivent être identiques à la fiche Google Business Profile. Les horaires ne sont
+  transmis que si les jours sont cochés.
 - **Réseaux sociaux** : l’adresse complète de chaque page ; les QR codes de la page Partager se créent seuls.
 - **Vidéo de présentation** : lien YouTube ou Vimeo, sous-titrée en français et en anglais.
 - **Documents à télécharger** : PDF de 10 Mo au plus, avec titre, langue et version (AAAA-MM).
@@ -164,6 +177,7 @@ Autorisation du client final : <oui (e-mail joint) / en attente>
 | Ajouter un projet | Réalisations → Nouveau projet |
 | Changer la photo de couverture | Projet → Photos → glisser la bonne photo en premier |
 | Mettre un projet en avant sur l’accueil | Projet → « Mettre en avant sur l’accueil » + ordre |
+| Changer un chiffre de l’accueil | Projet → « Chiffre clé sur l’accueil » |
 | Changer le numéro WhatsApp | Paramètres → Coordonnées |
 | Ajouter la plaquette PDF | Paramètres → Documents à télécharger |
 | Retirer un projet | Demander à l’équipe |

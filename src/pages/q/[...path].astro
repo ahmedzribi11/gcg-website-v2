@@ -1,0 +1,35 @@
+---
+/**
+ * Adresses courtes des QR codes de chantier (SHR-04) : affiche et fichiers à imprimer de /partager.
+ * Plus l’adresse est courte, plus les modules du code sont gros à taille égale : https://www.gcg-ci.com/q/<code>
+ * tient en 29 modules avec la correction d’erreur Q (25 % de la surface peut être abîmée).
+ *   /q, /q/en                  → accueil FR, EN (marquage panneau)
+ *   /q/<code>, /q/en/<code>    → page du projet, ou liste des réalisations s’il n’est pas publié (voir qrProjects)
+ *   toute autre adresse /q/…   → accueil, par le script de la page 404
+ * <code> : qrCode(slug) de src/i18n, stable tant que l’adresse (slug) du projet ne change pas.
+ */
+import QrRedirect from '../../components/QrRedirect.astro'
+import { qrCode, route, type Lang } from '../../i18n'
+import { qrProjects, utm } from '../../lib/qr-redirects'
+
+export async function getStaticPaths() {
+  const paths: { params: { path: string | undefined }; props: { to: string } }[] = []
+  for (const lang of ['fr', 'en'] as Lang[]) {
+    const pre = lang === 'fr' ? '' : 'en'
+    paths.push({ params: { path: pre || undefined }, props: { to: `${route('home', lang)}?${utm('panneau', 'site')}` } })
+    const seen = new Map<string, string>()
+    for (const { slug, to } of await qrProjects(lang)) {
+      const code = qrCode(slug)
+      if (seen.has(code))
+        throw new Error(`QR codes : les projets « ${seen.get(code)} » et « ${slug} » ont le même code court « ${code} ». Changez l’adresse (slug) du nouveau projet.`)
+      seen.set(code, slug)
+      paths.push({ params: { path: [pre, code].filter(Boolean).join('/') }, props: { to } })
+    }
+  }
+  return paths
+}
+
+const { to } = Astro.props
+---
+
+<QrRedirect to={to} />

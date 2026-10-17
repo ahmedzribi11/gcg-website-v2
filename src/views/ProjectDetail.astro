@@ -1,14 +1,13 @@
 ---
-import { getImage } from 'astro:assets'
 import Base from '../layouts/Base.astro'
 import ProjectImage from '../components/ProjectImage.astro'
 import ProjectCard from '../components/ProjectCard.astro'
 import Icon from '../components/Icon.astro'
 import { getService } from '../data/services'
-import { colon, qrPath, projectPath, route, SECTOR_LABELS, servicePath, STATUS_LABELS, useT, type Lang } from '../i18n'
+import { colon, plural, qrPath, projectPath, route, SECTOR_LABELS, servicePath, STATUS_LABELS, useT, type Lang } from '../i18n'
 import { pad, type Project } from '../lib/projects'
-import { whatsappLink } from '../lib/settings'
-import { breadcrumbLd } from '../lib/seo'
+import { pageWhatsApp } from '../lib/settings'
+import { breadcrumbLd, ogImage, webPageLd } from '../lib/seo'
 
 interface Props {
   lang: Lang
@@ -25,15 +24,19 @@ const related = all
   .filter((x) => x.slug !== p.slug && (x.sector === p.sector || x.types.some((ty) => p.types.includes(ty))))
   .sort((a, b) => Number(b.sector === p.sector) - Number(a.sector === p.sector) || Math.abs(a.number - p.number) - Math.abs(b.number - p.number))
   .slice(0, 3)
-const og = await getImage({ src: p.images[0].src, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 80 })
+const og = await ogImage(p.images[0].src)
+/** Photo source trop petite pour un plein écran d’ordinateur (VIS-02). */
+const narrowCover = p.images[0].src.width < 1400
 const sheet: [string, string | undefined, string?][] = [
   [t('project.location'), p.location],
   [t('project.period'), p.period],
   [t('project.surface'), p.surface],
   [t('project.terrain'), p.terrain],
   [t('project.covered'), p.coveredSurface],
+  [t('project.duration'), p.duration],
+  [t('project.workforce'), p.workforce ? `${p.workforce.toLocaleString(lang === 'en' ? 'en-GB' : 'fr-FR')} ${plural(lang, p.workforce, 'project.people.one', 'project.people.many')}` : undefined],
   [t('project.sector'), SECTOR_LABELS[p.sector][lang], `secteur=${p.sector}`],
-  [t('project.status'), p.status ? STATUS_LABELS[p.status][lang] : undefined, p.status ? `statut=${p.status}` : undefined],
+  [t('project.status'), p.status ? STATUS_LABELS[p.status][lang] : p.designOnly ? t('project.designOnly') : undefined, p.status ? `statut=${p.status}` : undefined],
 ]
 const path = projectPath(p.slug, lang)
 /** Mise en page de la galerie : une grande image, deux petites, puis des rangées pleines. */
@@ -45,11 +48,34 @@ function galleryClass(i: number, n: number) {
   return rest % 2 === 1 && i === n - 1 ? 'md:col-span-6' : 'md:col-span-3'
 }
 const shareText = `${p.name} — GCG`
-const wa = whatsappLink(`${t('contact.form.intro')} (${p.name})`)
-const desc = `${p.composition} ${p.location}, ${p.period}.`
+const wa = pageWhatsApp(lang, p.name)
+// Titre et description Google saisis dans l’espace de gestion, sinon construits (CODE-04)
+// « Depuis 2025 » prend une minuscule après la virgule
+const base = `${p.composition} ${p.location}, ${p.period.replace(/^(Depuis|Since) /, (m) => m.toLowerCase())}.`
+/**
+ * Description Google construite : programme, lieu, période, puis les missions de GCG tant que le tout tient
+ * en 155 caractères, longueur au-delà de laquelle Google coupe (SEO-04).
+ */
+function withMissions(text: string) {
+  let out = text
+  for (let k = p.missions.length; k > 0; k--) {
+    const candidate = `${text} ${t('project.missions')}${colon(lang)}${p.missions.slice(0, k).join(', ')}.`
+    if (candidate.length <= 155) {
+      out = candidate
+      break
+    }
+  }
+  return out
+}
+const desc = p.seoDescription ?? withMissions(base)
 // Titre d’onglet unique par langue, ≈ 60 caractères au plus
-const titleLong = `${p.name} · ${lang === 'fr' ? 'projet GCG, Côte d’Ivoire' : 'GCG project, Côte d’Ivoire'}`
-const docTitle = titleLong.length <= 60 ? titleLong : `${p.name} · GCG`
+const titleLong = `${p.name} — ${lang === 'fr' ? 'projet GCG, Côte d’Ivoire' : 'GCG project, Côte d’Ivoire'}`
+const docTitle = p.seoTitle ?? (titleLong.length <= 60 ? titleLong : `${p.name} — GCG`)
+// Aperçu de lien (SHR-13) : le domaine s’affiche déjà sous le titre, qui se limite au nom du projet ;
+// la description commence par le rôle de GCG (ses missions)
+const ogDescription = `GCG${colon(lang)}${p.missions.join(', ')}. ${p.seoDescription ?? base}`
+// Sans version anglaise relue, le bouton de langue mène à la liste des réalisations, et aucun hreflang n’est annoncé (CODE-04)
+const altPath = p.hasEn ? projectPath(p.slug, other) : route('projects', other)
 const crumbs = breadcrumbLd(
   [
     { name: t('nav.home'), path: route('home', lang) },
@@ -58,44 +84,61 @@ const crumbs = breadcrumbLd(
   ],
   Astro.site,
 )
+// Page du projet rattachée à l’entreprise par son identifiant (SEO-03)
+const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, image: og.src, lang }, Astro.site)] : []
 
 ---
 
-<Base lang={lang} alt={projectPath(p.slug, other)} title={p.name} docTitle={docTitle} description={desc} image={og.src} header="overlay" jsonLd={[crumbs]}>
+<Base lang={lang} alt={altPath} translated={p.hasEn} title={p.name} docTitle={docTitle} description={desc} ogTitle={p.name} ogDescription={ogDescription} image={og.src} imageWidth={og.width} imageHeight={og.height} header="overlay" jsonLd={[crumbs, ...pageLd]}>
   <article>
     <header class="relative flex h-[86svh] min-h-[560px] items-end overflow-hidden bg-ink-3 force-dark">
-      <ProjectImage image={p.images[0]} sizes="100vw" priority class="absolute inset-0 block h-full w-full" vt={`p-${p.slug}`} />
+      {/* Couverture plus étroite que 1 400 px : affichée au plus à sa largeur réelle, centrée sur le fond sombre, au lieu d’être étirée sur tout l’écran (VIS-02) */}
+      <div class="absolute inset-0 mx-auto w-full" style={narrowCover ? `max-width:${p.images[0].src.width}px` : undefined}>
+        <ProjectImage image={p.images[0]} sizes={narrowCover ? `(min-width: ${p.images[0].src.width}px) ${p.images[0].src.width}px, 100vw` : '100vw'} priority class="absolute inset-0 block h-full w-full" vt={`p-${p.slug}`} lang={lang} kindClass="bottom-4 right-5" />
+      </div>
       <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-ink/50"></div>
       <div class="wrap relative pb-12 md:pb-16">
-        <nav class="meta flex flex-wrap items-center gap-2 text-bone/70" aria-label={lang === 'fr' ? 'Fil d’Ariane' : 'Breadcrumb'} data-reveal>
-          <a href={route('home', lang)} class="hover:text-gold">{t('nav.home')}</a>
+        <nav class="meta flex flex-wrap items-center gap-2 text-bone/70" aria-label={lang === 'fr' ? 'Fil d’Ariane' : 'Breadcrumb'} data-intro style="--d:.05s">
+          <a href={route('home', lang)} class="-mx-2 -my-3.5 px-2 py-3.5 hover:text-gold">{t('nav.home')}</a>
           <span aria-hidden="true">/</span>
-          <a href={route('projects', lang)} class="hover:text-gold">{t('projects.label')}</a>
+          <a href={route('projects', lang)} class="-mx-2 -my-3.5 px-2 py-3.5 hover:text-gold">{t('projects.label')}</a>
           <span aria-hidden="true">/</span>
           <span class="text-gold" aria-current="page">{p.name}</span>
         </nav>
-        <h1 class="display mt-6 max-w-[16ch] text-balance text-[clamp(2.8rem,8vw,8.8rem)]" data-split>{p.name}</h1>
-        <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3" data-reveal style="--d:.3s">
+        <h1 class="display mt-6 max-w-[16ch] text-balance text-4xl" data-intro="rise" style="--d:.1s">{p.name}</h1>
+        <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3" data-intro="rise" style="--d:.2s">
           {p.status && <span class="pill" data-status={p.status}>{STATUS_LABELS[p.status][lang]}</span>}
-          <span class="flex items-center gap-2 text-[15px] text-bone/80"><Icon name="pin" size={16} class="text-gold" />{p.location}</span>
-          <span class="flex items-center gap-2 text-[15px] text-bone/80"><Icon name="clock" size={16} class="text-gold" />{p.period}</span>
-          {p.surface && <span class="text-[15px] text-bone/80">{p.surface}</span>}
+          {!p.status && p.designOnly && <span class="pill" data-scope="design">{t('project.designOnly')}</span>}
+          <span class="flex items-center gap-2 text-base text-bone/80"><Icon name="pin" size={16} class="text-gold" />{p.location}</span>
+          <span class="flex items-center gap-2 text-base text-bone/80"><Icon name="clock" size={16} class="text-gold" />{p.period}</span>
+          {p.surface && <span class="text-base text-bone/80">{p.surface}</span>}
         </div>
       </div>
     </header>
 
-    <div class="wrap grid gap-16 py-20 md:grid-cols-12 md:py-28">
-      <div class="md:col-span-7">
-        <p class="label text-gold" data-reveal>{t('project.composition')}</p>
-        <p class="mt-6 text-[clamp(1.6rem,2.8vw,2.6rem)] font-light leading-[1.2] tracking-[-0.02em]" data-reveal>{p.composition}</p>
-        {p.typology && <p class="mt-6 text-lg text-bone/70" data-reveal><span class="meta mr-3 text-mist">{t('project.typology')}</span>{p.typology}</p>}
+    <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-16 py-20 md:py-28 lg:grid-cols-12">
+      <div class="min-w-0 lg:col-span-7">
+        <p class="label text-gold">{t('project.composition')}</p>
+        <p class="mt-6 text-xl md:text-2xl font-light leading-[1.2] tracking-[-0.02em]">{p.composition}</p>
+        {p.typology && <p class="mt-6 text-lg text-bone/70"><span class="meta mr-3 text-mist">{t('project.typology')}</span>{p.typology}</p>}
 
-        <h2 class="label mt-16 text-gold" data-reveal>{t('project.missions')}</h2>
+        {/* Récit du projet, paragraphe par paragraphe, seulement ceux que GCG a confirmés (COPY-04) */}
+        {
+          (['need', 'work', 'result'] as const)
+            .filter((k) => p.story[k])
+            .map((k) => (
+              <>
+                <h2 class="label mt-16 text-gold">{t(`project.story.${k}`)}</h2>
+                <p class="mt-6 max-w-[62ch] text-lg leading-relaxed text-bone/80">{p.story[k]}</p>
+              </>
+            ))
+        }
+
+        <h2 class="label mt-16 text-gold">{t('project.missions')}</h2>
         <ol class="mt-6 border-t border-line">
           {
-            p.missions.map((m, i) => (
-              <li class="flex gap-6 border-b border-line py-5 text-xl font-light md:text-2xl" data-reveal style={`--d:${i * 0.05}s`}>
-                <span class="meta pt-2 text-mist">{pad(i + 1)}</span>
+            p.missions.map((m) => (
+              <li class="flex gap-6 border-b border-line py-5 text-lg md:text-xl">
                 {m}
               </li>
             ))
@@ -105,16 +148,16 @@ const crumbs = breadcrumbLd(
         {
           p.typologies && (
             <>
-              <h2 class="label mt-16 text-gold" data-reveal>{t('project.typologies')}</h2>
-              <table class="mt-6 w-full border-t border-line text-left" data-reveal>
+              <h2 class="label mt-16 text-gold">{t('project.typologies')}</h2>
+              <table class="mt-6 w-full border-t border-line text-left">
                 <thead class="sr-only">
                   <tr><th>{t('project.typology')}</th><th>{t('project.surface')}</th></tr>
                 </thead>
                 <tbody>
                   {p.typologies.map((ty) => (
                     <tr class="border-b border-line">
-                      <td class="py-5 text-xl font-light md:text-2xl">{ty.name}</td>
-                      <td class="py-5 text-right font-mono text-sm text-gold">{ty.surface}</td>
+                      <td class="py-5 text-lg md:text-xl">{ty.name}</td>
+                      <td class="py-5 text-right tabular-nums text-sm text-gold">{ty.surface}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -126,8 +169,8 @@ const crumbs = breadcrumbLd(
         {
           p.services.length > 0 && (
             <>
-              <h2 class="label mt-16 text-gold" data-reveal>{t('project.services')}</h2>
-              <ul class="mt-6 flex flex-wrap gap-2" data-reveal>
+              <h2 class="label mt-16 text-gold">{t('project.services')}</h2>
+              <ul class="mt-6 flex flex-wrap gap-2">
                 {p.services.map((id) => {
                   const s = getService(id)
                   return (
@@ -142,46 +185,49 @@ const crumbs = breadcrumbLd(
         }
       </div>
 
-      <aside class="md:col-span-4 md:col-start-9">
-        <div class="cartouche border border-bone/30 bg-ink-2" data-reveal>
+      <aside class="min-w-0 lg:col-span-4 lg:col-start-9">
+        <div class="border border-bone/30 bg-ink-2">
           <div class="flex items-center justify-between bg-brand px-5 py-3">
             <span class="meta text-gold">{t('project.sheet')}</span>
-            <span class="meta text-gold">N° {pad(p.number)}</span>
+            <span class="meta text-gold">{t('project.no')} {pad(p.number)}</span>
           </div>
-          <p class="border-b border-line px-5 py-4 text-lg font-light">{p.name}</p>
-          <dl class="grid grid-cols-[auto_1fr]">
+          <p class="border-b border-line px-5 py-4 text-lg">{p.name}</p>
+          <dl class="grid grid-cols-[auto_minmax(0,1fr)]">
             {
               sheet
                 .filter(([, v]) => v)
                 .map(([k, v, q]) => (
                   <>
                     <dt class="meta border-b border-r border-line px-5 py-3.5 text-mist">{k}</dt>
-                    <dd class="border-b border-line px-5 py-3.5 text-[15px]">{q ? <a href={`${route('projects', lang)}?${q}`} class="link-line hover:text-gold">{v}</a> : v}</dd>
+                    <dd class="min-w-0 break-words border-b border-line px-5 py-3.5 text-base">{q ? <a href={`${route('projects', lang)}?${q}`} class="link-line hover:text-gold">{v}</a> : v}</dd>
                   </>
                 ))
             }
           </dl>
           <div class="flex items-end justify-between gap-4 px-5 py-4">
             <span class="meta text-mist">General Constructor Group CI</span>
-            <img src="/brand/gcg-logo-gold.png" alt="" width="720" height="218" class="h-6 w-auto opacity-80" loading="lazy" />
+            <!-- Logo or sur fond sombre, vert en mode clair (l’or y était invisible, BRW-08) -->
+            <img src="/brand/gcg-logo-gold-440.webp" alt="" width="440" height="133" class="no-print theme-dark-only logo-mono h-6 w-auto opacity-80" loading="lazy" />
+            <img src="/brand/gcg-logo-green-440.webp" alt="" width="440" height="134" class="no-print theme-light-only h-6 w-auto" loading="lazy" />
           </div>
         </div>
 
-        <div class="mt-6 border border-line p-5" data-reveal style="--d:.1s">
+        <div class="no-print mt-6 border border-line p-5">
           <p class="meta text-gold">{t('project.share')}</p>
-          <div class="mt-4 flex gap-4">
-            <span id="project-qr" class="block w-24 shrink-0 rounded bg-white p-1" data-qr={qrPath(lang, 'panneau', p.slug)}></span>
+          <div class="mt-4 flex flex-wrap gap-4">
+            <span id="project-qr" class="block w-24 shrink-0 self-start rounded bg-white p-1" data-qr={qrPath(lang, 'panneau', p.slug)}></span>
             <div class="flex flex-col gap-2">
-              <button type="button" class="chip !h-9 !text-[12px]" data-share={path} data-title={shareText} data-copied={t('project.copied')}>
-                <Icon name="share" size={14} /> <span data-copy-label>{t('cta.share')}</span>
+              <button type="button" class="chip !h-11 !text-xs" data-share={path} data-title={shareText} data-copied={t('project.copied')}>
+                <Icon name="share" /> <span data-copy-label>{t('cta.share')}</span>
               </button>
-              <button type="button" class="chip !h-9 !text-[12px]" data-copy={path} data-copied={t('project.copied')}>
-                <Icon name="link" size={14} /> <span data-copy-label>{t('project.copy')}</span>
+              <button type="button" class="chip !h-11 !text-xs" data-copy={path} data-copied={t('project.copied')}>
+                <Icon name="link" /> <span data-copy-label>{t('project.copy')}</span>
               </button>
-              <a href={`${route('poster', lang)}?p=${p.slug}`} class="chip !h-9 !text-[12px]"><Icon name="print" size={14} /> {t('project.poster')}</a>
+              <a href={`${route('poster', lang)}?p=${p.slug}`} class="chip !h-11 !text-xs"><Icon name="print" /> {t('project.poster')}</a>
             </div>
           </div>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/55">{t('project.qrHelp')}</p>
+          <p class="mt-4 text-sm leading-relaxed text-bone/55">{t('project.qrHelp')}</p>
+          <p data-qr-warning hidden role="note" class="mt-3 border border-gold/60 p-3 text-sm leading-relaxed text-gold">{t('share.tempWarning')}</p>
         </div>
       </aside>
     </div>
@@ -195,12 +241,11 @@ const crumbs = breadcrumbLd(
                 type="button"
                 class:list={['group relative overflow-hidden bg-ink-3', galleryClass(i, p.images.length)]}
                 data-lightbox={i}
-                data-cursor="view"
-                aria-label={`${t('project.enlarge')}${colon(lang)}${img.alt}`}
+                aria-label={`${t('project.enlarge')}${colon(lang)}${img.alt}${img.kind === 'photo' ? '' : `, ${t(img.kind === 'plan' ? 'project.plan' : 'project.render').toLowerCase()}`}`}
                 aria-haspopup="dialog"
-                data-reveal="clip"
+                data-reveal
               >
-                <ProjectImage image={img} sizes={i === 0 ? '(min-width: 768px) 66vw, 100vw' : '(min-width: 768px) 33vw, 100vw'} class="block aspect-[4/3] h-full w-full" imgClass="h-full w-full object-cover transition-transform duration-[1.4s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" />
+                <ProjectImage image={img} sizes={i === 0 ? '(min-width: 768px) 66vw, 100vw' : '(min-width: 768px) 33vw, 100vw'} class="block aspect-[4/3] h-full w-full" imgClass="h-full w-full object-cover transition-transform duration-[1.4s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]" lang={lang} />
               </button>
             ))}
           </div>
@@ -208,54 +253,57 @@ const crumbs = breadcrumbLd(
       )
     }
 
-    <dialog id="lightbox" class="lightbox m-0 h-full max-h-none w-full max-w-none bg-ink/95 p-0 text-bone backdrop:bg-ink/90" aria-label={t('project.gallery')}>
-      <div class="relative flex h-full w-full items-center justify-center">
-        {
-          p.images.map((img, i) => (
-            <figure data-slide={i} hidden class="flex h-full w-full items-center justify-center p-4 md:p-16">
-              <ProjectImage image={img} sizes="100vw" class="block max-h-full" imgClass="max-h-[82svh] w-auto max-w-full object-contain" />
-            </figure>
-          ))
-        }
-        <p class="meta absolute left-5 top-5 text-bone/70" aria-live="polite"><span data-lb-index>1</span> / {p.images.length}</p>
-        <button type="button" class="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full border border-line hover:border-gold" data-lb-close aria-label={t('project.close')}><Icon name="close" size={18} /></button>
-        <button type="button" class="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/60 hover:border-gold" data-lb-prev aria-label={t('project.prev')}><Icon name="arrow-left" size={18} /></button>
-        <button type="button" class="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/60 hover:border-gold" data-lb-next aria-label={t('project.next')}><Icon name="arrow" size={18} /></button>
-      </div>
-    </dialog>
+    {/* Visionneuse rendue seulement avec la galerie (plus d’une image) : sinon aucun bouton ne l’ouvre (CODE-08) */}
+    {
+      p.images.length > 1 && (
+        <dialog id="lightbox" class="lightbox m-0 h-full max-h-none w-full max-w-none bg-ink/95 p-0 text-bone backdrop:bg-ink/90" aria-label={t('project.gallery')}>
+          <div class="relative flex h-full w-full items-center justify-center">
+            {p.images.map((img, i) => (
+              <figure data-slide={i} hidden class="flex h-full w-full items-center justify-center p-4 md:p-16">
+                <ProjectImage image={img} sizes="100vw" class="block max-h-full" imgClass="max-h-[82svh] w-auto max-w-full object-contain" lang={lang} kindClass="bottom-5 right-5" />
+              </figure>
+            ))}
+            {/* Annonce : position et description de l’image affichée (A11Y-04) */}
+            <p class="meta absolute left-5 top-5 text-bone/70" aria-live="polite" aria-atomic="true"><span data-lb-index>1</span> / {p.images.length}<span class="sr-only" data-lb-alt data-sep={colon(lang)}></span></p>
+            <button type="button" class="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full border border-line hover:border-gold" data-lb-close aria-label={t('project.close')}><Icon name="close" size={24} /></button>
+            <button type="button" class="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/60 hover:border-gold" data-lb-prev aria-label={t('project.prevPhoto')}><Icon name="arrow-left" size={24} /></button>
+            <button type="button" class="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/60 hover:border-gold" data-lb-next aria-label={t('project.nextPhoto')}><Icon name="arrow" size={24} /></button>
+          </div>
+        </dialog>
+      )
+    }
 
-    <section class="theme-paper py-20 md:py-28">
+    <section class="no-print theme-paper py-20 md:py-28">
       <div class="wrap flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
         <div>
-          <p class="label text-brand/75" data-reveal>{t('project.similar')}</p>
-          <h2 class="display mt-6 max-w-[18ch] text-[clamp(2.2rem,5vw,5rem)]" data-split>{t('project.similarText')}</h2>
+          <h2 class="display max-w-[18ch] text-3xl">{t('project.similarText')}</h2>
         </div>
-        <div class="flex flex-wrap gap-3" data-reveal>
-          {wa && <a href={wa} target="_blank" rel="noopener" class="btn btn-dark"><Icon name="whatsapp" size={16} /> WhatsApp</a>}
-          <a href={`${route('contact', lang)}?projet=${p.slug}`} class:list={['btn', wa ? 'btn-line-dark' : 'btn-dark']}>{t('cta.project')} <Icon name="arrow" /></a>
+        <div class="flex flex-wrap gap-3">
+          {wa && <a href={wa} target="_blank" rel="noopener" class="btn btn-dark"><Icon name="whatsapp" size={20} /> WhatsApp</a>}
+          <a href={`${route('contact', lang)}?projet=${p.slug}`} class:list={['btn', wa ? 'btn-line-dark' : 'btn-dark']}>{t('cta.project')} <Icon name="arrow" size={20} /></a>
         </div>
       </div>
     </section>
 
     {
       related.length > 0 && (
-        <section class="wrap py-20 md:py-28" aria-labelledby="related-title">
-          <h2 id="related-title" class="label text-gold" data-reveal>{t('project.related')}</h2>
+        <section class="no-print wrap py-20 md:py-28" aria-labelledby="related-title">
+          <h2 id="related-title" class="label text-gold">{t('project.related')}</h2>
           <div class="mt-10 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-            {related.map((r, i) => <ProjectCard project={r} lang={lang} index={i} />)}
+            {related.map((r) => <ProjectCard project={r} lang={lang} />)}
           </div>
         </section>
       )
     }
 
-    <nav class="grid border-t border-line md:grid-cols-2" aria-label={lang === 'fr' ? 'Projets voisins' : 'Adjacent projects'}>
+    <nav class="no-print grid border-t border-line md:grid-cols-2" aria-label={lang === 'fr' ? 'Projets voisins' : 'Adjacent projects'}>
       <a href={projectPath(prev.slug, lang)} class="group block border-b border-line px-5 py-12 md:border-b-0 md:border-r md:px-10 md:py-16">
         <span class="meta flex items-center gap-2 text-mist"><Icon name="arrow-left" /> {t('project.prev')}</span>
-        <span class="display mt-4 block text-[clamp(1.8rem,3.4vw,3.4rem)] text-bone/50 transition-colors duration-500 group-hover:text-bone">{prev.name}</span>
+        <span class="display mt-4 block text-2xl text-bone/50 transition-colors duration-500 group-hover:text-bone">{prev.name}</span>
       </a>
       <a href={projectPath(next.slug, lang)} class="group block px-5 py-12 text-right md:px-10 md:py-16">
         <span class="meta flex items-center justify-end gap-2 text-mist">{t('project.next')} <Icon name="arrow" /></span>
-        <span class="display mt-4 block text-[clamp(1.8rem,3.4vw,3.4rem)] text-bone/50 transition-colors duration-500 group-hover:text-bone">{next.name}</span>
+        <span class="display mt-4 block text-2xl text-bone/50 transition-colors duration-500 group-hover:text-bone">{next.name}</span>
       </a>
     </nav>
   </article>
@@ -267,11 +315,14 @@ const crumbs = breadcrumbLd(
   if (dlg) {
     const slides = Array.from(dlg.querySelectorAll<HTMLElement>('[data-slide]'))
     const label = dlg.querySelector<HTMLElement>('[data-lb-index]')!
+    const alt = dlg.querySelector<HTMLElement>('[data-lb-alt]')!
     let i = 0
     const show = (n: number) => {
       i = (n + slides.length) % slides.length
       slides.forEach((s, k) => (s.hidden = k !== i))
       label.textContent = String(i + 1)
+      const text = slides[i].querySelector('img')?.alt
+      alt.textContent = text ? `${alt.dataset.sep}${text}` : ''
     }
     let opener: HTMLElement | null = null
     let viaHistory = false
@@ -312,12 +363,10 @@ const crumbs = breadcrumbLd(
       if (Math.abs(dx) > 50) show(i + (dx < 0 ? 1 : -1))
       x0 = null
     })
-    if (slides.length < 2) dlg.querySelectorAll('[data-lb-prev], [data-lb-next]').forEach((b) => b.remove())
   }
 </script>
 
 <style>
   .lightbox[open] { display: block; }
-  .lightbox::backdrop { backdrop-filter: blur(6px); }
 </style>
 </Base>

@@ -1,12 +1,15 @@
 /**
  * Contrôle du contenu avant chaque build (MODEL-05/07/13, PERF-17, MEDIA-07/11, SEC-19, CMS-04).
- * Les photos HEIC/HEIF (iPhone) sont d’abord converties en JPG et la fiche du projet mise à jour.
+ * Les photos HEIC/HEIF (iPhone) sont d’abord converties en JPG et la fiche du projet mise à jour ;
+ * les photos avec métadonnées (GPS, appareil) ou de plus de 3 000 px sont réécrites sans elles (OPS-07).
  * Le build échoue avec un message en français si une règle bloquante n’est pas respectée ;
  * les avertissements n’arrêtent pas le build.
  *
  *   node scripts/check-content.mjs            contrôle
  *   node scripts/check-content.mjs --update   ajoute les nouveaux projets au registre des adresses publiées
+ *                                             (inutile pour un projet enregistré dans git : voir « Adresses stables »)
  */
+import { execFileSync } from 'node:child_process'
 import { closeSync, existsSync, openSync, readFileSync, readSync, readdirSync, statSync, writeFileSync } from 'node:fs'
 import { extname, join, relative, resolve } from 'node:path'
 import sharp from 'sharp'
@@ -23,11 +26,14 @@ const warn = (m) => warnings.push(m)
 const SUPPORTED = ['.jpg', '.jpeg', '.png', '.webp', '.avif']
 const MIN_WIDTH = 500
 const HERO_WIDTH = 2400
+/** Plus grand côté conservé : l’original est copié tel quel dans le site publié (dist/_astro), il ne doit rien révéler. */
+const MAX_EDGE = 3000
+const REENCODE = { jpeg: { quality: 88 }, png: {}, webp: { quality: 88 }, avif: { quality: 70 } }
 const MAX_PDF = 10 * 1024 * 1024
 
 /* ─── Photos iPhone (HEIC/HEIF) : conversion en JPG (CMS-04) ───────────── */
 // Les navigateurs n’affichent pas le HEIC et l’optimiseur d’images ne le lit pas : la photo est convertie
-// à côté de l’original, la fiche pointe vers le JPG ; les métadonnées (GPS) disparaissent à l’optimisation.
+// à côté de l’original, la fiche pointe vers le JPG ; ses métadonnées sont retirées plus bas (OPS-07).
 const HEIC = ['.heic', '.heif']
 for (const file of readdirSync(PROJECTS).filter((f) => f.endsWith('.json'))) {
   const jsonPath = join(PROJECTS, file)
@@ -57,6 +63,7 @@ const files = readdirSync(PROJECTS).filter((f) => f.endsWith('.json'))
 const numbers = new Map()
 const slugs = []
 const untranslated = []
+const pending = []
 for (const file of files) {
   const slug = file.replace(/\.json$/, '')
   slugs.push(slug)
@@ -69,6 +76,7 @@ for (const file of files) {
     continue
   }
   if (data.en_status === 'a-traduire') untranslated.push(slug)
+  if ((data.permission ?? 'en-attente') === 'en-attente') pending.push(slug)
   if (numbers.has(data.number)) err(`${file} : le N° ${data.number} est déjà utilisé par ${numbers.get(data.number)}.`)
   else numbers.set(data.number, file)
 
@@ -93,31 +101,91 @@ for (const file of files) {
       err(`${where} : fichier introuvable (${src}).`)
       continue
     }
+    // Le site publie aussi le fichier d’origine (dist/_astro) : il est réécrit sur place, orienté, sans métadonnées
+    // (GPS, appareil, date) et ramené à 3 000 px au plus grand côté (OPS-07, MEDIA-07). Le dépôt garde l’ancienne version dans son historique.
+    const before = await sharp(path).metadata()
+    const edge = Math.max(before.width ?? 0, before.height ?? 0)
+    if ((before.exif || before.xmp || before.iptc || edge > MAX_EDGE) && REENCODE[before.format]) {
+      const hidden = before.exif || before.xmp || before.iptc ? 'métadonnées retirées : GPS, appareil, date éventuels' : ''
+      const out = await sharp(readFileSync(path))
+        .rotate()
+        .resize({ width: MAX_EDGE, height: MAX_EDGE, fit: 'inside', withoutEnlargement: true })
+        .toFormat(before.format, REENCODE[before.format])
+        .toBuffer()
+      writeFileSync(path, out)
+      const done = [hidden, edge > MAX_EDGE ? `réduite de ${edge} à ${MAX_EDGE} px` : ''].filter(Boolean).join(', ')
+      warn(`${where} : image réécrite pour la publication (${done}). En local, enregistrez ce fichier modifié dans le dépôt.`)
+    }
     const meta = await sharp(path).metadata()
     if ((meta.width ?? 0) < MIN_WIDTH) err(`${where} : image trop petite (${meta.width} px de large, ${MIN_WIDTH} px minimum).`)
     if (i === 0 && (meta.width ?? 0) < HERO_WIDTH)
       warn(`${where} : utilisée en grand format, ${meta.width} px de large (${HERO_WIDTH} px recommandés, MEDIA-11).`)
-    if (meta.exif && meta.exif.includes(Buffer.from('GPS')))
-      warn(`${where} : l’original contient des métadonnées GPS (elles sont retirées des images publiées, mais restent dans le dépôt).`)
   }
 }
 
 /* ─── Adresses stables : un projet publié ne disparaît pas sans redirection ─── */
-const registry = existsSync(REGISTRY) ? JSON.parse(readFileSync(REGISTRY, 'utf8')) : []
+// Les deux hébergeurs prévus lisent chacun leur fichier (OPS-08) : la redirection doit figurer dans les deux.
+// Registre = liste versionnée (src/data/published-slugs.json) + toute fiche déjà enregistrée dans l’historique git :
+// un projet créé depuis l’espace de gestion est protégé sans commande à lancer (OPS-11). Le registre complété est
+// réécrit pour que les QR codes (/qr/p/<projet>) en tiennent compte ; sans git, seule la liste versionnée compte.
+const listed = existsSync(REGISTRY) ? JSON.parse(readFileSync(REGISTRY, 'utf8')) : []
+const history = (() => {
+  try {
+    const out = execFileSync('git', ['log', '--no-renames', '--diff-filter=A', '--format=', '--name-only', 'HEAD', '--', 'src/content/projects/*.json'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    })
+    return out
+      .split('\n')
+      .filter((l) => l.endsWith('.json'))
+      .map((l) =>
+        l
+          .split('/')
+          .pop()
+          .replace(/\.json$/, ''),
+      )
+  } catch {
+    return null // pas de dépôt git (archive) : registre versionné seul
+  }
+})()
+const registry = [...new Set([...listed, ...(history ?? [])])].sort()
+const learned = registry.filter((s) => !listed.includes(s))
+if (learned.length && !process.argv.includes('--update')) {
+  writeFileSync(REGISTRY, JSON.stringify(registry, null, 2) + '\n')
+  console.log(`Registre des adresses publiées complété depuis l’historique git : ${learned.join(', ')}`)
+}
 const vercel = JSON.parse(readFileSync(join(ROOT, 'vercel.json'), 'utf8'))
-const redirected = new Set((vercel.redirects ?? []).map((r) => r.source))
+const hosts = {
+  'vercel.json': new Set((vercel.redirects ?? []).map((r) => r.source)),
+  'public/_redirects': new Set(
+    readFileSync(join(ROOT, 'public/_redirects'), 'utf8')
+      .split('\n')
+      .map((l) => l.trim())
+      .filter((l) => l && !l.startsWith('#'))
+      .map((l) => l.split(/\s+/)[0]),
+  ),
+}
 for (const slug of registry) {
   if (slugs.includes(slug)) continue
   for (const path of [`/realisations/${slug}`, `/en/projects/${slug}`]) {
-    if (!redirected.has(path))
-      err(`Le projet « ${slug} » a été publié puis retiré : ajoutez une redirection 301 de ${path} (vercel.json et public/_redirects).`)
+    const missing = Object.keys(hosts).filter((f) => !hosts[f].has(path))
+    if (missing.length) err(`Le projet « ${slug} » a été publié puis retiré : ajoutez une redirection 301 de ${path} (${missing.join(' et ')}).`)
   }
 }
+// Mode lancement (GCG_LAUNCH=1) : un projet sans autorisation n’a pas de page, mais son QR code imprimé
+// (/qr/p/<projet>) reste valable et mène à la liste des réalisations (OPS-02, SHR-03).
+const hidden = process.env.GCG_LAUNCH === '1' ? pending.filter((s) => registry.includes(s)) : []
+if (hidden.length)
+  warn(
+    `Mode lancement : ${hidden.length} projet(s) sans autorisation de publication ne sont pas affichés (pas de page /realisations/<projet>) ; leur QR code mène à la liste des réalisations : ${hidden.join(', ')}`,
+  )
 const fresh = slugs.filter((s) => !registry.includes(s))
 if (process.argv.includes('--update')) {
   writeFileSync(REGISTRY, JSON.stringify([...registry, ...fresh].sort(), null, 2) + '\n')
   if (fresh.length) console.log(`Registre mis à jour : ${fresh.join(', ')}`)
-} else if (fresh.length) {
+} else if (fresh.length && !history) {
+  // Avec git, un projet pas encore enregistré dans l’historique y entrera à sa publication : rien à faire
   warn(`Nouveaux projets à ajouter au registre des adresses publiées (npm run content:register) : ${fresh.join(', ')}`)
 }
 

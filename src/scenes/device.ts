@@ -35,8 +35,9 @@ export function detectTier(): Tier {
   return 'high'
 }
 
-export const TIER_CONFIG: Record<Exclude<Tier, 'none'>, { particles: number; dpr: [number, number]; fogLayers: number }> = {
-  high: { particles: 9000, dpr: [1, 1.75], fogLayers: 7 },
-  medium: { particles: 5000, dpr: [1, 1.5], fogLayers: 5 },
-  low: { particles: 2200, dpr: [1, 1.25], fogLayers: 3 },
+/** Densité de pixels maximale par niveau ; le minimum (0,75) est fixé par AdaptiveQuality dans HeroScene. */
+export const TIER_CONFIG: Record<Exclude<Tier, 'none'>, { particles: number; maxDpr: number; fogLayers: number }> = {
+  high: { particles: 9000, maxDpr: 1.75, fogLayers: 7 },
+  medium: { particles: 5000, maxDpr: 1.5, fogLayers: 5 },
+  low: { particles: 2200, maxDpr: 1.25, fogLayers: 3 },
 }

@@ -101,7 +101,7 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
         </a>
       </div>
 
-      <form id="brief" action="/api/contact" method="post" class="md:col-span-6 md:col-start-7" novalidate data-wa={contact.whatsappNumber} data-email={contact.email} data-enabled={contactFormEnabled ? '' : undefined}>
+      <form id="brief" action="/api/contact" method="post" class="md:col-span-6 md:col-start-7" novalidate data-wa={contact.whatsappNumber} data-email={contact.email}>
         <div class="grid grid-cols-[minmax(0,1fr)] gap-x-8 gap-y-8 border border-line bg-ink p-6 md:grid-cols-2 md:p-10">
           <!-- Message d’erreur sous le champ, relié par aria-describedby (A11Y-03) ; hors du label pour ne pas entrer dans son nom -->
           <div class="md:col-span-2">
@@ -144,7 +144,7 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
           </label>
           <label class="block md:col-span-2">
             <span class="meta text-mist">{t('contact.form.location')}</span>
-            <input name="location" autocomplete="address-level2" placeholder={fr ? 'Abidjan, Grand-Bassam, Assinie…' : 'Abidjan, Grand-Bassam, Assinie…'} class={field} />
+            <input name="location" autocomplete="address-level2" placeholder="Abidjan, Grand-Bassam, Assinie…" class={field} />
           </label>
           <label class="block md:col-span-2">
             <span class="meta text-mist">{t('contact.form.message')}</span>

@@ -1,5 +1,4 @@
 export type Lang = 'fr' | 'en'
-export const LANGS: Lang[] = ['fr', 'en']
 
 /* ─── Routes ──────────────────────────────────────────────────────────── */
 

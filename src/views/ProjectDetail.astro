@@ -186,7 +186,7 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
       </div>
 
       <aside class="min-w-0 lg:col-span-4 lg:col-start-9">
-        <div class="cartouche border border-bone/30 bg-ink-2">
+        <div class="border border-bone/30 bg-ink-2">
           <div class="flex items-center justify-between bg-brand px-5 py-3">
             <span class="meta text-gold">{t('project.sheet')}</span>
             <span class="meta text-gold">{t('project.no')} {pad(p.number)}</span>
@@ -253,22 +253,25 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
       )
     }
 
-    <dialog id="lightbox" class="lightbox m-0 h-full max-h-none w-full max-w-none bg-ink/95 p-0 text-bone backdrop:bg-ink/90" aria-label={t('project.gallery')}>
-      <div class="relative flex h-full w-full items-center justify-center">
-        {
-          p.images.map((img, i) => (
-            <figure data-slide={i} hidden class="flex h-full w-full items-center justify-center p-4 md:p-16">
-              <ProjectImage image={img} sizes="100vw" class="block max-h-full" imgClass="max-h-[82svh] w-auto max-w-full object-contain" lang={lang} kindClass="bottom-5 right-5" />
-            </figure>
-          ))
-        }
-        <!-- Annonce : position et description de l’image affichée (A11Y-04) -->
-        <p class="meta absolute left-5 top-5 text-bone/70" aria-live="polite" aria-atomic="true"><span data-lb-index>1</span> / {p.images.length}<span class="sr-only" data-lb-alt data-sep={colon(lang)}></span></p>
-        <button type="button" class="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full border border-line hover:border-gold" data-lb-close aria-label={t('project.close')}><Icon name="close" size={24} /></button>
-        <button type="button" class="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/60 hover:border-gold" data-lb-prev aria-label={t('project.prev')}><Icon name="arrow-left" size={24} /></button>
-        <button type="button" class="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/60 hover:border-gold" data-lb-next aria-label={t('project.next')}><Icon name="arrow" size={24} /></button>
-      </div>
-    </dialog>
+    {/* Visionneuse rendue seulement avec la galerie (plus d’une image) : sinon aucun bouton ne l’ouvre (CODE-08) */}
+    {
+      p.images.length > 1 && (
+        <dialog id="lightbox" class="lightbox m-0 h-full max-h-none w-full max-w-none bg-ink/95 p-0 text-bone backdrop:bg-ink/90" aria-label={t('project.gallery')}>
+          <div class="relative flex h-full w-full items-center justify-center">
+            {p.images.map((img, i) => (
+              <figure data-slide={i} hidden class="flex h-full w-full items-center justify-center p-4 md:p-16">
+                <ProjectImage image={img} sizes="100vw" class="block max-h-full" imgClass="max-h-[82svh] w-auto max-w-full object-contain" lang={lang} kindClass="bottom-5 right-5" />
+              </figure>
+            ))}
+            {/* Annonce : position et description de l’image affichée (A11Y-04) */}
+            <p class="meta absolute left-5 top-5 text-bone/70" aria-live="polite" aria-atomic="true"><span data-lb-index>1</span> / {p.images.length}<span class="sr-only" data-lb-alt data-sep={colon(lang)}></span></p>
+            <button type="button" class="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full border border-line hover:border-gold" data-lb-close aria-label={t('project.close')}><Icon name="close" size={24} /></button>
+            <button type="button" class="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/60 hover:border-gold" data-lb-prev aria-label={t('project.prev')}><Icon name="arrow-left" size={24} /></button>
+            <button type="button" class="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/60 hover:border-gold" data-lb-next aria-label={t('project.next')}><Icon name="arrow" size={24} /></button>
+          </div>
+        </dialog>
+      )
+    }
 
     <section class="no-print theme-paper py-20 md:py-28">
       <div class="wrap flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
@@ -360,7 +363,6 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
       if (Math.abs(dx) > 50) show(i + (dx < 0 ? 1 : -1))
       x0 = null
     })
-    if (slides.length < 2) dlg.querySelectorAll('[data-lb-prev], [data-lb-next]').forEach((b) => b.remove())
   }
 </script>
 

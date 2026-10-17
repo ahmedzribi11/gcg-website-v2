@@ -303,11 +303,6 @@
     }
   }
 
-  .hairline {
-    height: 1px;
-    background: var(--color-line);
-  }
-
   /* Sections claires */
   .theme-paper {
     background: var(--color-paper);

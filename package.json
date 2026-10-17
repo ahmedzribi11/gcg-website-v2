@@ -7,8 +7,8 @@
     "node": "^22.22.3 || ^24.16.0 || >=26.3.0"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "node scripts/check-content.mjs && astro build",
+    "dev": "node scripts/copy-decap.mjs && astro dev",
+    "build": "node scripts/check-content.mjs && node scripts/copy-decap.mjs && astro build",
     "preview": "astro preview",
     "check": "astro check",
     "cms": "npx --yes decap-server",

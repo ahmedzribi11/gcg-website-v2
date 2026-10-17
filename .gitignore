@@ -6,3 +6,5 @@ dist
 .astro
 .vercel
 .lighthouseci
+# Decap CMS copié au build depuis le paquet npm vérifié (scripts/copy-decap.mjs, SEC-04)
+public/admin/decap/

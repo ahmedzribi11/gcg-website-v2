@@ -137,7 +137,7 @@ api/                 fonctions Vercel (formulaire, connexion /admin)
 functions/api/       mêmes fonctions pour Cloudflare Pages
 server/              logique serveur commune (contact.js, oauth.js)
 integrations/        typographie française appliquée au build
-public/admin/        configuration de l’espace de gestion (config.yml)
+public/admin/        espace de gestion : config.yml, scripts de la page ; decap/ copié au build (non versionné, scripts/copy-decap.mjs)
 public/brand/        logos GCG
 scripts/             contrôle du contenu, audits, registres
 src/assets/projects/ photos des projets

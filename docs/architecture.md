@@ -12,8 +12,9 @@ fonctions serveur (formulaire de contact, connexion à l’espace de gestion) et
                                               ▼
                                    Build automatique (npm run build)
                                    1. contrôle du contenu (scripts/check-content.mjs)
-                                   2. génération des pages FR/EN (Astro)
-                                   3. typographie française (integrations/typography.mjs)
+                                   2. Decap CMS, version et empreinte figées, copié dans /admin/decap (scripts/copy-decap.mjs)
+                                   3. génération des pages FR/EN (Astro)
+                                   4. typographie française (integrations/typography.mjs)
                                               │
                                               ▼
  Visiteur ◄── CDN (Vercel ou Cloudflare Pages) : pages, images optimisées, polices

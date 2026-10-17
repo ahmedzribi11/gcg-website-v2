@@ -2,7 +2,7 @@
 import ProjectImage from '../ProjectImage.astro'
 import ImageKind from '../ImageKind.astro'
 import Icon from '../Icon.astro'
-import { colon, route, useT, type Lang } from '../../i18n'
+import { colon, plural, route, useT, type Lang } from '../../i18n'
 import { coverImage, publishedOnly, type Project } from '../../lib/projects'
 
 interface Props {
@@ -27,14 +27,14 @@ const figures: { value: number; label: string; context?: string }[] = [
   { value: projects.length, label: t('fig.projects') },
   {
     value: delivered.length,
-    label: t(delivered.length > 1 ? 'fig.delivered.many' : 'fig.delivered.one'),
+    label: plural(lang, delivered.length, 'fig.delivered.one', 'fig.delivered.many'),
     context: delivered.length <= 2 ? delivered.map(named).join(', ') : undefined,
   },
   {
     value: building.length,
-    label: t(building.length > 1 ? 'fig.building.many' : 'fig.building.one'),
+    label: plural(lang, building.length, 'fig.building.one', 'fig.building.many'),
     context: biggest?.highlight
-      ? `${t('fig.including')} ${biggest.name}, ${biggest.highlight.value} ${biggest.highlight.unit} ${lang === 'fr' ? 'à' : 'in'} ${biggest.location}`
+      ? `${t('fig.including')} ${biggest.name}, ${biggest.highlight.value} ${biggest.highlight.unit} ${t('fig.in')} ${biggest.location}`
       : undefined,
   },
 ].filter((f) => f.value > 0)

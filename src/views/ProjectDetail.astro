@@ -4,7 +4,7 @@ import ProjectImage from '../components/ProjectImage.astro'
 import ProjectCard from '../components/ProjectCard.astro'
 import Icon from '../components/Icon.astro'
 import { getService } from '../data/services'
-import { colon, qrPath, projectPath, route, SECTOR_LABELS, servicePath, STATUS_LABELS, useT, type Lang } from '../i18n'
+import { colon, plural, qrPath, projectPath, route, SECTOR_LABELS, servicePath, STATUS_LABELS, useT, type Lang } from '../i18n'
 import { pad, type Project } from '../lib/projects'
 import { whatsappLink } from '../lib/settings'
 import { breadcrumbLd, ogImage, webPageLd } from '../lib/seo'
@@ -34,7 +34,7 @@ const sheet: [string, string | undefined, string?][] = [
   [t('project.terrain'), p.terrain],
   [t('project.covered'), p.coveredSurface],
   [t('project.duration'), p.duration],
-  [t('project.workforce'), p.workforce ? `${p.workforce.toLocaleString(lang === 'en' ? 'en-GB' : 'fr-FR')} ${t(p.workforce > 1 ? 'project.people.many' : 'project.people.one')}` : undefined],
+  [t('project.workforce'), p.workforce ? `${p.workforce.toLocaleString(lang === 'en' ? 'en-GB' : 'fr-FR')} ${plural(lang, p.workforce, 'project.people.one', 'project.people.many')}` : undefined],
   [t('project.sector'), SECTOR_LABELS[p.sector][lang], `secteur=${p.sector}`],
   [t('project.status'), p.status ? STATUS_LABELS[p.status][lang] : p.designOnly ? t('project.designOnly') : undefined, p.status ? `statut=${p.status}` : undefined],
 ]
@@ -266,8 +266,8 @@ const pageLd = Astro.site ? [webPageLd({ path, name: p.name, description: desc, 
             {/* Annonce : position et description de l’image affichée (A11Y-04) */}
             <p class="meta absolute left-5 top-5 text-bone/70" aria-live="polite" aria-atomic="true"><span data-lb-index>1</span> / {p.images.length}<span class="sr-only" data-lb-alt data-sep={colon(lang)}></span></p>
             <button type="button" class="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full border border-line hover:border-gold" data-lb-close aria-label={t('project.close')}><Icon name="close" size={24} /></button>
-            <button type="button" class="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/60 hover:border-gold" data-lb-prev aria-label={t('project.prev')}><Icon name="arrow-left" size={24} /></button>
-            <button type="button" class="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/60 hover:border-gold" data-lb-next aria-label={t('project.next')}><Icon name="arrow" size={24} /></button>
+            <button type="button" class="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/60 hover:border-gold" data-lb-prev aria-label={t('project.prevPhoto')}><Icon name="arrow-left" size={24} /></button>
+            <button type="button" class="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-ink/60 hover:border-gold" data-lb-next aria-label={t('project.nextPhoto')}><Icon name="arrow" size={24} /></button>
           </div>
         </dialog>
       )

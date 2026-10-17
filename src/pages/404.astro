@@ -1,20 +1,25 @@
 ---
 import Base from '../layouts/Base.astro'
 import Icon from '../components/Icon.astro'
+import { useT } from '../i18n'
+
+// Page commune aux deux langues : chaque texte en français puis en anglais, tirés du dictionnaire (CODE-05)
+const fr = useT('fr')
+const en = useT('en')
 ---
 
-<Base lang="fr" alt="/en" title="Page introuvable / Page not found" noindex>
+<Base lang="fr" alt="/en" title={`${fr('404.title')} / ${en('404.title')}`} noindex>
   <section class="relative flex min-h-svh items-center overflow-hidden">
     <div class="wrap relative">
       <p class="label text-gold">Erreur 404 / <span lang="en">Error 404</span></p>
-      <h1 class="display mt-8 text-4xl">Page introuvable.</h1>
-      <p class="display mt-3 text-2xl md:text-3xl text-bone/60" lang="en">Page not found.</p>
-      <p class="mt-6 max-w-lg text-lg text-bone/70">Cette page n’existe pas ou a été déplacée. <span lang="en">This page does not exist or has moved.</span></p>
+      <h1 class="display mt-8 text-4xl">{fr('404.title')}.</h1>
+      <p class="display mt-3 text-2xl md:text-3xl text-bone/60" lang="en">{en('404.title')}.</p>
+      <p class="mt-6 max-w-lg text-lg text-bone/70">{fr('404.text')} <span lang="en">{en('404.text')}</span></p>
       <div class="mt-10 flex flex-wrap gap-3">
-        <a href="/" class="btn btn-gold">Accueil <Icon name="arrow" size={20} /></a>
-        <a href="/realisations" class="btn btn-line">Réalisations</a>
+        <a href="/" class="btn btn-gold">{fr('nav.home')} <Icon name="arrow" size={20} /></a>
+        <a href="/realisations" class="btn btn-line">{fr('nav.projects')}</a>
         <a href="/en" class="btn btn-line" lang="en">Home (English)</a>
-        <a href="/en/projects" class="btn btn-line" lang="en">Projects</a>
+        <a href="/en/projects" class="btn btn-line" lang="en">{en('nav.projects')}</a>
       </div>
     </div>
   </section>

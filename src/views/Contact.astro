@@ -31,7 +31,7 @@ const err = 'mt-2 border-l border-[#ff9b8a] pl-3 text-sm text-bone/80'
 const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-transparent px-0 py-3 text-lg text-bone placeholder:text-bone/30 focus:border-gold focus:outline-none focus:ring-0'
 ---
 
-<Base lang={lang} alt={route('contact', fr ? 'en' : 'fr')} title={fr ? 'Contact' : 'Contact us'} description={t('contact.lead')}>
+<Base lang={lang} alt={route('contact', fr ? 'en' : 'fr')} title={t('contact.docTitle')} description={t('contact.lead')}>
   <section class="relative overflow-hidden pb-24 pt-32 md:pb-36 md:pt-48">
     <div class="wrap relative grid grid-cols-[minmax(0,1fr)] gap-16 md:grid-cols-12">
       <div class="min-w-0 md:col-span-5">
@@ -218,8 +218,8 @@ const field = 'mt-2 w-full rounded-none border-0 border-b border-bone/50 bg-tran
       type: t('contact.form.type'),
       location: t('contact.form.location'),
       message: t('contact.form.message'),
-      ref: fr ? 'Projet de référence' : 'Reference project',
-      subject: fr ? 'Demande de projet — site GCG' : 'Project enquiry — GCG website',
+      ref: t('contact.form.ref'),
+      subject: t('contact.form.subject'),
       sending: t('contact.form.sending'),
       rate: t('contact.form.rate'),
       required: t('contact.form.required'),

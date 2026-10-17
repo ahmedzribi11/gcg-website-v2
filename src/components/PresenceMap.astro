@@ -6,7 +6,7 @@ import type { Topology, GeometryCollection } from 'topojson-specification'
 import world from 'world-atlas/countries-50m.json'
 import world110 from 'world-atlas/countries-110m.json'
 import { cities, type CityId } from '../data/geo'
-import { colon, route, useT, type Lang } from '../i18n'
+import { colon, plural, route, useT, type Lang } from '../i18n'
 import type { Project } from '../lib/projects'
 
 interface Props {
@@ -69,6 +69,8 @@ const fillN = tone === 'paper' ? 'rgba(5,46,20,.03)' : 'color-mix(in srgb, var(-
 const strokeN = tone === 'paper' ? 'rgba(5,46,20,.15)' : 'color-mix(in srgb, var(--color-bone) 14%, transparent)'
 const ink = tone === 'paper' ? '#052e14' : 'var(--color-bone)'
 const gold = tone === 'paper' ? '#8a7a2e' : 'var(--color-gold)'
+// Étiquette des épingles de l’intérieur : seules les localités avec projets sont dessinées (n ≥ 1), la règle « n > 1 »
+// y donne le même résultat que plural() ; la ligne reste celle du commit Archivo pour qu’il se retire seul (SLOP-01)
 const href = (c: string) => `${route('projects', lang)}?ville=${c}`
 const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
 ---
@@ -76,7 +78,7 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
 <figure class="presence-map relative" data-tone={tone} data-reveal>
   <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMin slice" class="map-main h-auto w-full" role="group" aria-labelledby="map-title map-desc">
     <title id="map-title">{t('presence.title')}</title>
-    <desc id="map-desc">{(Object.keys(counts) as CityId[]).map((c) => `${cities[c].name}${colon(lang)}${counts[c]} ${t(counts[c] > 1 ? 'projects.count.many' : 'projects.count.one')}`).join(', ')}</desc>
+    <desc id="map-desc">{(Object.keys(counts) as CityId[]).map((c) => `${cities[c].name}${colon(lang)}${counts[c]} ${plural(lang, counts[c], 'projects.count.one', 'projects.count.many')}`).join(', ')}</desc>
     <defs>
       <clipPath id="map-clip"><rect x="0" y="0" width={W} height={H} /></clipPath>
       <pattern id="map-grid" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -137,7 +139,7 @@ const pathStr = (f: Feature<Geometry>) => path(f) ?? ''
           ))}
         </svg>
         </span>
-        <p class:list={['meta pb-2 text-right', tone === 'paper' ? 'text-brand' : 'text-mist']}>{lang === 'fr' ? 'Afrique de l’Ouest' : 'West Africa'}</p>
+        <p class:list={['meta pb-2 text-right', tone === 'paper' ? 'text-brand' : 'text-mist']}>{t('presence.westAfrica')}</p>
       </figcaption>
     )
   }

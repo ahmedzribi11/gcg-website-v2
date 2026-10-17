@@ -21,7 +21,7 @@ const groups = [
   { key: 'secteur', label: t('projects.filter.sector'), items: SECTORS.map((v) => ({ v, label: SECTOR_LABELS[v][lang], n: n((p) => p.sector === v) })) },
   { key: 'statut', label: t('projects.filter.status'), items: STATUSES.map((v) => ({ v, label: STATUS_LABELS[v][lang], n: n((p) => p.status === v) })) },
   { key: 'ville', label: t('projects.filter.city'), items: CITIES.map((v) => ({ v, label: cities[v].name, n: n((p) => p.city === v) })).sort((a, b) => b.n - a.n) },
-  { key: 'type', label: lang === 'fr' ? 'Typologie' : 'Building type', items: TYPES.map((v) => ({ v, label: TYPE_LABELS[v][lang], n: n((p) => p.types.includes(v)) })) },
+  { key: 'type', label: t('projects.filter.type'), items: TYPES.map((v) => ({ v, label: TYPE_LABELS[v][lang], n: n((p) => p.types.includes(v)) })) },
 ].map((g) => ({ ...g, items: g.items.filter((i) => i.n > 0) }))
 const ongoing = n((p) => p.status === 'execution')
 const studies = n((p) => p.status === 'etudes')
@@ -43,14 +43,14 @@ const delivered = n((p) => p.status === 'receptionne')
     <div class="wrap flex items-center gap-2 py-3 sm:gap-3">
       <details class="filters-panel group relative flex-1 md:hidden">
         <summary class="chip w-full justify-between list-none">
-          <span class="flex items-center gap-2"><Icon name="plus" class="transition-transform group-open:rotate-45" /> {lang === 'fr' ? 'Filtrer' : 'Filter'}</span>
+          <span class="flex items-center gap-2"><Icon name="plus" class="transition-transform group-open:rotate-45" /> {t('projects.filter.open')}</span>
           <span class="meta text-gold" data-active-count></span>
         </summary>
       </details>
       <div class="hidden flex-1 flex-wrap items-center gap-2 md:flex" data-groups-desktop></div>
       <button type="button" class="meta hidden text-mist hover:text-gold md:inline" data-reset>{t('projects.filter.reset')}</button>
-      <p class="meta text-bone/70" aria-live="polite"><span data-results class="text-gold">{projects.length}</span> <span data-count-label>{t('projects.count.many')}</span></p>
-      <div class="flex shrink-0 rounded-full border border-line" role="group" aria-label={lang === 'fr' ? 'Affichage' : 'View'}>
+      <p class="meta text-bone/70" aria-live="polite"><span data-results class="text-gold">{projects.length}</span> <span data-count-label data-one={t('projects.count.one')} data-many={t('projects.count.many')}>{t('projects.count.many')}</span></p>
+      <div class="flex shrink-0 rounded-full border border-line" role="group" aria-label={t('projects.view.label')}>
         <button type="button" class="flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-xs aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="true" data-view="grid" aria-label={t('projects.view.grid')}><Icon name="grid" /><span class="hidden sm:inline">{t('projects.view.grid')}</span></button>
         <button type="button" class="flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-xs aria-pressed:bg-bone aria-pressed:text-ink" aria-pressed="false" data-view="map" aria-label={t('projects.view.map')}><Icon name="map" /><span class="hidden sm:inline">{t('projects.view.map')}</span></button>
       </div>
@@ -100,7 +100,7 @@ const delivered = n((p) => p.status === 'receptionne')
   </template>
 
   <section class="wrap py-12 md:py-16" aria-label={t('projects.label')}>
-    <h2 class="sr-only">{lang === 'fr' ? 'Liste des projets' : 'Project list'}</h2>
+    <h2 class="sr-only">{t('projects.list')}</h2>
     <div data-panel="grid" class="grid gap-x-6 gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
       {projects.map((p, i) => <ProjectCard project={p} lang={lang} priority={i === 0} />)}
     </div>
@@ -144,9 +144,8 @@ const delivered = n((p) => p.status === 'receptionne')
   const countLabel = document.querySelector<HTMLElement>('[data-count-label]')!
   const empty = document.querySelector<HTMLElement>('[data-empty]')!
   const activeCount = document.querySelector<HTMLElement>('[data-active-count]')!
-  const lang = document.body.dataset.lang
-  const one = lang === 'en' ? 'project' : 'projet'
-  const many = lang === 'en' ? 'projects' : 'projets'
+  // Libellés et règle du pluriel de la langue de la page, comme plural() au build (CODE-05)
+  const rule = new Intl.PluralRules(document.documentElement.lang === 'en' ? 'en-GB' : 'fr')
 
   const params = new URLSearchParams(location.search)
   KEYS.forEach((k) => (state[k] = params.get(k) ?? ''))
@@ -167,7 +166,7 @@ const delivered = n((p) => p.status === 'receptionne')
     }
     count.textContent = String(visible)
     // « 0 projet » en français, « 0 projects » en anglais (CONT-08)
-    countLabel.textContent = (lang === 'en' ? visible === 1 : visible <= 1) ? one : many
+    countLabel.textContent = (rule.select(visible) === 'one' ? countLabel.dataset.one : countLabel.dataset.many) ?? ''
     empty.hidden = visible > 0
     document.querySelectorAll<HTMLElement>('[data-filter]').forEach((b) => {
       b.setAttribute('aria-pressed', String(state[b.dataset.filter as Key] === b.dataset.value))

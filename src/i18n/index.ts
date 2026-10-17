@@ -108,7 +108,6 @@ export const TYPE_LABELS: Record<string, L> = {
 
 const UI = {
   fr: {
-    'site.name': 'General Constructor Group',
     'site.tagline': 'Construction & ingénierie en Côte d’Ivoire depuis 2016',
     'site.description':
       'General Constructor Group (GCG) conçoit et construit villas, résidences, immeubles, hôtels, usines et infrastructures en Côte d’Ivoire depuis 2016.',
@@ -131,7 +130,6 @@ const UI = {
     'cta.allProjects': 'Toutes les réalisations',
     'cta.whatsapp': 'Écrire sur WhatsApp',
     'cta.call': 'Appeler',
-    'cta.email': 'Écrire un e-mail',
     'cta.service': 'Voir l’expertise',
     'cta.discover': 'Découvrir',
     'cta.share': 'Partager',
@@ -142,7 +140,6 @@ const UI = {
     'hero.title2': 'Nous construisons',
     'hero.title3': 'un hôtel.',
     'hero.lead': 'Villas, résidences, hôtels, usines : une seule équipe, de l’étude à la remise des clés.',
-    'hero.skip': 'Passer l’intro',
 
     'intro.statement': 'Une seule équipe, des études au chantier.',
     'intro.text':
@@ -154,6 +151,7 @@ const UI = {
     'fig.building.one': 'Projet en chantier',
     'fig.building.many': 'Projets en chantier',
     'fig.including': 'dont',
+    'fig.in': 'à',
 
     'services.label': 'Expertises',
     'services.title': 'Une étape ou tout le projet.',
@@ -163,7 +161,6 @@ const UI = {
     'services.includes': 'Ce que nous faisons',
     'services.related': 'Projets associés',
     'services.others': 'Nos autres expertises',
-    'services.turnkey': 'Le clé en main',
 
     'types.label': 'Tout type de projet',
     'types.title': 'Villas, hôtels, usines, routes.',
@@ -171,7 +168,6 @@ const UI = {
       'Villas, résidences, immeubles, hôtels, bars de plage, spas, usines, salles polyvalentes, voiries : le portfolio de GCG couvre presque tout ce qui se construit.',
 
     'featured.title': 'Ce que nous construisons et concevons.',
-    'featured.skip': 'Passer les projets',
 
     'scale.title': 'De la villa au grand programme.',
     'scale.lead': 'Une villa pour un particulier ou des dizaines de villas pour un programme immobilier : la même équipe d’études et de chantier.',
@@ -179,6 +175,7 @@ const UI = {
     'presence.title': 'De Korhogo à Assinie.',
     'presence.lead': 'Des projets dans six localités de Côte d’Ivoire, d’Abidjan au littoral et jusqu’au nord du pays.',
     'presence.ambition': 'Siège à Abidjan, Marcory Zone 4.',
+    'presence.westAfrica': 'Afrique de l’Ouest',
 
     'audiences.label': 'Nos clients',
     'audiences.title': 'Pour qui nous construisons.',
@@ -190,20 +187,22 @@ const UI = {
     'projects.label': 'Réalisations',
     'projects.title': 'Le patrimoine GCG.',
     'projects.lead': 'Projets livrés, en chantier ou en études : villas, résidences, hôtels, immeubles, usines et infrastructures, depuis 2016.',
-    'projects.filter.all': 'Tous',
     'projects.filter.sector': 'Secteur',
     'projects.filter.status': 'Statut',
     'projects.filter.city': 'Localité',
+    'projects.filter.type': 'Typologie',
     'projects.filter.reset': 'Réinitialiser',
+    'projects.filter.open': 'Filtrer',
     'projects.count.one': 'projet',
     'projects.count.many': 'projets',
     'projects.delivered.many': 'Réceptionnés',
     'projects.view.grid': 'Grille',
     'projects.view.map': 'Carte',
+    'projects.view.label': 'Affichage',
+    'projects.list': 'Liste des projets',
     'projects.empty': 'Aucun projet ne correspond à ces filtres.',
     'projects.references': 'Liste de références (PDF)',
 
-    'project.back': 'Toutes les réalisations',
     'project.sheet': 'Fiche projet',
     'project.no': 'N°',
     'project.location': 'Lieu',
@@ -227,12 +226,9 @@ const UI = {
     'project.typology': 'Typologie',
     'project.services': 'Expertises mobilisées',
     'project.gallery': 'Galerie',
-    'project.photo': 'Photo',
-    'project.of': 'sur',
     'project.share': 'Partager ce projet',
     'project.copy': 'Copier le lien',
     'project.copied': 'Lien copié',
-    'project.qr': 'QR code du projet',
     'project.qrHelp': 'À imprimer sur le panneau de chantier : les passants découvrent le projet et GCG.',
     'project.poster': 'Affiche de chantier',
     'project.similarText': 'Parlez-nous de votre projet : nous l’étudions avec vous.',
@@ -243,7 +239,6 @@ const UI = {
     'project.enlarge': 'Agrandir',
     'project.prevPhoto': 'Image précédente',
     'project.nextPhoto': 'Image suivante',
-    'project.missingEn': 'Cette page n’existe pas encore dans cette langue ; voici la page la plus proche.',
     'project.next': 'Projet suivant',
     'project.close': 'Fermer',
 
@@ -277,6 +272,7 @@ const UI = {
     'invest.remote': 'Construire depuis l’étranger',
 
     'contact.label': 'Contact',
+    'contact.docTitle': 'Contact',
     'contact.title': 'Parlons de votre projet.',
     'contact.lead': 'Quelques informations suffisent pour démarrer : l’équipe de GCG vous recontacte.',
     'contact.form.name': 'Nom et prénom',
@@ -286,21 +282,19 @@ const UI = {
     'contact.form.type': 'Type de projet',
     'contact.form.location': 'Localisation du projet',
     'contact.form.message': 'Votre projet en quelques mots',
+    'contact.form.ref': 'Projet de référence',
+    'contact.form.subject': 'Demande de projet — site GCG',
     'contact.form.sendWhatsapp': 'Envoyer par WhatsApp',
     'contact.form.sendEmail': 'Envoyer par e-mail',
     'contact.form.required': 'Champ obligatoire',
     'contact.form.intro': 'Bonjour GCG, je souhaite vous parler d’un projet.',
     'contact.form.send': 'Envoyer la demande',
     'contact.form.sending': 'Envoi en cours…',
-    'contact.form.contactHint': 'Indiquez au moins un téléphone ou un e-mail.',
     'contact.form.phoneHint': 'Nous vous rappelons ou écrivons sur WhatsApp.',
     'contact.form.choose': 'Choisir…',
     'contact.form.notice': 'Vos informations servent uniquement à répondre à votre demande et sont transmises à l’équipe commerciale de GCG.',
     'contact.form.noticeLink': 'Politique de confidentialité',
-    'contact.form.errorsTitle': 'Le formulaire contient des erreurs :',
     'contact.form.err.name': 'Indiquez votre nom.',
-    'contact.form.err.contact': 'Indiquez un téléphone ou une adresse e-mail pour que GCG puisse vous répondre.',
-    'contact.form.err.phone': 'Numéro invalide : indiquez-le avec l’indicatif, par exemple +225 07 00 00 00 00.',
     'contact.form.err.email': 'Adresse e-mail invalide, par exemple nom@exemple.com.',
     'contact.form.okTitle': 'Merci, votre demande est bien partie.',
     'contact.form.okText': 'L’équipe de GCG vous recontacte par téléphone ou par e-mail. Vous pouvez aussi lui écrire directement :',
@@ -313,7 +307,6 @@ const UI = {
     'contact.result.rate': 'Trop de demandes ont été envoyées depuis cette connexion. Attendez 10 minutes avant de réessayer, ou contactez GCG directement :',
     'contact.result.failed':
       'Le site n’a pas pu transmettre votre demande. Contactez GCG sur WhatsApp ou par téléphone ; pour reprendre votre message, revenez au formulaire avec le bouton « Précédent » de votre navigateur.',
-    'contact.form.optional': 'facultatif',
     'contact.form.pending': 'Les coordonnées de GCG seront publiées très prochainement sur cette page.',
     'contact.direct': 'Nous joindre',
     'contact.phone': 'Téléphone',
@@ -342,8 +335,6 @@ const UI = {
     'share.native': 'Partager…',
     'share.tempWarning':
       'Ne pas imprimer pour l’instant : le site est encore sur une adresse provisoire. Les QR codes seront définitifs une fois le site publié sur le domaine de GCG.',
-    'share.pdf': 'Portfolio (PDF)',
-    'share.pdfHelp': 'Le portfolio complet de GCG, à télécharger ou à joindre à un dossier.',
 
     'poster.scan': 'Scannez pour découvrir',
     'poster.projects': 'nos réalisations',
@@ -357,7 +348,6 @@ const UI = {
     'poster.formatHelp':
       'Marge blanche de 5 mm. Le QR code se scanne jusqu’à environ 1 m en A4, 1,4 m en A3, 2 m en A2 et 2,9 m en A1 : faites scanner une épreuve à la distance du panneau avant de commander.',
 
-    'refs.label': 'Références',
     'refs.title': 'Liste de références',
     'refs.lead': 'Projets réalisés, en cours et en études — document à joindre aux dossiers d’appels d’offres.',
     'refs.print': 'Imprimer / enregistrer en PDF',
@@ -380,7 +370,6 @@ const UI = {
     '404.text': 'Cette page n’existe pas ou a été déplacée.',
   },
   en: {
-    'site.name': 'General Constructor Group',
     'site.tagline': 'Construction & engineering in Côte d’Ivoire since 2016',
     'site.description':
       'General Constructor Group (GCG) has designed and built villas, residences, buildings, hotels, factories and infrastructure in Côte d’Ivoire since 2016.',
@@ -403,7 +392,6 @@ const UI = {
     'cta.allProjects': 'All projects',
     'cta.whatsapp': 'Message us on WhatsApp',
     'cta.call': 'Call',
-    'cta.email': 'Send an email',
     'cta.service': 'See this service',
     'cta.discover': 'Discover',
     'cta.share': 'Share',
@@ -413,7 +401,6 @@ const UI = {
     'hero.title2': 'We build',
     'hero.title3': 'a hotel.',
     'hero.lead': 'Villas, residences, hotels, factories: one team, from design to handover.',
-    'hero.skip': 'Skip intro',
 
     'intro.statement': 'One team, from design to construction.',
     'intro.text':
@@ -425,6 +412,7 @@ const UI = {
     'fig.building.one': 'Project under construction',
     'fig.building.many': 'Projects under construction',
     'fig.including': 'including',
+    'fig.in': 'in',
 
     'services.label': 'Services',
     'services.title': 'One stage or the whole project.',
@@ -433,7 +421,6 @@ const UI = {
     'services.includes': 'What we do',
     'services.related': 'Related projects',
     'services.others': 'Our other services',
-    'services.turnkey': 'Turnkey',
 
     'types.label': 'Every kind of project',
     'types.title': 'Villas, hotels, factories, roads.',
@@ -441,7 +428,6 @@ const UI = {
       'Villas, residences, buildings, hotels, beach bars, spas, factories, multipurpose halls, roads: GCG’s portfolio covers almost everything that gets built.',
 
     'featured.title': 'What we build and design.',
-    'featured.skip': 'Skip projects',
 
     'scale.title': 'From single villas to large programmes.',
     'scale.lead': 'A single villa for a private owner or dozens of villas for a housing programme: the same design and site team.',
@@ -449,6 +435,7 @@ const UI = {
     'presence.title': 'From Korhogo to Assinie.',
     'presence.lead': 'Projects in six locations across Côte d’Ivoire, from Abidjan to the coast and the north of the country.',
     'presence.ambition': 'Head office in Abidjan, Marcory Zone 4.',
+    'presence.westAfrica': 'West Africa',
 
     'audiences.label': 'Our clients',
     'audiences.title': 'Who we build for.',
@@ -460,20 +447,22 @@ const UI = {
     'projects.label': 'Projects',
     'projects.title': 'GCG’s track record.',
     'projects.lead': 'Completed, under construction or in design: villas, residences, hotels, buildings, factories and infrastructure, since 2016.',
-    'projects.filter.all': 'All',
     'projects.filter.sector': 'Sector',
     'projects.filter.status': 'Status',
     'projects.filter.city': 'Location',
+    'projects.filter.type': 'Building type',
     'projects.filter.reset': 'Reset',
+    'projects.filter.open': 'Filter',
     'projects.count.one': 'project',
     'projects.count.many': 'projects',
     'projects.delivered.many': 'Handed over',
     'projects.view.grid': 'Grid',
     'projects.view.map': 'Map',
+    'projects.view.label': 'View',
+    'projects.list': 'Project list',
     'projects.empty': 'No project matches these filters.',
     'projects.references': 'Reference list (PDF)',
 
-    'project.back': 'All projects',
     'project.sheet': 'Project sheet',
     'project.no': 'No.',
     'project.location': 'Location',
@@ -497,12 +486,9 @@ const UI = {
     'project.typology': 'Layout',
     'project.services': 'Services involved',
     'project.gallery': 'Gallery',
-    'project.photo': 'Photo',
-    'project.of': 'of',
     'project.share': 'Share this project',
     'project.copy': 'Copy link',
     'project.copied': 'Link copied',
-    'project.qr': 'Project QR code',
     'project.qrHelp': 'Print it on the site hoarding: passers-by discover the project and GCG.',
     'project.poster': 'Site poster',
     'project.similarText': 'Tell us about your project: we will study it with you.',
@@ -513,7 +499,6 @@ const UI = {
     'project.enlarge': 'Enlarge',
     'project.prevPhoto': 'Previous image',
     'project.nextPhoto': 'Next image',
-    'project.missingEn': 'This page is not yet available in this language; here is the closest page.',
     'project.next': 'Next project',
     'project.close': 'Close',
 
@@ -547,6 +532,7 @@ const UI = {
     'invest.remote': 'Building from abroad',
 
     'contact.label': 'Contact',
+    'contact.docTitle': 'Contact us',
     'contact.title': 'Let’s talk about your project.',
     'contact.lead': 'A few details are enough to get started: GCG’s team will get back to you.',
     'contact.form.name': 'Full name',
@@ -556,21 +542,19 @@ const UI = {
     'contact.form.type': 'Type of project',
     'contact.form.location': 'Project location',
     'contact.form.message': 'Your project in a few words',
+    'contact.form.ref': 'Reference project',
+    'contact.form.subject': 'Project enquiry — GCG website',
     'contact.form.sendWhatsapp': 'Send via WhatsApp',
     'contact.form.sendEmail': 'Send by email',
     'contact.form.required': 'Required field',
     'contact.form.intro': 'Hello GCG, I would like to discuss a project.',
     'contact.form.send': 'Send my enquiry',
     'contact.form.sending': 'Sending…',
-    'contact.form.contactHint': 'Give at least a phone number or an email address.',
     'contact.form.phoneHint': 'We will call you back or message you on WhatsApp.',
     'contact.form.choose': 'Choose…',
     'contact.form.notice': 'Your details are used only to answer your enquiry and are passed on to GCG’s sales team.',
     'contact.form.noticeLink': 'Privacy policy',
-    'contact.form.errorsTitle': 'Please correct the following:',
     'contact.form.err.name': 'Please enter your name.',
-    'contact.form.err.contact': 'Please give a phone number or an email address so GCG can reply.',
-    'contact.form.err.phone': 'Invalid number: include the country code, for example +225 07 00 00 00 00.',
     'contact.form.err.email': 'Invalid email address, for example name@example.com.',
     'contact.form.okTitle': 'Thank you, your enquiry has been sent.',
     'contact.form.okText': 'GCG’s team will get back to you by phone or email. You can also contact them directly:',
@@ -583,7 +567,6 @@ const UI = {
     'contact.result.rate': 'Too many enquiries were sent from this connection. Wait 10 minutes before trying again, or contact GCG directly:',
     'contact.result.failed':
       'The website could not pass on your enquiry. Contact GCG on WhatsApp or by phone; to copy your message, go back to the form with your browser’s Back button.',
-    'contact.form.optional': 'optional',
     'contact.form.pending': 'GCG’s contact details will be published on this page very soon.',
     'contact.direct': 'Reach us',
     'contact.phone': 'Phone',
@@ -610,8 +593,6 @@ const UI = {
     'share.copy': 'Copy link',
     'share.native': 'Share…',
     'share.tempWarning': 'Do not print yet: the site is still on a temporary address. QR codes become permanent once the site is live on GCG’s own domain.',
-    'share.pdf': 'Portfolio (PDF)',
-    'share.pdfHelp': 'The full GCG portfolio, to download or attach to a submission.',
 
     'poster.scan': 'Scan to discover',
     'poster.projects': 'our projects',
@@ -625,7 +606,6 @@ const UI = {
     'poster.formatHelp':
       'With a 5 mm white margin. The QR code scans from up to about 1 m on A4, 1.4 m on A3, 2 m on A2 and 2.9 m on A1: have a proof scanned at the board’s distance before ordering.',
 
-    'refs.label': 'References',
     'refs.title': 'Reference list',
     'refs.lead': 'Completed, ongoing and in-design projects — to attach to tender submissions.',
     'refs.print': 'Print / save as PDF',
@@ -652,6 +632,13 @@ const UI = {
 export type UIKey = keyof (typeof UI)['fr']
 
 export const useT = (lang: Lang) => (key: UIKey) => UI[lang][key] ?? UI.fr[key]
+
+const PLURAL = { fr: new Intl.PluralRules('fr'), en: new Intl.PluralRules('en-GB') }
+/**
+ * Singulier ou pluriel selon les règles de la langue (CODE-05) : « 0 projet », « 1 projet », « 2 projets » ;
+ * « 0 projects », « 1 project », « 2 projects ». Le navigateur applique la même règle (liste des réalisations).
+ */
+export const plural = (lang: Lang, n: number, one: UIKey, many: UIKey) => useT(lang)(PLURAL[lang].select(n) === 'one' ? one : many)
 
 const UNIT = /(\d)[ \u00a0\u202f]?(m²|m2|ha|km|m|FCFA|%)(?![\p{L}\d])/gu
 

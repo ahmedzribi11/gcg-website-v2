@@ -72,7 +72,7 @@ export default function typography() {
         for await (const file of walk(fileURLToPath(dir))) {
           const html = await readFile(file, 'utf8')
           const lang = /<html[^>]*\slang="en"/.test(html) ? 'en' : 'fr'
-          if (/\/admin\/index\.html$/.test(file)) continue
+          if (/[\\/]admin\.html$/.test(file)) continue
           const out = typeset(html, lang)
           if (out !== html) {
             await writeFile(file, out)

@@ -177,12 +177,13 @@
       border-color 0.5s var(--ease-out-expo),
       transform 0.5s var(--ease-out-expo);
   }
+  /* Bouton principal : or sur vert ; --cta* redéfinis par le mode clair (fin de fichier, CODE-10) */
   .btn-gold {
-    background: var(--color-gold);
-    color: var(--color-brand);
+    background: var(--cta, var(--color-gold));
+    color: var(--cta-text, var(--color-brand));
   }
   .btn-gold:hover {
-    background: var(--color-gold-hover);
+    background: var(--cta-hover, var(--color-gold-hover));
   }
   .btn-line {
     border: 1px solid color-mix(in srgb, var(--color-bone) 32%, transparent);
@@ -567,7 +568,13 @@ body:not(.header-hidden) [data-filters] {
   --color-gold: #6b5d1e;
   --color-paper: #e9e2d1;
   --color-paper-2: #ded6c2;
+  /* Bouton principal en mode clair : vert GCG, texte clair (l’or foncé n’est pas assez contrasté) */
+  --cta: var(--color-brand);
+  --cta-text: #f6f3eb;
+  --cta-hover: var(--color-brand-2);
 }
+/* Zones qui restent sombres : les valeurs de @theme, seule copie du fichier (scripts/audit-dist.mjs vérifie
+   qu’elles restent identiques), et le bouton principal or sur vert du mode sombre (CODE-10) */
 :root[data-theme='light'] :is(.force-dark, #hero, #site-header, #mobile-menu, #mobile-bar, body > footer, .pill, .theme-brand, .bg-brand) {
   color-scheme: dark;
   --color-ink: #070c09;
@@ -579,22 +586,10 @@ body:not(.header-hidden) [data-filters] {
   --color-gold: #e8de9f;
   --color-paper: #f6f3eb;
   --color-paper-2: #ece7da;
+  --cta: var(--color-gold);
+  --cta-text: var(--color-brand);
+  --cta-hover: var(--color-gold-hover);
   color: var(--color-bone);
-}
-:root[data-theme='light'] .theme-brand {
-  color: var(--color-bone);
-}
-/* Bouton principal en mode clair : vert GCG, texte clair (l’or foncé n’est pas assez contrasté) */
-:root[data-theme='light'] .btn-gold {
-  background: var(--color-brand);
-  color: #f6f3eb;
-}
-:root[data-theme='light'] .btn-gold:hover {
-  background: var(--color-brand-2);
-}
-:root[data-theme='light'] :is(.force-dark, #hero, #site-header, #mobile-menu, #mobile-bar, body > footer, .pill, .theme-brand, .bg-brand) .btn-gold {
-  background: var(--color-gold);
-  color: var(--color-brand);
 }
 html {
   transition: background-color 0.4s ease;
@@ -614,8 +609,12 @@ html {
 :root[data-theme='light'] .theme-light-only {
   display: block;
 }
-/* Mode clair : les textes très transparents du design sombre seraient trop pâles sur fond clair */
+/* Mode clair : les textes très transparents du design sombre seraient trop pâles sur fond clair.
+   Toute classe text-bone/N ou text-brand/N (N < 75) du site doit figurer ici : scripts/audit-dist.mjs le vérifie (CODE-10) */
 :root[data-theme='light'] :is(.text-bone\/30, .text-bone\/40, .text-bone\/50, .text-bone\/55, .text-bone\/60, .text-bone\/65, .text-bone\/70) {
+  color: color-mix(in srgb, var(--color-bone) 76%, transparent);
+}
+:root[data-theme='light'] .placeholder\:text-bone\/30::placeholder {
   color: color-mix(in srgb, var(--color-bone) 76%, transparent);
 }
 :root[data-theme='light'] :is(.text-brand\/45, .text-brand\/65, .text-brand\/70) {

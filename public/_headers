@@ -1,11 +1,15 @@
-# En-têtes HTTP pour Cloudflare Pages ou Netlify (Vercel utilise vercel.json).
+# En-têtes HTTP pour Cloudflare Pages (Vercel utilise vercel.json) : garder les deux fichiers identiques (SEC-05).
+# HSTS sans preload : à ajouter seulement quand chaque sous-domaine de gcg-ci.com est en HTTPS.
+# COOP partout sauf /admin et /api : la fenêtre de connexion GitHub de Decap répond à /admin par window.opener.
 /*
-  Strict-Transport-Security: max-age=31536000
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
   X-Frame-Options: DENY
   Content-Security-Policy: frame-ancestors 'none'; object-src 'none'; base-uri 'self'
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-site
 
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
@@ -15,8 +19,10 @@
   Cache-Control: public, max-age=86400
 
 /admin*
+  ! Cross-Origin-Opener-Policy
   X-Robots-Tag: noindex
 /api/*
+  ! Cross-Origin-Opener-Policy
   X-Robots-Tag: noindex
 /qr*
   X-Robots-Tag: noindex

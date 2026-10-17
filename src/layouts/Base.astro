@@ -63,6 +63,12 @@ const share = image ? { src: image, width: imageWidth ?? 1200, height: imageHeig
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    {
+      /* La politique de sécurité (CSP) est ajoutée par Astro en <meta> à la fin de <head>, après ces scripts : elle ne
+         les couvre pas. Ils doivent donc rester statiques, écrits ici, sans contenu venu de l’espace de gestion ou de
+         l’adresse. Umami, s’il est activé, charge aussi un script tiers avant la politique, sans empreinte SRI possible
+         (le script du service change sans préavis) (SEC-05). */
+    }
     <script is:inline>
       // Mode clair choisi par le visiteur, appliqué avant l’affichage (pas de flash).
       // Sans color-mix() (iOS 16.0–16.1), ses couleurs semi-transparentes retomberaient sur celles du mode sombre : ignoré (BRW-11)

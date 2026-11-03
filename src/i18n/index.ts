@@ -4,7 +4,20 @@ export const LANGS: Lang[] = ['fr', 'en']
 /* ─── Routes ──────────────────────────────────────────────────────────── */
 
 export type RouteKey =
-  'home' | 'services' | 'projects' | 'about' | 'invest' | 'contact' | 'thanks' | 'formError' | 'share' | 'poster' | 'references' | 'legal' | 'privacy'
+  | 'home'
+  | 'services'
+  | 'projects'
+  | 'about'
+  | 'invest'
+  | 'contact'
+  | 'estimate'
+  | 'thanks'
+  | 'formError'
+  | 'share'
+  | 'poster'
+  | 'references'
+  | 'legal'
+  | 'privacy'
 
 const ROUTES: Record<RouteKey, Record<Lang, string>> = {
   home: { fr: '/', en: '/en' },
@@ -13,6 +26,7 @@ const ROUTES: Record<RouteKey, Record<Lang, string>> = {
   about: { fr: '/a-propos', en: '/en/about' },
   invest: { fr: '/investir', en: '/en/invest' },
   contact: { fr: '/contact', en: '/en/contact' },
+  estimate: { fr: '/devis-estimatif', en: '/en/estimate' },
   thanks: { fr: '/contact/merci', en: '/en/contact/thanks' },
   formError: { fr: '/contact/erreur', en: '/en/contact/error' },
   share: { fr: '/partager', en: '/en/share' },

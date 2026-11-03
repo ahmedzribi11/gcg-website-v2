@@ -31,6 +31,9 @@ jobs:
       - name: 'Analyse statique et mise en forme (ENG-02)'
         run: npm run lint && npm run format:check
 
+      - name: 'Tests : devis estimatif et envoi du formulaire'
+        run: npm test
+
       - name: 'Types et schéma de contenu (ENG-03, MODEL-13)'
         run: npm run check
 

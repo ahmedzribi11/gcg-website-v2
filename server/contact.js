@@ -7,10 +7,14 @@
  * - Retours à la ligne supprimés de toute valeur utilisée dans les en-têtes (injection d’en-têtes).
  * - Aucun fichier joint accepté (SEC-06) ; rien n’est stocké : la demande est envoyée par e-mail (Resend).
  * - Sans JavaScript : redirection vers la page de remerciement ou de nouveau vers le formulaire.
+ * - Devis estimatif (champ kind = « devis », page /devis-estimatif) : mêmes protections, e-mail dédié
+ *   avec les coordonnées, les surfaces, les options et la fourchette affichée au visiteur.
  *
  * Variables d’environnement : RESEND_API_KEY, CONTACT_TO (adresses séparées par des virgules),
  * CONTACT_FROM (ex. « Site GCG <site@gcg-ci.com> », domaine authentifié SPF/DKIM).
  */
+
+import { PROJECT_TYPES, parseArea } from '../src/lib/estimate.js'
 
 const TYPES = ['villa', 'residence', 'immeuble', 'hotel', 'commerce', 'industrie', 'equipement', 'vrd', 'renovation', 'etude', 'autre']
 const PROFILES = ['particulier', 'diaspora', 'investisseur', 'hotelier', 'entreprise', 'autre', '']
@@ -65,6 +69,76 @@ export function validate(raw) {
   return Object.keys(errors).length ? { errors, data } : { data }
 }
 
+const ESTIMATE_TYPE_LABELS = { villa: 'Villa', immeuble: 'Immeuble', 'local-commercial': 'Local commercial', autre: 'Autre' }
+const yes = (v) => v === 'oui' || v === true || v === 'on'
+/** Montant envoyé par la page (entier positif, en FCFA) ; 0 si absent ou invalide. */
+const amount = (v) => {
+  const n = Number(String(v ?? '').replace(/[^\d]/g, ''))
+  return Number.isSafeInteger(n) && n > 0 ? n : 0
+}
+
+/** Valide un devis estimatif ; retourne { data } ou { errors: { champ: code } }. */
+export function validateEstimate(raw) {
+  const terrain = parseArea(raw.terrain)
+  const constructible = parseArea(raw.constructible)
+  const data = {
+    nom: oneLine(raw.nom, 60),
+    prenom: oneLine(raw.prenom, 60),
+    phone: oneLine(raw.phone, 30),
+    email: oneLine(raw.email, 254).toLowerCase(),
+    type: oneLine(raw.type, 20),
+    terrain,
+    constructible,
+    piscine: yes(raw.piscine),
+    cloture: yes(raw.cloture),
+    etudes: yes(raw.etudes),
+    low: amount(raw.low),
+    high: amount(raw.high),
+    lang: raw.lang === 'en' ? 'en' : 'fr',
+  }
+  const errors = {}
+  if (!data.nom) errors.nom = 'required'
+  if (!data.prenom) errors.prenom = 'required'
+  if (!data.phone) errors.phone = 'required'
+  else if (!/^\+?[\d\s().-]{8,30}$/.test(data.phone)) errors.phone = 'invalid'
+  if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) errors.email = 'invalid'
+  if (!PROJECT_TYPES.includes(data.type)) errors.type = 'invalid'
+  if (terrain === null) errors.terrain = 'required'
+  else if (Number.isNaN(terrain)) errors.terrain = 'invalid'
+  if (Number.isNaN(constructible)) errors.constructible = 'invalid'
+  if (!data.low || !data.high || data.low > data.high) data.low = data.high = 0
+  return Object.keys(errors).length ? { errors, data } : { data }
+}
+
+function estimateBody(d) {
+  const m2 = (n) => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} m²`
+  const fcfa = (n) => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} FCFA`
+  const ouiNon = (b) => (b ? 'Oui' : 'Non')
+  return [
+    'Nouvelle demande de devis estimatif reçue depuis le site de GCG.',
+    '',
+    `Nom : ${d.nom}`,
+    `Prénom : ${d.prenom}`,
+    `Téléphone / WhatsApp : ${d.phone}`,
+    d.email ? `E-mail : ${d.email}` : '',
+    '',
+    `Type de projet : ${ESTIMATE_TYPE_LABELS[d.type]}`,
+    `Surface du terrain : ${m2(d.terrain)}`,
+    `Surface constructible : ${d.constructible ? m2(d.constructible) : 'non indiquée par le client'}`,
+    `Piscine : ${ouiNon(d.piscine)}`,
+    `Clôture : ${ouiNon(d.cloture)}`,
+    `Études et permis de construire : ${ouiNon(d.etudes)}`,
+    '',
+    d.low ? `Estimation affichée au client : entre ${fcfa(d.low)} et ${fcfa(d.high)}` : 'Estimation : non calculée (navigateur sans JavaScript).',
+    `Langue de la page : ${d.lang === 'en' ? 'anglais' : 'français'}`,
+    '',
+    '—',
+    'Rappeler le client pour établir le devis détaillé.',
+  ]
+    .filter((l, i, a) => l !== '' || a[i - 1] !== '')
+    .join('\n')
+}
+
 function emailBody(d, origin) {
   const fr = (k, v) => (v ? `${k} : ${v}` : '')
   return [
@@ -88,7 +162,7 @@ function emailBody(d, origin) {
     .join('\n')
 }
 
-async function send(d, env, origin) {
+async function send(d, env, origin, estimate = false) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json; charset=utf-8' },
@@ -99,8 +173,10 @@ async function send(d, env, origin) {
         .map((s) => s.trim())
         .filter(Boolean),
       ...(d.email ? { reply_to: d.email } : {}),
-      subject: oneLine(`Demande de projet — ${d.name}${d.type ? ` (${d.type})` : ''}`, 150),
-      text: emailBody(d, origin),
+      subject: estimate
+        ? oneLine(`Devis estimatif — ${d.prenom} ${d.nom} (${ESTIMATE_TYPE_LABELS[d.type]})`, 150)
+        : oneLine(`Demande de projet — ${d.name}${d.type ? ` (${d.type})` : ''}`, 150),
+      text: estimate ? estimateBody(d) : emailBody(d, origin),
     }),
   })
   return res.ok
@@ -138,11 +214,12 @@ export async function handleContact(request, env, ip) {
   if (raw.website || (started && Date.now() - started < MIN_FILL_MS)) return reply(200, 'ok')
   if (rateLimited(ip || 'unknown')) return reply(429, 'rate')
 
-  const { data, errors } = validate(raw)
+  const estimate = raw.kind === 'devis'
+  const { data, errors } = estimate ? validateEstimate(raw) : validate(raw)
   if (errors) return reply(422, 'invalid', { errors })
   if (!env.RESEND_API_KEY || !env.CONTACT_TO || !env.CONTACT_FROM) return reply(503, 'unavailable')
   try {
-    return (await send(data, env, origin)) ? reply(200, 'ok') : reply(502, 'failed')
+    return (await send(data, env, origin, estimate)) ? reply(200, 'ok') : reply(502, 'failed')
   } catch {
     return reply(502, 'failed')
   }

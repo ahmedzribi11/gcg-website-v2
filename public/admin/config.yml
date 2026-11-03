@@ -259,3 +259,15 @@ collections:
               - { label: Langue du document, name: lang, widget: select, options: [{ label: Français, value: fr }, { label: Anglais, value: en }] }
               - { label: 'Version (AAAA-MM)', name: date, widget: string, pattern: ['^\d{4}-\d{2}$', 'Format : 2026-10'], hint: 'Ex. : 2026-10' }
               - { label: Fichier PDF, name: file, widget: file, media_folder: /public/documents, public_folder: /documents, choose_url: false }
+      - name: estimate
+        label: 'Devis estimatif'
+        file: src/data/estimate.json
+        format: json
+        description: 'Montants du formulaire « Devis estimatif » (/devis-estimatif). Une option sans montant n’est pas proposée au visiteur.'
+        fields:
+          - { label: 'Prix du m² construit fini (FCFA)', name: prixM2, widget: number, value_type: int, min: 1, hint: 'Ex. : 350000' }
+          - { label: 'Surface constructible estimée (% du terrain)', name: ratioConstructible, widget: number, value_type: int, min: 1, max: 100, hint: 'Utilisée quand le client ne connaît pas sa surface constructible. Ex. : 60' }
+          - { label: 'Fourchette affichée (± %)', name: marge, widget: number, value_type: int, min: 0, max: 50, hint: 'Ex. : 10 pour ± 10 %' }
+          - { label: 'Forfait piscine (FCFA)', name: forfaitPiscine, widget: number, value_type: int, min: 1, required: false, hint: 'Vide : l’option Piscine n’est pas proposée.' }
+          - { label: 'Forfait clôture (FCFA)', name: forfaitCloture, widget: number, value_type: int, min: 1, required: false, hint: 'Vide : l’option Clôture n’est pas proposée.' }
+          - { label: 'Études et permis de construire (% du coût de construction)', name: pourcentageEtudes, widget: number, value_type: float, min: 0.1, max: 100, required: false, hint: 'Vide : l’option n’est pas proposée. Ex. : 8' }

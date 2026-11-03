@@ -31,6 +31,8 @@ const PAGES = [
   '/en/invest',
   '/contact',
   '/en/contact',
+  '/devis-estimatif',
+  '/en/estimate',
   '/partager',
   '/en/share',
   '/references',

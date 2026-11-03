@@ -1,7 +1,7 @@
 /**
  * Mesure d’audience sans cookie (Umami). Le script n’est chargé que si la variable
  * d’environnement PUBLIC_UMAMI_WEBSITE_ID est définie ; sinon ces appels ne font rien.
- * Événements : whatsapp, phone, email, form, download, language, qr.
+ * Événements : whatsapp, phone, email, form, estimate, download, language, qr.
  */
 type Props = Record<string, string>
 

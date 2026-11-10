@@ -33,6 +33,7 @@ export function displayPhone(raw: string) {
 const phone = str(c.phone)
 const phone2 = str(c.phone2)
 const whatsapp = str(c.whatsapp)
+const whatsapp2 = str(c.whatsapp2)
 const tz = { fr: ' (GMT, heure d’Abidjan)', en: ' (GMT, Abidjan time)' }
 const withTz = (h: string, lang: 'fr' | 'en') => (h && !/GMT|UTC/i.test(h) ? h + tz[lang] : h)
 
@@ -47,6 +48,9 @@ export const contact = {
   whatsapp: whatsapp ? displayPhone(whatsapp) : '',
   /** Numéro au format international sans « + » pour wa.me. */
   whatsappNumber: toE164(whatsapp).replace('+', ''),
+  /** Second numéro WhatsApp (ex. le numéro ivoirien, joignable en appel et sur WhatsApp) : affiché, les boutons restent sur le premier. */
+  whatsapp2: whatsapp2 ? displayPhone(whatsapp2) : '',
+  whatsapp2Number: toE164(whatsapp2).replace('+', ''),
   email: str(c.email),
   address: str(c.address),
   mapsUrl: str(c.mapsUrl),
@@ -108,8 +112,8 @@ export function documentLabel(d: DocumentFile, lang: 'fr' | 'en') {
 
 export const hasContact = Boolean(contact.phone || contact.phone2 || contact.whatsapp || contact.email)
 
-export const whatsappLink = (text?: string) =>
-  contact.whatsappNumber ? `https://wa.me/${contact.whatsappNumber}${text ? `?text=${encodeURIComponent(text)}` : ''}` : ''
+export const whatsappLink = (text?: string, number = contact.whatsappNumber) =>
+  number ? `https://wa.me/${number}${text ? `?text=${encodeURIComponent(text)}` : ''}` : ''
 
 export const SOCIAL_NAMES = { instagram: 'Instagram', facebook: 'Facebook', linkedin: 'LinkedIn', tiktok: 'TikTok', youtube: 'YouTube' } as const
 export type SocialKey = keyof typeof SOCIAL_NAMES

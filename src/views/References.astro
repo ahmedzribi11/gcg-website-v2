@@ -87,7 +87,7 @@ const studies = projects.filter((p) => p.status === 'etudes').length
 
       <footer class="mt-10 flex flex-wrap justify-between gap-4 border-t-2 border-brand pt-4 font-mono text-[10px] uppercase tracking-[0.12em] text-brand/80">
         <span>General Constructor Group CI</span>
-        <span>{[contact.phone, contact.phone2, contact.whatsapp && `WhatsApp ${contact.whatsapp}`, contact.email].filter(Boolean).join(' · ')}</span>
+        <span>{[contact.phone, contact.phone2, contact.whatsapp && `WhatsApp ${contact.whatsapp}`, contact.whatsapp2 && `WhatsApp ${contact.whatsapp2}`, contact.email].filter(Boolean).join(' · ')}</span>
         <span data-qr-text={route('home', lang)}></span>
       </footer>
     </article>

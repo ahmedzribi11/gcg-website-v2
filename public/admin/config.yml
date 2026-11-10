@@ -224,6 +224,7 @@ collections:
               - { label: Téléphone, name: phone, widget: string, required: false, pattern: ['^(\+?[\d ]{8,20})?$', 'Numéro au format international, ex. +225 07 00 00 00 00'], hint: 'Ex. : +225 07 00 00 00 00' }
               - { label: 'Second téléphone', name: phone2, widget: string, required: false, pattern: ['^(\+?[\d ]{8,20})?$', 'Numéro au format international, ex. +225 07 00 00 00 00'], hint: 'Numéro complet avec l’indicatif. Ex. : +216 28 00 00 00' }
               - { label: WhatsApp, name: whatsapp, widget: string, required: false, pattern: ['^(\+?[\d ]{8,20})?$', 'Numéro au format international, ex. +225 07 00 00 00 00'], hint: 'Active les boutons WhatsApp du site. Ex. : +225 07 00 00 00 00' }
+              - { label: 'Second WhatsApp', name: whatsapp2, widget: string, required: false, pattern: ['^(\+?[\d ]{8,20})?$', 'Numéro au format international, ex. +225 07 00 00 00 00'], hint: 'Affiché sur Contact et au pied de page. Les boutons WhatsApp restent sur le premier numéro.' }
               - { label: Email, name: email, widget: string, required: false, pattern: ['^([^@\s]+@[^@\s]+\.[^@\s]+)?$', 'Adresse e-mail invalide'], hint: 'Ex. : contact@gcg-ci.com' }
               - { label: Adresse, name: address, widget: string, required: false, hint: 'Ex. : Abidjan, Cocody Riviera 3, rue …' }
               - { label: 'Lien Google Maps', name: mapsUrl, widget: string, required: false, hint: 'Lien « Partager » de Google Maps. Ex. : https://maps.app.goo.gl/…' }

@@ -65,7 +65,8 @@ const wa = whatsappLink(t('contact.form.intro'))
       <div class="md:col-span-2">
         <p class="meta text-mist">{t('contact.direct')}</p>
         <ul class="mt-5 space-y-3 text-[15px] text-bone/75">
-          {wa && <li><a href={wa} target="_blank" rel="noopener" class="link-line hover:text-bone">WhatsApp</a></li>}
+          {wa && <li><a href={wa} target="_blank" rel="noopener" class="link-line hover:text-bone">WhatsApp{contact.whatsapp2 && ` ${contact.whatsapp}`}</a></li>}
+          {wa && contact.whatsapp2 && <li><a href={whatsappLink(t('contact.form.intro'), contact.whatsapp2Number)} target="_blank" rel="noopener" class="link-line hover:text-bone">WhatsApp {contact.whatsapp2}</a></li>}
           {contact.phone && <li><a href={contact.phoneHref} class="link-line hover:text-bone">{contact.phone}</a></li>}
           {contact.phone2 && <li><a href={contact.phone2Href} class="link-line hover:text-bone">{contact.phone2}</a></li>}
           {contact.email && <li><a href={`mailto:${contact.email}`} class="link-line break-all hover:text-bone">{contact.email}</a></li>}

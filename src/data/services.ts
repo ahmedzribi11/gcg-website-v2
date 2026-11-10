@@ -33,8 +33,8 @@ export const services: Service[] = [
     slug: { fr: 'etudes-et-faisabilite', en: 'studies-and-feasibility' },
     title: { fr: 'Études & faisabilité', en: 'Feasibility & design studies' },
     short: {
-      fr: 'Savoir si un projet est faisable, et comment, avant d’engager les études détaillées.',
-      en: 'Find out whether a project is feasible, and how, before committing to detailed design.',
+      fr: 'Terrain, urbanisme, coûts et délais : nous vérifions la viabilité de votre projet avant tout engagement.',
+      en: 'Site, planning rules, costs and timelines: we check that your project is viable before any commitment.',
     },
     intro: {
       fr: 'Tout projet commence par une question : est-il faisable, et à quelles conditions ? GCG réalise les études de faisabilité et les études préalables de projets privés, du complexe touristique à l’usine, jusqu’au dossier de permis de bâtir.',

@@ -8,7 +8,7 @@ import FinalCta from '../components/FinalCta.astro'
 import Icon from '../components/Icon.astro'
 import { services, type Service } from '../data/services'
 import { route, servicePath, useT, type Lang } from '../i18n'
-import { coverImage, getProjects } from '../lib/projects'
+import { serviceCover, getProjects } from '../lib/projects'
 
 interface Props {
   lang: Lang
@@ -19,7 +19,7 @@ const t = useT(lang)
 const other = lang === 'fr' ? 'en' : 'fr'
 const projects = await getProjects(lang)
 const related = projects.filter((p) => p.services.includes(s.id))
-const cover = coverImage(projects, s.cover)
+const cover = serviceCover(projects, s)
 const og = cover ? await getImage({ src: cover.src, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 80 }) : undefined
 const others = services.filter((x) => x.id !== s.id)
 ---

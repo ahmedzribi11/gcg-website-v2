@@ -152,3 +152,11 @@ export function coverImage(projects: Project[], [slug, i]: [string, number]): Pr
   // Le rang de photo choisi vaut pour le projet prévu ; pour un remplaçant, sa première photo
   return p?.images[p.slug === slug ? Math.min(i, p.images.length - 1) : 0]
 }
+
+/** Image d’un métier : son illustration propre si elle existe, sinon une photo de projet (`cover`). */
+export function serviceCover(
+  projects: Project[],
+  s: { cover: [string, number]; photo?: { src: ImageMetadata; focus?: string } },
+): ProjectImageData | undefined {
+  return s.photo ? { src: s.photo.src, alt: '', kind: 'render', focus: s.photo.focus } : coverImage(projects, s.cover)
+}

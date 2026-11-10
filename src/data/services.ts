@@ -1,4 +1,7 @@
+import type { ImageMetadata } from 'astro'
 import type { SERVICES } from '../content.config'
+import construction from '../assets/services/construction.jpg'
+import ingenierie from '../assets/services/ingenierie.jpg'
 
 export type ServiceId = (typeof SERVICES)[number]
 type L<T> = { fr: T; en: T }
@@ -12,6 +15,11 @@ export interface Service {
   includes: L<string[]>
   /** Photo d’illustration : projet et index de l’image. */
   cover: [string, number]
+  /**
+   * Illustration propre au métier, prioritaire sur `cover` (images générées par IA à la demande de
+   * M. Chebbi, 24 oct. 2026). Jamais utilisée comme réalisation. `focus` : cadrage (object-position).
+   */
+  photo?: { src: ImageMetadata; focus?: string }
 }
 
 /**
@@ -58,6 +66,7 @@ export const services: Service[] = [
   {
     id: 'ingenierie',
     cover: ['immeuble-attoban', 3],
+    photo: { src: ingenierie },
     slug: { fr: 'ingenierie', en: 'engineering' },
     title: { fr: 'Ingénierie', en: 'Engineering' },
     short: {
@@ -88,6 +97,7 @@ export const services: Service[] = [
   {
     id: 'construction',
     cover: ['green-city', 2],
+    photo: { src: construction, focus: '80% 50%' },
     slug: { fr: 'construction', en: 'construction' },
     title: { fr: 'Construction', en: 'Construction' },
     short: {

@@ -4,7 +4,7 @@ import SectionHead from '../SectionHead.astro'
 import Icon from '../Icon.astro'
 import { services } from '../../data/services'
 import { route, servicePath, useT, type Lang } from '../../i18n'
-import { coverImage, type Project } from '../../lib/projects'
+import { serviceCover, type Project } from '../../lib/projects'
 
 interface Props {
   lang: Lang
@@ -12,7 +12,7 @@ interface Props {
 }
 const { lang, projects } = Astro.props
 const t = useT(lang)
-const img = (id: string) => coverImage(projects, services.find((s) => s.id === id)!.cover)
+const img = (id: string) => serviceCover(projects, services.find((s) => s.id === id)!)
 const count = (id: string) => projects.filter((p) => p.services.includes(id as never)).length
 ---
 

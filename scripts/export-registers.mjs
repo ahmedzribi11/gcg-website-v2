@@ -136,5 +136,24 @@ for (const p of projects) {
     ])
   }
 }
+// Illustrations des métiers (hors réalisations) : images générées par IA par l’équipe web
+for (const [service, file, desc] of [
+  ['Métier Ingénierie', 'ingenierie.jpg', 'Deux techniciens de dos consultent des plans devant un bâtiment en construction'],
+  ['Métier Construction', 'construction.jpg', 'Chantier d’immeuble R+5 avec grue, toupie à béton et ouvriers'],
+]) {
+  rights.push([
+    service,
+    `src/assets/services/${file}`,
+    'Illustration IA',
+    desc,
+    'Générée par IA (Gemini), équipe web',
+    'GCG (commande)',
+    'Image générée, sans droits de tiers identifiés',
+    'sans objet',
+    'sans objet',
+    'Ne jamais présenter comme une réalisation GCG',
+    '',
+  ])
+}
 writeFileSync(join(ROOT, 'docs/registre-des-droits.csv'), csv(rights))
 console.log(`fiche-de-faits.csv : ${projects.length} projets ; registre-des-droits.csv : ${rights.length - 1} images`)
